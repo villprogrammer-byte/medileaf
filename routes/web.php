@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,7 +18,8 @@ Route::view('/terms', 'terms')->name('terms');
 Route::view('/product-view', 'product-view')->name('product-view');
 Route::view('/cart', 'cart')->name('cart');
 Route::view('/checkout', 'checkout')->name('checkout');
-Route::view('/vil', 'vil')->name('vil');
+Route::post('/contact-send', [ContactController::class, 'send'])
+    ->name('contact.send');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

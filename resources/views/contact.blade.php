@@ -196,56 +196,71 @@
                             </p>
                         </div>
 
-                        <form class="medileaf-contact-form">
+                        <form class="medileaf-contact-form" action="{{ route('contact.send') }}" method="POST">
+                            @csrf
+
                             <div class="row g-4">
 
                                 <div class="col-md-6">
                                     <label class="medileaf-form-label">First Name</label>
-                                    <input type="text" class="form-control medileaf-form-control" placeholder="First name">
+                                    <input type="text" name="first_name" class="form-control medileaf-form-control"
+                                        placeholder="First name" required>
                                 </div>
 
                                 <div class="col-md-6">
                                     <label class="medileaf-form-label">Last Name</label>
-                                    <input type="text" class="form-control medileaf-form-control" placeholder="Last name">
+                                    <input type="text" name="last_name" class="form-control medileaf-form-control"
+                                        placeholder="Last name" required>
                                 </div>
 
                                 <div class="col-md-6">
                                     <label class="medileaf-form-label">Phone Number</label>
-                                    <input type="text" class="form-control medileaf-form-control"
-                                        placeholder="Phone number">
+                                    <input type="text" name="phone" class="form-control medileaf-form-control"
+                                        placeholder="Phone number" required>
                                 </div>
 
                                 <div class="col-md-6">
                                     <label class="medileaf-form-label">Email Address</label>
-                                    <input type="email" class="form-control medileaf-form-control"
-                                        placeholder="Email address">
+                                    <input type="email" name="email" class="form-control medileaf-form-control"
+                                        placeholder="Email address" required>
                                 </div>
 
                                 <div class="col-12">
                                     <label class="medileaf-form-label">Reason For Contact</label>
-                                    <select class="form-select medileaf-form-control">
-                                        <option selected>Select an option</option>
-                                        <option>Consultation Booking</option>
-                                        <option>Treatment Enquiry</option>
-                                        <option>Prescription Support</option>
-                                        <option>General Enquiry</option>
+
+                                    <select name="reason" class="form-select medileaf-form-control" required>
+
+                                        <option value="">Select an option</option>
+                                        <option value="Consultation Booking">Consultation Booking</option>
+                                        <option value="Treatment Enquiry">Treatment Enquiry</option>
+                                        <option value="Prescription Support">Prescription Support</option>
+                                        <option value="General Enquiry">General Enquiry</option>
+
                                     </select>
                                 </div>
 
                                 <div class="col-12">
                                     <label class="medileaf-form-label">Message</label>
-                                    <textarea class="form-control medileaf-form-control medileaf-form-textarea"
-                                        placeholder="Tell us how we can help"></textarea>
+
+                                    <textarea name="message"
+                                        class="form-control medileaf-form-control medileaf-form-textarea"
+                                        placeholder="Tell us how we can help" required></textarea>
                                 </div>
 
                                 <div class="col-12">
+
                                     <button type="submit" class="medileaf-contact-submit-btn">
+
                                         Submit Your Enquiry
+
                                         <i class="bi bi-arrow-right"></i>
+
                                     </button>
+
                                 </div>
 
                             </div>
+
                         </form>
 
                     </div>
