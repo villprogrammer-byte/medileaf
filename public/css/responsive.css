@@ -1934,3 +1934,44 @@
         }
 
     }
+
+    =====================================prescription======================================@media (max-width: 991px) {
+        .prescription-info-card h2 {
+            font-size: 34px;
+        }
+
+        .prescription-form-card,
+        .prescription-info-card {
+            padding: 30px;
+        }
+    }
+
+    @media (max-width: 575px) {
+        .prescription-page {
+            padding: 45px 0;
+        }
+
+        .form-heading {
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .form-icon {
+            width: 58px;
+            height: 58px;
+            font-size: 25px;
+        }
+
+        .form-heading h2 {
+            font-size: 24px;
+        }
+
+        .option-box {
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .prescription-info-card h1 {
+            font-size: 38px;
+        }
+    }

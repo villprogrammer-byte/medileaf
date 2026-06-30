@@ -16,10 +16,15 @@
                 </p>
 
                 <div class="ml-footer-social">
-                    <a href="#"><i class="bi bi-facebook"></i></a>
-                    <a href="#"><i class="bi bi-twitter-x"></i></a>
+                    <a href="https://www.facebook.com/people/Medileaf-Health/61590404445014/" target="_blank"
+                        rel="noopener noreferrer">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="https://www.instagram.com/medileaf.pottspoint/" target="_blank" rel="noopener noreferrer">
+                        <i class="bi bi-instagram"></i>
+                    </a>
                     <a href="#"><i class="bi bi-linkedin"></i></a>
-                    <a href="#"><i class="bi bi-instagram"></i></a>
+
                 </div>
             </div>
 
@@ -40,22 +45,28 @@
 
                 <div>
                     <i class="bi bi-geo-alt"></i>
-                    <span>48A Darlinghurst Rd, Potts Point NSW 2011</span>
+                    <span>48A Darlinghurst Rd, Potts Point<br>NSW 2011</span>
                 </div>
 
                 <div>
                     <i class="bi bi-telephone"></i>
-                    <span>02 9569 2078</span>
+                    <a href="tel:(02) 9569 2078">
+                        <span>(02) 9569 2078</span>
+                    </a>
                 </div>
 
                 <div>
                     <i class="bi bi-phone"></i>
-                    <span>+61 460 034 851</span>
+                    <a href="tel:+61460034851">
+                        <span>+61 460 034 851</span>
+                    </a>
                 </div>
 
                 <div>
                     <i class="bi bi-envelope"></i>
-                    <span>info@medileaf.com.au</span>
+                    <a href="mailto:info@medileaf.com.au">
+                        <span>info@medileaf.com.au</span>
+                    </a>
                 </div>
 
             </div>

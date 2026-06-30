@@ -20,9 +20,9 @@
                         User Login
                     </button>
 
-                    <button type="button" class="ml-auth-tab" data-target="vendor">
-                        <i class="bi bi-shop"></i>
-                        Vendor Login
+                    <button type="button" class="ml-auth-tab" data-target="admin">
+                        <i class="bi bi-person-bounding-box"></i>
+                        Admin Login
                     </button>
 
                     <span class="ml-auth-switch-bg"></span>
@@ -36,9 +36,9 @@
                         User Login
                     </button>
 
-                    <button type="button" class="ml-auth-tab" data-target="vendor">
-                        <i class="bi bi-shop"></i>
-                        Vendor Login
+                    <button type="button" class="ml-auth-tab" data-target="admin">
+                        <i class="bi bi-person-bounding-box"></i>
+                        Admin Login
                     </button>
 
                     <span class="ml-auth-switch-bg"></span>

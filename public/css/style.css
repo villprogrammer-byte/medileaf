@@ -124,7 +124,7 @@ h2 {
     z-index: 1;
 }
 
-.ml-auth-switch.vendor-active .ml-auth-switch-bg {
+.ml-auth-switch.admin-active .ml-auth-switch-bg {
     left: calc(50%);
 }
 
@@ -365,21 +365,22 @@ h2 {
 
 /* SAME SOFT DARK OVERLAY LIKE REFERENCE */
 .ml-glass-hero-content::before {
-    fo content: "";
-    position: absolute;
-    width: 1000px;
-    height: 700px;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background:
-        radial-gradient(ellipse,
-            rgba(0, 0, 0, .65) 0%,
-            rgba(0, 0, 0, .45) 30%,
-            rgba(0, 0, 0, .20) 55%,
-            transparent 85%);
-    filter: blur(50px);
-    z-index: -1;
+    ::before {
+        content: "";
+        position: absolute;
+        width: 1000px;
+        height: 700px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background: radial-gradient(ellipse,
+                rgba(0, 0, 0, .65) 0%,
+                rgba(0, 0, 0, .45) 30%,
+                rgba(0, 0, 0, .20) 55%,
+                transparent 85%);
+        filter: blur(50px);
+        z-index: -1;
+    }
 }
 
 /* SMALL GREEN GLOW BEHIND TEXT */
@@ -1214,6 +1215,14 @@ h2 {
     transform: translateY(-3px);
 }
 
+.ml-telehealth-cta a {
+    text-decoration: none;
+    color: #fff;
+}
+
+/* ------------------FAQ------------------------------------- */
+
+
 .ml-faq-simple-section {
     padding: 100px 0;
     background:
@@ -1787,7 +1796,7 @@ h2 {
 .ml-footer-contact div {
     display: flex;
     gap: 12px;
-    align-items: flex-start;
+    align-items: center;
     color: rgba(255, 255, 255, .82);
     margin-bottom: 16px;
     line-height: 1.6;
@@ -1881,6 +1890,10 @@ h2 {
     font-size: 24px;
 }
 
+.ml-premium-footer a {
+    text-decoration: none;
+    color: #fff;
+}
 
 /* ============================================================================================================
     ABOUT PAGE START
@@ -6143,4 +6156,402 @@ FOOTER
 
     transform: translateY(-4px);
 
+}
+
+
+/* =====================================prescription====================================== */
+
+.prescription-page {
+    padding: 60px 0;
+    background:
+        radial-gradient(circle at top left, rgba(12, 148, 72, 0.12), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(52, 181, 109, 0.12), transparent 35%),
+        #ffffff;
+    font-family: 'Poppins', sans-serif;
+    color: #17233c;
+    position: relative;
+    overflow: hidden;
+}
+
+.prescription-page::before {
+    content: "";
+    position: absolute;
+    left: -90px;
+    bottom: -40px;
+    width: 260px;
+    height: 260px;
+    background: url("{{ asset('images/leaf.png') }}") no-repeat center/contain;
+    opacity: 0.9;
+}
+
+.prescription-info-card {
+    height: 100%;
+    padding: 45px;
+    border-radius: 26px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(235, 249, 243, 0.95));
+    border: 1px solid rgba(12, 148, 72, 0.12);
+    position: relative;
+    box-shadow: 0 24px 55px rgba(13, 55, 35, 0.12);
+    backdrop-filter: blur(12px);
+}
+
+.prescription-info-card h2 {
+    font-size: clamp(32px, 4vw, 50px);
+    line-height: 1.08;
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    margin-bottom: 12px;
+}
+
+.prescription-info-card h2 span {
+    color: #31a050;
+    display: block;
+}
+
+.prescription-info-card h3 {
+    font-size: 26px;
+    color: #566077;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.green-line {
+    width: 52px;
+    height: 4px;
+    background: linear-gradient(90deg, #31a050, #35b56d);
+    border-radius: 20px;
+    margin-bottom: 24px;
+}
+
+.intro-text {
+    font-size: 15.5px;
+    line-height: 1.85;
+    color: #3f4b63;
+    margin-bottom: 30px;
+}
+
+.contact-box {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(12, 148, 72, 0.08);
+    border-radius: 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 12px 24px rgba(20, 60, 40, 0.08);
+    transition: all 0.3s ease;
+}
+
+.contact-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 34px rgba(20, 60, 40, 0.14);
+}
+
+.contact-box .icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #e5f8ef, #d5f2e5);
+    color: #31a050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.contact-box small {
+    display: block;
+    color: #516078;
+    font-size: 13px;
+    margin-bottom: 2px;
+}
+
+.contact-box strong {
+    display: block;
+    font-size: 16px;
+    color: #17233c;
+    font-weight: 700;
+}
+
+.hours-box {
+    margin-top: 30px;
+    padding: 22px;
+    border: 1px solid rgba(12, 148, 72, 0.16);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.65);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.hours-box h4 {
+    color: #31a050;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 17px;
+}
+
+.hours-box p {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 11px;
+    color: #344058;
+    font-size: 15px;
+}
+
+.privacy-box {
+    margin-top: 28px;
+    padding: 18px 22px;
+    background: linear-gradient(135deg, #e3f7ed, #d8f2e6);
+    border-radius: 16px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    color: #344058;
+    box-shadow: 0 10px 20px rgba(20, 60, 40, 0.07);
+}
+
+.privacy-box i {
+    color: #078a43;
+    font-size: 23px;
+}
+
+.privacy-box p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.prescription-form-card {
+    height: 100%;
+    padding: 38px;
+    border-radius: 26px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(18, 32, 58, 0.08);
+    box-shadow: 0 28px 65px rgba(18, 32, 58, 0.14);
+    position: relative;
+    overflow: hidden;
+}
+
+.prescription-form-card::before {
+    content: "";
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 210px;
+    height: 210px;
+    background: radial-gradient(circle, rgba(11, 148, 68, 0.14), transparent 70%);
+}
+
+.form-heading {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 2;
+}
+
+.form-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #31a050, #a6ce39);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 31px;
+    box-shadow: 0 18px 40px rgba(49, 160, 80, .26);
+}
+
+.form-heading h2 {
+    font-size: 30px;
+    font-weight: 900;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.form-heading p {
+    margin: 7px 0 0;
+    color: #5f687e;
+    font-size: 15px;
+}
+
+.prescription-form-card label {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: block;
+    color: #17233c;
+}
+
+.input-wrap,
+.textarea-wrap {
+    position: relative;
+}
+
+.input-wrap i,
+.textarea-wrap i {
+    position: absolute;
+    left: 17px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #65728a;
+    font-size: 16px;
+    z-index: 1;
+}
+
+.textarea-wrap i {
+    top: 20px;
+    transform: none;
+}
+
+.input-wrap input,
+.input-wrap select,
+.textarea-wrap textarea {
+    width: 100%;
+    border: 1px solid #d4dce8;
+    border-radius: 13px;
+    height: 52px;
+    padding: 0 16px 0 48px;
+    font-size: 14px;
+    color: #17233c;
+    outline: none;
+    background: #fff;
+    transition: all 0.25s ease;
+}
+
+.input-wrap input:focus,
+.input-wrap select:focus,
+.textarea-wrap textarea:focus {
+    border-color: #31a050;
+    box-shadow: 0 0 0 4px rgba(11, 148, 68, 0.10);
+}
+
+.textarea-wrap textarea {
+    height: 104px;
+    padding-top: 16px;
+    resize: vertical;
+}
+
+.option-box {
+    border: 1px solid #d4dce8;
+    border-radius: 13px;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 42px;
+    padding: 11px 15px;
+    background: #fff;
+    transition: all 0.25s ease;
+}
+
+.option-box:hover {
+    border-color: #31a050;
+    box-shadow: 0 0 0 4px rgba(11, 148, 68, 0.06);
+}
+
+.option-box label {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.option-box input {
+    margin-right: 8px;
+    accent-color: #31a050;
+}
+
+.checkbox-options {
+    gap: 17px;
+    flex-wrap: wrap;
+}
+
+.upload-box {
+    height: 78px;
+    border: 1.5px dashed #8ca0bd;
+    border-radius: 13px;
+    text-align: center;
+    padding: 11px;
+    color: #5d687d;
+    background: linear-gradient(135deg, #ffffff, #f7fbf9);
+    transition: all 0.25s ease;
+}
+
+.upload-box:hover {
+    border-color: #31a050;
+    background: #f1fbf6;
+}
+
+.upload-box i {
+    font-size: 25px;
+    color: #5d687d;
+}
+
+.upload-box p {
+    margin: 3px 0 0;
+    font-size: 14px;
+}
+
+.upload-box strong {
+    color: #31a050;
+}
+
+.upload-box small {
+    font-size: 12px;
+}
+
+.consent {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 12px;
+    font-weight: 400 !important;
+    color: #344058 !important;
+    line-height: 1.5;
+}
+
+.consent input {
+    margin-top: 5px;
+    accent-color: #31a050;
+}
+
+.submit-btn {
+    width: 100%;
+    height: 58px;
+    border: none;
+    border-radius: 14px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    transition: 0.3s;
+    box-shadow: rgba(49, 160, 80, 0.24) 0px 18px 40px;
+    gap: 10px;
+    border-radius: 50px;
+    background: linear-gradient(135deg, rgb(49, 160, 80), rgb(166, 206, 57));
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 22px 40px rgba(7, 146, 67, 0.35);
+    background: linear-gradient(135deg, #08a04e, #067b39);
+}
+
+.submit-btn i {
+    margin-right: 10px;
+}
+
+.secure-note {
+    text-align: center;
+    color: #7a8498;
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+.secure-note i {
+    margin-right: 8px;
+    color: #7a8498;
+}
+
+#fileName {
+    color: #28a745;
+    font-weight: 600;
 }

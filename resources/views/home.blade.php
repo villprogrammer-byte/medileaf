@@ -59,14 +59,6 @@
                     your healthcare journey simple, supportive, and stress free.
                 </p>
 
-                <div class="ml-commitment-buttons">
-
-                    <a href="contact" class="ml-commitment-btn-primary">
-                        Book Consultation
-                        <i class="bi bi-arrow-right"></i>
-                    </a>
-                </div>
-
                 <div class="ml-commitment-features">
 
                     <div class="ml-commitment-feature">
@@ -122,8 +114,8 @@
                         planning, and convenient medication access across Australia.
                     </p>
 
-                    <a href="contact" class="ml-patient-care-btn">
-                        Book Consultation
+                    <a href="clinic" class="ml-patient-care-btn">
+                        View Clinic
                         <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
@@ -229,12 +221,16 @@
                     <div class="ml-telehealth-contact">
                         <div>
                             <i class="bi bi-telephone"></i>
-                            <span>(02) 9569 2078</span>
+                            <a href="tel:+61295692078">
+                                <span>(02) 9569 2078</span>
+                            </a>
                         </div>
 
                         <div>
                             <i class="bi bi-phone"></i>
-                            <span>+61 460 034 851</span>
+                            <a href="tel:+61460034851">
+                                <span>+61 460 034 851</span>
+                            </a>
                         </div>
                     </div>
 
@@ -257,12 +253,13 @@
                             Upload Prescription
                         </a>
 
-                        <a href="#" class="ml-telehealth-btn">
+                        <a href="prescription" class="ml-telehealth-btn">
                             <i class="bi bi-file-medical"></i>
                             Need Prescription
                         </a>
 
-                        <a href="#" class="ml-telehealth-btn">
+                        <a href="https://www.halaxy.com/book/appointment/medileaf-health/location/1332127"
+                            class="ml-telehealth-btn">
                             <i class="bi bi-calendar-check"></i>
                             Book Appointment
                         </a>
