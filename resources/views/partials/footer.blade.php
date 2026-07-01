@@ -6,7 +6,7 @@
         <div class="ml-footer-top">
 
             <div class="ml-footer-brand">
-                <a href="{{ route('home') }}" class="ml-new-logo mb-2">
+                <a href="{{ route('home') }}" class="ml-new-logo mb-3">
                     <img src="{{ asset('img/medileaf-white-logo.webp') }}" alt="MediLeaf Logo">
                 </a>
 
@@ -76,7 +76,7 @@
                 <h3>Subscribe Newsletter</h3>
 
                 <p>
-                    Get valuable updates, care guidance and pharmacy support information.
+                    Stay informed with expert health updates.
                 </p>
 
                 <form>

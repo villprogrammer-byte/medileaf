@@ -3724,102 +3724,6 @@ h2 {
     transform: rotate(-24deg);
 }
 
-/* RESPONSIVE */
-
-@media (max-width: 991px) {
-    .ml-pharmacy-hero {
-        min-height: auto;
-        padding: 90px 0;
-    }
-
-    .ml-pharmacy-hero-content {
-        text-align: center;
-        margin: 0 auto;
-    }
-
-    .ml-pharmacy-hero-actions {
-        justify-content: center;
-    }
-
-    .ml-pharmacy-hero-points {
-        justify-content: center;
-    }
-
-    .ml-pharmacy-hero-visual {
-        min-height: auto;
-        margin-top: 50px;
-    }
-
-    .ml-pharmacy-hero-image-card {
-        width: 100%;
-        transform: rotate(0);
-    }
-
-    .ml-pharmacy-hero-image-card img {
-        height: 430px;
-    }
-
-    .ml-pharmacy-hero-info-card {
-        left: 30px;
-        bottom: 100px;
-    }
-}
-
-@media (max-width: 767px) {
-    .ml-pharmacy-hero {
-        min-height: auto;
-        padding: 42px 0 46px;
-    }
-
-    .ml-pharmacy-hero .row {
-        gap: 0 !important;
-    }
-
-    .ml-pharmacy-hero-content {
-        text-align: left;
-        max-width: 100%;
-    }
-
-    .ml-pharmacy-hero-content>span {
-        font-size: 11px;
-        padding: 7px 13px;
-        margin-bottom: 14px;
-    }
-
-    .ml-pharmacy-hero-content h1 {
-        font-size: 34px;
-        line-height: 1.08;
-        margin-bottom: 14px;
-        max-width: 330px;
-    }
-
-    .ml-pharmacy-hero-content p {
-        font-size: 15px;
-        line-height: 1.55;
-        margin-bottom: 24px;
-        max-width: 340px;
-    }
-
-    .ml-pharmacy-hero-actions {
-        gap: 12px;
-        margin-bottom: 22px;
-    }
-
-    .ml-pharmacy-hero-btn,
-    .ml-pharmacy-hero-link {
-        min-height: 50px;
-        width: 100%;
-        font-size: 15px;
-    }
-
-    .ml-pharmacy-hero-points {
-        display: none;
-    }
-
-    .ml-pharmacy-hero-visual {
-        display: none;
-    }
-}
 
 /* ========================= */
 /* MEDILEAF PHARMACY SHOWCASE */
@@ -6213,6 +6117,11 @@ FOOTER
     color: #566077;
     margin-bottom: 20px;
     font-weight: 500;
+}
+
+.prescription-info-card a {
+    text-decoration: none;
+    color: #3f4b63;
 }
 
 .green-line {

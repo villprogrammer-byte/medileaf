@@ -16,21 +16,21 @@
                             We're Here to Help
                         </div>
 
-                        <h2>I Need a <span>Prescription</span></h2>
-                        <h3>Explore Your Eligibility</h3>
+                        <h2>New Patient<span>Registration</span></h2>
+                        <h3>Start Your Consultation</h3>
                         <div class="green-line"></div>
 
                         <p class="intro-text">
-                            Complete the form below and our healthcare team will review your enquiry.
-                            If you're eligible, we'll guide you through the consultation process and help
-                            you obtain a prescription where clinically appropriate.
+                            Complete the form below to begin your consultation. Our healthcare team will review your enquiry
+                            and contact you to discuss your eligibility for treatment. If appropriate, a qualified
+                            practitioner may issue a prescription following your consultation.
                         </p>
 
                         <div class="contact-box">
                             <div class="icon"><i class="bi bi-telephone"></i></i></i></div>
                             <div>
                                 <small>Phone</small>
-                                <strong>02 9569 2078</strong>
+                                <strong><a href="tel:+61295692078">02 9569 2078</a></strong>
                             </div>
                         </div>
 
@@ -38,7 +38,7 @@
                             <div class="icon"><i class="bi bi-phone"></i></div>
                             <div>
                                 <small>Call</small>
-                                <strong>+61 460 034 851</strong>
+                                <strong><a href="tel:+61460034851">+61 460 034 851</a></strong>
                             </div>
                         </div>
 
@@ -46,14 +46,14 @@
                             <div class="icon"> <i class="bi bi-envelope"></i></i></div>
                             <div>
                                 <small>Email</small>
-                                <strong>info@medileaf.com.au</strong>
+                                <strong><a href="mailto:info@medileaf.com.au">info@medileaf.com.au</a></strong>
                             </div>
                         </div>
 
                         <div class="hours-box">
                             <h4><i class="fa-regular fa-clock"></i> Business Hours</h4>
-                            <p><span>Monday – Friday</span><span>9:00 AM – 6:00 PM</span></p>
-                            <p><span>Saturday</span><span>9:00 AM – 2:00 PM</span></p>
+                            <p><span>Monday – Friday</span><span>10:00 AM – 5:00 PM</span></p>
+                            <p><span>Saturday</span><span>10:00 AM – 2:00 PM</span></p>
                             <p><span>Sunday</span><span>Closed</span></p>
                         </div>
 

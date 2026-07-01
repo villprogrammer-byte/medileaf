@@ -248,7 +248,7 @@
 
                     <div class="ml-telehealth-buttons">
 
-                        <a href="#" class="ml-telehealth-btn primary">
+                        <a href="#" class="ml-telehealth-btn primary border-0">
                             <i class="bi bi-upload"></i>
                             Upload Prescription
                         </a>
@@ -355,12 +355,12 @@
                         <i class="bi bi-plus-lg"></i>
                     </button>
                     <div class="ml-faq-simple-answer mb-4">
-                        <p><strong>In-clinic (face-to-face) initial consultations</strong> are $79
+                        <p><strong>In-clinic (face-to-face) initial consultations</strong> are $39
                             out-of-pocket after Medicare rebates. This fee ensures you have ample time
                             for a thorough discussion with our experienced doctors, right here in our
                             store.</p>
                         <p><strong>Follow-up appointments</strong> to adjust or issue your next
-                            prescription are $62 out-of-pocket after Medicare rebates.</p>
+                            prescription are $49 out-of-pocket after Medicare rebates.</p>
                         <p>We also offer <strong>Telehealth appointments</strong> with our doctors for
                             $49. Please note that Medicare rebates currently do not apply to Telehealth
                             consultations.</p>

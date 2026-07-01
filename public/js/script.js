@@ -79,7 +79,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // -----------------------------------Page scroller------------------------------------------------
 
-document.getElementById("mlScrollTop").addEventListener("click", function () {
+const scrollTopBtn = document.getElementById("mlScrollTop");
+
+scrollTopBtn.style.display = "none";
+
+window.addEventListener("scroll", () => {
+
+    const scrollPosition = window.scrollY + window.innerHeight;
+    const pageHeight = document.documentElement.scrollHeight;
+
+    // Footer ke paas (100px pehle) button show hoga
+    if (scrollPosition >= pageHeight - 100) {
+        scrollTopBtn.style.display = "flex";
+    } else {
+        scrollTopBtn.style.display = "none";
+    }
+
+});
+
+scrollTopBtn.addEventListener("click", () => {
 
     window.scrollTo({
         top: 0,
@@ -87,7 +105,6 @@ document.getElementById("mlScrollTop").addEventListener("click", function () {
     });
 
 });
-
 
 // --------------------------------------prescription---------------------------------------------
 

@@ -25,7 +25,6 @@
                         <div class="ml-pharmacy-hero-actions">
                             <a href="#medileaf-contact-form-section" class="ml-pharmacy-hero-link">
                                 Book Appointment
-                                <i class="bi bi-arrow-down-circle-fill"></i>
                             </a>
                         </div>
 
@@ -166,8 +165,9 @@
                         </h3>
 
                         <p class="medileaf-contact-info-text">
-                            Monday to Saturday<br>
-                            9:00 AM to 6:00 PM
+                            Mon – Fri: 10:00 AM – 5:00 PM<br>
+                            Sat: 10:00 AM – 2:00 PM<br>
+                            <strong>Sunday: Closed</strong>
                         </p>
 
                     </div>
@@ -331,7 +331,7 @@
 
                     <div class="medileaf-location-mini">
                         <i class="bi bi-clock"></i>
-                        <span>Monday to Saturday · 9:00 AM to 6:00 PM</span>
+                        <span>Mon–Fri: 10:00 AM–5:00 PM | Sat: 10:00 AM–2:00 PM <strong>Sun: Closed</strong></span>
                     </div>
 
                     <div class="medileaf-location-mini">

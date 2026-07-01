@@ -175,8 +175,84 @@
         .ml-scroll-top:hover {
             transform: translateX(-50%) translateY(-6px);
         }
+
+        .ml-scroll-top {
+            display: none;
+            position: fixed;
+            right: 20px;
+            bottom: 65px;
+            z-index: 9999;
+        }
     }
 
+    @media (max-width:575px) {
+
+        .ml-premium-footer .container {
+            text-align: center;
+        }
+
+        .ml-footer-top {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            justify-items: center;
+        }
+
+        .ml-footer-brand,
+        .ml-footer-links,
+        .ml-footer-contact,
+        .ml-footer-newsletter {
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .ml-premium-footer .ml-new-logo {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .ml-premium-footer .ml-new-logo img {
+            margin: 0 auto;
+        }
+
+        .ml-footer-social {
+            justify-content: center;
+        }
+
+        .ml-footer-links a {
+            width: 100%;
+            text-align: center;
+        }
+
+        .ml-footer-contact div {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .ml-footer-contact i {
+            margin: 0;
+        }
+
+        .ml-footer-newsletter form {
+            width: 100%;
+            max-width: 320px;
+            margin: 20px auto;
+        }
+
+        .ml-footer-bottom {
+            text-align: center;
+        }
+    }
 
     /* =========================================================================================================================
          ABOUT PAGE 
@@ -334,10 +410,55 @@
         }
     }
 
+    @media (max-width: 575px) {
+
+        .ml-story-stat-card.stat-one,
+        .ml-story-stat-card.stat-two {
+            display: none !important;
+        }
+    }
+
     /* ===========================
        pharmacy
     ========================= */
     @media (max-width: 991px) {
+        .ml-pharmacy-hero {
+            min-height: auto;
+            padding: 90px 0;
+        }
+
+        .ml-pharmacy-hero-content {
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .ml-pharmacy-hero-actions {
+            justify-content: center;
+        }
+
+        .ml-pharmacy-hero-points {
+            justify-content: center;
+        }
+
+        .ml-pharmacy-hero-visual {
+            min-height: auto;
+            margin-top: 50px;
+        }
+
+        .ml-pharmacy-hero-image-card {
+            width: 100%;
+            transform: rotate(0);
+        }
+
+        .ml-pharmacy-hero-image-card img {
+            height: 430px;
+        }
+
+        .ml-pharmacy-hero-info-card {
+            left: 30px;
+            bottom: 100px;
+        }
+
         .ml-pharmacy-showcase {
             padding: 80px 0;
         }
@@ -354,6 +475,60 @@
     }
 
     @media (max-width: 767px) {
+        .ml-pharmacy-hero {
+            min-height: auto;
+            padding: 42px 0 46px;
+        }
+
+        .ml-pharmacy-hero .row {
+            gap: 0 !important;
+        }
+
+        .ml-pharmacy-hero-content {
+            text-align: left;
+            max-width: 100%;
+        }
+
+        .ml-pharmacy-hero-content>span {
+            font-size: 11px;
+            padding: 7px 13px;
+            margin-bottom: 14px;
+        }
+
+        .ml-pharmacy-hero-content h1 {
+            font-size: 34px;
+            line-height: 1.08;
+            margin-bottom: 14px;
+            max-width: 330px;
+        }
+
+        .ml-pharmacy-hero-content p {
+            font-size: 15px;
+            line-height: 1.55;
+            margin-bottom: 24px;
+            max-width: 340px;
+        }
+
+        .ml-pharmacy-hero-actions {
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .ml-pharmacy-hero-btn,
+        .ml-pharmacy-hero-link {
+            min-height: 50px;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        .ml-pharmacy-hero-points {
+            display: none;
+        }
+
+        .ml-pharmacy-hero-visual {
+            display: none;
+        }
+
         .ml-pharmacy-showcase {
             padding: 60px 0;
         }
@@ -381,169 +556,64 @@
         }
     }
 
-    .ml-product-journey {
-        position: relative;
-        background: radial-gradient(circle at top left, #e5f7df, #f8fbf6 45%, #ffffff);
-        padding: 110px 0;
-        overflow: hidden;
-    }
+    @media (max-width:575px) {
 
-    .ml-product-journey::before {
-        content: "";
-        position: absolute;
-        width: 420px;
-        height: 420px;
-        right: -140px;
-        top: 120px;
-        background: rgba(49, 160, 80, 0.12);
-        border-radius: 50%;
-        filter: blur(20px);
-    }
+        .ml-pharmacy-hero {
+            text-align: center;
+        }
 
-    .ml-product-journey-head {
-        max-width: 760px;
-        margin: 0 auto 80px;
-        text-align: center;
-        position: relative;
-        z-index: 2;
-    }
+        .ml-pharmacy-hero .row {
+            justify-content: center;
+            text-align: center;
+        }
 
-    .ml-product-journey-head span,
-    .ml-product-journey-content span {
-        color: #31a050;
-        font-weight: 800;
-        font-size: 14px;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-    }
+        .ml-pharmacy-hero-content {
+            max-width: 100%;
+            text-align: center !important;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-    .ml-product-journey-head h2 {
-        font-size: clamp(36px, 5vw, 62px);
-        font-weight: 800;
-        color: #173d24;
-        margin: 12px 0 18px;
-    }
+        .ml-pharmacy-hero-content h1 {
+            max-width: 100%;
+            margin: 0 auto 16px;
+        }
 
-    .ml-product-journey-head p {
-        font-size: 17px;
-        line-height: 1.8;
-        color: #4b5563;
-    }
+        .ml-pharmacy-hero-content p {
+            max-width: 100%;
+            margin: 0 auto 24px;
+        }
 
-    .ml-product-journey-wrap {
-        position: relative;
-        display: grid;
-        gap: 80px;
-    }
+        .ml-pharmacy-hero-actions {
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+        }
 
-    .ml-product-journey-wrap::before {
-        content: "";
-        position: absolute;
-        left: 50%;
-        top: 20px;
-        bottom: 20px;
-        width: 3px;
-        background: linear-gradient(#31a050, #a6ce39, #31a050);
-        transform: translateX(-50%);
-        border-radius: 50px;
-        opacity: 0.35;
-    }
+        .ml-pharmacy-hero-btn,
+        .ml-pharmacy-hero-link {
+            max-width: 320px;
+            justify-content: center;
+        }
 
-    .ml-product-journey-card {
-        position: relative;
-        z-index: 2;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 70px;
-        align-items: center;
-    }
+        .ml-pharmacy-showcase-content {
+            text-align: center;
+        }
 
-    .ml-product-journey-card.reverse .ml-product-journey-img {
-        order: 2;
-    }
+        .ml-pharmacy-showcase-content h2 {
+            font-size: 32px;
+            margin: 0 auto 20px;
+        }
 
-    .ml-product-journey-card.reverse .ml-product-journey-content {
-        order: 1;
-    }
+        .ml-pharmacy-showcase-content p {
+            margin: 0 auto 20px;
+        }
 
-    .ml-product-journey-img {
-        position: relative;
-        border-radius: 34px;
-        overflow: hidden;
-        transform: rotate(-2deg);
-        box-shadow: 0 24px 60px rgba(31, 45, 34, 0.14);
-    }
-
-    .ml-product-journey-card.reverse .ml-product-journey-img {
-        transform: rotate(2deg);
-    }
-
-    .ml-product-journey-img img {
-        width: 100%;
-        height: 430px;
-        object-fit: cover;
-        display: block;
-        transition: 0.45s ease;
-    }
-
-    .ml-product-journey-card:hover .ml-product-journey-img img {
-        transform: scale(1.08);
-    }
-
-    .ml-product-journey-content {
-        background: rgba(255, 255, 255, 0.78);
-        backdrop-filter: blur(14px);
-        border: 1px solid rgba(49, 160, 80, 0.14);
-        border-radius: 34px;
-        padding: 44px;
-        box-shadow: 0 20px 50px rgba(31, 45, 34, 0.08);
-        transition: 0.35s ease;
-    }
-
-    .ml-product-journey-card:hover .ml-product-journey-content {
-        transform: translateY(-8px);
-    }
-
-    .ml-product-journey-content strong {
-        width: 64px;
-        height: 64px;
-        border-radius: 50%;
-        background: #31a050;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 22px;
-        margin-bottom: 24px;
-        box-shadow: 0 12px 28px rgba(49, 160, 80, 0.28);
-    }
-
-    .ml-product-journey-content h3 {
-        font-size: clamp(28px, 4vw, 44px);
-        line-height: 1.15;
-        color: #173d24;
-        font-weight: 800;
-        margin: 12px 0 18px;
-    }
-
-    .ml-product-journey-content p {
-        font-size: 16px;
-        line-height: 1.8;
-        color: #4b5563;
-        margin-bottom: 24px;
-    }
-
-    .ml-product-journey-content a {
-        display: inline-flex;
-        min-height: 52px;
-        align-items: center;
-        justify-content: center;
-        padding: 0 30px;
-        border-radius: 50px;
-        background: #31a050;
-        color: #fff;
-        text-decoration: none;
-        font-weight: 800;
+        .ml-pharmacy-showcase-points {
+            text-align: center;
+        }
     }
 
     @media (max-width: 991px) {
@@ -1600,6 +1670,7 @@
             width: 54px;
             height: 54px;
             font-size: 15px;
+            display: none;
         }
 
         .ml-patient-care-card {
