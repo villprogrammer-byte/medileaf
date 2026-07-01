@@ -477,7 +477,7 @@
     @media (max-width: 767px) {
         .ml-pharmacy-hero {
             min-height: auto;
-            padding: 42px 0 46px;
+            padding: 42px 0 0;
         }
 
         .ml-pharmacy-hero .row {
@@ -511,7 +511,6 @@
 
         .ml-pharmacy-hero-actions {
             gap: 12px;
-            margin-bottom: 22px;
         }
 
         .ml-pharmacy-hero-btn,
@@ -1584,7 +1583,7 @@
 
     @media(max-width: 767px) {
         .ml-glass-hero {
-            min-height: 92vh;
+            min-height: 70vh;
             padding: 80px 0;
         }
 

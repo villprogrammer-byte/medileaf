@@ -5,7 +5,7 @@
 @section('content')
     <section class="ml-pharmacy-hero">
         <div class="container">
-            <div class="row align-items-center g-5">
+            <div class="row g-5">
 
                 <div class="col-lg-6">
                     <div class="ml-pharmacy-hero-content">
