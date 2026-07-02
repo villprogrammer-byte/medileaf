@@ -248,7 +248,7 @@
 
                     <div class="ml-telehealth-buttons">
 
-                        <a href="#" class="ml-telehealth-btn primary border-0">
+                        <a href="upload-prescription" class="ml-telehealth-btn primary border-0">
                             <i class="bi bi-upload"></i>
                             Upload Prescription
                         </a>

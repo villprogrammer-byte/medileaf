@@ -3,38 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
-class ContactController extends Controller
+class ProfileController extends Controller
 {
-    public function send(Request $request)
+    public function edit(Request $request)
     {
-        $request->validate([
-            'first_name' => 'required|string|max:100',
-            'last_name' => 'required|string|max:100',
-            'phone' => 'required|string|max:20',
-            'email' => 'required|email|max:255',
-            'reason' => 'required|string|max:255',
-            'message' => 'required|string|max:3000',
+        return view('profile.edit', [
+            'user' => $request->user(),
         ]);
-
-        $data = $request->only([
-            'first_name',
-            'last_name',
-            'phone',
-            'email',
-            'reason',
-            'message'
-        ]);
-
-        Mail::send('emails.contact', compact('data'), function ($mail) use ($data) {
-
-            $mail->to('admin@medileaf.com.au')
-                ->replyTo($data['email'], $data['first_name'] . ' ' . $data['last_name'])
-                ->subject('New Contact Enquiry | MediLeaf');
-
-        });
-
-        return back()->with('success', 'Thank you! Your enquiry has been sent successfully.');
     }
 }

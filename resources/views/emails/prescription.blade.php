@@ -71,10 +71,10 @@
         <tr>
             <td><strong>Previous Prescription</strong></td>
             <td>
-                @if(!empty($data['prescription']))
-                    File Attached
+                @if(!empty($file) || !empty($uploadedFile))
+                    Attached with this email
                 @else
-                    No File Uploaded
+                    No file attached
                 @endif
             </td>
         </tr>

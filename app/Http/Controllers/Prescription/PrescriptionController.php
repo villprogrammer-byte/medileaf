@@ -20,6 +20,9 @@ class PrescriptionController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|email',
             'mobile' => 'required',
+            'dob' => 'required',
+            'state' => 'required',
+            'notes' => 'nullable|string',
             'consent' => 'accepted',
             'prescription' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
         ]);
@@ -27,12 +30,15 @@ class PrescriptionController extends Controller
         $uploadedFile = null;
 
         if ($request->hasFile('prescription')) {
-            $uploadedFile = $request->file('prescription')->store('prescriptions', 'public');
+            $uploadedFile = $request->file('prescription')->store(
+                'prescriptions',
+                'public'
+            );
         }
 
         Mail::send('emails.prescription', [
             'data' => $request->all(),
-            'uploadedFile' => $uploadedFile,
+            'file' => $uploadedFile,
         ], function ($message) use ($uploadedFile) {
 
             $message->to('admin@medileaf.com.au')
@@ -48,6 +54,11 @@ class PrescriptionController extends Controller
             }
         });
 
-        return back()->with('success', 'Prescription enquiry submitted successfully.');
+        return redirect()
+            ->back()
+            ->with(
+                'success',
+                'Your prescription enquiry has been submitted successfully. Our healthcare team will review it and contact you shortly.'
+            );
     }
 }

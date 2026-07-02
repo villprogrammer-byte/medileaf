@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Prescription\PrescriptionController;
+use App\Http\Controllers\Prescription\UploadPrescriptionController;
 
 Route::get('/', function () {
     return view('home');
@@ -27,13 +28,21 @@ Route::view('/checkout', 'shop.checkout')->name('checkout');
 Route::post('/contact-send', [ContactController::class, 'send'])
     ->name('contact.send');
 
-// Prescription
+// Prescription Enquiry
 Route::get('/prescription', [PrescriptionController::class, 'index'])
     ->name('prescription');
 
 Route::post('/prescription', [PrescriptionController::class, 'store'])
     ->name('prescription.store');
 
+// Upload Prescription
+Route::get('/upload-prescription', [UploadPrescriptionController::class, 'index'])
+    ->name('upload.prescription');
+
+Route::post('/upload-prescription', [UploadPrescriptionController::class, 'store'])
+    ->name('upload.prescription.store');
+
+// Dashboard
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

@@ -6099,9 +6099,9 @@ FOOTER
 }
 
 .prescription-info-card h2 {
-    font-size: clamp(32px, 4vw, 50px);
+    font-size: clamp(32px, 4vw, 48px);
     line-height: 1.08;
-    font-weight: 900;
+    font-weight: 600;
     letter-spacing: -1.5px;
     margin-bottom: 12px;
 }
@@ -6112,7 +6112,7 @@ FOOTER
 }
 
 .prescription-info-card h3 {
-    font-size: 26px;
+    font-size: 22px;
     color: #566077;
     margin-bottom: 20px;
     font-weight: 500;
@@ -6375,7 +6375,7 @@ FOOTER
 }
 
 .upload-box {
-    height: 78px;
+    height: 185px;
     border: 1.5px dashed #8ca0bd;
     border-radius: 13px;
     text-align: center;
@@ -6451,7 +6451,7 @@ FOOTER
     text-align: center;
     color: #7a8498;
     font-size: 13px;
-    margin-top: 6px;
+    margin-top: 15px;
 }
 
 .secure-note i {
@@ -6462,4 +6462,128 @@ FOOTER
 #fileName {
     color: #28a745;
     font-weight: 600;
+}
+
+.feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 28px;
+}
+
+.feature-icon {
+    min-width: 54px;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: #eaf6ef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #00834f;
+    font-size: 22px;
+}
+
+.feature-item h4 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #3f4b63;
+    margin-bottom: 6px;
+}
+
+.feature-item p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #3f4b63;
+    margin: 0;
+}
+
+
+.choose-file-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 28px;
+    margin-top: 18px;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #00834f, #00a86b);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .35s ease;
+    box-shadow: 0 10px 25px rgba(0, 131, 79, .25);
+}
+
+.choose-file-btn i {
+    font-size: 16px;
+    transition: .35s;
+}
+
+.choose-file-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 35px rgba(0, 131, 79, .35);
+    background: linear-gradient(135deg, rgb(49, 160, 80), rgb(166, 206, 57));
+}
+
+.choose-file-btn:hover i {
+    transform: rotate(-15deg) scale(1.1);
+}
+
+.choose-file-btn:active {
+    transform: scale(.97);
+}
+
+.choose-file-btn:focus {
+    outline: none;
+}
+
+.prescription-tabs {
+    display: flex;
+    width: 100%;
+    margin-bottom: 28px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, .08);
+}
+
+.tab-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 18px 22px;
+    background: #fff;
+    color: #1f2937;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    transition: .3s;
+}
+
+.tab-btn i {
+    font-size: 18px;
+    width: 22px;
+    text-align: center;
+}
+
+.tab-btn:first-child {
+    border-right: 1px solid #ececec;
+}
+
+.tab-btn.active {
+    background: #007A43;
+    color: #fff;
+}
+
+.tab-btn:hover:not(.active) {
+    background: #f8f9fa;
+}
+
+.tab-btn:hover i {
+    transform: translateY(-2px);
 }

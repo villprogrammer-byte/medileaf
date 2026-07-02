@@ -2005,7 +2005,9 @@
 
     }
 
-    =====================================prescription======================================@media (max-width: 991px) {
+    /* =====================================prescription====================================== */
+
+    @media (max-width: 991px) {
         .prescription-info-card h2 {
             font-size: 34px;
         }
@@ -2014,6 +2016,39 @@
         .prescription-info-card {
             padding: 30px;
         }
+    }
+
+    @media (max-width: 767px) {
+
+        .feature-item {
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .feature-icon {
+            min-width: 48px;
+            width: 48px;
+            height: 48px;
+            font-size: 19px;
+        }
+
+        .feature-item h4 {
+            font-size: 16px;
+        }
+
+        .feature-item p {
+            font-size: 13.5px;
+        }
+
+        .prescription-tabs {
+            flex-direction: column;
+        }
+
+        .tab-btn:first-child {
+            border-right: none;
+            border-bottom: 1px solid #ececec;
+        }
+
     }
 
     @media (max-width: 575px) {
@@ -2043,5 +2078,23 @@
 
         .prescription-info-card h1 {
             font-size: 38px;
+        }
+
+        .feature-item {
+            align-items: flex-start;
+        }
+
+        .choose-file-btn {
+            width: 100%;
+            padding: 14px 20px;
+        }
+
+        .prescription-tabs {
+            flex-direction: column;
+        }
+
+        .tab-btn:first-child {
+            border-right: none;
+            border-bottom: 1px solid #e5e7eb;
         }
     }
