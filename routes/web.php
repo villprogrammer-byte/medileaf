@@ -42,9 +42,15 @@ Route::get('/upload-prescription', [UploadPrescriptionController::class, 'index'
 Route::post('/upload-prescription', [UploadPrescriptionController::class, 'store'])
     ->name('upload.prescription.store');
 
-// Dashboard
+
+// Admin Login Page
+Route::get('/admin/login', function () {
+    return view('admin.auth.login');
+})->name('admin.login');
+
+// Admin Dashboard
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

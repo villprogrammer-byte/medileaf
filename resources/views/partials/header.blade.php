@@ -15,31 +15,34 @@
                 <a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">Contact</a>
 
                 <div class="ml-auth-switch ml-mobile-switch">
-                    <button type="button" class="ml-auth-tab active" data-target="user">
-                        <i class="bi bi-person"></i>
-                        User Login
-                    </button>
 
-                    <button type="button" class="ml-auth-tab" data-target="admin">
+                    <a href="{{ route('login') }}" class="ml-auth-tab active" data-target="user">
+                        <i class="bi bi-person"></i>
+                        <span>User Login</span>
+                    </a>
+
+                    <a href="{{ route('admin.login') }}" class="ml-auth-tab" data-target="admin">
                         <i class="bi bi-person-bounding-box"></i>
-                        Admin Login
-                    </button>
+                        <span>Admin Login</span>
+                    </a>
 
                     <span class="ml-auth-switch-bg"></span>
                 </div>
             </nav>
 
             <div class="ml-new-actions">
+                <!-- Desktop Switch -->
                 <div class="ml-auth-switch ml-desktop-switch">
-                    <button type="button" class="ml-auth-tab active" data-target="user">
-                        <i class="bi bi-person"></i>
-                        User Login
-                    </button>
 
-                    <button type="button" class="ml-auth-tab" data-target="admin">
+                    <a href="{{ route('login') }}" class="ml-auth-tab active" data-target="user">
+                        <i class="bi bi-person"></i>
+                        <span>User Login</span>
+                    </a>
+
+                    <a href="{{ route('admin.login') }}" class="ml-auth-tab" data-target="admin">
                         <i class="bi bi-person-bounding-box"></i>
-                        Admin Login
-                    </button>
+                        <span>Admin Login</span>
+                    </a>
 
                     <span class="ml-auth-switch-bg"></span>
                 </div>

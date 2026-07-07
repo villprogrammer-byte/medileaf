@@ -1,6 +1,5 @@
     /* ====================swith button=========================================================================== */
 
-    /* tablet desktop header compact */
     @media(max-width:1199px) {
         .ml-desktop-switch {
             width: 260px;
@@ -12,19 +11,8 @@
         }
     }
 
-    /* mobile: desktop switch hide, nav ke andar mobile switch show */
+    /* 991 */
     @media(max-width:991px) {
-        .ml-desktop-switch {
-            display: none;
-        }
-
-        .ml-mobile-switch {
-            display: flex;
-            width: 100%;
-            max-width: 290px;
-            margin: 22px auto 0;
-        }
-
         .ml-desktop-switch {
             display: none !important;
         }
@@ -37,7 +25,7 @@
         }
     }
 
-    /* small mobile compact */
+    /* 575 */
     @media(max-width:575px) {
         .ml-mobile-switch {
             max-width: 260px;
@@ -51,7 +39,7 @@
             height: 38px;
         }
 
-        .ml-mobile-switch.vendor-active .ml-auth-switch-bg {
+        .ml-mobile-switch.admin-active .ml-auth-switch-bg {
             left: calc(50%);
         }
 
@@ -63,28 +51,6 @@
 
         .ml-mobile-switch .ml-auth-tab i {
             font-size: 13px;
-        }
-
-        .ml-auth-switch {
-            max-width: 260px;
-        }
-
-        .ml-auth-tab {
-
-            height: 40px;
-            font-size: 13px;
-            gap: 5px;
-
-        }
-
-        .ml-auth-tab i {
-            font-size: 14px;
-        }
-
-        .ml-auth-switch-bg {
-
-            height: 40px;
-
         }
     }
 
@@ -2097,4 +2063,338 @@
             border-right: none;
             border-bottom: 1px solid #e5e7eb;
         }
+    }
+
+    /* =============================LOGIN=============================================== */
+
+
+    /* ======================================
+Large Laptop (1400px)
+====================================== */
+    @media (max-width:1400px) {
+
+        .ml-login-container {
+            max-width: 1100px;
+        }
+
+        .ml-login-left {
+            padding: 40px;
+        }
+
+        .ml-login-right {
+            padding: 35px;
+        }
+
+    }
+
+
+    /* ======================================
+Laptop (1200px)
+====================================== */
+    @media (max-width:1199px) {
+
+        .ml-login-container {
+            grid-template-columns: 420px 1fr;
+        }
+
+        .ml-login-left {
+            padding: 35px;
+        }
+
+        .ml-login-card {
+            padding: 35px;
+        }
+
+        .ml-login-content h1 {
+            font-size: 28px;
+        }
+
+        .ml-login-products img {
+            max-width: 300px;
+        }
+
+    }
+
+
+    /* ======================================
+Tablet Landscape
+====================================== */
+    @media (max-width:991px) {
+
+        .ml-login-page {
+            padding: 40px 20px;
+        }
+
+        .ml-login-container {
+            grid-template-columns: 1fr;
+            max-width: 700px;
+        }
+
+        .ml-login-left {
+            text-align: center;
+            padding: 45px 35px;
+        }
+
+        .ml-login-content p {
+            max-width: 100%;
+        }
+
+        .ml-login-feature {
+            justify-content: center;
+            text-align: left;
+        }
+
+        .ml-login-products {
+            margin-top: 25px;
+        }
+
+        .ml-login-products img {
+            max-width: 260px;
+        }
+
+        .ml-login-right {
+            padding: 30px;
+        }
+
+    }
+
+
+    /* ======================================
+Tablet Portrait
+====================================== */
+    @media (max-width:767px) {
+
+        .ml-login-page {
+            padding: 20px 15px;
+        }
+
+        .ml-login-container {
+            border-radius: 22px;
+        }
+
+        .ml-login-left {
+            padding: 30px 25px;
+        }
+
+        .ml-login-logo img {
+            width: 150px;
+        }
+
+        .ml-login-content {
+            margin-top: 20px;
+        }
+
+        .ml-login-content h1 {
+            font-size: 26px;
+        }
+
+        .ml-login-content p {
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .ml-login-feature {
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .ml-login-feature .icon {
+            width: 45px;
+            height: 45px;
+            font-size: 22px;
+        }
+
+        .ml-login-feature h4 {
+            font-size: 17px;
+        }
+
+        .ml-login-feature p {
+            font-size: 14px;
+        }
+
+        .ml-login-products img {
+            max-width: 220px;
+        }
+
+        .ml-login-right {
+            padding: 20px;
+        }
+
+        .ml-login-card {
+            padding: 28px 22px;
+            border-radius: 20px;
+        }
+
+        .ml-user-icon .circle {
+            width: 60px;
+            height: 60px;
+            font-size: 34px;
+        }
+
+        .ml-login-card h2 {
+            font-size: 24px;
+        }
+
+        .ml-login-card>p {
+            font-size: 15px;
+            margin-bottom: 25px;
+        }
+
+        .ml-input {
+            height: 50px;
+        }
+
+        .ml-login-options {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+    }
+
+
+    /* ======================================
+Mobile
+====================================== */
+    @media (max-width:575px) {
+
+        .ml-login-page {
+            padding: 15px;
+        }
+
+        .ml-login-container {
+            border-radius: 18px;
+        }
+
+        .ml-login-left {
+            padding: 25px 18px;
+        }
+
+        .ml-login-logo img {
+            width: 140px;
+        }
+
+        .ml-login-content h1 {
+            font-size: 24px;
+        }
+
+        .ml-login-content p {
+            font-size: 14px;
+        }
+
+        .ml-login-feature {
+            gap: 12px;
+        }
+
+        .ml-login-feature .icon {
+            width: 42px;
+            height: 42px;
+            font-size: 20px;
+        }
+
+        .ml-login-feature h4 {
+            font-size: 16px;
+        }
+
+        .ml-login-feature p {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .ml-login-products img {
+            max-width: 180px;
+        }
+
+        .ml-login-right {
+            padding: 15px;
+        }
+
+        .ml-login-card {
+            padding: 22px 18px;
+        }
+
+        .ml-user-icon .circle {
+            width: 55px;
+            height: 55px;
+            font-size: 30px;
+        }
+
+        .ml-login-card h2 {
+            font-size: 22px;
+        }
+
+        .ml-form-group {
+            margin-bottom: 18px;
+        }
+
+        .ml-form-group label {
+            font-size: 14px;
+        }
+
+        .ml-input {
+            height: 48px;
+            padding: 0 15px;
+        }
+
+        .ml-input input {
+            font-size: 14px;
+        }
+
+        .ml-login-btn {
+            height: 48px;
+            font-size: 15px;
+        }
+
+        .ml-secure-access {
+            gap: 8px;
+        }
+
+        .ml-secure-text {
+            font-size: 13px;
+        }
+
+        .ml-login-footer {
+            font-size: 13px;
+        }
+
+    }
+
+
+    /* ======================================
+Extra Small Mobile
+====================================== */
+    @media (max-width:380px) {
+
+        .ml-login-content h1 {
+            font-size: 22px;
+        }
+
+        .ml-login-card {
+            padding: 18px 15px;
+        }
+
+        .ml-login-card h2 {
+            font-size: 20px;
+        }
+
+        .ml-login-card>p {
+            font-size: 14px;
+        }
+
+        .ml-input {
+            height: 46px;
+        }
+
+        .ml-login-btn {
+            height: 46px;
+            font-size: 14px;
+        }
+
+    }
+
+    .ml-auth-tab {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }

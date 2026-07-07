@@ -133,39 +133,53 @@ h2 {
     z-index: 2;
     flex: 1;
     height: 42px;
-    border: none;
-    outline: none;
-    background: transparent;
-    border-radius: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
+    border-radius: 50px;
+    background: transparent;
+    border: none;
+    outline: none;
+    text-decoration: none;
     cursor: pointer;
     font-size: 14px;
     font-weight: 700;
     color: #173d24;
-    transition: .3s ease;
     white-space: nowrap;
+    transition: .3s ease;
 }
 
-.ml-auth-tab i {
-    font-size: 15px;
+.ml-auth-tab:link,
+.ml-auth-tab:visited {
+    color: #173d24;
+    text-decoration: none;
 }
 
-.ml-auth-tab.active {
+.ml-auth-tab.active,
+.ml-auth-tab.active:link,
+.ml-auth-tab.active:visited {
     color: #fff;
 }
 
 .ml-auth-tab:hover {
     color: #31a050;
+    text-decoration: none;
 }
 
 .ml-auth-tab.active:hover {
     color: #fff;
 }
 
-/* desktop/mobile visibility */
+.ml-auth-tab i {
+    font-size: 15px;
+    line-height: 1;
+}
+
+.ml-auth-tab span {
+    line-height: 1;
+}
+
 .ml-desktop-switch {
     display: flex;
 }
@@ -173,7 +187,6 @@ h2 {
 .ml-mobile-switch {
     display: none;
 }
-
 
 /* ==============================================================================================
    MEDILEAF MODERN HEADER
@@ -3723,6 +3736,170 @@ h2 {
     transform: rotate(-24deg);
 }
 
+.ml-product-journey {
+    position: relative;
+    background: radial-gradient(circle at top left, #e5f7df, #f8fbf6 45%, #ffffff);
+    padding: 110px 0;
+    overflow: hidden;
+}
+
+.ml-product-journey::before {
+    content: "";
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    right: -140px;
+    top: 120px;
+    background: rgba(49, 160, 80, 0.12);
+    border-radius: 50%;
+    filter: blur(20px);
+}
+
+.ml-product-journey-head {
+    max-width: 760px;
+    margin: 0 auto 80px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.ml-product-journey-head span,
+.ml-product-journey-content span {
+    color: #31a050;
+    font-weight: 800;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.ml-product-journey-head h2 {
+    font-size: clamp(36px, 5vw, 62px);
+    font-weight: 800;
+    color: #173d24;
+    margin: 12px 0 18px;
+}
+
+.ml-product-journey-head p {
+    font-size: 17px;
+    line-height: 1.8;
+    color: #4b5563;
+}
+
+.ml-product-journey-wrap {
+    position: relative;
+    display: grid;
+    gap: 80px;
+}
+
+.ml-product-journey-wrap::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 20px;
+    bottom: 20px;
+    width: 3px;
+    background: linear-gradient(#31a050, #a6ce39, #31a050);
+    transform: translateX(-50%);
+    border-radius: 50px;
+    opacity: 0.35;
+}
+
+.ml-product-journey-card {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 70px;
+    align-items: center;
+}
+
+.ml-product-journey-card.reverse .ml-product-journey-img {
+    order: 2;
+}
+
+.ml-product-journey-card.reverse .ml-product-journey-content {
+    order: 1;
+}
+
+.ml-product-journey-img {
+    position: relative;
+    border-radius: 34px;
+    overflow: hidden;
+    transform: rotate(-2deg);
+    box-shadow: 0 24px 60px rgba(31, 45, 34, 0.14);
+}
+
+.ml-product-journey-card.reverse .ml-product-journey-img {
+    transform: rotate(2deg);
+}
+
+.ml-product-journey-img img {
+    width: 100%;
+    height: 430px;
+    object-fit: cover;
+    display: block;
+    transition: 0.45s ease;
+}
+
+.ml-product-journey-card:hover .ml-product-journey-img img {
+    transform: scale(1.08);
+}
+
+.ml-product-journey-content {
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(49, 160, 80, 0.14);
+    border-radius: 34px;
+    padding: 44px;
+    box-shadow: 0 20px 50px rgba(31, 45, 34, 0.08);
+    transition: 0.35s ease;
+}
+
+.ml-product-journey-card:hover .ml-product-journey-content {
+    transform: translateY(-8px);
+}
+
+.ml-product-journey-content strong {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #31a050;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 24px;
+    box-shadow: 0 12px 28px rgba(49, 160, 80, 0.28);
+}
+
+.ml-product-journey-content h3 {
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.15;
+    color: #173d24;
+    font-weight: 800;
+    margin: 12px 0 18px;
+}
+
+.ml-product-journey-content p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #4b5563;
+    margin-bottom: 24px;
+}
+
+.ml-product-journey-content a {
+    display: inline-flex;
+    min-height: 52px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 30px;
+    border-radius: 50px;
+    background: #31a050;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 800;
+}
 
 /* ========================= */
 /* MEDILEAF PHARMACY SHOWCASE */
@@ -5556,512 +5733,6 @@ h2 {
     font-size: 14px;
 }
 
-/* =================================login======================================== */
-
-.ml-login-page {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 70px 20px;
-    background: #f4f8f2;
-    overflow: hidden;
-    position: relative;
-}
-
-.ml-login-page::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: url("../img/login-page-bg.webp") center center/cover no-repeat;
-    opacity: .10;
-    pointer-events: none;
-}
-
-.ml-login-container {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    max-width: 1150px;
-    background: #fff;
-    border-radius: 36px;
-    overflow: hidden;
-    display: grid;
-    grid-template-columns: 480px 1fr;
-    box-shadow:
-        0 25px 80px rgba(19, 44, 25, .10),
-        0 5px 20px rgba(0, 0, 0, .04);
-}
-
-/*==============================
-LEFT
-==============================*/
-
-.ml-login-left {
-    position: relative;
-    padding: 45px;
-    background:
-        linear-gradient(180deg, #f8fff9 0%, #edf9ef 100%);
-}
-
-.ml-login-left::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: url("../img/login-page-bg.webp") center center / cover no-repeat;
-}
-
-.ml-login-logo {
-    position: relative;
-    z-index: 2;
-
-}
-
-.ml-login-logo img {
-    width: 180px;
-
-}
-
-.ml-login-content {
-    position: relative;
-    z-index: 2;
-    margin-top: 35px;
-
-}
-
-.ml-login-content h1 {
-    font-size: 30px;
-    line-height: 1.08;
-    font-weight: 800;
-    color: #13281b;
-    margin: 0;
-
-}
-
-.ml-login-content h1 span {
-    color: #31a050;
-
-}
-
-.ml-login-content p {
-    max-width: 360px;
-    font-size: 16px;
-    line-height: 1.9;
-    color: #5b6761;
-
-}
-
-/*==============================
-FEATURES
-==============================*/
-
-.ml-login-features {
-    position: relative;
-    z-index: 2;
-    margin-top: 20px;
-
-}
-
-.ml-login-feature {
-    display: flex;
-    gap: 18px;
-    align-items: flex-start;
-    margin-bottom: 10px;
-
-}
-
-.ml-login-feature .icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: #31a050;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    flex-shrink: 0;
-    box-shadow: 0 10px 24px rgba(49, 160, 80, .25);
-
-}
-
-.ml-login-feature h4 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 700;
-    color: #173d24;
-
-}
-
-.ml-login-feature p {
-    margin-top: 5px;
-    color: #5c6962;
-    line-height: 1.7;
-
-}
-
-/*==============================
-PRODUCT IMAGE
-==============================*/
-
-.ml-login-products {
-    position: relative;
-    z-index: 2;
-    margin-top: 45px;
-    text-align: center;
-
-}
-
-.ml-login-products img {
-    width: 100%;
-    max-width: 360px;
-    object-fit: contain;
-
-}
-
-/*======================================
-RIGHT PANEL
-======================================*/
-
-.ml-login-right {
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.ml-login-card {
-    background: #fff;
-    border-radius: 28px;
-    padding: 45px;
-    border: 1px solid #edf2ee;
-    box-shadow:
-        0 15px 45px rgba(26, 47, 34, .08);
-}
-
-.ml-user-icon {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.ml-user-icon .circle {
-    width: 70px;
-    height: 70px;
-    margin: auto;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #31a050, #8ac641);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-size: 42px;
-    box-shadow: 0 12px 30px rgba(49, 160, 80, .25);
-}
-
-.ml-login-card h2 {
-    text-align: center;
-    font-size: 24px;
-    font-weight: 800;
-    color: #173d24;
-    margin-bottom: 10px;
-}
-
-.ml-login-card>p {
-    text-align: center;
-    color: #6b726f;
-    margin-bottom: 35px;
-    font-size: 16px;
-}
-
-/*======================================
-FORM
-======================================*/
-
-.ml-form-group {
-    margin-bottom: 20px;
-}
-
-.ml-form-group label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: 700;
-    color: #173d24;
-    font-size: 15px;
-}
-
-.ml-input {
-    height: 45px;
-    border: 1px solid #dfe8e1;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 0 18px;
-    transition: .3s;
-    background: #fff;
-}
-
-.ml-input:focus-within {
-    border-color: #31a050;
-    box-shadow: 0 0 0 4px rgba(49, 160, 80, .08);
-}
-
-.ml-input i {
-    color: #7a8680;
-    font-size: 18px;
-}
-
-.ml-input input {
-    width: 100%;
-    border: 0;
-    outline: 0;
-    font-size: 15px;
-    background: none;
-}
-
-.toggle-password {
-    border: 0;
-    background: none;
-    color: #7a8680;
-}
-
-/*======================================
-OPTIONS
-======================================*/
-
-.ml-login-options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 28px;
-}
-
-.ml-login-options label {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    font-size: 14px;
-    margin: 0;
-}
-
-.ml-login-options a {
-    color: #31a050;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-/*======================================
-LOGIN BUTTON
-======================================*/
-
-.ml-login-btn {
-    width: 100%;
-    height: 45px;
-    border: 0;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #31a050, #8ac641);
-    color: #fff;
-    font-size: 17px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    transition: .35s;
-}
-
-.ml-login-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 18px 35px rgba(49, 160, 80, .25);
-}
-
-/*======================================
-DIVIDER
-======================================*/
-
-.ml-divider {
-    display: flex;
-    align-items: center;
-    margin: 20px 0;
-}
-
-.ml-divider::before,
-.ml-divider::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: #e5ece6;
-}
-
-.ml-divider span {
-    margin: 0 15px;
-    color: #7b8882;
-    font-size: 14px;
-}
-
-/*======================================
-SOCIAL LOGIN
-======================================*/
-
-.ml-social-login {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-}
-
-.ml-social-login button {
-    height: 54px;
-    border-radius: 15px;
-    border: 1px solid #e5ece6;
-    background: #fff;
-    font-weight: 600;
-    transition: .3s;
-}
-
-.ml-social-login button:hover {
-    background: #31a050;
-    color: #fff;
-}
-
-/*======================================
-REGISTER
-======================================*/
-
-.ml-register {
-    text-align: center;
-    margin-top: 30px;
-    color: #6c7772;
-}
-
-.ml-register a {
-    color: #31a050;
-    font-weight: 700;
-    text-decoration: none;
-}
-
-/*======================================
-BOTTOM FEATURES
-======================================*/
-
-.ml-bottom-features {
-    margin-top: 35px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-}
-
-.ml-bottom-features div {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: #f8fbf8;
-    padding: 18px;
-    border-radius: 18px;
-}
-
-.ml-bottom-features i {
-    font-size: 28px;
-    color: #31a050;
-}
-
-.ml-bottom-features strong {
-    display: block;
-    font-size: 14px;
-    color: #173d24;
-}
-
-.ml-bottom-features span {
-    display: block;
-    font-size: 13px;
-    color: #68726d;
-}
-
-/*======================================
-FOOTER
-======================================*/
-
-.ml-login-footer {
-    text-align: center;
-    margin-top: 28px;
-    color: #74807b;
-    font-size: 14px;
-}
-
-
-.ml-login-card {
-
-    animation: cardUp .8s ease;
-}
-
-.ml-login-left {
-
-    animation: leftFade .9s ease;
-}
-
-@keyframes cardUp {
-
-    from {
-
-        opacity: 0;
-
-        transform: translateY(40px);
-
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform: translateY(0);
-    }
-}
-
-@keyframes leftFade {
-
-    from {
-        opacity: 0;
-        transform: translateX(-40px);
-    }
-
-    to {
-        opacity: 1;
-
-        transform: translateX(0);
-
-    }
-
-}
-
-.ml-login-feature {
-    transition: .35s;
-
-}
-
-.ml-login-feature:hover {
-    transform: translateX(8px);
-
-}
-
-.ml-login-btn {
-    transition: .35s;
-
-}
-
-.ml-login-btn:hover {
-    transform: translateY(-4px);
-}
-
-.ml-social-login button {
-    transition: .35s;
-}
-
-.ml-social-login button:hover {
-
-    transform: translateY(-4px);
-
-}
-
-
 /* =====================================prescription====================================== */
 
 .prescription-page {
@@ -6586,4 +6257,548 @@ FOOTER
 
 .tab-btn:hover i {
     transform: translateY(-2px);
+}
+
+/* =================================login======================================== */
+
+.ml-login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 70px 20px;
+    background: #f4f8f2;
+    overflow: hidden;
+    position: relative;
+}
+
+.ml-login-page::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("../img/login-page-bg.webp") center center/cover no-repeat;
+    opacity: .10;
+    pointer-events: none;
+}
+
+.ml-login-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1150px;
+    background: #fff;
+    border-radius: 36px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 480px 1fr;
+    box-shadow:
+        0 25px 80px rgba(19, 44, 25, .10),
+        0 5px 20px rgba(0, 0, 0, .04);
+}
+
+/*==============================
+LEFT
+==============================*/
+
+.ml-login-left {
+    position: relative;
+    padding: 45px;
+    background:
+        linear-gradient(180deg, #f8fff9 0%, #edf9ef 100%);
+}
+
+.ml-login-left::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    /* background: url("../img/login-page-bg.webp") center center / cover no-repeat; */
+}
+
+.ml-login-logo {
+    position: relative;
+    z-index: 2;
+
+}
+
+.ml-login-logo img {
+    width: 180px;
+
+}
+
+.ml-login-content {
+    position: relative;
+    z-index: 2;
+    margin-top: 35px;
+
+}
+
+.ml-login-content h1 {
+    font-size: 30px;
+    line-height: 1.08;
+    font-weight: 800;
+    color: #13281b;
+    margin: 0;
+
+}
+
+.ml-login-content h1 span {
+    color: #31a050;
+
+}
+
+.ml-login-content p {
+    max-width: 360px;
+    font-size: 16px;
+    line-height: 1.9;
+    color: #5b6761;
+    padding-top: 14px;
+}
+
+/*==============================
+FEATURES
+==============================*/
+
+.ml-login-features {
+    position: relative;
+    z-index: 2;
+    margin-top: 20px;
+
+}
+
+.ml-login-feature {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+
+}
+
+.ml-login-feature .icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #31a050;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+    box-shadow: 0 10px 24px rgba(49, 160, 80, .25);
+
+}
+
+.ml-login-feature h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #173d24;
+
+}
+
+.ml-login-feature p {
+    margin-top: 5px;
+    color: #5c6962;
+    line-height: 1.7;
+
+}
+
+/*==============================
+PRODUCT IMAGE
+==============================*/
+
+.ml-login-products {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+
+}
+
+.ml-login-products img {
+    width: 100%;
+    object-fit: contain;
+
+}
+
+/*======================================
+RIGHT PANEL
+======================================*/
+
+.ml-login-right {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.ml-login-card {
+    background: #fff;
+    border-radius: 28px;
+    padding: 45px;
+    border: 1px solid #edf2ee;
+    box-shadow:
+        0 15px 45px rgba(26, 47, 34, .08);
+}
+
+.ml-user-icon {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.ml-user-icon .circle {
+    width: 70px;
+    height: 70px;
+    margin: auto;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #31a050, #8ac641);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 42px;
+    box-shadow: 0 12px 30px rgba(49, 160, 80, .25);
+}
+
+.ml-login-card h2 {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 800;
+    color: #173d24;
+    margin-bottom: 10px;
+}
+
+.ml-login-card>p {
+    text-align: center;
+    color: #6b726f;
+    margin-bottom: 35px;
+    font-size: 16px;
+}
+
+/*======================================
+FORM
+======================================*/
+
+.ml-form-group {
+    margin-bottom: 20px;
+}
+
+.ml-form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: #173d24;
+    font-size: 15px;
+}
+
+.ml-input {
+    height: 45px;
+    border: 1px solid #dfe8e1;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 18px;
+    transition: .3s;
+    background: #fff;
+}
+
+.ml-input:focus-within {
+    border-color: #31a050;
+    box-shadow: 0 0 0 4px rgba(49, 160, 80, .08);
+}
+
+.ml-input i {
+    color: #7a8680;
+    font-size: 18px;
+}
+
+.ml-input input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    font-size: 15px;
+    background: none;
+}
+
+.toggle-password {
+    border: 0;
+    background: none;
+    color: #7a8680;
+}
+
+/*======================================
+OPTIONS
+======================================*/
+
+.ml-login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.ml-login-options label {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 14px;
+    margin: 0;
+}
+
+.ml-login-options a {
+    color: #31a050;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/*======================================
+LOGIN BUTTON
+======================================*/
+
+.ml-login-btn {
+    width: 100%;
+    height: 45px;
+    border: 0;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #31a050, #8ac641);
+    color: #fff;
+    font-size: 17px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: .35s;
+}
+
+.ml-login-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 35px rgba(49, 160, 80, .25);
+}
+
+/*======================================
+DIVIDER
+======================================*/
+
+.ml-divider {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.ml-divider::before,
+.ml-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #e5ece6;
+}
+
+.ml-divider span {
+    margin: 0 15px;
+    color: #7b8882;
+    font-size: 14px;
+}
+
+/*======================================
+SOCIAL LOGIN
+======================================*/
+
+.ml-social-login {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.ml-social-login button {
+    height: 54px;
+    border-radius: 15px;
+    border: 1px solid #e5ece6;
+    background: #fff;
+    font-weight: 600;
+    transition: .3s;
+}
+
+.ml-social-login button:hover {
+    background: #31a050;
+    color: #fff;
+}
+
+/*======================================
+REGISTER
+======================================*/
+
+.ml-register {
+    text-align: center;
+    margin-top: 30px;
+    color: #6c7772;
+}
+
+.ml-register a {
+    color: #31a050;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+/*======================================
+BOTTOM FEATURES
+======================================*/
+
+.ml-bottom-features {
+    margin-top: 35px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.ml-bottom-features div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f8fbf8;
+    padding: 18px;
+    border-radius: 18px;
+}
+
+.ml-bottom-features i {
+    font-size: 28px;
+    color: #31a050;
+}
+
+.ml-bottom-features strong {
+    display: block;
+    font-size: 14px;
+    color: #173d24;
+}
+
+.ml-bottom-features span {
+    display: block;
+    font-size: 13px;
+    color: #68726d;
+}
+
+.ml-secure-access {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.ml-secure-access .ml-line {
+    flex: 1;
+    height: 1px;
+    background: #e8e8e8;
+}
+
+.ml-secure-text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #6b7280;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.ml-secure-text i {
+    color: #5dbb3f;
+    font-size: 18px;
+}
+
+/*======================================
+FOOTER
+======================================*/
+
+.ml-login-footer {
+    text-align: center;
+    margin-top: 28px;
+    color: #74807b;
+    font-size: 14px;
+}
+
+
+.ml-login-card {
+
+    animation: cardUp .8s ease;
+}
+
+.ml-login-left {
+
+    animation: leftFade .9s ease;
+}
+
+@keyframes cardUp {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(40px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+}
+
+@keyframes leftFade {
+
+    from {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: translateX(0);
+
+    }
+
+}
+
+.ml-login-feature {
+    transition: .35s;
+
+}
+
+.ml-login-feature:hover {
+    transform: translateX(8px);
+
+}
+
+.ml-login-btn {
+    transition: .35s;
+
+}
+
+.ml-login-btn:hover {
+    transform: translateY(-4px);
+}
+
+.ml-social-login button {
+    transition: .35s;
+}
+
+.ml-social-login button:hover {
+
+    transform: translateY(-4px);
+
+}
+
+
+.ml-auth-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    text-decoration: none;
+    cursor: pointer;
 }
