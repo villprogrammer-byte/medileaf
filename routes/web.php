@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Prescription\PrescriptionController;
 use App\Http\Controllers\Prescription\UploadPrescriptionController;
+use App\Http\Controllers\Admin\Auth\AdminLoginController;
 
 Route::get('/', function () {
     return view('home');
@@ -43,15 +44,53 @@ Route::post('/upload-prescription', [UploadPrescriptionController::class, 'store
     ->name('upload.prescription.store');
 
 
-// Admin Login Page
-Route::get('/admin/login', function () {
-    return view('admin.auth.login');
-})->name('admin.login');
+// Admin Login
+Route::get('/admin/login', [AdminLoginController::class, 'showLoginForm'])
+    ->name('admin.login');
 
-// Admin Dashboard
-Route::get('/dashboard', function () {
-    return view('admin.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::post('/admin/login', [AdminLoginController::class, 'login'])
+    ->name('admin.login.submit');
+
+Route::post('/admin/logout', [AdminLoginController::class, 'logout'])
+    ->name('admin.logout');
+
+// =====================================
+// Admin Routes
+// =====================================
+
+Route::prefix('admin')
+    ->middleware(['auth', 'verified'])
+    ->name('admin.')
+    ->group(function () {
+
+        Route::get('/dashboard', function () {
+            return view('admin.dashboard');
+        })->name('dashboard');
+
+        // Products
+        Route::get('/products', function () {
+            return view('admin.products.index');
+        })->name('products.index');
+
+        Route::get('/products/create', function () {
+            return view('admin.products.create');
+        })->name('products.create');
+
+        // Orders
+        Route::get('/orders/pending', function () {
+            return view('admin.orders.pending');
+        })->name('orders.pending');
+
+        Route::get('/orders/completed', function () {
+            return view('admin.orders.completed');
+        })->name('orders.completed');
+
+        // Settings
+        Route::get('/settings', function () {
+            return view('admin.settings');
+        })->name('settings');
+
+    });
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

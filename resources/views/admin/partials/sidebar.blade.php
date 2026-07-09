@@ -4,7 +4,7 @@
     <div class="ml-admin-logo">
 
         <a href="{{ route('admin.dashboard') }}">
-            <img src="{{ asset('images/logo.png') }}" alt="MediLeaf">
+            <img src="{{ asset('img/medileaf-white-logo.webp') }}" alt="MediLeaf">
         </a>
 
     </div>
@@ -53,10 +53,14 @@
 
     <div class="ml-admin-sidebar-bottom">
 
-        <a href="#">
-            <i class="bi bi-box-arrow-right"></i>
-            <span>Logout</span>
-        </a>
+        <form method="POST" action="{{ route('admin.logout') }}">
+            @csrf
+
+            <button type="submit" class="ml-admin-logout-btn">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Logout</span>
+            </button>
+        </form>
 
     </div>
 

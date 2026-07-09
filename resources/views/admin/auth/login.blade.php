@@ -111,7 +111,7 @@
                         Sign to access your admin dashboard.
                     </p>
 
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('admin.login.submit') }}">
                         @csrf
 
                         <div class="ml-form-group">
