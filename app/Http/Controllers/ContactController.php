@@ -21,11 +21,21 @@ class ContactController extends Controller
         $data = $request->all();
 
         Mail::send('emails.contact', compact('data'), function ($mail) use ($data) {
-            $mail->to('admin@medileaf.com.au')
-                ->replyTo($data['email'], $data['first_name'] . ' ' . $data['last_name'])
-                ->subject('New Contact Enquiry - MediLeaf');
-        });
 
+            $mail->from(
+                'admin@medileaf.com.au',
+                $data['first_name'] . ' ' . $data['last_name']
+            );
+
+            $mail->to('admin@medileaf.com.au');
+
+            $mail->replyTo(
+                $data['email'],
+                $data['first_name'] . ' ' . $data['last_name']
+            );
+
+            $mail->subject('New Contact Enquiry');
+        });
         return back()->with('success', 'Your enquiry has been sent successfully.');
     }
 }

@@ -3255,6 +3255,23 @@ h2 {
     font-weight: 800;
     box-shadow: 0 18px 42px rgba(49, 160, 80, .28);
     transition: .35s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.medileaf-contact-submit-btn i {
+    font-size: 18px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+}
+
+.medileaf-contact-submit-btn i {
+    position: relative;
+    top: 1px; /* 0, 1px ya -1px try karein */
 }
 
 .medileaf-contact-submit-btn:hover {

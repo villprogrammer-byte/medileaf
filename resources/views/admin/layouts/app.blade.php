@@ -38,6 +38,21 @@
 
     </div>
 
+    @if(session('success'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thank You!',
+                    text: '{{ session("success") }}',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#31a050'
+                });
+            });
+        </script>
+    @endif
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 

@@ -583,3 +583,21 @@
         </div>
     </section>
 @endsection
+
+@push('scripts')
+    @if(session('success'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thank You!',
+                    text: '{{ session("success") }}',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#31a050'
+                });
+            });
+        </script>
+    @endif
+@endpush
