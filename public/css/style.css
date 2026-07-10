@@ -3271,7 +3271,8 @@ h2 {
 
 .medileaf-contact-submit-btn i {
     position: relative;
-    top: 1px; /* 0, 1px ya -1px try karein */
+    top: 1px;
+    /* 0, 1px ya -1px try karein */
 }
 
 .medileaf-contact-submit-btn:hover {
@@ -6303,13 +6304,12 @@ h2 {
     z-index: 2;
     width: 100%;
     max-width: 1150px;
-    background: #fff;
     border-radius: 36px;
     overflow: hidden;
     display: grid;
     grid-template-columns: 480px 1fr;
-    box-shadow:
-        0 25px 80px rgba(19, 44, 25, .10),
+    background: url('../img/dashboard-bg.webp') center center / cover no-repeat;
+    box-shadow: 0 25px 80px rgba(19, 44, 25, .10),
         0 5px 20px rgba(0, 0, 0, .04);
 }
 
@@ -6320,8 +6320,7 @@ LEFT
 .ml-login-left {
     position: relative;
     padding: 45px;
-    background:
-        linear-gradient(180deg, #f8fff9 0%, #edf9ef 100%);
+    background: #fff
 }
 
 .ml-login-left::before {
@@ -6818,4 +6817,83 @@ FOOTER
 
     text-decoration: none;
     cursor: pointer;
+}
+
+/* =============submitpopup========================== */
+
+.ml-success-popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+}
+
+.ml-success-popup-card {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    background: #fff;
+    border-radius: 18px;
+    padding: 35px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, .15);
+    animation: popupScale .3s ease;
+}
+
+.ml-popup-close {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.ml-popup-icon {
+    font-size: 60px;
+    color: #31a050;
+    margin-bottom: 15px;
+}
+
+.ml-success-popup-card h3 {
+    font-size: 28px;
+    margin-bottom: 12px;
+    color: #173d24;
+}
+
+.ml-success-popup-card p {
+    color: #666;
+    line-height: 1.7;
+    margin-bottom: 25px;
+}
+
+.ml-popup-btn {
+    border: none;
+    background: #31a050;
+    color: #fff;
+    padding: 12px 35px;
+    border-radius: 40px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.ml-popup-btn:hover {
+    background: #278543;
+}
+
+@keyframes popupScale {
+    from {
+        transform: scale(.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }

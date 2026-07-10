@@ -99,7 +99,7 @@
 
                     <div class="prescription-tabs">
 
-                        <a href="" class="tab-btn">
+                        <a href="prescription" class="tab-btn">
                             <i class="bi bi-clipboard2-pulse"></i>
                             <span>Need a Prescription?</span>
                         </a>
@@ -147,11 +147,13 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label>Date of Birth *</label>
+                                    <label>Date of Birth <span>*</span></label>
+
                                     <div class="input-wrap">
                                         <i class="fa-regular fa-calendar"></i>
-                                        <input type="text" name="dob" value="{{ old('dob') }}" placeholder="DD / MM / YYYY"
-                                            required>
+
+                                        <input type="text" class="dob-picker" name="dob" placeholder="DD / MM / YYYY"
+                                            autocomplete="off" required>
                                     </div>
                                 </div>
 
@@ -199,7 +201,7 @@
 
                                         <br>
                                         <button type="button" class="choose-file-btn">Choose File</button>
-                                        <div id="fileName" class="file-name"></div>
+                                        <div id="fileName" class="file-name pt-3"></div>
                                     </div>
                                 </div>
 
@@ -238,4 +240,27 @@
             </div>
         </div>
     </section>
+
+    @if(session('success'))
+        <div id="successPopup" class="ml-success-popup">
+            <div class="ml-success-popup-card">
+
+                <button type="button" class="ml-popup-close" onclick="closeSuccessPopup()">&times;</button>
+
+                <div class="ml-popup-icon">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+
+                <h3>Prescription Uploaded Successfully</h3>
+
+                <p>{{ session('success') }}</p>
+
+                <button type="button" class="ml-popup-btn" onclick="closeSuccessPopup()">
+                    Done
+                </button>
+
+            </div>
+        </div>
+    @endif
+
 @endsection

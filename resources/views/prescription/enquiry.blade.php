@@ -117,10 +117,13 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label>Date of Birth *</label>
+                                    <label>Date of Birth <span>*</span></label>
+
                                     <div class="input-wrap">
                                         <i class="fa-regular fa-calendar"></i>
-                                        <input type="text" name="dob" placeholder="DD / MM / YYYY" required>
+
+                                        <input type="text" class="dob-picker" name="dob" placeholder="DD / MM / YYYY"
+                                            autocomplete="off" required>
                                     </div>
                                 </div>
 
@@ -151,21 +154,21 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label>What do you need a prescription for? *</label>
-                                    <div class="option-box checkbox-options">
-                                        <label><input type="checkbox" name="prescription_for[]" value="Chronic Pain">
-                                            Chronic Pain</label>
+                                    <label>What do you need a prescription for? <span>*</span></label>
 
-                                        <label><input type="checkbox" name="prescription_for[]" value="Anxiety">
-                                            Anxiety</label>
+                                    <div class="input-wrap">
+                                        <i class="fa-solid fa-notes-medical"></i>
 
-                                        <label><input type="checkbox" name="prescription_for[]" value="Sleep"> Sleep</label>
-
-                                        <label><input type="checkbox" name="prescription_for[]" value="Other"> Other</label>
+                                        <select name="prescription_for" required>
+                                            <option value="">Select Prescription Type</option>
+                                            <option value="Chronic Pain">Chronic Pain</option>
+                                            <option value="Anxiety">Anxiety</option>
+                                            <option value="Sleep">Sleep</option>
+                                            <option value="Other">Other</option>
+                                        </select>
                                     </div>
                                 </div>
-
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <label>Do you currently have a prescription? *</label>
                                     <div class="option-box">
                                         <label><input type="radio" name="current_prescription" value="Yes" required>
@@ -175,21 +178,21 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <label>Upload Previous Prescription (Optional)</label>
-
+                                <div class="col-12">
+                                    <label>Upload Prescription File *</label>
                                     <div class="upload-box" id="uploadBox">
-                                        <input type="file" id="prescriptionFile" name="prescription"
-                                            accept=".jpg,.jpeg,.png,.pdf" hidden>
+                                        <input type="file" id="prescriptionFile" name="prescription_file"
+                                            accept=".jpg,.jpeg,.png,.pdf" hidden required>
 
-                                        <i class="fa-solid fa-cloud-arrow-up"></i>
-                                        <p><strong>Click to upload</strong> or drag & drop</p>
-                                        <small>JPG, PNG, PDF (Max. 5MB)</small>
+                                        <i class="bi bi-cloud-upload"></i>
+                                        <p><strong>Click to upload</strong> or drag and drop</p>
+                                        <small>PDF, JPG, PNG (Max. 10MB)</small>
 
-                                        <div id="fileName" class="mt-2"></div>
+                                        <br>
+                                        <button type="button" class="choose-file-btn">Choose File</button>
+                                        <div id="fileName" class="file-name pt-3"></div>
                                     </div>
                                 </div>
-
                                 <div class="col-12">
                                     <label>Additional Notes (optional)</label>
                                     <div class="textarea-wrap">
@@ -230,4 +233,26 @@
             </div>
         </div>
     </section>
+
+    @if(session('success'))
+        <div id="successPopup" class="ml-success-popup">
+            <div class="ml-success-popup-card">
+
+                <button type="button" class="ml-popup-close" onclick="closeSuccessPopup()">&times;</button>
+
+                <div class="ml-popup-icon">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+
+                <h3>Prescription Enquiry Submitted Successfully</h3>
+
+                <p>{{ session('success') }}</p>
+
+                <button type="button" class="ml-popup-btn" onclick="closeSuccessPopup()">
+                    Done
+                </button>
+
+            </div>
+        </div>
+    @endif
 @endsection

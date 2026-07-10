@@ -167,3 +167,30 @@ uploadBox.addEventListener("drop", function (e) {
         fileName.innerHTML = "📄 " + files[0].name;
     }
 });
+
+/* =============submitpopup========================== */
+
+function closeSuccessPopup() {
+    const popup = document.getElementById("successPopup");
+
+    if (popup) {
+        popup.style.display = "none";
+    }
+}
+
+// =============================datepiker====================================
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    if (typeof flatpickr !== "undefined") {
+
+        flatpickr(".dob-picker", {
+            dateFormat: "d / m / Y",
+            maxDate: "today",
+            allowInput: true,
+            disableMobile: true
+        });
+
+    }
+
+});
