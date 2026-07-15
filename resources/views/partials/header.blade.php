@@ -13,6 +13,13 @@
                 <a href="{{ route('store') }}" class="{{ request()->routeIs('store') ? 'active' : '' }}">Store</a>
                 <a href="{{ route('blog') }}" class="{{ request()->routeIs('blog') ? 'active' : '' }}">Blog</a>
                 <a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">Contact</a>
+                <a href="{{ route('cart') }}" class="ml-cart-btn" aria-label="Shopping Bag">
+
+                    <i class="bi bi-bag-fill"></i>
+
+                    <span class="ml-cart-count">0</span>
+
+                </a>
 
                 <div class="ml-auth-switch ml-mobile-switch">
 

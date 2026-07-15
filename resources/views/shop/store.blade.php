@@ -40,338 +40,105 @@
                 <a href="#" class="active" data-category="all">All</a>
                 <a href="#" data-category="vaporisers">Vaporisers</a>
                 <a href="#" data-category="health">Health</a>
-                <a href="#" data-category="hemp">Hemp</a>
                 <a href="#" data-category="supplements">Supplements</a>
                 <a href="#" data-category="personal-care">Personal Care</a>
                 <a href="#" data-category="accessories">Accessories</a>
-                <a href="#" data-category="pet-care">Pet Care</a>
             </div>
 
             <div class="row g-4" id="mlShopGrid">
 
-                <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="vaporisers"
-                    data-name="Yocan UNI Pro Box Mod" data-price="285">
-                    <div class="ml-shop-v2-card">
-                        <div class="ml-shop-v2-img">
-                            <span class="ml-shop-v2-tag">New</span>
-                            <img src="img/products/vaporisers/YocanUNIProBoxMod_2.webp">
-                        </div>
-                        <div class="ml-shop-v2-body">
-                            <span>Vaporisers</span>
-                            <h3>Yocan UNI Pro Box Mod</h3>
-                            <p>A$285.00</p>
-                            <button type="button" class="product-view-btn mb-2 ">View Product</button>
-                            <button type="button" class="add-to-bag-btn">Add to Bag</button>
-                        </div>
-                    </div>
-                </div>
+                @forelse ($products as $product)
 
-                <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="vaporisers" data-name="MIGHTY+ MEDIC"
-                    data-price="545">
-                    <div class="ml-shop-v2-card">
-                        <div class="ml-shop-v2-img">
-                            <img src="img/products/vaporisers/Mighty.png">
-                        </div>
-                        <div class="ml-shop-v2-body">
-                            <span>Vaporisers</span>
-                            <h3>MIGHTY+ MEDIC</h3>
-                            <p>A$545.00</p>
-                            <button type="button" class="product-view-btn mb-2 ">View Product</button>
-                            <button type="button" class="add-to-bag-btn">Add to Bag</button>
-                        </div>
-                    </div>
-                </div>
+                        @php
+                            $finalPrice = $product->sale_price ?: $product->regular_price;
 
-                <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="vaporisers" data-name="VOLCANO HYBRID"
-                    data-price="850">
-                    <div class="ml-shop-v2-card">
-                        <div class="ml-shop-v2-img">
-                            <img src="img/products/vaporisers/volcano_hybrid_onyx_0.jpg">
-                        </div>
-                        <div class="ml-shop-v2-body">
-                            <span>Vaporisers</span>
-                            <h3>VOLCANO HYBRID</h3>
-                            <p>A$850.00</p>
-                            <button type="button" class="product-view-btn mb-2 ">View Product</button>
-                            <button type="button" class="add-to-bag-btn">Add to Bag</button>
-                        </div>
-                    </div>
-                </div>
+                            $categorySlug = \Illuminate\Support\Str::slug(
+                                $product->category ?: 'uncategorised'
+                            );
+                        @endphp
 
-                <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="health" data-name="Lion's Mane Mushroom"
-                    data-price="42">
-                    <div class="ml-shop-v2-card">
-                        <div class="ml-shop-v2-img">
-                            <img src="img/products/health/LM_1.webp">
-                        </div>
-                        <div class="ml-shop-v2-body">
-                            <span>Health</span>
-                            <h3>Lion's Mane Mushroom</h3>
-                            <p>A$42.00</p>
-                            <button type="button" class="product-view-btn mb-2 ">View Product</button>
-                            <button type="button" class="add-to-bag-btn">Add to Bag</button>
-                        </div>
-                    </div>
-                </div>
+                        <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="{{ $categorySlug }}"
+                            data-name="{{ $product->name }}" data-price="{{ $finalPrice }}">
 
-                <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="vaporisers" data-name="FENIX Mini"
-                    data-price="179">
-                    <div class="ml-shop-v2-card">
-                        <div class="ml-shop-v2-img">
-                            <img src="img/products/vaporisers/finix-mini.png">
-                        </div>
-                        <div class="ml-shop-v2-body">finix-mini
-                            <span>Vaporisers</span>
-                            <h3>FENIX Mini</h3>
-                            <p>A$179.00</p>
-                            <button type="button" class="product-view-btn mb-2 ">View Product</button>
-                            <button type="button" class="add-to-bag-btn">Add to Bag</button>
-                        </div>
-                    </div>
-                </div>
+                            <div class="ml-shop-v2-card">
 
-                <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="vaporisers"
-                    data-name="Vaporiser Glass Stem" data-price="25">
-                    <div class="ml-shop-v2-card">
-                        <div class="ml-shop-v2-img">
-                            <img src="img/demo_01G0E9P2R0CFTNBWEEFCEV8EG5_assets_image-02.avif" alt="Vaporiser Glass Stem">
-                        </div>
-                        <div class="ml-shop-v2-body">
-                            <span>Vaporisers</span>
-                            <h3>Vaporiser Glass Stem</h3>
-                            <p>A$25.00</p>
-                            <button type="button" class="product-view-btn mb-2 ">View Product</button>
-                            <button type="button" class="add-to-bag-btn">Add to Bag</button>
-                        </div>
-                    </div>
-                </div>
+                                <div class="ml-shop-v2-img">
 
-                <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="vaporisers"
-                    data-name="Vaporiser Glass Stem" data-price="25">
-                    <div class="ml-shop-v2-card">
-                        <div class="ml-shop-v2-img">
-                            <img src="img/demo_01G0E9P2R0CFTNBWEEFCEV8EG5_assets_image-02.avif" alt="Vaporiser Glass Stem">
-                        </div>
-                        <div class="ml-shop-v2-body">
-                            <span>Vaporisers</span>
-                            <h3>Vaporiser Glass Stem</h3>
-                            <p>A$25.00</p>
-                            <button type="button" class="product-view-btn mb-2 ">View Product</button>
-                            <button type="button" class="add-to-bag-btn">Add to Bag</button>
-                        </div>
-                    </div>
-                </div>
+                                    @if ($product->stock_status === 'out_of_stock')
+                                        <span class="ml-shop-v2-tag sold">
+                                            Sold Out
+                                        </span>
+                                    @elseif ($product->featured)
+                                        <span class="ml-shop-v2-tag">
+                                            Featured
+                                        </span>
+                                    @endif
 
-                <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="vaporisers"
-                    data-name="Vaporiser Glass Stem" data-price="25">
-                    <div class="ml-shop-v2-card">
-                        <div class="ml-shop-v2-img">
-                            <img src="img/demo_01G0E9P2R0CFTNBWEEFCEV8EG5_assets_image-02.avif" alt="Vaporiser Glass Stem">
-                        </div>
-                        <div class="ml-shop-v2-body">
-                            <span>Vaporisers</span>
-                            <h3>Vaporiser Glass Stem</h3>
-                            <p>A$25.00</p>
-                            <button type="button" class="product-view-btn mb-2 ">View Product</button>
-                            <button type="button" class="add-to-bag-btn">Add to Bag</button>
-                        </div>
-                    </div>
-                </div>
+                                    <img src="{{ $product->featured_image
+                    ? asset('storage/' . $product->featured_image)
+                    : asset('img/product-placeholder.webp') }}" alt="{{ $product->image_alt ?: $product->name }}">
 
-                <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="vaporisers"
-                    data-name="Vaporiser Glass Stem" data-price="25">
-                    <div class="ml-shop-v2-card">
-                        <div class="ml-shop-v2-img">
-                            <img src="img/demo_01G0E9P2R0CFTNBWEEFCEV8EG5_assets_image-02.avif" alt="Vaporiser Glass Stem">
-                        </div>
-                        <div class="ml-shop-v2-body">
-                            <span>Vaporisers</span>
-                            <h3>Vaporiser Glass Stem</h3>
-                            <p>A$25.00</p>
-                            <button type="button" class="product-view-btn mb-2 ">View Product</button>
-                            <button type="button" class="add-to-bag-btn">Add to Bag</button>
-                        </div>
-                    </div>
-                </div>
+                                </div>
 
-                <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="vaporisers"
-                    data-name="Vaporiser Glass Stem" data-price="25">
-                    <div class="ml-shop-v2-card">
-                        <div class="ml-shop-v2-img">
-                            <img src="img/demo_01G0E9P2R0CFTNBWEEFCEV8EG5_assets_image-02.avif" alt="Vaporiser Glass Stem">
-                        </div>
-                        <div class="ml-shop-v2-body">
-                            <span>Vaporisers</span>
-                            <h3>Vaporiser Glass Stem</h3>
-                            <p>A$25.00</p>
-                            <button type="button" class="product-view-btn mb-2 ">View Product</button>
-                            <button type="button" class="add-to-bag-btn">Add to Bag</button>
-                        </div>
-                    </div>
-                </div>
+                                <div class="ml-shop-v2-body">
 
-                <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="vaporisers"
-                    data-name="Vaporiser Glass Stem" data-price="25">
-                    <div class="ml-shop-v2-card">
-                        <div class="ml-shop-v2-img">
-                            <img src="img/demo_01G0E9P2R0CFTNBWEEFCEV8EG5_assets_image-02.avif" alt="Vaporiser Glass Stem">
-                        </div>
-                        <div class="ml-shop-v2-body">
-                            <span>Vaporisers</span>
-                            <h3>Vaporiser Glass Stem</h3>
-                            <p>A$25.00</p>
-                            <button type="button" class="product-view-btn mb-2 ">View Product</button>
-                            <button type="button" class="add-to-bag-btn">Add to Bag</button>
-                        </div>
-                    </div>
-                </div>
+                                    <span>
+                                        {{ $product->category ?: 'Uncategorised' }}
+                                    </span>
 
-                <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="health" data-name="Care Balm"
-                    data-price="42">
-                    <div class="ml-shop-v2-card">
-                        <div class="ml-shop-v2-img">
-                            <img src="img/demo_01G0E9P2R0CFTNBWEEFCEV8EG5_assets_image-03.avif" alt="Care Balm">
-                        </div>
-                        <div class="ml-shop-v2-body">
-                            <span>Health</span>
-                            <h3>Care Balm</h3>
-                            <p>A$42.00</p>
-                            <button type="button" class="product-view-btn mb-2 ">View Product</button>
-                            <button type="button" class="add-to-bag-btn">Add to Bag</button>
-                        </div>
-                    </div>
-                </div>
+                                    <h3>
+                                        {{ $product->name }}
+                                    </h3>
 
-                <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="health" data-name="Relief Cream"
-                    data-price="29">
-                    <div class="ml-shop-v2-card">
-                        <div class="ml-shop-v2-img">
-                            <span class="ml-shop-v2-tag">Popular</span>
-                            <img src="img/demo_01G0E9P2R0CFTNBWEEFCEV8EG5_assets_image-04.avif" alt="Relief Cream">
-                        </div>
-                        <div class="ml-shop-v2-body">
-                            <span>Health</span>
-                            <h3>Relief Cream</h3>
-                            <p>A$29.00</p>
-                            <button type="button" class="product-view-btn mb-2 ">View Product</button>
-                            <button type="button" class="add-to-bag-btn">Add to Bag</button>
-                        </div>
-                    </div>
-                </div>
+                                    <p>
+                                        @if ($product->sale_price)
+                                            <span class="text-decoration-line-through me-2">
+                                                A${{ number_format($product->regular_price, 2) }}
+                                            </span>
 
-                <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="health" data-name="Natural Wellness Oil"
-                    data-price="30">
-                    <div class="ml-shop-v2-card">
-                        <div class="ml-shop-v2-img">
-                            <span class="ml-shop-v2-tag sold">Sold Out</span>
-                            <img src="img/demo_01G0E9P2R0CFTNBWEEFCEV8EG5_assets_image-05.avif" alt="Natural Wellness Oil">
-                        </div>
-                        <div class="ml-shop-v2-body">
-                            <span>Health</span>
-                            <h3>Natural Wellness Oil</h3>
-                            <p>A$30.00</p>
-                            <button type="button" class="disabled">Sold Out</button>
-                        </div>
-                    </div>
-                </div>
+                                            <strong>
+                                                A${{ number_format($product->sale_price, 2) }}
+                                            </strong>
+                                        @else
+                                            A${{ number_format($product->regular_price, 2) }}
+                                        @endif
+                                    </p>
 
-                <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="hemp" data-name="Wellness Drops"
-                    data-price="58">
-                    <div class="ml-shop-v2-card">
-                        <div class="ml-shop-v2-img">
-                            <img src="img/demo_01G0E9P2R0CFTNBWEEFCEV8EG5_assets_image-06.avif" alt="Wellness Drops">
-                        </div>
-                        <div class="ml-shop-v2-body">
-                            <span>Hemp</span>
-                            <h3>Wellness Drops</h3>
-                            <p>A$58.00</p>
-                            <button type="button" class="product-view-btn mb-2 ">View Product</button>
-                            <button type="button" class="add-to-bag-btn">Add to Bag</button>
-                        </div>
-                    </div>
-                </div>
+                                    <a href="{{ route('product-view', $product->slug) }}" class="product-view-btn mb-2">
+                                        View Product
+                                    </a>
 
-                <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="hemp" data-name="Hemp Skin Oil"
-                    data-price="45">
-                    <div class="ml-shop-v2-card">
-                        <div class="ml-shop-v2-img">
-                            <img src="img/demo_01G0E9P2R0CFTNBWEEFCEV8EG5_assets_image-07.avif" alt="Hemp Skin Oil">
-                        </div>
-                        <div class="ml-shop-v2-body">
-                            <span>Hemp</span>
-                            <h3>Hemp Skin Oil</h3>
-                            <p>A$45.00</p>
-                            <button type="button" class="product-view-btn mb-2 ">View Product</button>
-                            <button type="button" class="add-to-bag-btn">Add to Bag</button>
-                        </div>
-                    </div>
-                </div>
+                                    @if ($product->stock_status === 'out_of_stock')
+                                        <button type="button" class="disabled">
+                                            Sold Out
+                                        </button>
 
-                <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="supplements" data-name="Daily Capsules"
-                    data-price="39">
-                    <div class="ml-shop-v2-card">
-                        <div class="ml-shop-v2-img">
-                            <span class="ml-shop-v2-tag">Trending</span>
-                            <img src="img/demo_01G0E9P2R0CFTNBWEEFCEV8EG5_assets_image-00.webp" alt="Daily Capsules">
-                        </div>
-                        <div class="ml-shop-v2-body">
-                            <span>Supplements</span>
-                            <h3>Daily Capsules</h3>
-                            <p>A$39.00</p>
-                            <button type="button" class="product-view-btn mb-2 ">View Product</button>
-                            <button type="button" class="add-to-bag-btn">Add to Bag</button>
-                        </div>
-                    </div>
-                </div>
+                                    @elseif ($product->prescription_required)
+                                        <a href="{{ route('upload.prescription') }}" class="add-to-bag-btn">
+                                            Upload Prescription
+                                        </a>
 
-                <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="supplements"
-                    data-name="Immune Support Tablets" data-price="49">
-                    <div class="ml-shop-v2-card">
-                        <div class="ml-shop-v2-img">
-                            <img src="img/demo_01G0E9P2R0CFTNBWEEFCEV8EG5_assets_image-01.avif"
-                                alt="Immune Support Tablets">
-                        </div>
-                        <div class="ml-shop-v2-body">
-                            <span>Supplements</span>
-                            <h3>Immune Support Tablets</h3>
-                            <p>A$49.00</p>
-                            <button type="button" class="product-view-btn mb-2 ">View Product</button>
-                            <button type="button" class="add-to-bag-btn">Add to Bag</button>
-                        </div>
-                    </div>
-                </div>
+                                    @else
+                                        <button type="button" class="add-to-bag-btn">
+                                            Add to Bag
+                                        </button>
+                                    @endif
 
-                <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="personal-care" data-name="Wellness Serum"
-                    data-price="51">
-                    <div class="ml-shop-v2-card">
-                        <div class="ml-shop-v2-img">
-                            <img src="img/demo_01G0E9P2R0CFTNBWEEFCEV8EG5_assets_image-02.avif" alt="Wellness Serum">
-                        </div>
-                        <div class="ml-shop-v2-body">
-                            <span>Personal Care</span>
-                            <h3>Wellness Serum</h3>
-                            <p>A$51.00</p>
-                            <button type="button" class="product-view-btn mb-2 ">View Product</button>
-                            <button type="button" class="add-to-bag-btn">Add to Bag</button>
-                        </div>
-                    </div>
-                </div>
+                                </div>
 
-                <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="personal-care"
-                    data-name="Hydrating Skin Cream" data-price="36">
-                    <div class="ml-shop-v2-card">
-                        <div class="ml-shop-v2-img">
-                            <img src="img/demo_01G0E9P2R0CFTNBWEEFCEV8EG5_assets_image-03.avif" alt="Hydrating Skin Cream">
+                            </div>
+
                         </div>
-                        <div class="ml-shop-v2-body">
-                            <span>Personal Care</span>
-                            <h3>Hydrating Skin Cream</h3>
-                            <p>A$36.00</p>
-                            <button type="button" class="product-view-btn mb-2 ">View Product</button>
-                            <button type="button" class="add-to-bag-btn">Add to Bag</button>
-                        </div>
+
+                @empty
+
+                    <div class="col-12">
+                        <p class="ml-shop-no-products d-block">
+                            No products are currently available.
+                        </p>
                     </div>
-                </div>
+
+                @endforelse
 
             </div>
 
@@ -601,22 +368,22 @@
                     cartItem.className = "ml-shop-cart-item";
 
                     cartItem.innerHTML = `
-                                <img src="${item.image}" alt="${item.name}">
-                                <div class="ml-shop-cart-info">
-                                    <h4>${item.name}</h4>
-                                    <p>A$${(item.price * item.qty).toFixed(2)}</p>
+                                                                    <img src="${item.image}" alt="${item.name}">
+                                                                    <div class="ml-shop-cart-info">
+                                                                        <h4>${item.name}</h4>
+                                                                        <p>A$${(item.price * item.qty).toFixed(2)}</p>
 
-                                    <div class="ml-shop-cart-qty">
-                                        <button type="button" data-action="minus" data-name="${item.name}">-</button>
-                                        <span>${item.qty}</span>
-                                        <button type="button" data-action="plus" data-name="${item.name}">+</button>
-                                    </div>
+                                                                        <div class="ml-shop-cart-qty">
+                                                                            <button type="button" data-action="minus" data-name="${item.name}">-</button>
+                                                                            <span>${item.qty}</span>
+                                                                            <button type="button" data-action="plus" data-name="${item.name}">+</button>
+                                                                        </div>
 
-                                    <button class="ml-shop-cart-remove" type="button" data-action="remove" data-name="${item.name}">
-                                        Remove
-                                    </button>
-                                </div>
-                            `;
+                                                                        <button class="ml-shop-cart-remove" type="button" data-action="remove" data-name="${item.name}">
+                                                                            Remove
+                                                                        </button>
+                                                                    </div>
+                                                                `;
 
                     cartItemsBox.appendChild(cartItem);
                 });

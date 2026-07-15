@@ -7,6 +7,7 @@ use App\Http\Controllers\Prescription\PrescriptionController;
 use App\Http\Controllers\Prescription\UploadPrescriptionController;
 use App\Http\Controllers\Admin\Auth\AdminLoginController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\StoreController;
 ;
 
 Route::get('/', function () {
@@ -22,10 +23,17 @@ Route::view('/blog', 'pages.blog')->name('blog');
 Route::view('/terms', 'pages.terms')->name('terms');
 
 // Shop
-Route::view('/store', 'shop.store')->name('store');
-Route::view('/product-view', 'shop.product-view')->name('product-view');
-Route::view('/cart', 'shop.cart')->name('cart');
-Route::view('/checkout', 'shop.checkout')->name('checkout');
+Route::get('/store', [StoreController::class, 'index'])
+    ->name('store');
+
+Route::view('/product-view', 'shop.product-view')
+    ->name('product-view');
+
+Route::view('/cart', 'shop.cart')
+    ->name('cart');
+
+Route::view('/checkout', 'shop.checkout')
+    ->name('checkout');
 
 // Contact Form
 Route::post('/contact-send', [ContactController::class, 'send'])
@@ -87,6 +95,7 @@ Route::prefix('admin')
         })->name('settings');
 
     });
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

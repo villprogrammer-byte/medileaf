@@ -353,6 +353,66 @@ h2 {
     z-index: -1;
 }
 
+/* Completely isolate cart button from menu link styles */
+.ml-cart-btn,
+.ml-cart-btn:link,
+.ml-cart-btn:visited,
+.ml-cart-btn:hover,
+.ml-cart-btn:focus,
+.ml-cart-btn:active {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: #fff !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 50% !important;
+    color: #31a050 !important;
+    text-decoration: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+    transition: .3s;
+}
+
+/* Remove any menu underline/border effects */
+.ml-cart-btn::before,
+.ml-cart-btn::after {
+    display: none !important;
+    content: none !important;
+}
+
+.ml-cart-btn:hover {
+    background: #31a050 !important;
+    border-color: #31a050 !important;
+    color: #fff !important;
+}
+
+.ml-cart-btn i {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.ml-cart-count {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #31a050;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff;
+}
+
 /* =============================================================================== */
 /* HERO */
 .ml-glass-hero {
@@ -4193,7 +4253,7 @@ h2 {
 
 .ml-shop-v2-img {
     position: relative;
-    background: linear-gradient(180deg, #f4f8f2, #ffffff);
+    background: linear-gradient(180deg, #e6e9e6, #dab3b3);
     padding: 22px;
 }
 
@@ -4254,18 +4314,26 @@ h2 {
 }
 
 
-.ml-shop-v2-body .product-view-btn {
+product-view-btn,
+a.product-view-btn {
     width: 100%;
-    height: 52px;
-    border: 2px solid #31a050;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
     border-radius: 50px;
-    background: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+    border: 2px solid #31a050;
     color: #31a050;
     font-weight: 700;
     transition: 0.3s ease;
 }
 
-.ml-shop-v2-body .product-view-btn:hover {
+a.product-view-btn:hover,
+a.product-view-btn:focus {
+    text-decoration: none;
     background: #a6ce39;
     color: #fff;
     border: none;
