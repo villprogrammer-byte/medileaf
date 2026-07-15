@@ -379,8 +379,13 @@ body {
     padding: 26px;
     border: 1px solid rgba(49, 160, 80, .10);
     box-shadow: 0 15px 45px rgba(20, 61, 36, .06);
-    height: 100%;
+    height: auto;
 }
+
+.ml-product-create-form .row {
+    align-items: flex-start;
+}
+
 
 .ml-admin-card-head {
     display: flex;
@@ -692,6 +697,108 @@ body {
     box-shadow: 0 0 0 5px rgba(49, 160, 80, .08);
 }
 
+/*==================================================
+    PRODUCT COLOUR OPTIONS
+==================================================*/
+
+.ml-color-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.ml-color-chip {
+    position: relative;
+    cursor: pointer;
+}
+
+.ml-color-chip input {
+    display: none;
+}
+
+.ml-color-chip span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 95px;
+    height: 44px;
+    padding: 0 20px;
+    border-radius: 14px;
+    background: #fff;
+    border: 2px solid rgba(49, 160, 80, .15);
+    color: #173d24;
+    font-size: 14px;
+    font-weight: 600;
+    transition: .3s ease;
+}
+
+.ml-color-chip:hover span {
+    border-color: #31A050;
+    background: #F3FBF4;
+    transform: translateY(-2px);
+}
+
+.ml-color-chip input:checked+span {
+    background: linear-gradient(135deg, #31A050, #8AC641);
+    color: #fff;
+    border-color: #31A050;
+    box-shadow: 0 10px 25px rgba(49, 160, 80, .25);
+}
+
+CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
+    margin-top: 22px;
+}
+
+.ml-custom-colour-wrap {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.ml-add-colour-btn {
+    min-width: 110px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #31A050, #8AC641);
+    color: #fff;
+    font-weight: 700;
+    padding: 0 18px;
+    transition: .3s ease;
+}
+
+.ml-add-colour-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(49, 160, 80, .25);
+}
+
+@media(max-width:576px) {
+
+    .ml-custom-colour-wrap {
+        flex-direction: column;
+    }
+
+    .ml-add-colour-btn {
+        width: 100%;
+        height: 46px;
+    }
+
+}
+
+@media(max-width:576px) {
+
+    .ml-color-options {
+        gap: 10px;
+    }
+
+    .ml-color-chip span {
+        min-width: 80px;
+        height: 40px;
+        font-size: 13px;
+    }
+
+}
+
 /* Publish Card */
 
 .ml-product-status-box {
@@ -865,9 +972,28 @@ body {
 }
 
 .ml-product-publish-card {
-    position: sticky;
-    top: 100px;
-    z-index: 20;
+    position: static;
+    top: auto;
+    z-index: auto;
+}
+
+.ml-product-create-form .col-xl-4 {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-self: flex-start;
+}
+
+.ml-product-create-form .ml-product-side-card {
+    width: 100%;
+    margin-bottom: 0;
+    position: relative;
+    z-index: 1;
+}
+
+#featuredUpload {
+    position: relative;
+    z-index: 1;
 }
 
 /* Gallery Upload */
@@ -1052,4 +1178,145 @@ body {
 .ml-admin-logout-btn:hover {
     background: rgba(255, 255, 255, .10);
     color: #fff;
+}
+
+/*==================================================
+    ADMIN SUCCESS MESSAGE
+==================================================*/
+
+.ml-admin-success-alert {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding: 16px 18px;
+    border: 1px solid rgba(49, 160, 80, .18);
+    border-radius: 18px;
+    background: linear-gradient(135deg, #f4fbf5, #ffffff);
+    box-shadow: 0 14px 35px rgba(49, 160, 80, .10);
+    animation: mlAdminAlertIn .35s ease;
+}
+
+.ml-admin-success-icon {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #31a050, #8ac641);
+    color: #fff;
+    font-size: 22px;
+    box-shadow: 0 10px 24px rgba(49, 160, 80, .22);
+}
+
+.ml-admin-success-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ml-admin-success-content strong {
+    font-size: 15px;
+    font-weight: 800;
+    color: #173d24;
+}
+
+.ml-admin-success-content span {
+    font-size: 14px;
+    color: #637168;
+}
+
+.ml-admin-success-close {
+    margin-left: auto;
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 12px;
+    background: transparent;
+    color: #6b756f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .25s ease;
+}
+
+.ml-admin-success-close:hover {
+    background: #eef7ef;
+    color: #31a050;
+}
+
+.ml-admin-success-alert.hide {
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: .3s ease;
+}
+
+@keyframes mlAdminAlertIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media(max-width:575px) {
+    .ml-admin-success-alert {
+        align-items: flex-start;
+        padding: 14px;
+    }
+
+    .ml-admin-success-close {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+/* --------------------------------- */
+
+.ml-product-thumb {
+    overflow: hidden;
+}
+
+.ml-product-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.ml-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.ml-empty-products {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: #6b756f;
+}
+
+.ml-empty-products>i {
+    font-size: 48px;
+    color: #31a050;
+}
+
+.ml-empty-products h5 {
+    margin: 0;
+    color: #173d24;
+    font-weight: 800;
+}
+
+.ml-empty-products p {
+    margin: 0 0 10px;
 }

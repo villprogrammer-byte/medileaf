@@ -1,12 +1,18 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Add Product')
+@section('title', 'Edit Product')
 
 @section('content')
 
+    @php
+        $defaultColours = ['Black', 'Silver', 'White', 'Blue', 'Green'];
+        $selectedColours = old('colors', $product->colors ?? []);
+        $customColours = array_values(array_diff($selectedColours, $defaultColours));
+    @endphp
+
     @if ($errors->any())
         <div class="alert alert-danger mb-4">
-            <strong>Product save nahi hua:</strong>
+            <strong>Product update nahi hua:</strong>
 
             <ul class="mb-0 mt-2">
                 @foreach ($errors->all() as $error)
@@ -18,8 +24,8 @@
 
     <div class="ml-admin-page-head">
         <div>
-            <h1>Add Product</h1>
-            <p>Create and manage MediLeaf store products with pricing, stock and SEO details.</p>
+            <h1>Edit Product</h1>
+            <p>Update product details, pricing, stock, images and SEO information.</p>
         </div>
 
         <a href="{{ route('admin.products.index') }}" class="ml-admin-add-btn">
@@ -29,12 +35,13 @@
     </div>
 
     <form
-        action="{{ route('admin.products.store') }}"
+        action="{{ route('admin.products.update', $product) }}"
         method="POST"
         enctype="multipart/form-data"
         class="ml-product-create-form">
 
         @csrf
+        @method('PUT')
 
         <div class="row g-4">
 
@@ -62,7 +69,7 @@
                                 type="text"
                                 name="name"
                                 id="productName"
-                                value="{{ old('name') }}"
+                                value="{{ old('name', $product->name) }}"
                                 class="ml-admin-input"
                                 placeholder="Enter product name"
                                 required>
@@ -74,7 +81,7 @@
                             <input
                                 type="text"
                                 name="sku"
-                                value="{{ old('sku') }}"
+                                value="{{ old('sku', $product->sku) }}"
                                 class="ml-admin-input"
                                 placeholder="ML-001">
                         </div>
@@ -86,7 +93,7 @@
                                 type="text"
                                 name="slug"
                                 id="productSlug"
-                                value="{{ old('slug') }}"
+                                value="{{ old('slug', $product->slug) }}"
                                 class="ml-admin-input"
                                 placeholder="product-slug">
                         </div>
@@ -97,23 +104,27 @@
                             <select name="category" class="ml-admin-input">
                                 <option value="">Select Category</option>
 
-                                <option value="Vaporisers"
-                                    {{ old('category') === 'Vaporisers' ? 'selected' : '' }}>
+                                <option
+                                    value="Vaporisers"
+                                    {{ old('category', $product->category) === 'Vaporisers' ? 'selected' : '' }}>
                                     Vaporisers
                                 </option>
 
-                                <option value="Accessories"
-                                    {{ old('category') === 'Accessories' ? 'selected' : '' }}>
+                                <option
+                                    value="Accessories"
+                                    {{ old('category', $product->category) === 'Accessories' ? 'selected' : '' }}>
                                     Accessories
                                 </option>
 
-                                <option value="Wellness Products"
-                                    {{ old('category') === 'Wellness Products' ? 'selected' : '' }}>
+                                <option
+                                    value="Wellness Products"
+                                    {{ old('category', $product->category) === 'Wellness Products' ? 'selected' : '' }}>
                                     Wellness Products
                                 </option>
 
-                                <option value="Pharmacy Support"
-                                    {{ old('category') === 'Pharmacy Support' ? 'selected' : '' }}>
+                                <option
+                                    value="Pharmacy Support"
+                                    {{ old('category', $product->category) === 'Pharmacy Support' ? 'selected' : '' }}>
                                     Pharmacy Support
                                 </option>
                             </select>
@@ -125,7 +136,7 @@
                             <input
                                 type="text"
                                 name="brand"
-                                value="{{ old('brand') }}"
+                                value="{{ old('brand', $product->brand) }}"
                                 class="ml-admin-input"
                                 placeholder="STORZ & BICKEL">
                         </div>
@@ -139,62 +150,36 @@
 
                             <div class="ml-color-options">
 
-                                <label class="ml-color-chip">
-                                    <input
-                                        type="checkbox"
-                                        name="colors[]"
-                                        value="Black"
-                                        {{ in_array('Black', old('colors', [])) ? 'checked' : '' }}>
+                                @foreach ($defaultColours as $colour)
+                                    <label class="ml-color-chip">
+                                        <input
+                                            type="checkbox"
+                                            name="colors[]"
+                                            value="{{ $colour }}"
+                                            {{ in_array($colour, $selectedColours) ? 'checked' : '' }}>
 
-                                    <span>Black</span>
-                                </label>
+                                        <span>{{ $colour }}</span>
+                                    </label>
+                                @endforeach
 
-                                <label class="ml-color-chip">
-                                    <input
-                                        type="checkbox"
-                                        name="colors[]"
-                                        value="Silver"
-                                        {{ in_array('Silver', old('colors', [])) ? 'checked' : '' }}>
+                                @foreach ($customColours as $customColour)
+                                    <label class="ml-color-chip">
+                                        <input
+                                            type="checkbox"
+                                            name="colors[]"
+                                            value="{{ $customColour }}"
+                                            checked>
 
-                                    <span>Silver</span>
-                                </label>
-
-                                <label class="ml-color-chip">
-                                    <input
-                                        type="checkbox"
-                                        name="colors[]"
-                                        value="White"
-                                        {{ in_array('White', old('colors', [])) ? 'checked' : '' }}>
-
-                                    <span>White</span>
-                                </label>
-
-                                <label class="ml-color-chip">
-                                    <input
-                                        type="checkbox"
-                                        name="colors[]"
-                                        value="Blue"
-                                        {{ in_array('Blue', old('colors', [])) ? 'checked' : '' }}>
-
-                                    <span>Blue</span>
-                                </label>
-
-                                <label class="ml-color-chip">
-                                    <input
-                                        type="checkbox"
-                                        name="colors[]"
-                                        value="Green"
-                                        {{ in_array('Green', old('colors', [])) ? 'checked' : '' }}>
-
-                                    <span>Green</span>
-                                </label>
+                                        <span>{{ $customColour }}</span>
+                                    </label>
+                                @endforeach
 
                             </div>
 
                             <div class="ml-custom-colour-box pt-3">
 
                                 <label class="ml-admin-label">
-                                    Add Custom Colour
+                                    Add Another Custom Colour
                                 </label>
 
                                 <div class="ml-custom-colour-wrap">
@@ -217,7 +202,7 @@
                                 </div>
 
                                 <small class="text-muted d-block pt-2">
-                                    Add a custom colour if it is not available above.
+                                    Add a new custom colour if it is not available above.
                                 </small>
 
                             </div>
@@ -229,18 +214,21 @@
 
                             <select name="product_type" class="ml-admin-input">
 
-                                <option value="Physical Product"
-                                    {{ old('product_type', 'Physical Product') === 'Physical Product' ? 'selected' : '' }}>
+                                <option
+                                    value="Physical Product"
+                                    {{ old('product_type', $product->product_type) === 'Physical Product' ? 'selected' : '' }}>
                                     Physical Product
                                 </option>
 
-                                <option value="Medical Device"
-                                    {{ old('product_type') === 'Medical Device' ? 'selected' : '' }}>
+                                <option
+                                    value="Medical Device"
+                                    {{ old('product_type', $product->product_type) === 'Medical Device' ? 'selected' : '' }}>
                                     Medical Device
                                 </option>
 
-                                <option value="Accessory"
-                                    {{ old('product_type') === 'Accessory' ? 'selected' : '' }}>
+                                <option
+                                    value="Accessory"
+                                    {{ old('product_type', $product->product_type) === 'Accessory' ? 'selected' : '' }}>
                                     Accessory
                                 </option>
 
@@ -271,7 +259,7 @@
                             <input
                                 type="number"
                                 name="regular_price"
-                                value="{{ old('regular_price') }}"
+                                value="{{ old('regular_price', $product->regular_price) }}"
                                 step="0.01"
                                 min="0"
                                 class="ml-admin-input"
@@ -285,7 +273,7 @@
                             <input
                                 type="number"
                                 name="sale_price"
-                                value="{{ old('sale_price') }}"
+                                value="{{ old('sale_price', $product->sale_price) }}"
                                 step="0.01"
                                 min="0"
                                 class="ml-admin-input"
@@ -298,7 +286,7 @@
                             <input
                                 type="number"
                                 name="cost_price"
-                                value="{{ old('cost_price') }}"
+                                value="{{ old('cost_price', $product->cost_price) }}"
                                 step="0.01"
                                 min="0"
                                 class="ml-admin-input"
@@ -326,7 +314,7 @@
                             name="short_description"
                             class="ml-admin-textarea"
                             rows="4"
-                            placeholder="Write short product description...">{{ old('short_description') }}</textarea>
+                            placeholder="Write short product description...">{{ old('short_description', $product->short_description) }}</textarea>
                     </div>
 
                     <div>
@@ -336,7 +324,7 @@
                             name="description"
                             class="ml-admin-textarea ml-admin-long-textarea"
                             rows="8"
-                            placeholder="Write full product details, features, specifications and usage guidance...">{{ old('description') }}</textarea>
+                            placeholder="Write full product details, features, specifications and usage guidance...">{{ old('description', $product->description) }}</textarea>
                     </div>
 
                 </div>
@@ -361,7 +349,7 @@
                             <input
                                 type="number"
                                 name="stock_quantity"
-                                value="{{ old('stock_quantity', 0) }}"
+                                value="{{ old('stock_quantity', $product->stock_quantity) }}"
                                 min="0"
                                 class="ml-admin-input"
                                 placeholder="Enter PCS"
@@ -374,7 +362,7 @@
                             <input
                                 type="number"
                                 name="low_stock_alert"
-                                value="{{ old('low_stock_alert', 5) }}"
+                                value="{{ old('low_stock_alert', $product->low_stock_alert) }}"
                                 min="0"
                                 class="ml-admin-input"
                                 placeholder="Example: 5">
@@ -390,18 +378,21 @@
                                 class="ml-admin-input"
                                 required>
 
-                                <option value="in_stock"
-                                    {{ old('stock_status', 'in_stock') === 'in_stock' ? 'selected' : '' }}>
+                                <option
+                                    value="in_stock"
+                                    {{ old('stock_status', $product->stock_status) === 'in_stock' ? 'selected' : '' }}>
                                     In Stock
                                 </option>
 
-                                <option value="out_of_stock"
-                                    {{ old('stock_status') === 'out_of_stock' ? 'selected' : '' }}>
+                                <option
+                                    value="out_of_stock"
+                                    {{ old('stock_status', $product->stock_status) === 'out_of_stock' ? 'selected' : '' }}>
                                     Out of Stock
                                 </option>
 
-                                <option value="low_stock"
-                                    {{ old('stock_status') === 'low_stock' ? 'selected' : '' }}>
+                                <option
+                                    value="low_stock"
+                                    {{ old('stock_status', $product->stock_status) === 'low_stock' ? 'selected' : '' }}>
                                     Low Stock
                                 </option>
 
@@ -428,7 +419,7 @@
                         <input
                             type="text"
                             name="seo_title"
-                            value="{{ old('seo_title') }}"
+                            value="{{ old('seo_title', $product->seo_title) }}"
                             class="ml-admin-input"
                             placeholder="Enter SEO title">
                     </div>
@@ -440,7 +431,7 @@
                             name="meta_description"
                             class="ml-admin-textarea"
                             rows="4"
-                            placeholder="Enter meta description">{{ old('meta_description') }}</textarea>
+                            placeholder="Enter meta description">{{ old('meta_description', $product->meta_description) }}</textarea>
                     </div>
 
                     <div>
@@ -449,7 +440,7 @@
                         <input
                             type="text"
                             name="image_alt"
-                            value="{{ old('image_alt') }}"
+                            value="{{ old('image_alt', $product->image_alt) }}"
                             class="ml-admin-input"
                             placeholder="Enter image alt text">
                     </div>
@@ -467,7 +458,7 @@
                     <div class="ml-admin-card-head">
                         <h4>
                             <i class="bi bi-rocket-takeoff-fill"></i>
-                            Publish
+                            Update Product
                         </h4>
                     </div>
 
@@ -482,18 +473,21 @@
                             class="ml-admin-input"
                             required>
 
-                            <option value="published"
-                                {{ old('status') === 'published' ? 'selected' : '' }}>
+                            <option
+                                value="published"
+                                {{ old('status', $product->status) === 'published' ? 'selected' : '' }}>
                                 Published
                             </option>
 
-                            <option value="draft"
-                                {{ old('status', 'draft') === 'draft' ? 'selected' : '' }}>
+                            <option
+                                value="draft"
+                                {{ old('status', $product->status) === 'draft' ? 'selected' : '' }}>
                                 Draft
                             </option>
 
-                            <option value="hidden"
-                                {{ old('status') === 'hidden' ? 'selected' : '' }}>
+                            <option
+                                value="hidden"
+                                {{ old('status', $product->status) === 'hidden' ? 'selected' : '' }}>
                                 Hidden
                             </option>
 
@@ -509,7 +503,7 @@
                                 type="checkbox"
                                 name="featured"
                                 value="1"
-                                {{ old('featured') ? 'checked' : '' }}>
+                                {{ old('featured', $product->featured) ? 'checked' : '' }}>
 
                             <small></small>
                         </label>
@@ -523,7 +517,7 @@
                                 type="checkbox"
                                 name="prescription_required"
                                 value="1"
-                                {{ old('prescription_required') ? 'checked' : '' }}>
+                                {{ old('prescription_required', $product->prescription_required) ? 'checked' : '' }}>
 
                             <small></small>
                         </label>
@@ -536,15 +530,13 @@
                             name="status"
                             value="draft"
                             class="ml-product-draft-btn">
-                            Save Draft
+                            Save as Draft
                         </button>
 
                         <button
                             type="submit"
-                            name="status"
-                            value="published"
                             class="ml-product-publish-btn">
-                            Publish Product
+                            Update Product
                         </button>
 
                     </div>
@@ -571,12 +563,27 @@
                             hidden>
 
                         <div id="featuredPreview">
-                            <i class="bi bi-cloud-arrow-up"></i>
-                            <strong>Upload Image</strong>
-                            <span>PNG, JPG, WEBP up to 5MB</span>
+
+                            @if ($product->featured_image)
+                                <img
+                                    src="{{ asset('storage/' . $product->featured_image) }}"
+                                    alt="{{ $product->image_alt ?: $product->name }}"
+                                    class="ml-featured-preview">
+                            @else
+                                <i class="bi bi-cloud-arrow-up"></i>
+                                <strong>Upload Image</strong>
+                                <span>PNG, JPG, WEBP up to 5MB</span>
+                            @endif
+
                         </div>
 
                     </label>
+
+                    @if ($product->featured_image)
+                        <small class="text-muted d-block mt-2">
+                            Upload a new image only when you want to replace the current image.
+                        </small>
+                    @endif
 
                 </div>
 
@@ -601,12 +608,28 @@
                             hidden>
 
                         <i class="bi bi-images"></i>
-                        <strong>Upload Gallery</strong>
+                        <strong>Upload New Gallery Images</strong>
                         <span>Select multiple product images</span>
 
                     </label>
 
-                    <div class="ml-gallery-preview" id="galleryPreview"></div>
+                    <div class="ml-gallery-preview" id="galleryPreview">
+
+                        @foreach ($product->gallery_images ?? [] as $galleryImage)
+                            <div class="ml-gallery-item">
+                                <img
+                                    src="{{ asset('storage/' . $galleryImage) }}"
+                                    alt="{{ $product->image_alt ?: $product->name }}">
+                            </div>
+                        @endforeach
+
+                    </div>
+
+                    @if (!empty($product->gallery_images))
+                        <small class="text-muted d-block mt-2">
+                            Uploading new gallery images will replace the existing gallery.
+                        </small>
+                    @endif
 
                 </div>
 
@@ -626,7 +649,7 @@
                         <input
                             type="number"
                             name="weight"
-                            value="{{ old('weight') }}"
+                            value="{{ old('weight', $product->weight) }}"
                             step="0.01"
                             min="0"
                             class="ml-admin-input"
@@ -639,7 +662,7 @@
                         <input
                             type="number"
                             name="length"
-                            value="{{ old('length') }}"
+                            value="{{ old('length', $product->length) }}"
                             step="0.01"
                             min="0"
                             class="ml-admin-input"
@@ -652,7 +675,7 @@
                         <input
                             type="number"
                             name="width"
-                            value="{{ old('width') }}"
+                            value="{{ old('width', $product->width) }}"
                             step="0.01"
                             min="0"
                             class="ml-admin-input"
@@ -665,7 +688,7 @@
                         <input
                             type="number"
                             name="height"
-                            value="{{ old('height') }}"
+                            value="{{ old('height', $product->height) }}"
                             step="0.01"
                             min="0"
                             class="ml-admin-input"

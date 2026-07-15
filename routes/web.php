@@ -6,6 +6,8 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Prescription\PrescriptionController;
 use App\Http\Controllers\Prescription\UploadPrescriptionController;
 use App\Http\Controllers\Admin\Auth\AdminLoginController;
+use App\Http\Controllers\Admin\ProductController;
+;
 
 Route::get('/', function () {
     return view('home');
@@ -68,13 +70,7 @@ Route::prefix('admin')
         })->name('dashboard');
 
         // Products
-        Route::get('/products', function () {
-            return view('admin.products.index');
-        })->name('products.index');
-
-        Route::get('/products/create', function () {
-            return view('admin.products.create');
-        })->name('products.create');
+        Route::resource('products', ProductController::class);
 
         // Orders
         Route::get('/orders/pending', function () {
