@@ -367,22 +367,22 @@
                     cartItem.className = "ml-shop-cart-item";
 
                     cartItem.innerHTML = `
-                                                                        <img src="${item.image}" alt="${item.name}">
-                                                                        <div class="ml-shop-cart-info">
-                                                                            <h4>${item.name}</h4>
-                                                                            <p>A$${(item.price * item.qty).toFixed(2)}</p>
+                                                                            <img src="${item.image}" alt="${item.name}">
+                                                                            <div class="ml-shop-cart-info">
+                                                                                <h4>${item.name}</h4>
+                                                                                <p>A$${(item.price * item.qty).toFixed(2)}</p>
 
-                                                                            <div class="ml-shop-cart-qty">
-                                                                                <button type="button" data-action="minus" data-name="${item.name}">-</button>
-                                                                                <span>${item.qty}</span>
-                                                                                <button type="button" data-action="plus" data-name="${item.name}">+</button>
+                                                                                <div class="ml-shop-cart-qty">
+                                                                                    <button type="button" data-action="minus" data-name="${item.name}">-</button>
+                                                                                    <span>${item.qty}</span>
+                                                                                    <button type="button" data-action="plus" data-name="${item.name}">+</button>
+                                                                                </div>
+
+                                                                                <button class="ml-shop-cart-remove" type="button" data-action="remove" data-name="${item.name}">
+                                                                                    Remove
+                                                                                </button>
                                                                             </div>
-
-                                                                            <button class="ml-shop-cart-remove" type="button" data-action="remove" data-name="${item.name}">
-                                                                                Remove
-                                                                            </button>
-                                                                        </div>
-                                                                    `;
+                                                                        `;
 
                     cartItemsBox.appendChild(cartItem);
                 });
