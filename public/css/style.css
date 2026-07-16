@@ -4253,8 +4253,7 @@ h2 {
 
 .ml-shop-v2-img {
     position: relative;
-    background: linear-gradient(180deg, #e6e9e6, #dab3b3);
-    padding: 22px;
+    background: #fff padding: 22px;
 }
 
 .ml-shop-v2-img img {
@@ -4263,6 +4262,7 @@ h2 {
     object-fit: contain;
     display: block;
     transition: 0.4s ease;
+    background: linear-gradient(180deg, #e6e9e6, #dab3b3);
 }
 
 .ml-shop-v2-card:hover .ml-shop-v2-img img {

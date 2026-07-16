@@ -27,7 +27,7 @@
 
                         <div class="feature-item">
                             <div class="feature-icon">
-                                <i class="fa-solid fa-lock"></i>
+                                <i class="bi bi-shield-lock"></i>
                             </div>
                             <div>
                                 <h4>Secure & Confidential</h4>
@@ -37,7 +37,7 @@
 
                         <div class="feature-item">
                             <div class="feature-icon">
-                                <i class="fa-regular fa-clock"></i>
+                                <i class="bi bi-lightning-charge"></i>
                             </div>
                             <div>
                                 <h4>Fast Review</h4>
@@ -47,7 +47,7 @@
 
                         <div class="feature-item">
                             <div class="feature-icon">
-                                <i class="fa-solid fa-shield-heart"></i>
+                                <i class="bi bi-patch-check"></i>
                             </div>
                             <div>
                                 <h4>Australian Standards</h4>

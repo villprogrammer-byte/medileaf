@@ -75,76 +75,75 @@
                                     @endif
 
                                     <img src="{{ $product->featured_image
-                    ? asset('public/storage/' . $product->featured_image)
+                    ? asset('storage/' . $product->featured_image)
                     : asset('img/product-placeholder.webp') }}" alt="{{ $product->image_alt ?: $product->name }}">
-                                </div>
 
-                                <div class="ml-shop-v2-body">
+                                    <div class="ml-shop-v2-body">
 
-                                    <span>
-                                        {{ $product->category ?: 'Uncategorised' }}
-                                    </span>
+                                        <span>
+                                            {{ $product->category ?: 'Uncategorised' }}
+                                        </span>
 
-                                    <h3>
-                                        {{ $product->name }}
-                                    </h3>
+                                        <h3>
+                                            {{ $product->name }}
+                                        </h3>
 
-                                    <p>
-                                        @if ($product->sale_price)
-                                            <span class="text-decoration-line-through me-2">
+                                        <p>
+                                            @if ($product->sale_price)
+                                                <span class="text-decoration-line-through me-2">
+                                                    A${{ number_format($product->regular_price, 2) }}
+                                                </span>
+
+                                                <strong>
+                                                    A${{ number_format($product->sale_price, 2) }}
+                                                </strong>
+                                            @else
                                                 A${{ number_format($product->regular_price, 2) }}
-                                            </span>
+                                            @endif
+                                        </p>
 
-                                            <strong>
-                                                A${{ number_format($product->sale_price, 2) }}
-                                            </strong>
-                                        @else
-                                            A${{ number_format($product->regular_price, 2) }}
-                                        @endif
-                                    </p>
-
-                                    <a href="{{ route('product-view', $product->slug) }}" class="product-view-btn mb-2">
-                                        View Product
-                                    </a>
-
-                                    @if ($product->stock_status === 'out_of_stock')
-                                        <button type="button" class="disabled">
-                                            Sold Out
-                                        </button>
-
-                                    @elseif ($product->prescription_required)
-                                        <a href="{{ route('upload.prescription') }}" class="add-to-bag-btn">
-                                            Upload Prescription
+                                        <a href="{{ route('product-view', $product->slug) }}" class="product-view-btn mb-2">
+                                            View Product
                                         </a>
 
-                                    @else
-                                        <button type="button" class="add-to-bag-btn">
-                                            Add to Bag
-                                        </button>
-                                    @endif
+                                        @if ($product->stock_status === 'out_of_stock')
+                                            <button type="button" class="disabled">
+                                                Sold Out
+                                            </button>
+
+                                        @elseif ($product->prescription_required)
+                                            <a href="{{ route('upload.prescription') }}" class="add-to-bag-btn">
+                                                Upload Prescription
+                                            </a>
+
+                                        @else
+                                            <button type="button" class="add-to-bag-btn">
+                                                Add to Bag
+                                            </button>
+                                        @endif
+
+                                    </div>
 
                                 </div>
 
                             </div>
 
-                        </div>
-
                 @empty
 
-                    <div class="col-12">
-                        <p class="ml-shop-no-products d-block">
-                            No products are currently available.
-                        </p>
-                    </div>
+                        <div class="col-12">
+                            <p class="ml-shop-no-products d-block">
+                                No products are currently available.
+                            </p>
+                        </div>
 
-                @endforelse
+                    @endforelse
+
+                </div>
+
+                <p class="ml-shop-no-products" id="mlShopNoProducts">No products found.</p>
+                <div class="ml-shop-v2-pagination" id="mlShopPagination"></div>
 
             </div>
-
-            <p class="ml-shop-no-products" id="mlShopNoProducts">No products found.</p>
-            <div class="ml-shop-v2-pagination" id="mlShopPagination"></div>
-
-        </div>
     </section>
 
     <button class="ml-shop-cart-floating" id="mlCartOpen">
@@ -367,22 +366,22 @@
                     cartItem.className = "ml-shop-cart-item";
 
                     cartItem.innerHTML = `
-                                                                            <img src="${item.image}" alt="${item.name}">
-                                                                            <div class="ml-shop-cart-info">
-                                                                                <h4>${item.name}</h4>
-                                                                                <p>A$${(item.price * item.qty).toFixed(2)}</p>
+                                            <img src="${item.image}" alt="${item.name}">
+                                            <div class="ml-shop-cart-info">
+                                                <h4>${item.name}</h4>
+                                                <p>A$${(item.price * item.qty).toFixed(2)}</p>
 
-                                                                                <div class="ml-shop-cart-qty">
-                                                                                    <button type="button" data-action="minus" data-name="${item.name}">-</button>
-                                                                                    <span>${item.qty}</span>
-                                                                                    <button type="button" data-action="plus" data-name="${item.name}">+</button>
-                                                                                </div>
+                                                <div class="ml-shop-cart-qty">
+                                                    <button type="button" data-action="minus" data-name="${item.name}">-</button>
+                                                    <span>${item.qty}</span>
+                                                    <button type="button" data-action="plus" data-name="${item.name}">+</button>
+                                                </div>
 
-                                                                                <button class="ml-shop-cart-remove" type="button" data-action="remove" data-name="${item.name}">
-                                                                                    Remove
-                                                                                </button>
-                                                                            </div>
-                                                                        `;
+                                                <button class="ml-shop-cart-remove" type="button" data-action="remove" data-name="${item.name}">
+                                                    Remove
+                                                </button>
+                                            </div>
+                                        `;
 
                     cartItemsBox.appendChild(cartItem);
                 });
@@ -487,7 +486,7 @@
                 return;
             }
 
-            window.location.href = "checkout";
+            window.location.href = "checkout.php";
         });
     </script>
     <script>

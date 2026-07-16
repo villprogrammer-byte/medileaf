@@ -1289,6 +1289,7 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     height: 100%;
     object-fit: cover;
     display: block;
+    background: linear-gradient(180deg, #e6e9e6, #dab3b3);
 }
 
 .ml-action-btn {
