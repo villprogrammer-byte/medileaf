@@ -318,7 +318,10 @@ class ProductController extends Controller
         if (!empty($product->featured_image)) {
             $featuredImage = trim((string) $product->featured_image);
 
-            if ($featuredImage !== '' && Storage::disk('public')->exists($featuredImage)) {
+            if (
+                $featuredImage !== '' &&
+                Storage::disk('public')->exists($featuredImage)
+            ) {
                 Storage::disk('public')->delete($featuredImage);
             }
         }
@@ -332,7 +335,10 @@ class ProductController extends Controller
         foreach ($galleryImages ?? [] as $galleryImage) {
             $galleryImage = trim((string) $galleryImage);
 
-            if ($galleryImage !== '' && Storage::disk('public')->exists($galleryImage)) {
+            if (
+                $galleryImage !== '' &&
+                Storage::disk('public')->exists($galleryImage)
+            ) {
                 Storage::disk('public')->delete($galleryImage);
             }
         }
