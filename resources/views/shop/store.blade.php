@@ -73,10 +73,16 @@
                                             Featured
                                         </span>
                                     @endif
-
+<!-- 
                                     <img src="{{ $product->featured_image
                     ? asset('storage/' . $product->featured_image)
-                    : asset('img/product-placeholder.webp') }}" alt="{{ $product->image_alt ?: $product->name }}">
+                    : asset('img/product-placeholder.webp') }}" alt="{{ $product->image_alt ?: $product->name }}"> -->
+
+                    <img
+    src="{{ $product->featured_image
+        ? asset('public/storage/' . trim($product->featured_image))
+        : asset('img/product-placeholder.webp') }}"
+    alt="{{ $product->image_alt ?: $product->name }}">
 
                                     <div class="ml-shop-v2-body">
 
