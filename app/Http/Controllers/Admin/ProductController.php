@@ -315,12 +315,26 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        if ($product->featured_image) {
-            Storage::disk('public')->delete($product->featured_image);
+        if (!empty($product->featured_image)) {
+            $featuredImage = trim((string) $product->featured_image);
+
+            if ($featuredImage !== '' && Storage::disk('public')->exists($featuredImage)) {
+                Storage::disk('public')->delete($featuredImage);
+            }
         }
 
-        foreach ($product->gallery_images ?? [] as $galleryImage) {
-            Storage::disk('public')->delete($galleryImage);
+        $galleryImages = $product->gallery_images;
+
+        if (is_string($galleryImages)) {
+            $galleryImages = json_decode($galleryImages, true) ?? [];
+        }
+
+        foreach ($galleryImages ?? [] as $galleryImage) {
+            $galleryImage = trim((string) $galleryImage);
+
+            if ($galleryImage !== '' && Storage::disk('public')->exists($galleryImage)) {
+                Storage::disk('public')->delete($galleryImage);
+            }
         }
 
         $product->delete();
