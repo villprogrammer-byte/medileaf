@@ -24,7 +24,8 @@
             </p>
 
             <div class="ml-glass-hero-buttons">
-                <a href="contact" class="ml-glass-btn primary">
+                <a href="https://www.halaxy.com/book/appointment/medileaf-health/location/1332127"
+                    class="ml-glass-btn primary">
                     Book Consultation
                     <i class="bi bi-arrow-right"></i>
                 </a>
