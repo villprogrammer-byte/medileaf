@@ -28,13 +28,10 @@
         </a>
     </div>
 
-    <form
-        action="{{ route('admin.products.store') }}"
-        method="POST"
-        enctype="multipart/form-data"
-        class="ml-product-create-form">
-
-        @csrf
+    <form action="{{ route('admin.products.store') }}"
+      method="POST"
+      enctype="multipart/form-data">
+    @csrf
 
         <div class="row g-4">
 

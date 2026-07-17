@@ -8,7 +8,6 @@ use App\Http\Controllers\Prescription\UploadPrescriptionController;
 use App\Http\Controllers\Admin\Auth\AdminLoginController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\StoreController;
-;
 
 Route::get('/', function () {
     return view('home');

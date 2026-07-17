@@ -73,16 +73,10 @@
                                             Featured
                                         </span>
                                     @endif
-<!-- 
+
                                     <img src="{{ $product->featured_image
                     ? asset('storage/' . $product->featured_image)
-                    : asset('img/product-placeholder.webp') }}" alt="{{ $product->image_alt ?: $product->name }}"> -->
-
-                    <img
-    src="{{ $product->featured_image
-        ? asset('public/storage/' . trim($product->featured_image))
-        : asset('img/product-placeholder.webp') }}"
-    alt="{{ $product->image_alt ?: $product->name }}">
+                    : asset('img/product-placeholder.webp') }}" alt="{{ $product->image_alt ?: $product->name }}">
 
                                     <div class="ml-shop-v2-body">
 
@@ -372,22 +366,22 @@
                     cartItem.className = "ml-shop-cart-item";
 
                     cartItem.innerHTML = `
-                                            <img src="${item.image}" alt="${item.name}">
-                                            <div class="ml-shop-cart-info">
-                                                <h4>${item.name}</h4>
-                                                <p>A$${(item.price * item.qty).toFixed(2)}</p>
+                                                                                                                <img src="${item.image}" alt="${item.name}">
+                                                                                                                <div class="ml-shop-cart-info">
+                                                                                                                    <h4>${item.name}</h4>
+                                                                                                                    <p>A$${(item.price * item.qty).toFixed(2)}</p>
 
-                                                <div class="ml-shop-cart-qty">
-                                                    <button type="button" data-action="minus" data-name="${item.name}">-</button>
-                                                    <span>${item.qty}</span>
-                                                    <button type="button" data-action="plus" data-name="${item.name}">+</button>
-                                                </div>
+                                                                                                                    <div class="ml-shop-cart-qty">
+                                                                                                                        <button type="button" data-action="minus" data-name="${item.name}">-</button>
+                                                                                                                        <span>${item.qty}</span>
+                                                                                                                        <button type="button" data-action="plus" data-name="${item.name}">+</button>
+                                                                                                                    </div>
 
-                                                <button class="ml-shop-cart-remove" type="button" data-action="remove" data-name="${item.name}">
-                                                    Remove
-                                                </button>
-                                            </div>
-                                        `;
+                                                                                                                    <button class="ml-shop-cart-remove" type="button" data-action="remove" data-name="${item.name}">
+                                                                                                                        Remove
+                                                                                                                    </button>
+                                                                                                                </div>
+                                                                                                            `;
 
                     cartItemsBox.appendChild(cartItem);
                 });
@@ -492,7 +486,7 @@
                 return;
             }
 
-            window.location.href = "checkout.php";
+            window.location.href = "checkout";
         });
     </script>
     <script>
