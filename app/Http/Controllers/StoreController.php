@@ -7,7 +7,7 @@ use App\Models\Product;
 class StoreController extends Controller
 {
     /**
-     * Show published products on the frontend store.
+     * Store Listing
      */
     public function index()
     {
@@ -17,5 +17,22 @@ class StoreController extends Controller
             ->get();
 
         return view('shop.store', compact('products'));
+    }
+
+    /**
+     * Product Detail Page
+     */
+    public function show(Product $product)
+    {
+        // Only published products on frontend
+        abort_if($product->status !== 'published', 404);
+
+        $relatedProducts = Product::where('status', 'published')
+            ->where('id', '!=', $product->id)
+            ->latest()
+            ->take(4)
+            ->get();
+
+        return view('shop.product-view', compact('product', 'relatedProducts'));
     }
 }

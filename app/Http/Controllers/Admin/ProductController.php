@@ -152,7 +152,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return redirect()->route('admin.products.edit', $product);
+        return view('admin.products.show', compact('product'));
     }
 
     /**

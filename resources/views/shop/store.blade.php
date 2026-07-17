@@ -5,10 +5,11 @@
 @section('content')
     <section class="ml-shop-v2-section">
         <div class="container">
+
             <div class="ml-product-breadcrumb">
-                <a href="index">Home</a>
+                <a href="{{ url('/') }}">Home</a>
                 <span>/</span>
-                <a href="store">Store</a>
+                <a href="{{ route('store') }}">Store</a>
             </div>
 
             <div class="ml-shop-v2-filterbar">
@@ -18,6 +19,7 @@
                 </div>
 
                 <div class="ml-shop-v2-tools">
+
                     <div class="ml-shop-v2-search">
                         <input type="text" id="mlShopSearch" placeholder="Search products">
                         <i class="bi bi-search"></i>
@@ -25,6 +27,7 @@
 
                     <div class="ml-shop-v2-sort">
                         <label for="mlShopSort">Sort by</label>
+
                         <select id="mlShopSort">
                             <option value="default">Default sorting</option>
                             <option value="latest">Latest products</option>
@@ -33,6 +36,7 @@
                             <option value="az">Name A to Z</option>
                         </select>
                     </div>
+
                 </div>
             </div>
 
@@ -47,103 +51,122 @@
 
             <div class="row g-4" id="mlShopGrid">
 
-                @forelse ($products as $product)
+                @forelse($products as $product)
 
-                        @php
-                            $finalPrice = $product->sale_price ?: $product->regular_price;
+                    @php
+                        $finalPrice = $product->sale_price ?: $product->regular_price;
 
-                            $categorySlug = \Illuminate\Support\Str::slug(
-                                $product->category ?: 'uncategorised'
-                            );
-                        @endphp
+                        $categorySlug = \Illuminate\Support\Str::slug(
+                            $product->category ?: 'uncategorised'
+                        );
 
-                        <div class="col-md-6 col-xl-3 ml-shop-product-item" data-category="{{ $categorySlug }}"
-                            data-name="{{ $product->name }}" data-price="{{ $finalPrice }}">
+                        $productImage = $product->featured_image
+                            ? asset('storage/' . $product->featured_image)
+                            : asset('img/product-placeholder.webp');
+                    @endphp
 
-                            <div class="ml-shop-v2-card">
+                    <div class="col-md-6 col-xl-3 ml-shop-product-item" data-id="{{ $product->id }}"
+                        data-category="{{ $categorySlug }}" data-name="{{ $product->name }}" data-price="{{ $finalPrice }}">
 
-                                <div class="ml-shop-v2-img">
+                        <div class="ml-shop-v2-card">
 
-                                    @if ($product->stock_status === 'out_of_stock')
-                                        <span class="ml-shop-v2-tag sold">
-                                            Sold Out
-                                        </span>
-                                    @elseif ($product->featured)
-                                        <span class="ml-shop-v2-tag">
-                                            Featured
-                                        </span>
-                                    @endif
+                            <div class="ml-shop-v2-img">
 
-                                    <img src="{{ $product->featured_image
-                    ? asset('storage/' . $product->featured_image)
-                    : asset('img/product-placeholder.webp') }}" alt="{{ $product->image_alt ?: $product->name }}">
+                                @if($product->stock_status === 'out_of_stock')
 
-                                    <div class="ml-shop-v2-body">
+                                    <span class="ml-shop-v2-tag sold">
+                                        Sold Out
+                                    </span>
 
-                                        <span>
-                                            {{ $product->category ?: 'Uncategorised' }}
-                                        </span>
+                                @elseif($product->featured)
 
-                                        <h3>
-                                            {{ $product->name }}
-                                        </h3>
+                                    <span class="ml-shop-v2-tag">
+                                        Featured
+                                    </span>
 
-                                        <p>
-                                            @if ($product->sale_price)
-                                                <span class="text-decoration-line-through me-2">
-                                                    A${{ number_format($product->regular_price, 2) }}
-                                                </span>
+                                @endif
 
-                                                <strong>
-                                                    A${{ number_format($product->sale_price, 2) }}
-                                                </strong>
-                                            @else
+                                <img src="{{ $productImage }}" alt="{{ $product->image_alt ?: $product->name }}">
+
+                                <div class="ml-shop-v2-body">
+
+                                    <span>
+                                        {{ $product->category ?: 'Uncategorised' }}
+                                    </span>
+
+                                    <h3>
+                                        {{ $product->name }}
+                                    </h3>
+
+                                    <p>
+                                        @if($product->sale_price)
+
+                                            <span class="text-decoration-line-through me-2">
                                                 A${{ number_format($product->regular_price, 2) }}
-                                            @endif
-                                        </p>
+                                            </span>
 
-                                        <a href="{{ route('product-view', $product->slug) }}" class="product-view-btn mb-2">
-                                            View Product
-                                        </a>
-
-                                        @if ($product->stock_status === 'out_of_stock')
-                                            <button type="button" class="disabled">
-                                                Sold Out
-                                            </button>
-
-                                        @elseif ($product->prescription_required)
-                                            <a href="{{ route('upload.prescription') }}" class="add-to-bag-btn">
-                                                Upload Prescription
-                                            </a>
+                                            <strong>
+                                                A${{ number_format($product->sale_price, 2) }}
+                                            </strong>
 
                                         @else
-                                            <button type="button" class="add-to-bag-btn">
-                                                Add to Bag
-                                            </button>
-                                        @endif
 
-                                    </div>
+                                            A${{ number_format($product->regular_price, 2) }}
+
+                                        @endif
+                                    </p>
+
+                                    <a href="{{ route('product-view', $product) }}" class="product-view-btn">
+                                        View Product
+                                    </a>
+
+                                    @if($product->stock_status === 'out_of_stock')
+
+                                        <button type="button" class="disabled" disabled>
+                                            Sold Out
+                                        </button>
+
+                                    @elseif($product->prescription_required)
+
+                                        <a href="{{ route('upload.prescription') }}" class="add-to-bag-btn">
+                                            Upload Prescription
+                                        </a>
+
+                                    @else
+
+                                        <button type="button" class="add-to-bag-btn mt-2">
+                                            Add to Bag
+                                        </button>
+
+                                    @endif
 
                                 </div>
 
                             </div>
 
-                @empty
-
-                        <div class="col-12">
-                            <p class="ml-shop-no-products d-block">
-                                No products are currently available.
-                            </p>
                         </div>
 
-                    @endforelse
+                    </div>
 
-                </div>
+                @empty
 
-                <p class="ml-shop-no-products" id="mlShopNoProducts">No products found.</p>
-                <div class="ml-shop-v2-pagination" id="mlShopPagination"></div>
+                    <div class="col-12">
+                        <p class="ml-shop-no-products d-block">
+                            No products are currently available.
+                        </p>
+                    </div>
+
+                @endforelse
 
             </div>
+
+            <p class="ml-shop-no-products" id="mlShopNoProducts">
+                No products found.
+            </p>
+
+            <div class="ml-shop-v2-pagination" id="mlShopPagination"></div>
+
+        </div>
     </section>
 
     <button class="ml-shop-cart-floating" id="mlCartOpen">
@@ -156,11 +179,16 @@
     <div class="ml-shop-cart-drawer" id="mlCartDrawer">
         <div class="ml-shop-cart-head">
             <h3>Your Cart</h3>
-            <button class="ml-shop-cart-close" id="mlCartClose">&times;</button>
+
+            <button class="ml-shop-cart-close" id="mlCartClose" type="button">
+                &times;
+            </button>
         </div>
 
         <div class="ml-shop-cart-items" id="mlCartItems">
-            <p class="ml-shop-cart-empty">Your cart is empty.</p>
+            <p class="ml-shop-cart-empty">
+                Your cart is empty.
+            </p>
         </div>
 
         <div class="ml-shop-cart-bottom">
@@ -173,7 +201,9 @@
                 Proceed to Checkout
             </button>
 
-            <button class="ml-shop-clear-cart" id="mlClearCart" type="button">Clear Cart</button>
+            <button class="ml-shop-clear-cart" id="mlClearCart" type="button">
+                Clear Cart
+            </button>
         </div>
     </div>
 
@@ -366,23 +396,44 @@
                     cartItem.className = "ml-shop-cart-item";
 
                     cartItem.innerHTML = `
-                                                                                                                <img src="${item.image}" alt="${item.name}">
-                                                                                                                <div class="ml-shop-cart-info">
-                                                                                                                    <h4>${item.name}</h4>
-                                                                                                                    <p>A$${(item.price * item.qty).toFixed(2)}</p>
+                                        <img src="${item.image}" alt="${item.name}">
 
-                                                                                                                    <div class="ml-shop-cart-qty">
-                                                                                                                        <button type="button" data-action="minus" data-name="${item.name}">-</button>
-                                                                                                                        <span>${item.qty}</span>
-                                                                                                                        <button type="button" data-action="plus" data-name="${item.name}">+</button>
-                                                                                                                    </div>
+                                        <div class="ml-shop-cart-info">
 
-                                                                                                                    <button class="ml-shop-cart-remove" type="button" data-action="remove" data-name="${item.name}">
-                                                                                                                        Remove
-                                                                                                                    </button>
-                                                                                                                </div>
-                                                                                                            `;
+                                            <h4>${item.name}</h4>
 
+                                            <p>A$${(item.price * item.qty).toFixed(2)}</p>
+
+                                            <div class="ml-shop-cart-qty">
+
+                                                <button
+                                                    type="button"
+                                                    data-action="minus"
+                                                    data-id="${item.id}">
+                                                    -
+                                                </button>
+
+                                                <span>${item.qty}</span>
+
+                                                <button
+                                                    type="button"
+                                                    data-action="plus"
+                                                    data-id="${item.id}">
+                                                    +
+                                                </button>
+
+                                            </div>
+
+                                            <button
+                                                class="ml-shop-cart-remove"
+                                                type="button"
+                                                data-action="remove"
+                                                data-id="${item.id}">
+                                                Remove
+                                            </button>
+
+                                        </div>
+                                    `;
                     cartItemsBox.appendChild(cartItem);
                 });
 
@@ -394,18 +445,23 @@
 
             function addToCart(button) {
                 const product = button.closest(".ml-shop-product-item");
+
+                const id = Number(product.dataset.id);
                 const name = product.dataset.name;
                 const price = Number(product.dataset.price);
                 const image = product.querySelector("img").getAttribute("src");
 
                 const existing = cart.find(function (item) {
-                    return item.name === name;
+                    return Number(item.id) === id;
                 });
 
                 if (existing) {
                     existing.qty += 1;
+                    existing.price = price;
+                    existing.image = image;
                 } else {
                     cart.push({
+                        id: id,
                         name: name,
                         price: price,
                         image: image,
@@ -430,32 +486,40 @@
                 if (!button) return;
 
                 const action = button.dataset.action;
-                const name = button.dataset.name;
+                const id = Number(button.dataset.id);
 
                 const item = cart.find(function (cartItem) {
-                    return cartItem.name === name;
+                    return Number(cartItem.id) === id;
                 });
 
                 if (!item) return;
 
                 if (action === "plus") {
-                    item.qty += 1;
+
+                    item.qty++;
+
                 }
 
                 if (action === "minus") {
-                    item.qty -= 1;
+
+                    item.qty--;
 
                     if (item.qty <= 0) {
+
                         cart = cart.filter(function (cartItem) {
-                            return cartItem.name !== name;
+                            return Number(cartItem.id) !== id;
                         });
+
                     }
+
                 }
 
                 if (action === "remove") {
+
                     cart = cart.filter(function (cartItem) {
-                        return cartItem.name !== name;
+                        return Number(cartItem.id) !== id;
                     });
+
                 }
 
                 renderCart();
@@ -487,17 +551,6 @@
             }
 
             window.location.href = "checkout";
-        });
-    </script>
-    <script>
-        document.querySelectorAll(".product-view-btn").forEach(function (btn) {
-            btn.addEventListener("click", function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-
-                window.location.href = "product-view";
-            });
         });
     </script>
 @endsection

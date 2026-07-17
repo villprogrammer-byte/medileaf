@@ -77,6 +77,7 @@
 
                                     <div>
                                         <h6>{{ $product->name }}</h6>
+
                                         <small>
                                             SKU: {{ $product->sku ?: 'Not added' }}
                                         </small>
@@ -98,7 +99,9 @@
                                         A${{ number_format($product->regular_price, 2) }}
                                     </small>
                                 @else
-                                    A${{ number_format($product->regular_price, 2) }}
+                                    <strong>
+                                        A${{ number_format($product->regular_price, 2) }}
+                                    </strong>
                                 @endif
                             </td>
 
@@ -124,21 +127,27 @@
 
                             <td class="text-end">
 
+                                {{-- View Product --}}
+                                <a href="{{ route('admin.products.show', $product) }}" class="ml-action-btn view"
+                                    title="View Product">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+
+                                {{-- Edit Product --}}
                                 <a href="{{ route('admin.products.edit', $product) }}" class="ml-action-btn edit"
                                     title="Edit Product">
                                     <i class="bi bi-pencil"></i>
                                 </a>
 
+                                {{-- Delete Product --}}
                                 <form action="{{ route('admin.products.destroy', $product) }}" method="POST" class="d-inline"
                                     onsubmit="return confirm('Are you sure you want to delete this product?');">
-
                                     @csrf
                                     @method('DELETE')
 
                                     <button type="submit" class="ml-action-btn delete" title="Delete Product">
                                         <i class="bi bi-trash"></i>
                                     </button>
-
                                 </form>
 
                             </td>
@@ -148,7 +157,9 @@
                             <td colspan="6" class="text-center py-5">
                                 <div class="ml-empty-products">
                                     <i class="bi bi-box-seam"></i>
+
                                     <h5>No products found</h5>
+
                                     <p>Add your first product to get started.</p>
 
                                     <a href="{{ route('admin.products.create') }}" class="ml-admin-add-btn">

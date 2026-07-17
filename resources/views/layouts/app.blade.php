@@ -47,6 +47,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="{{ asset('js/admin.js') }}"></script>
 
+
 </body>
 
 </html>

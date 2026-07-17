@@ -25,7 +25,8 @@ Route::view('/terms', 'pages.terms')->name('terms');
 Route::get('/store', [StoreController::class, 'index'])
     ->name('store');
 
-Route::view('/product-view', 'shop.product-view')
+// Dynamic Product Detail Page
+Route::get('/product/{product}', [StoreController::class, 'show'])
     ->name('product-view');
 
 Route::view('/cart', 'shop.cart')
@@ -51,7 +52,6 @@ Route::get('/upload-prescription', [UploadPrescriptionController::class, 'index'
 
 Route::post('/upload-prescription', [UploadPrescriptionController::class, 'store'])
     ->name('upload.prescription.store');
-
 
 // Admin Login
 Route::get('/admin/login', [AdminLoginController::class, 'showLoginForm'])
@@ -92,14 +92,17 @@ Route::prefix('admin')
         Route::get('/settings', function () {
             return view('admin.settings');
         })->name('settings');
-
     });
 
-
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
+
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
+
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
 });
 
 require __DIR__ . '/auth.php';

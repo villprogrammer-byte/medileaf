@@ -330,10 +330,10 @@
                         <label class="ml-admin-label">Full Description</label>
 
                         <textarea
-                            name="description"
-                            class="ml-admin-textarea ml-admin-long-textarea"
-                            rows="8"
-                            placeholder="Write full product details, features, specifications and usage guidance...">{{ old('description') }}</textarea>
+                          id="description"
+                          name="description"
+                          class="ml-admin-textarea ml-admin-long-textarea"
+                          rows="8">{{ old('description', $product->description ?? '') }}</textarea>
                     </div>
 
                 </div>
@@ -676,5 +676,31 @@
         </div>
 
     </form>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const descriptionField = document.querySelector("#description");
+
+    if (!descriptionField) {
+        console.error("Description field not found.");
+        return;
+    }
+
+    if (typeof ClassicEditor === "undefined") {
+        console.error("CKEditor library did not load.");
+        return;
+    }
+
+    ClassicEditor
+        .create(descriptionField)
+        .catch(function (error) {
+            console.error("CKEditor error:", error);
+        });
+
+});
+</script>
 
 @endsection
