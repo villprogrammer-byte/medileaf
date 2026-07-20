@@ -15,6 +15,7 @@ class Product extends Model
         'category',
         'brand',
         'product_type',
+        'reference_number',
         'colors',
 
         // Pricing

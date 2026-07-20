@@ -7,6 +7,7 @@ use App\Http\Controllers\Prescription\PrescriptionController;
 use App\Http\Controllers\Prescription\UploadPrescriptionController;
 use App\Http\Controllers\Admin\Auth\AdminLoginController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\StoreController;
 
 Route::get('/', function () {
@@ -72,9 +73,8 @@ Route::prefix('admin')
     ->name('admin.')
     ->group(function () {
 
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])
+            ->name('dashboard');
 
         // Products
         Route::resource('products', ProductController::class);

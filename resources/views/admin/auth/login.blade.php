@@ -100,7 +100,13 @@
             <!-- RIGHT SIDE -->
 
             <div class="ml-login-right">
-                <div class="ml-login-card">
+                <div class="text-left">
+                    <a href="{{ route('home') }}" class="ml-admin-back-btn">
+                        <i class="bi bi-arrow-left"></i>
+                        Back to Home
+                    </a>
+                </div>
+                <div class="ml-login-card mt-5">
                     <div class="ml-user-icon">
                         <div class="circle">
                             <i class="bi bi-shield-check"></i>

@@ -13,7 +13,9 @@
                 <a href="{{ route('store') }}" class="{{ request()->routeIs('store') ? 'active' : '' }}">Store</a>
                 <a href="{{ route('blog') }}" class="{{ request()->routeIs('blog') ? 'active' : '' }}">Blog</a>
                 <a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">Contact</a>
-                <a href="{{ route('cart') }}" class="ml-cart-btn" aria-label="Shopping Bag">
+                <a href="{{ route('cart') }}"
+                    class="ml-cart-btn ml-cart-btn d-none d-md-flex {{ request()->routeIs('cart') ? 'active' : '' }}"
+                    aria-label="Shopping Bag">
 
                     <i class="bi bi-bag-fill"></i>
 
@@ -21,20 +23,9 @@
 
                 </a>
 
-                <div class="ml-auth-switch ml-mobile-switch">
-
-                    <a href="{{ route('login') }}" class="ml-auth-tab active" data-target="user">
-                        <i class="bi bi-person"></i>
-                        <span>User Login</span>
-                    </a>
-
-                    <a href="{{ route('admin.login') }}" class="ml-auth-tab" data-target="admin">
-                        <i class="bi bi-person-bounding-box"></i>
-                        <span>Admin Login</span>
-                    </a>
-
-                    <span class="ml-auth-switch-bg"></span>
-                </div>
+                <a href="{{ route('login') }}" class="user-view-btn d-block d-md-none">
+                    <i class="bi bi-person"></i> User Login
+                </a>
             </nav>
 
             <div class="ml-new-actions">

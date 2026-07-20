@@ -13,9 +13,30 @@ class ProductController extends Controller
     /**
      * Show all products.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::latest()->paginate(10);
+        $query = Product::query();
+
+        if ($request->filled('search')) {
+
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+
+                $q->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('sku', 'LIKE', "%{$search}%")
+                    ->orWhere('brand', 'LIKE', "%{$search}%")
+                    ->orWhere('category', 'LIKE', "%{$search}%")
+                    ->orWhere('product_type', 'LIKE', "%{$search}%");
+
+            });
+        }
+
+        $products = $query->latest()->paginate(10);
+
+        $products->appends([
+            'search' => $request->search
+        ]);
 
         return view('admin.products.index', compact('products'));
     }
@@ -41,6 +62,7 @@ class ProductController extends Controller
             'category' => ['nullable', 'string', 'max:150'],
             'brand' => ['nullable', 'string', 'max:150'],
             'product_type' => ['nullable', 'string', 'max:100'],
+            'reference_number' => ['nullable', 'string', 'max:255'],
 
             // Colours
             'colors' => ['nullable', 'array'],
@@ -189,6 +211,7 @@ class ProductController extends Controller
             'category' => ['nullable', 'string', 'max:150'],
             'brand' => ['nullable', 'string', 'max:150'],
             'product_type' => ['nullable', 'string', 'max:100'],
+            'reference_number' => ['nullable', 'string', 'max:255'],
 
             // Colours
             'colors' => ['nullable', 'array'],

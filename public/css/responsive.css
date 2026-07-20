@@ -25,35 +25,6 @@
         }
     }
 
-    /* 575 */
-    @media(max-width:575px) {
-        .ml-mobile-switch {
-            max-width: 260px;
-            padding: 4px;
-        }
-
-        .ml-mobile-switch .ml-auth-switch-bg {
-            top: 4px;
-            left: 4px;
-            width: calc(50% - 4px);
-            height: 38px;
-        }
-
-        .ml-mobile-switch.admin-active .ml-auth-switch-bg {
-            left: calc(50%);
-        }
-
-        .ml-mobile-switch .ml-auth-tab {
-            height: 38px;
-            font-size: 12px;
-            gap: 5px;
-        }
-
-        .ml-mobile-switch .ml-auth-tab i {
-            font-size: 13px;
-        }
-    }
-
     /* ========================= */
     /*HEADER/FOOTER MEDIA QUERIES */
     /* ========================= */
@@ -90,7 +61,7 @@
 
         .ml-new-nav a {
             padding: 15px 18px;
-            border-radius: 16px;
+            border-radius: 50px;
             text-align: center;
         }
 
@@ -104,6 +75,23 @@
         }
     }
 
+    @media (max-width: 767.98px) {
+
+        .user-view-btn {
+            display: block;
+            width: fit-content;
+            min-width: 180px;
+            margin: 15px auto;
+            padding: 12px 28px;
+            text-align: center;
+            background: linear-gradient(135deg, #31a050, #a6ce39);
+            color: #fff !important;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+    }
 
     /* footer---------------------------------------- */
 

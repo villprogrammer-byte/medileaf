@@ -4,10 +4,13 @@
         <i class="bi bi-list"></i>
     </button>
 
-    <div class="ml-admin-search">
+    <form class="ml-admin-search" action="{{ route('admin.products.index') }}" method="GET">
+
         <i class="bi bi-search"></i>
-        <input type="text" placeholder="Search products, orders...">
-    </div>
+
+        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search products...">
+
+    </form>
 
     <div class="ml-admin-header-actions">
 

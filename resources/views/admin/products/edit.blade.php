@@ -235,6 +235,17 @@
                             </select>
                         </div>
 
+                    <div class="col-md-6">
+                         <label class="ml-admin-label">Reference Number</label>
+
+                        <input
+                              type="text"
+                              name="reference_number"
+                              class="ml-admin-input"
+                              placeholder="e.g. 01 01 MM"
+                            value="{{ old('reference_number', $product->reference_number ?? '') }}">
+                    </div>
+
                     </div>
 
                 </div>

@@ -184,10 +184,6 @@ h2 {
     display: flex;
 }
 
-.ml-mobile-switch {
-    display: none;
-}
-
 /* ==============================================================================================
    MEDILEAF MODERN HEADER
 ========================== */
@@ -358,24 +354,32 @@ h2 {
 .ml-cart-btn:link,
 .ml-cart-btn:visited,
 .ml-cart-btn:hover,
-.ml-cart-btn:focus,
-.ml-cart-btn:active {
+.ml-cart-btn:focus {
     width: 48px;
     height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    background: #fff !important;
+    background: #fff;
     border: 1px solid #e5e7eb !important;
     border-radius: 50% !important;
-    color: #31a050 !important;
+    color: #31a050;
     text-decoration: none !important;
     padding: 0 !important;
     margin: 0 !important;
-
     box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
     transition: .3s;
+}
+
+.ml-cart-btn.active {
+    background-color: #31a050;
+    color: #ffffff;
+}
+
+.ml-cart-btn.active i,
+.ml-cart-btn.active span {
+    color: #ffffff;
 }
 
 /* Remove any menu underline/border effects */
@@ -399,18 +403,18 @@ h2 {
 .ml-cart-count {
     position: absolute;
     top: -4px;
-    right: -4px;
+    right: 0px;
     width: 18px;
     height: 18px;
     border-radius: 50%;
     background: #31a050;
     color: #fff;
-    font-size: 10px;
+    font-size: 8px;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #fff;
+    border: 1px solid #fff;
 }
 
 /* =============================================================================== */
@@ -5807,6 +5811,22 @@ a.product-view-btn:focus {
     font-weight: 700;
     cursor: pointer;
     transition: .3s ease;
+}
+
+.ml-admin-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 50px;
+    background: #31a050;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .3s ease;
+    text-decoration: none;
 }
 
 .ml-checkout-back-btn:hover {

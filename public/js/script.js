@@ -1,3 +1,38 @@
+// --------------------------cart functio------------------------------------------
+
+function openCart() {
+
+    if (cartDrawer) {
+        cartDrawer.classList.add("active");
+    }
+
+    if (cartOverlay) {
+        cartOverlay.classList.add("active");
+    }
+
+    const cartBtn = document.querySelector(".ml-cart-btn");
+    if (cartBtn) {
+        cartBtn.classList.add("cart-active");
+    }
+}
+// ----------------------------------------------------------
+function closeCart() {
+
+    if (cartDrawer) {
+        cartDrawer.classList.remove("active");
+    }
+
+    if (cartOverlay) {
+        cartOverlay.classList.remove("active");
+    }
+
+    const cartBtn = document.querySelector(".ml-cart-btn");
+    if (cartBtn) {
+        cartBtn.classList.remove("cart-active");
+    }
+}
+
+
 // -------------------------page reloader------------------------------------
 
 window.addEventListener("load", function () {
@@ -112,61 +147,68 @@ const uploadBox = document.getElementById("uploadBox");
 const fileInput = document.getElementById("prescriptionFile");
 const fileName = document.getElementById("fileName");
 
-// Click Upload
-uploadBox.addEventListener("click", () => {
-    fileInput.click();
-});
+if (uploadBox && fileInput && fileName) {
 
-// File Selected
-fileInput.addEventListener("change", function () {
+    // Click Upload
+    uploadBox.addEventListener("click", () => {
+        fileInput.click();
+    });
 
-    if (this.files.length > 0) {
+    // File Selected
+    fileInput.addEventListener("change", function () {
 
-        const file = this.files[0];
+        if (this.files.length > 0) {
 
-        if (file.size > 5 * 1024 * 1024) {
-            alert("Maximum file size is 5MB.");
-            this.value = "";
-            fileName.innerHTML = "";
-            return;
+            const file = this.files[0];
+
+            if (file.size > 5 * 1024 * 1024) {
+                alert("Maximum file size is 5MB.");
+                this.value = "";
+                fileName.innerHTML = "";
+                return;
+            }
+
+            fileName.innerHTML = "📄 " + file.name;
         }
 
-        fileName.innerHTML = "📄 " + file.name;
-    }
-});
+    });
 
-// Drag Over
-uploadBox.addEventListener("dragover", function (e) {
-    e.preventDefault();
-    uploadBox.classList.add("dragover");
-});
+    // Drag Over
+    uploadBox.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        uploadBox.classList.add("dragover");
+    });
 
-// Drag Leave
-uploadBox.addEventListener("dragleave", function () {
-    uploadBox.classList.remove("dragover");
-});
+    // Drag Leave
+    uploadBox.addEventListener("dragleave", function () {
+        uploadBox.classList.remove("dragover");
+    });
 
-// Drop File
-uploadBox.addEventListener("drop", function (e) {
+    // Drop File
+    uploadBox.addEventListener("drop", function (e) {
 
-    e.preventDefault();
-    uploadBox.classList.remove("dragover");
+        e.preventDefault();
+        uploadBox.classList.remove("dragover");
 
-    const files = e.dataTransfer.files;
+        const files = e.dataTransfer.files;
 
-    if (files.length) {
-        fileInput.files = files;
+        if (files.length) {
 
-        if (files[0].size > 5 * 1024 * 1024) {
-            alert("Maximum file size is 5MB.");
-            fileInput.value = "";
-            fileName.innerHTML = "";
-            return;
+            fileInput.files = files;
+
+            if (files[0].size > 5 * 1024 * 1024) {
+                alert("Maximum file size is 5MB.");
+                fileInput.value = "";
+                fileName.innerHTML = "";
+                return;
+            }
+
+            fileName.innerHTML = "📄 " + files[0].name;
         }
 
-        fileName.innerHTML = "📄 " + files[0].name;
-    }
-});
+    });
+
+}
 
 /* =============submitpopup========================== */
 

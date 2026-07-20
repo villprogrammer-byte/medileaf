@@ -18,54 +18,60 @@
 
     <div class="ml-admin-stats-grid">
 
+        {{-- Total Products --}}
         <div class="ml-admin-stat-card">
             <div class="ml-admin-stat-icon green">
                 <i class="bi bi-box-seam"></i>
             </div>
+
             <div>
                 <p>Total Products</p>
-                <h3>128</h3>
+                <h3>{{ number_format($totalProducts ?? 0) }}</h3>
             </div>
         </div>
 
+        {{-- In Stock PCS --}}
         <div class="ml-admin-stat-card">
             <div class="ml-admin-stat-icon lime">
                 <i class="bi bi-check-circle"></i>
             </div>
+
             <div>
                 <p>In Stock PCS</p>
-                <h3>1,248</h3>
+                <h3>{{ number_format($inStockPcs ?? 0) }}</h3>
             </div>
         </div>
 
+        {{-- Out of Stock --}}
         <div class="ml-admin-stat-card">
             <div class="ml-admin-stat-icon red">
                 <i class="bi bi-exclamation-circle"></i>
             </div>
+
             <div>
                 <p>Out of Stock</p>
-                <h3>14</h3>
+                <h3>{{ number_format($outOfStockProducts ?? 0) }}</h3>
             </div>
         </div>
 
+        {{-- Total Orders --}}
         <div class="ml-admin-stat-card">
             <div class="ml-admin-stat-icon blue">
                 <i class="bi bi-cart-check"></i>
             </div>
+
             <div>
                 <p>Total Orders</p>
-                <h3>342</h3>
+                <h3>0</h3>
             </div>
         </div>
 
     </div>
 
-    <!-- Dashboard Bottom -->
-
+    {{-- Dashboard Bottom --}}
     <div class="row g-4 mt-2">
 
-        <!-- Low Stock Products -->
-
+        {{-- Low Stock Products --}}
         <div class="col-xl-5">
 
             <div class="ml-admin-card">
@@ -85,49 +91,44 @@
 
                 <div class="ml-low-stock-list">
 
-                    <div class="ml-low-stock-item">
-                        <div>
-                            <h6>CBD Oil 30ml</h6>
-                            <small>SKU : ML1025</small>
+                    @forelse($lowStockProducts ?? [] as $product)
+
+                        <div class="ml-low-stock-item">
+
+                            <div>
+                                <h6>
+                                    {{ $product->name ?? $product->product_name ?? 'Product' }}
+                                </h6>
+
+                                <small>
+                                    SKU:
+                                    {{ !empty($product->sku) ? $product->sku : 'N/A' }}
+                                </small>
+                            </div>
+
+                            @php
+                                $quantity = (int) ($product->stock_quantity ?? 0);
+                            @endphp
+
+                            <span class="badge {{ $quantity <= 3 ? 'bg-danger' : 'bg-warning text-dark' }}">
+                                {{ $quantity }} PCS
+                            </span>
+
                         </div>
 
-                        <span class="badge bg-danger">
-                            3 PCS
-                        </span>
-                    </div>
+                    @empty
 
-                    <div class="ml-low-stock-item">
-                        <div>
-                            <h6>CBD Gummies</h6>
-                            <small>SKU : ML1026</small>
+                        <div class="text-center py-4">
+
+                            <i class="bi bi-check-circle-fill text-success fs-3"></i>
+
+                            <p class="mb-0 mt-2">
+                                No low-stock products found.
+                            </p>
+
                         </div>
 
-                        <span class="badge bg-warning text-dark">
-                            7 PCS
-                        </span>
-                    </div>
-
-                    <div class="ml-low-stock-item">
-                        <div>
-                            <h6>THC Capsules</h6>
-                            <small>SKU : ML1027</small>
-                        </div>
-
-                        <span class="badge bg-danger">
-                            2 PCS
-                        </span>
-                    </div>
-
-                    <div class="ml-low-stock-item">
-                        <div>
-                            <h6>CBD Vape</h6>
-                            <small>SKU : ML1028</small>
-                        </div>
-
-                        <span class="badge bg-warning text-dark">
-                            5 PCS
-                        </span>
-                    </div>
+                    @endforelse
 
                 </div>
 
@@ -135,8 +136,7 @@
 
         </div>
 
-        <!-- Recent Orders -->
-
+        {{-- Recent Orders --}}
         <div class="col-xl-7">
 
             <div class="ml-admin-card">
@@ -159,59 +159,25 @@
                     <table class="table table-hover align-middle">
 
                         <thead>
-
                             <tr>
                                 <th>Order ID</th>
                                 <th>Customer</th>
                                 <th>Total</th>
                                 <th>Status</th>
                             </tr>
-
                         </thead>
 
                         <tbody>
 
                             <tr>
-                                <td>#ML1001</td>
-                                <td>John Smith</td>
-                                <td>$189.00</td>
-                                <td>
-                                    <span class="badge bg-success">
-                                        Completed
-                                    </span>
-                                </td>
-                            </tr>
+                                <td colspan="4" class="text-center py-4">
 
-                            <tr>
-                                <td>#ML1002</td>
-                                <td>Sarah Lee</td>
-                                <td>$249.00</td>
-                                <td>
-                                    <span class="badge bg-warning text-dark">
-                                        Pending
-                                    </span>
-                                </td>
-                            </tr>
+                                    <i class="bi bi-cart-x fs-3 text-muted"></i>
 
-                            <tr>
-                                <td>#ML1003</td>
-                                <td>Michael Brown</td>
-                                <td>$98.00</td>
-                                <td>
-                                    <span class="badge bg-primary">
-                                        Processing
-                                    </span>
-                                </td>
-                            </tr>
+                                    <p class="mb-0 mt-2 text-muted">
+                                        No orders available yet.
+                                    </p>
 
-                            <tr>
-                                <td>#ML1004</td>
-                                <td>Emma Wilson</td>
-                                <td>$321.00</td>
-                                <td>
-                                    <span class="badge bg-success">
-                                        Completed
-                                    </span>
                                 </td>
                             </tr>
 
