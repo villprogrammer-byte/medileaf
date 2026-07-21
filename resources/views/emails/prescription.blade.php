@@ -1,93 +1,112 @@
-<!DOCTYPE html>
-<html>
+@extends('emails.layouts.master')
 
-<head>
-    <meta charset="UTF-8">
-    <title>New Prescription Enquiry</title>
-</head>
+@section('title', 'New Prescription Enquiry')
 
-<body style="font-family: Arial, sans-serif; color:#333;">
+@section('content')
 
-    <h2>New Prescription Enquiry</h2>
-
-    <table cellpadding="8" cellspacing="0" border="1" width="100%" style="border-collapse: collapse;">
+    <table width="700" align="center" cellpadding="0" cellspacing="0">
 
         <tr>
-            <td><strong>First Name</strong></td>
-            <td>{{ $data['first_name'] ?? '' }}</td>
-        </tr>
-
-        <tr>
-            <td><strong>Last Name</strong></td>
-            <td>{{ $data['last_name'] ?? '' }}</td>
-        </tr>
-
-        <tr>
-            <td><strong>Email</strong></td>
-            <td>{{ $data['email'] ?? '' }}</td>
-        </tr>
-
-        <tr>
-            <td><strong>Mobile Number</strong></td>
-            <td>{{ $data['mobile'] ?? '' }}</td>
-        </tr>
-
-        <tr>
-            <td><strong>Date of Birth</strong></td>
-            <td>{{ $data['dob'] ?? '' }}</td>
-        </tr>
-
-        <tr>
-            <td><strong>State / Territory</strong></td>
-            <td>{{ $data['state'] ?? '' }}</td>
-        </tr>
-
-        <tr>
-            <td><strong>Existing Patient</strong></td>
-            <td>{{ $data['patient'] ?? '' }}</td>
-        </tr>
-
-        <tr>
-            <td><strong>Need Prescription For</strong></td>
             <td>
-                @if(!empty($data['prescription_for']))
-                    {{ implode(', ', (array) $data['prescription_for']) }}
-                @else
-                    -
-                @endif
+                <h2>New Prescription Enquiry</h2>
             </td>
         </tr>
 
         <tr>
-            <td><strong>Currently Have Prescription</strong></td>
-            <td>{{ $data['current_prescription'] ?? '' }}</td>
-        </tr>
-
-        <tr>
-            <td><strong>Additional Notes</strong></td>
-            <td>{{ $data['notes'] ?? '' }}</td>
-        </tr>
-
-        <tr>
-            <td><strong>Previous Prescription</strong></td>
             <td>
-                @if(!empty($file) || !empty($uploadedFile))
-                    Attached with this email
-                @else
-                    No file attached
-                @endif
+
+                <p>
+                    A new prescription enquiry has been submitted through the
+                    <strong>MediLeaf Health</strong> website.
+                </p>
+
+                <table border="1" cellpadding="10" cellspacing="0" width="100%">
+
+                    <tr>
+                        <td><strong>First Name</strong></td>
+                        <td>{{ $data['first_name'] ?? '' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Last Name</strong></td>
+                        <td>{{ $data['last_name'] ?? '' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Email</strong></td>
+                        <td>{{ $data['email'] ?? '' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Mobile Number</strong></td>
+                        <td>{{ $data['mobile'] ?? '' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Date of Birth</strong></td>
+                        <td>{{ $data['dob'] ?? '' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>State / Territory</strong></td>
+                        <td>{{ $data['state'] ?? '' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Existing Patient</strong></td>
+                        <td>{{ $data['patient'] ?? '' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Need Prescription For</strong></td>
+                        <td>
+                            @if(!empty($data['prescription_for']))
+                                {{ implode(', ', (array) $data['prescription_for']) }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Currently Have Prescription</strong></td>
+                        <td>{{ $data['current_prescription'] ?? '' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Additional Notes</strong></td>
+                        <td>{{ $data['notes'] ?? 'N/A' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Prescription File</strong></td>
+                        <td>
+                            @if(!empty($file))
+                                Attached with this email
+                            @else
+                                No file attached
+                            @endif
+                        </td>
+                    </tr>
+
+                </table>
+
+                <br>
+
+                <p>
+                    <strong>Submitted On:</strong>
+                    {{ now()->format('d M Y h:i A') }}
+                </p>
+
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                This email was automatically generated from the MediLeaf Health website.
             </td>
         </tr>
 
     </table>
 
-    <br>
-
-    <p>
-        <strong>Submitted On:</strong>
-        {{ now()->format('d M Y h:i A') }}
-    </p>
-
-</body>
-
-</html>
+@endsection

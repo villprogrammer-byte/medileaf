@@ -24,13 +24,13 @@ class PrescriptionController extends Controller
             'state' => 'required',
             'notes' => 'nullable|string',
             'consent' => 'accepted',
-            'prescription' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'prescription_file' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
         ]);
 
         $uploadedFile = null;
 
-        if ($request->hasFile('prescription')) {
-            $uploadedFile = $request->file('prescription')->store(
+        if ($request->hasFile('prescription_file')) {
+            $uploadedFile = $request->file('prescription_file')->store(
                 'prescriptions',
                 'public'
             );

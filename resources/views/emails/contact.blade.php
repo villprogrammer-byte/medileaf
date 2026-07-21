@@ -1,29 +1,75 @@
-<!DOCTYPE html>
-<html>
+@extends('emails.layouts.master')
 
-<head>
-    <meta charset="UTF-8">
-    <title>New Contact Enquiry</title>
-</head>
+@section('title', 'New Contact Enquiry')
 
-<body>
+@section('content')
 
-    <h2>New Contact Enquiry</h2>
+    <table class="mail-wrapper" cellpadding="0" cellspacing="0">
 
-    <p><strong>First Name:</strong> {{ $data['first_name'] }}</p>
+        <tr>
+            <td class="mail-header">
+                <h2>New Contact Enquiry</h2>
+            </td>
+        </tr>
 
-    <p><strong>Last Name:</strong> {{ $data['last_name'] }}</p>
+        <tr>
+            <td class="mail-body">
 
-    <p><strong>Email:</strong> {{ $data['email'] }}</p>
+                <p>
+                    A new contact enquiry has been submitted through
+                    <strong>MediLeaf Health</strong> website.
+                </p>
 
-    <p><strong>Phone:</strong> {{ $data['phone'] }}</p>
+                <table class="mail-table">
 
-    <p><strong>Reason:</strong> {{ $data['reason'] }}</p>
+                    <tr>
+                        <td class="label">First Name</td>
+                        <td>{{ $data['first_name'] ?? '' }}</td>
+                    </tr>
 
-    <p><strong>Message:</strong></p>
+                    <tr>
+                        <td class="label">Last Name</td>
+                        <td>{{ $data['last_name'] ?? '' }}</td>
+                    </tr>
 
-    <p>{{ $data['message'] }}</p>
+                    <tr>
+                        <td class="label">Email</td>
+                        <td>{{ $data['email'] ?? '' }}</td>
+                    </tr>
 
-</body>
+                    <tr>
+                        <td class="label">Phone</td>
+                        <td>{{ $data['phone'] ?? '' }}</td>
+                    </tr>
 
-</html>
+                    <tr>
+                        <td class="label">Reason</td>
+                        <td>{{ $data['reason'] ?? '' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="label">Message</td>
+                        <td>{{ $data['message'] ?? '' }}</td>
+                    </tr>
+
+                </table>
+
+                <br>
+
+                <p>
+                    <strong>Submitted On:</strong>
+                    {{ now()->format('d M Y h:i A') }}
+                </p>
+
+            </td>
+        </tr>
+
+        <tr>
+            <td class="mail-footer">
+                This email was automatically generated from the MediLeaf Health website.
+            </td>
+        </tr>
+
+    </table>
+
+@endsection
