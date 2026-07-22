@@ -117,5 +117,4 @@
 
 @push('scripts')
     <script src="{{ asset('js/store.js') }}"></script>
-    <script src="{{ asset('js/cart.js') }}"></script>
 @endpush

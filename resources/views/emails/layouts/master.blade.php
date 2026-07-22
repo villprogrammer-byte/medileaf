@@ -3,19 +3,27 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
 
     <style>
         /* Sari email CSS yahan rahegi */
         body {
             margin: 0;
-            padding: 20px;
+            padding: 0;
             background: #f7f7f7;
             font-family: Arial, Helvetica, sans-serif;
         }
 
+        .body-wrapper {
+            width: 100%;
+            background: #f7f7f7;
+            padding: 20px 0;
+        }
+
         .mail-wrapper {
             width: 700px;
+            max-width: 100%;
             margin: auto;
             background: #fff;
             border: 1px solid #e5e5e5;
@@ -27,6 +35,7 @@
             background: #2f7d32;
             color: #fff;
             padding: 20px;
+            text-align: center;
         }
 
         .mail-header h2 {
@@ -64,13 +73,34 @@
             color: #666;
             text-align: center;
         }
+
+        @media only screen and (max-width: 600px) {
+            .mail-wrapper {
+                width: 100% !important;
+                border-radius: 0 !important;
+            }
+
+            .mail-body {
+                padding: 15px !important;
+            }
+
+            .label {
+                width: 40% !important;
+            }
+        }
     </style>
 
 </head>
 
 <body>
 
-    @yield('content')
+    <table class="body-wrapper" cellpadding="0" cellspacing="0" role="presentation">
+        <tr>
+            <td>
+                @yield('content')
+            </td>
+        </tr>
+    </table>
 
 </body>
 

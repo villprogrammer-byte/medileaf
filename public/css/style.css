@@ -5135,10 +5135,11 @@ a.product-view-btn:focus {
 }
 
 .ml-color-dot {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
-    flex-shrink: 0;
+    border: 1px solid #ddd;
+    background: transparent;
 }
 
 /* HIDE ORIGINAL SELECT */

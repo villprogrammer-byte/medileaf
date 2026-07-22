@@ -4,10 +4,22 @@
 
 @section('content')
 
-    <table class="mail-wrapper" cellpadding="0" cellspacing="0">
+    @php
+        $fields = [
+            'First Name' => $data['first_name'] ?? '',
+            'Last Name' => $data['last_name'] ?? '',
+            'Email' => $data['email'] ?? '',
+            'Phone' => $data['phone'] ?? '',
+            'Reason' => $data['reason'] ?? '',
+        ];
+    @endphp
+
+    <table class="mail-wrapper" align="center" cellpadding="0" cellspacing="0">
 
         <tr>
             <td class="mail-header">
+                <img src="https://medileaf.com.au/img/medileaf-white-logo.webp" alt="MediLeaf Health" width="160"
+                    style="display: block; margin: 0 auto 10px auto; border: 0;">
                 <h2>New Contact Enquiry</h2>
             </td>
         </tr>
@@ -16,49 +28,25 @@
             <td class="mail-body">
 
                 <p>
-                    A new contact enquiry has been submitted through
+                    A new contact enquiry has been submitted through the
                     <strong>MediLeaf Health</strong> website.
                 </p>
 
-                <table class="mail-table">
-
-                    <tr>
-                        <td class="label">First Name</td>
-                        <td>{{ $data['first_name'] ?? '' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="label">Last Name</td>
-                        <td>{{ $data['last_name'] ?? '' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="label">Email</td>
-                        <td>{{ $data['email'] ?? '' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="label">Phone</td>
-                        <td>{{ $data['phone'] ?? '' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="label">Reason</td>
-                        <td>{{ $data['reason'] ?? '' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="label">Message</td>
-                        <td>{{ $data['message'] ?? '' }}</td>
-                    </tr>
-
+                <table class="mail-table" cellpadding="10" cellspacing="0">
+                    @foreach ($fields as $label => $value)
+                        <tr>
+                            <td class="label">{{ $label }}</td>
+                            <td>{{ $value }}</td>
+                        </tr>
+                    @endforeach
                 </table>
 
-                <br>
+                <p><strong>Message:</strong></p>
+                <p>{{ $data['message'] ?? '' }}</p>
 
-                <p>
+                <p class="submitted-date">
                     <strong>Submitted On:</strong>
-                    {{ now()->format('d M Y h:i A') }}
+                    {{ ($submittedAt ?? now())->format('d M Y h:i A') }}
                 </p>
 
             </td>

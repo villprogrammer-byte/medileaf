@@ -3,11 +3,25 @@
 @section('title', 'New Prescription Enquiry')
 
 @section('content')
+
+    @php
+        $fields = [
+            'First Name' => $data['first_name'] ?? '',
+            'Last Name' => $data['last_name'] ?? '',
+            'Date of Birth' => $data['dob'] ?? '',
+            'State / Territory' => $data['state'] ?? '',
+            'Email' => $data['email'] ?? '',
+            'Mobile Number' => $data['mobile'] ?? '',
+            'Additional Notes' => $data['notes'] ?? 'N/A',
+            'Prescription File' => !empty($file) ? 'Attached with this email' : 'No file attached',
+        ];
+    @endphp
+
     <table class="mail-wrapper" align="center" cellpadding="0" cellspacing="0">
 
         <tr>
             <td class="mail-header">
-                <h2> Uploaded Prescription</h2>
+                <h2>Uploaded Prescription</h2>
             </td>
         </tr>
 
@@ -20,58 +34,17 @@
                 </p>
 
                 <table class="mail-table" cellpadding="10" cellspacing="0">
-
-                    <tr>
-                        <td class="label">First Name</td>
-                        <td>{{ $data['first_name'] ?? '' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="label">Last Name</td>
-                        <td>{{ $data['last_name'] ?? '' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="label">Date of Birth</td>
-                        <td>{{ $data['dob'] ?? '' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="label">State / Territory</td>
-                        <td>{{ $data['state'] ?? '' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="label">Email</td>
-                        <td>{{ $data['email'] ?? '' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="label">Mobile Number</td>
-                        <td>{{ $data['mobile'] ?? '' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="label">Additional Notes</td>
-                        <td>{{ $data['notes'] ?? 'N/A' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="label">Prescription File</td>
-                        <td>
-                            @if(!empty($file))
-                                Attached with this email
-                            @else
-                                No file attached
-                            @endif
-                        </td>
-                    </tr>
-
+                    @foreach ($fields as $label => $value)
+                        <tr>
+                            <td class="label">{{ $label }}</td>
+                            <td>{{ $value }}</td>
+                        </tr>
+                    @endforeach
                 </table>
 
                 <p class="submitted-date">
                     <strong>Submitted On:</strong>
-                    {{ now()->format('d M Y h:i A') }}
+                    {{ ($submittedAt ?? now())->format('d M Y h:i A') }}
                 </p>
 
             </td>

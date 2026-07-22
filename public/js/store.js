@@ -120,5 +120,32 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Add to Bag: event delegation on the grid, works for cards that
+    // get shown/hidden/reordered by search, filter, sort & pagination
+    grid.addEventListener('click', function (event) {
+        const btn = event.target.closest('.add-to-bag-btn');
+        if (!btn || btn.disabled) return;
+
+        const card = btn.closest('.ml-shop-product-item');
+        if (!card) return;
+
+        if (!window.MedileafCart) {
+            console.warn('MedileafCart is not available. Make sure cart.js is loaded before store.js.');
+            return;
+        }
+
+        const image = card.querySelector('img') ? card.querySelector('img').getAttribute('src') : '';
+
+        const product = {
+            id: Number(card.dataset.id),
+            name: card.dataset.name,
+            price: Number(card.dataset.price),
+            image: image,
+            qty: 1
+        };
+
+        window.MedileafCart.addToCart(product);
+    });
+
     renderProducts();
 });

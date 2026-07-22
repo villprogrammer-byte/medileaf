@@ -48,20 +48,16 @@
 
                             <div class="ml-product-thumbs">
 
-                                <button type="button" class="active" data-color="#31a050" data-bg="rgba(49,160,80,0.10)"
-                                    data-image="{{ asset('storage/' . $product->featured_image) }}">
-
-                                    <img src="{{ asset('storage/' . $product->featured_image) }}"
-                                        alt="{{ $product->image_alt ?: $product->name }}">
-
-                                </button>
+                                <button type="button" data-color="#31a050" data-bg="rgba(49,160,80,0.10)"
+                                    data-image="{{ asset('storage/' . $product->featured_image) }}"> <img
+                                        src="{{ asset('storage/' . $product->featured_image) }}"
+                                        alt="{{ $product->image_alt ?: $product->name }}"> </button>
 
                                 <div class="ml-product-color-select">
 
                                     <label class="ml-color-label">
-                                        <span class="ml-color-dot" id="currentColorDot" style="background:#31a050">
+                                        <span class="ml-color-dot" id="currentColorDot">
                                         </span>
-
                                         Colour
                                     </label>
 

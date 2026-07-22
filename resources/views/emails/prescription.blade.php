@@ -4,6 +4,24 @@
 
 @section('content')
 
+    @php
+        $fields = [
+            'First Name' => $data['first_name'] ?? '',
+            'Last Name' => $data['last_name'] ?? '',
+            'Email' => $data['email'] ?? '',
+            'Mobile Number' => $data['mobile'] ?? '',
+            'Date of Birth' => $data['dob'] ?? '',
+            'State / Territory' => $data['state'] ?? '',
+            'Existing Patient' => $data['patient'] ?? '',
+            'Need Prescription For' => !empty($data['prescription_for'])
+                ? implode(', ', (array) $data['prescription_for'])
+                : '-',
+            'Currently Have Prescription' => $data['current_prescription'] ?? '',
+            'Additional Notes' => $data['notes'] ?? 'N/A',
+            'Prescription File' => !empty($file) ? 'Attached with this email' : 'No file attached',
+        ];
+    @endphp
+
     <table width="700" align="center" cellpadding="0" cellspacing="0">
 
         <tr>
@@ -21,81 +39,19 @@
                 </p>
 
                 <table border="1" cellpadding="10" cellspacing="0" width="100%">
-
-                    <tr>
-                        <td><strong>First Name</strong></td>
-                        <td>{{ $data['first_name'] ?? '' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td><strong>Last Name</strong></td>
-                        <td>{{ $data['last_name'] ?? '' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td><strong>Email</strong></td>
-                        <td>{{ $data['email'] ?? '' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td><strong>Mobile Number</strong></td>
-                        <td>{{ $data['mobile'] ?? '' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td><strong>Date of Birth</strong></td>
-                        <td>{{ $data['dob'] ?? '' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td><strong>State / Territory</strong></td>
-                        <td>{{ $data['state'] ?? '' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td><strong>Existing Patient</strong></td>
-                        <td>{{ $data['patient'] ?? '' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td><strong>Need Prescription For</strong></td>
-                        <td>
-                            @if(!empty($data['prescription_for']))
-                                {{ implode(', ', (array) $data['prescription_for']) }}
-                            @else
-                                -
-                            @endif
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td><strong>Currently Have Prescription</strong></td>
-                        <td>{{ $data['current_prescription'] ?? '' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td><strong>Additional Notes</strong></td>
-                        <td>{{ $data['notes'] ?? 'N/A' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td><strong>Prescription File</strong></td>
-                        <td>
-                            @if(!empty($file))
-                                Attached with this email
-                            @else
-                                No file attached
-                            @endif
-                        </td>
-                    </tr>
-
+                    @foreach ($fields as $label => $value)
+                        <tr>
+                            <td><strong>{{ $label }}</strong></td>
+                            <td>{{ $value }}</td>
+                        </tr>
+                    @endforeach
                 </table>
 
                 <br>
 
                 <p>
                     <strong>Submitted On:</strong>
-                    {{ now()->format('d M Y h:i A') }}
+                    {{ ($submittedAt ?? now())->format('d M Y h:i A') }}
                 </p>
 
             </td>

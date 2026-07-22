@@ -157,6 +157,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // Buy Now ke liye product-view.js false pass kar sakta hai taaki drawer na khule.
     function addToCart(product, options) {
 
+        console.log("addToCart CALLED — qty:", product.qty, "id:", product.id);
+
+        options = options || {};
+
         options = options || {};
 
         const openDrawer = options.openDrawer !== false;
