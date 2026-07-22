@@ -17,6 +17,7 @@
         <img src="{{ asset('img/404.webp') }}" alt="404 Page" class="desktop-404">
         <img src="{{ asset('img/404-mobile.webp') }}" alt="404 Page" class="mobile-404">
 
+
         <div class="btn-area">
             <a href="{{ url('/') }}" class="home-btn">
                 <i class="bi bi-arrow-left"></i> Back to Home
