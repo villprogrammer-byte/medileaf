@@ -26,36 +26,6 @@
                             practitioner may issue a prescription following your consultation.
                         </p>
 
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <i class="bi bi-shield-lock"></i>
-                            </div>
-                            <div>
-                                <h4>Secure & Confidential</h4>
-                                <p>Your information and documents are encrypted and kept private.</p>
-                            </div>
-                        </div>
-
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <i class="bi bi-lightning-charge"></i>
-                            </div>
-                            <div>
-                                <h4>Fast Review</h4>
-                                <p>Our team reviews your enquiry promptly to avoid delays.</p>
-                            </div>
-                        </div>
-
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <i class="bi bi-patch-check"></i>
-                            </div>
-                            <div>
-                                <h4>Australian Standards</h4>
-                                <p>We follow strict healthcare and privacy regulations in Australia.</p>
-                            </div>
-                        </div>
-
                         <div class="contact-box">
                             <div class="icon"><i class="bi bi-telephone"></i></div>
                             <div>
@@ -97,21 +67,6 @@
 
                 <!-- Right Form -->
                 <div class="col-lg-8">
-
-                    <div class="prescription-tabs">
-
-                        <a href="" class="tab-btn active">
-                            <i class="bi bi-clipboard2-pulse"></i>
-                            <span>Need a Prescription?</span>
-                        </a>
-
-                        <a href="upload-prescription" class="tab-btn">
-                            <i class="bi bi-cloud-upload"></i>
-                            <span>Upload Existing Prescription</span>
-                        </a>
-
-                    </div>
-
                     <div class="prescription-form-card">
 
                         <div class="form-heading">
@@ -133,8 +88,7 @@
                                     <label>First Name *</label>
                                     <div class="input-wrap">
                                         <i class="fa-regular fa-user"></i>
-                                        <input type="text" name="first_name" value="{{ old('first_name') }}"
-                                            placeholder="Enter your first name" required>
+                                        <input type="text" name="first_name" placeholder="Enter your first name" required>
                                     </div>
                                 </div>
 
@@ -142,8 +96,7 @@
                                     <label>Last Name *</label>
                                     <div class="input-wrap">
                                         <i class="fa-regular fa-user"></i>
-                                        <input type="text" name="last_name" value="{{ old('last_name') }}"
-                                            placeholder="Enter your last name" required>
+                                        <input type="text" name="last_name" placeholder="Enter your last name" required>
                                     </div>
                                 </div>
 
@@ -151,8 +104,7 @@
                                     <label>Email *</label>
                                     <div class="input-wrap">
                                         <i class="fa-regular fa-envelope"></i>
-                                        <input type="email" name="email" value="{{ old('email') }}"
-                                            placeholder="Enter your email address" required>
+                                        <input type="email" name="email" placeholder="Enter your email address" required>
                                     </div>
                                 </div>
 
@@ -160,8 +112,7 @@
                                     <label>Mobile Number *</label>
                                     <div class="input-wrap">
                                         <i class="fa-solid fa-phone"></i>
-                                        <input type="text" name="mobile" value="{{ old('mobile') }}"
-                                            placeholder="Enter your mobile number" required>
+                                        <input type="text" name="mobile" placeholder="Enter your mobile number" required>
                                     </div>
                                 </div>
 
@@ -182,11 +133,14 @@
                                         <i class="fa-solid fa-location-dot"></i>
                                         <select name="state" required>
                                             <option value="">Select your state</option>
-                                            @foreach(['NSW', 'VIC', 'QLD', 'WA', 'SA', 'TAS', 'ACT', 'NT'] as $state)
-                                                <option value="{{ $state }}" {{ old('state') == $state ? 'selected' : '' }}>
-                                                    {{ $state }}
-                                                </option>
-                                            @endforeach
+                                            <option value="NSW">NSW</option>
+                                            <option value="VIC">VIC</option>
+                                            <option value="QLD">QLD</option>
+                                            <option value="WA">WA</option>
+                                            <option value="SA">SA</option>
+                                            <option value="TAS">TAS</option>
+                                            <option value="ACT">ACT</option>
+                                            <option value="NT">NT</option>
                                         </select>
                                     </div>
                                 </div>
@@ -232,7 +186,7 @@
 
                                         <i class="bi bi-cloud-upload"></i>
                                         <p><strong>Click to upload</strong> or drag and drop</p>
-                                        <small>PDF, JPG, PNG (Max. 10MB)</small>
+                                        <small>PDF, JPG, PNG (Max. 5MB)</small>
 
                                         <br>
                                         <button type="button" class="choose-file-btn">Choose File</button>
@@ -244,7 +198,7 @@
                                     <div class="textarea-wrap">
                                         <i class="fa-regular fa-pen-to-square"></i>
                                         <textarea name="notes"
-                                            placeholder="Any extra information you'd like to share...">{{ old('notes') }}</textarea>
+                                            placeholder="Any extra information you'd like to share..."></textarea>
                                     </div>
                                 </div>
 
@@ -302,3 +256,7 @@
         </div>
     @endif
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/prescription-upload.js') }}"></script>
+@endpush

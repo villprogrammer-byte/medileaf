@@ -28,10 +28,8 @@
         </a>
     </div>
 
-    <form action="{{ route('admin.products.store') }}"
-      method="POST"
-      enctype="multipart/form-data">
-    @csrf
+    <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
 
         <div class="row g-4">
 
@@ -94,23 +92,19 @@
                             <select name="category" class="ml-admin-input">
                                 <option value="">Select Category</option>
 
-                                <option value="Vaporisers"
-                                    {{ old('category') === 'Vaporisers' ? 'selected' : '' }}>
+                                <option value="Vaporisers" {{ old('category') === 'Vaporisers' ? 'selected' : '' }}>
                                     Vaporisers
                                 </option>
 
-                                <option value="Accessories"
-                                    {{ old('category') === 'Accessories' ? 'selected' : '' }}>
+                                <option value="Accessories" {{ old('category') === 'Accessories' ? 'selected' : '' }}>
                                     Accessories
                                 </option>
 
-                                <option value="Wellness Products"
-                                    {{ old('category') === 'Wellness Products' ? 'selected' : '' }}>
+                                <option value="Wellness Products" {{ old('category') === 'Wellness Products' ? 'selected' : '' }}>
                                     Wellness Products
                                 </option>
 
-                                <option value="Pharmacy Support"
-                                    {{ old('category') === 'Pharmacy Support' ? 'selected' : '' }}>
+                                <option value="Pharmacy Support" {{ old('category') === 'Pharmacy Support' ? 'selected' : '' }}>
                                     Pharmacy Support
                                 </option>
                             </select>
@@ -134,87 +128,67 @@
                                 Available Colours
                             </label>
 
-                            <div class="ml-color-options">
+                            @php
+                                $defaultColours = ['Black', 'Silver', 'White', 'Blue', 'Green'];
+                            @endphp
 
-                                <label class="ml-color-chip">
-                                    <input
-                                        type="checkbox"
-                                        name="colors[]"
-                                        value="Black"
-                                        {{ in_array('Black', old('colors', [])) ? 'checked' : '' }}>
+                            @foreach ($defaultColours as $colour)
 
-                                    <span>Black</span>
-                                </label>
+                                <div class="border rounded p-3 mb-3">
 
-                                <label class="ml-color-chip">
-                                    <input
-                                        type="checkbox"
-                                        name="colors[]"
-                                        value="Silver"
-                                        {{ in_array('Silver', old('colors', [])) ? 'checked' : '' }}>
+                                    <div class="form-check mb-3">
 
-                                    <span>Silver</span>
-                                </label>
+                                        <input
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            name="colors[]"
+                                            value="{{ $colour }}"
+                                            id="colour{{ $loop->index }}">
 
-                                <label class="ml-color-chip">
-                                    <input
-                                        type="checkbox"
-                                        name="colors[]"
-                                        value="White"
-                                        {{ in_array('White', old('colors', [])) ? 'checked' : '' }}>
+                                        <label
+                                            class="form-check-label fw-semibold"
+                                            for="colour{{ $loop->index }}">
 
-                                    <span>White</span>
-                                </label>
+                                            {{ $colour }}
 
-                                <label class="ml-color-chip">
-                                    <input
-                                        type="checkbox"
-                                        name="colors[]"
-                                        value="Blue"
-                                        {{ in_array('Blue', old('colors', [])) ? 'checked' : '' }}>
+                                        </label>
 
-                                    <span>Blue</span>
-                                </label>
-
-                                <label class="ml-color-chip">
-                                    <input
-                                        type="checkbox"
-                                        name="colors[]"
-                                        value="Green"
-                                        {{ in_array('Green', old('colors', [])) ? 'checked' : '' }}>
-
-                                    <span>Green</span>
-                                </label>
-
-                            </div>
-
-                            <div class="ml-custom-colour-box pt-3">
-
-                                <label class="ml-admin-label">
-                                    Add Custom Colour
-                                </label>
-
-                                <div class="ml-custom-colour-wrap">
+                                    </div>
 
                                     <input
-                                        type="text"
-                                        name="custom_colour"
-                                        value="{{ old('custom_colour') }}"
-                                        class="ml-admin-input"
-                                        placeholder="Example: Titanium Grey">
+                                        type="file"
+                                        class="form-control"
+                                        name="color_images[{{ $colour }}]"
+                                        accept=".jpg,.jpeg,.png,.webp">
 
-                                    <button
-                                        type="button"
-                                        class="ml-add-colour-btn">
-
-                                        <i class="bi bi-plus-lg"></i>
-                                        Add
-                                    </button>
+                                    <small class="text-muted">
+                                        Upload image for {{ $colour }}
+                                    </small>
 
                                 </div>
 
-                                <small class="text-muted d-block pt-2">
-                                    Add a custom colour if it is not available above.
+                            @endforeach
+
+                            <div class="border rounded p-3">
+
+                                <label class="fw-semibold mb-2 d-block">
+                                    Custom Colour
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="ml-admin-input mb-3"
+                                    name="custom_colour"
+                                    placeholder="Example : Titanium Grey">
+
+                                <input
+                                    type="file"
+                                    class="form-control"
+                                    name="custom_colour_image"
+                                    accept=".jpg,.jpeg,.png,.webp">
+
+                                <small class="text-muted">
+                                    Upload custom colour image.
                                 </small>
 
                             </div>
@@ -226,18 +200,15 @@
 
                             <select name="product_type" class="ml-admin-input">
 
-                                <option value="Physical Product"
-                                    {{ old('product_type', 'Physical Product') === 'Physical Product' ? 'selected' : '' }}>
+                                <option value="Physical Product" {{ old('product_type', 'Physical Product') === 'Physical Product' ? 'selected' : '' }}>
                                     Physical Product
                                 </option>
 
-                                <option value="Medical Device"
-                                    {{ old('product_type') === 'Medical Device' ? 'selected' : '' }}>
+                                <option value="Medical Device" {{ old('product_type') === 'Medical Device' ? 'selected' : '' }}>
                                     Medical Device
                                 </option>
 
-                                <option value="Accessory"
-                                    {{ old('product_type') === 'Accessory' ? 'selected' : '' }}>
+                                <option value="Accessory" {{ old('product_type') === 'Accessory' ? 'selected' : '' }}>
                                     Accessory
                                 </option>
 
@@ -245,14 +216,14 @@
                         </div>
 
                         <div class="col-md-6">
-    <label class="ml-admin-label">Reference Number</label>
+                            <label class="ml-admin-label">Reference Number</label>
 
-    <input
-        type="text"
-        name="reference_number"
-        class="ml-admin-input"
-        placeholder="e.g. 01 01 MM"
-        value="{{ old('reference_number') }}">
+                            <input
+                                type="text"
+                                name="reference_number"
+                                class="ml-admin-input"
+                                placeholder="e.g. 01 01 MM"
+                                value="{{ old('reference_number') }}">
                         </div>
 
                     </div>
@@ -341,10 +312,10 @@
                         <label class="ml-admin-label">Full Description</label>
 
                         <textarea
-                          id="description"
-                          name="description"
-                          class="ml-admin-textarea ml-admin-long-textarea"
-                          rows="8">{{ old('description', $product->description ?? '') }}</textarea>
+                            id="description"
+                            name="description"
+                            class="ml-admin-textarea ml-admin-long-textarea"
+                            rows="8">{{ old('description', $product->description ?? '') }}</textarea>
                     </div>
 
                 </div>
@@ -393,23 +364,17 @@
                                 Stock Status <span class="text-danger">*</span>
                             </label>
 
-                            <select
-                                name="stock_status"
-                                class="ml-admin-input"
-                                required>
+                            <select name="stock_status" class="ml-admin-input" required>
 
-                                <option value="in_stock"
-                                    {{ old('stock_status', 'in_stock') === 'in_stock' ? 'selected' : '' }}>
+                                <option value="in_stock" {{ old('stock_status', 'in_stock') === 'in_stock' ? 'selected' : '' }}>
                                     In Stock
                                 </option>
 
-                                <option value="out_of_stock"
-                                    {{ old('stock_status') === 'out_of_stock' ? 'selected' : '' }}>
+                                <option value="out_of_stock" {{ old('stock_status') === 'out_of_stock' ? 'selected' : '' }}>
                                     Out of Stock
                                 </option>
 
-                                <option value="low_stock"
-                                    {{ old('stock_status') === 'low_stock' ? 'selected' : '' }}>
+                                <option value="low_stock" {{ old('stock_status') === 'low_stock' ? 'selected' : '' }}>
                                     Low Stock
                                 </option>
 
@@ -485,23 +450,17 @@
                             Product Status <span class="text-danger">*</span>
                         </label>
 
-                        <select
-                            name="status"
-                            class="ml-admin-input"
-                            required>
+                        <select name="status" class="ml-admin-input" required>
 
-                            <option value="published"
-                                {{ old('status') === 'published' ? 'selected' : '' }}>
+                            <option value="published" {{ old('status') === 'published' ? 'selected' : '' }}>
                                 Published
                             </option>
 
-                            <option value="draft"
-                                {{ old('status', 'draft') === 'draft' ? 'selected' : '' }}>
+                            <option value="draft" {{ old('status', 'draft') === 'draft' ? 'selected' : '' }}>
                                 Draft
                             </option>
 
-                            <option value="hidden"
-                                {{ old('status') === 'hidden' ? 'selected' : '' }}>
+                            <option value="hidden" {{ old('status') === 'hidden' ? 'selected' : '' }}>
                                 Hidden
                             </option>
 
@@ -539,19 +498,11 @@
 
                     <div class="ml-product-publish-actions">
 
-                        <button
-                            type="submit"
-                            name="status"
-                            value="draft"
-                            class="ml-product-draft-btn">
+                        <button type="submit" name="status" value="draft" class="ml-product-draft-btn">
                             Save Draft
                         </button>
 
-                        <button
-                            type="submit"
-                            name="status"
-                            value="published"
-                            class="ml-product-publish-btn">
+                        <button type="submit" name="status" value="published" class="ml-product-publish-btn">
                             Publish Product
                         </button>
 
@@ -688,30 +639,30 @@
 
     </form>
 
-<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
 
-    const descriptionField = document.querySelector("#description");
+            const descriptionField = document.querySelector("#description");
 
-    if (!descriptionField) {
-        console.error("Description field not found.");
-        return;
-    }
+            if (!descriptionField) {
+                console.error("Description field not found.");
+                return;
+            }
 
-    if (typeof ClassicEditor === "undefined") {
-        console.error("CKEditor library did not load.");
-        return;
-    }
+            if (typeof ClassicEditor === "undefined") {
+                console.error("CKEditor library did not load.");
+                return;
+            }
 
-    ClassicEditor
-        .create(descriptionField)
-        .catch(function (error) {
-            console.error("CKEditor error:", error);
+            ClassicEditor
+                .create(descriptionField)
+                .catch(function (error) {
+                    console.error("CKEditor error:", error);
+                });
+
         });
-
-});
-</script>
+    </script>
 
 @endsection

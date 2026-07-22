@@ -264,3 +264,8 @@
     @endif
 
 @endsection
+
+
+@push('scripts')
+    <script src="{{ asset('js/prescription-upload.js') }}"></script>
+@endpush

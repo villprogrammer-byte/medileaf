@@ -18,34 +18,88 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let cart = [];
 
+    /*
+    |--------------------------------------------------------------------------
+    | Load Cart
+    |--------------------------------------------------------------------------
+    */
+
     try {
+
         const storedCart = JSON.parse(
             localStorage.getItem("medileafCart")
         );
 
-        cart = Array.isArray(storedCart) ? storedCart : [];
+        cart = Array.isArray(storedCart)
+            ? storedCart
+            : [];
+
     } catch (error) {
+
         cart = [];
+
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Helpers
+    |--------------------------------------------------------------------------
+    */
+
     function saveCart() {
+
         localStorage.setItem(
             "medileafCart",
             JSON.stringify(cart)
         );
+
+    }
+
+    function escapeHtml(value) {
+
+        return String(value ?? "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+
+    }
+
+    function normaliseColour(colour) {
+
+        const value = String(colour || "").trim();
+
+        return value || "Default";
+
+    }
+
+    function createVariantKey(productId, colour) {
+
+        return String(productId) +
+            "::" +
+            normaliseColour(colour).toLowerCase();
+
     }
 
     function showToast() {
-        if (!toast) return;
+
+        if (!toast) {
+            return;
+        }
 
         toast.classList.add("active");
 
         setTimeout(function () {
+
             toast.classList.remove("active");
+
         }, 1800);
+
     }
 
     function openCart() {
+
         if (cartDrawer) {
             cartDrawer.classList.add("active");
         }
@@ -55,11 +109,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         cartOpenTriggers.forEach(function (trigger) {
+
             trigger.classList.add("active");
+
         });
+
     }
 
     function closeCart() {
+
         if (cartDrawer) {
             cartDrawer.classList.remove("active");
         }
@@ -69,37 +127,61 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         cartOpenTriggers.forEach(function (trigger) {
+
             trigger.classList.remove("active");
+
         });
+
     }
 
     function updateHeaderCartCount(count) {
-        document.querySelectorAll(".ml-cart-count").forEach(function (el) {
-            el.textContent = count;
-        });
+
+        document
+            .querySelectorAll(".ml-cart-count")
+            .forEach(function (element) {
+
+                element.textContent = count;
+
+            });
+
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Render Cart
+    |--------------------------------------------------------------------------
+    */
 
     function renderCart() {
 
         const count = cart.reduce(function (sum, item) {
+
             return sum + (Number(item.qty) || 0);
+
         }, 0);
 
         updateHeaderCartCount(count);
+
         saveCart();
 
-        // Agar drawer is page par mount nahi hai (partial include nahi hua),
-        // to sirf badge update karke ruk jao
-        if (!cartItemsBox || !cartTotal) return;
+        if (!cartItemsBox || !cartTotal) {
+            return;
+        }
 
         cartItemsBox.innerHTML = "";
 
         if (cart.length === 0) {
+
             cartItemsBox.innerHTML = `
                 <p class="ml-shop-cart-empty">
                     Your cart is empty.
                 </p>
             `;
+
+            cartTotal.textContent = "A$0.00";
+
+            return;
+
         }
 
         let total = 0;
@@ -109,17 +191,43 @@ document.addEventListener("DOMContentLoaded", function () {
             const itemPrice = Number(item.price) || 0;
             const itemQty = Number(item.qty) || 1;
 
+            const colour = normaliseColour(item.colour);
+
+            const variantKey = item.variantKey ||
+                createVariantKey(item.id, colour);
+
+            item.variantKey = variantKey;
+            item.colour = colour;
+
             total += itemPrice * itemQty;
 
             const cartItem = document.createElement("div");
+
             cartItem.className = "ml-shop-cart-item";
 
             cartItem.innerHTML = `
-                <img src="${item.image}" alt="${item.name}">
+                <img
+                    src="${escapeHtml(item.image)}"
+                    alt="${escapeHtml(item.name)} - ${escapeHtml(colour)}"
+                >
 
                 <div class="ml-shop-cart-info">
 
-                    <h4>${item.name}</h4>
+                    <h4>
+                        ${escapeHtml(item.name)}
+                    </h4>
+
+                    ${colour !== "Default"
+                    ? `
+                                <small class="ml-cart-item-colour">
+                                    Colour:
+                                    <strong>
+                                        ${escapeHtml(colour)}
+                                    </strong>
+                                </small>
+                            `
+                    : ""
+                }
 
                     <p>
                         A$${(itemPrice * itemQty).toFixed(2)}
@@ -127,19 +235,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     <div class="ml-shop-cart-qty">
 
-                        <button type="button" data-action="minus" data-id="${item.id}">
+                        <button
+                            type="button"
+                            data-action="minus"
+                            data-variant-key="${escapeHtml(variantKey)}"
+                            aria-label="Decrease quantity"
+                        >
                             −
                         </button>
 
-                        <span>${itemQty}</span>
+                        <span>
+                            ${itemQty}
+                        </span>
 
-                        <button type="button" data-action="plus" data-id="${item.id}">
+                        <button
+                            type="button"
+                            data-action="plus"
+                            data-variant-key="${escapeHtml(variantKey)}"
+                            aria-label="Increase quantity"
+                        >
                             +
                         </button>
 
                     </div>
 
-                    <button class="ml-shop-cart-remove" type="button" data-action="remove" data-id="${item.id}">
+                    <button
+                        class="ml-shop-cart-remove"
+                        type="button"
+                        data-action="remove"
+                        data-variant-key="${escapeHtml(variantKey)}"
+                    >
                         Remove
                     </button>
 
@@ -147,136 +272,343 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
 
             cartItemsBox.appendChild(cartItem);
+
         });
 
-        cartTotal.textContent = "A$" + total.toFixed(2);
+        cartTotal.textContent =
+            "A$" + total.toFixed(2);
+
     }
 
-    // Product page (ya kahi bhi) se product add karne ke liye global entry point.
-    // options.openDrawer / options.showToast default true rehte hain (Add to Bag ke liye),
-    // Buy Now ke liye product-view.js false pass kar sakta hai taaki drawer na khule.
+    /*
+    |--------------------------------------------------------------------------
+    | Add Product to Cart
+    |--------------------------------------------------------------------------
+    */
+
     function addToCart(product, options) {
 
-        console.log("addToCart CALLED — qty:", product.qty, "id:", product.id);
-
         options = options || {};
 
-        options = options || {};
+        const openDrawer =
+            options.openDrawer !== false;
 
-        const openDrawer = options.openDrawer !== false;
-        const shouldShowToast = options.showToast !== false;
+        const shouldShowToast =
+            options.showToast !== false;
+
+        const productId = Number(product.id);
+
+        const quantity = Math.max(
+            1,
+            Number(product.qty) || 1
+        );
+
+        const colour = normaliseColour(
+            product.colour
+        );
+
+        const variantKey = createVariantKey(
+            productId,
+            colour
+        );
 
         const existing = cart.find(function (item) {
-            return Number(item.id) === Number(product.id);
+
+            const itemKey = item.variantKey ||
+                createVariantKey(
+                    item.id,
+                    item.colour
+                );
+
+            return itemKey === variantKey;
+
         });
 
         if (existing) {
-            existing.qty = Number(existing.qty) + Number(product.qty || 1);
-            existing.name = product.name;
-            existing.price = product.price;
-            existing.image = product.image;
+
+            existing.qty =
+                Number(existing.qty || 0) +
+                quantity;
+
+            existing.name =
+                product.name || existing.name;
+
+            existing.price =
+                Number(product.price) || 0;
+
+            existing.image =
+                product.image || existing.image;
+
+            existing.colour = colour;
+            existing.variantKey = variantKey;
+
         } else {
+
             cart.push({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                image: product.image,
-                qty: Number(product.qty) || 1
+
+                id: productId,
+
+                variantKey: variantKey,
+
+                name: product.name || "",
+
+                price: Number(product.price) || 0,
+
+                image: product.image || "",
+
+                colour: colour,
+
+                qty: quantity
+
             });
+
         }
 
         renderCart();
 
-        if (shouldShowToast) showToast();
-        if (openDrawer) openCart();
+        if (shouldShowToast) {
+            showToast();
+        }
+
+        if (openDrawer) {
+            openCart();
+        }
+
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Drawer Events
+    |--------------------------------------------------------------------------
+    */
+
     cartOpenTriggers.forEach(function (trigger) {
-        trigger.addEventListener("click", function (event) {
-            event.preventDefault();
-            openCart();
-        });
+
+        trigger.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+
+                openCart();
+
+            }
+        );
+
     });
 
     if (cartClose) {
-        cartClose.addEventListener("click", closeCart);
+
+        cartClose.addEventListener(
+            "click",
+            closeCart
+        );
+
     }
 
     if (cartOverlay) {
-        cartOverlay.addEventListener("click", closeCart);
+
+        cartOverlay.addEventListener(
+            "click",
+            closeCart
+        );
+
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Quantity and Remove Events
+    |--------------------------------------------------------------------------
+    */
 
     if (cartItemsBox) {
 
-        cartItemsBox.addEventListener("click", function (event) {
+        cartItemsBox.addEventListener(
+            "click",
+            function (event) {
 
-            const button = event.target.closest("button");
+                const button = event.target.closest(
+                    "button[data-action]"
+                );
 
-            if (!button) return;
-
-            const action = button.dataset.action;
-            const id = Number(button.dataset.id);
-
-            if (!action || !id) return;
-
-            const item = cart.find(function (cartItem) {
-                return Number(cartItem.id) === id;
-            });
-
-            if (!item) return;
-
-            if (action === "plus") {
-                item.qty = Number(item.qty) + 1;
-            }
-
-            if (action === "minus") {
-                item.qty = Number(item.qty) - 1;
-
-                if (item.qty <= 0) {
-                    cart = cart.filter(function (cartItem) {
-                        return Number(cartItem.id) !== id;
-                    });
+                if (!button) {
+                    return;
                 }
-            }
 
-            if (action === "remove") {
-                cart = cart.filter(function (cartItem) {
-                    return Number(cartItem.id) !== id;
-                });
-            }
+                const action =
+                    button.dataset.action;
 
-            renderCart();
-        });
+                const variantKey =
+                    button.dataset.variantKey;
+
+                if (!action || !variantKey) {
+                    return;
+                }
+
+                const item = cart.find(
+                    function (cartItem) {
+
+                        const itemKey =
+                            cartItem.variantKey ||
+                            createVariantKey(
+                                cartItem.id,
+                                cartItem.colour
+                            );
+
+                        return itemKey === variantKey;
+
+                    }
+                );
+
+                if (!item) {
+                    return;
+                }
+
+                if (action === "plus") {
+
+                    item.qty =
+                        Number(item.qty || 0) + 1;
+
+                }
+
+                if (action === "minus") {
+
+                    item.qty =
+                        Number(item.qty || 1) - 1;
+
+                    if (item.qty <= 0) {
+
+                        cart = cart.filter(
+                            function (cartItem) {
+
+                                const itemKey =
+                                    cartItem.variantKey ||
+                                    createVariantKey(
+                                        cartItem.id,
+                                        cartItem.colour
+                                    );
+
+                                return itemKey !== variantKey;
+
+                            }
+                        );
+
+                    }
+
+                }
+
+                if (action === "remove") {
+
+                    cart = cart.filter(
+                        function (cartItem) {
+
+                            const itemKey =
+                                cartItem.variantKey ||
+                                createVariantKey(
+                                    cartItem.id,
+                                    cartItem.colour
+                                );
+
+                            return itemKey !== variantKey;
+
+                        }
+                    );
+
+                }
+
+                renderCart();
+
+            }
+        );
+
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Clear Cart
+    |--------------------------------------------------------------------------
+    */
 
     if (clearCartBtn) {
-        clearCartBtn.addEventListener("click", function () {
-            cart = [];
-            renderCart();
-        });
+
+        clearCartBtn.addEventListener(
+            "click",
+            function () {
+
+                cart = [];
+
+                renderCart();
+
+            }
+        );
+
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Checkout
+    |--------------------------------------------------------------------------
+    */
 
     if (checkoutBtn) {
-        checkoutBtn.addEventListener("click", function () {
 
-            if (cart.length === 0) {
-                alert("Your cart is empty.");
-                return;
+        checkoutBtn.addEventListener(
+            "click",
+            function () {
+
+                if (cart.length === 0) {
+
+                    alert("Your cart is empty.");
+
+                    return;
+
+                }
+
+                const checkoutUrl =
+                    checkoutBtn.dataset.checkoutUrl;
+
+                if (checkoutUrl) {
+
+                    window.location.href =
+                        checkoutUrl;
+
+                }
+
             }
+        );
 
-            window.location.href = checkoutBtn.dataset.checkoutUrl;
-        });
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Initial Render
+    |--------------------------------------------------------------------------
+    */
 
     renderCart();
 
-    // Product page (product-view.js) aur kisi bhi future page ke liye
-    // global API — window.MedileafCart.addToCart({id, name, price, image, qty})
+    /*
+    |--------------------------------------------------------------------------
+    | Global Cart API
+    |--------------------------------------------------------------------------
+    */
+
     window.MedileafCart = {
+
         addToCart: addToCart,
+
         open: openCart,
+
         close: closeCart,
-        render: renderCart
+
+        render: renderCart,
+
+        getItems: function () {
+
+            return [...cart];
+
+        }
+
     };
 
 });

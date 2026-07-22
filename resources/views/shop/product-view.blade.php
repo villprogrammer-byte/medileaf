@@ -26,10 +26,8 @@
             <!-- Back Button -->
             <div class="ml-checkout-back-wrap mb-4">
                 <button type="button" class="ml-checkout-back-btn" onclick="history.back()">
-
                     <i class="bi bi-arrow-left"></i>
                     Back to Store
-
                 </button>
             </div>
 
@@ -48,17 +46,51 @@
 
                             <div class="ml-product-thumbs">
 
-                                <button type="button" data-color="#31a050" data-bg="rgba(49,160,80,0.10)"
-                                    data-image="{{ asset('storage/' . $product->featured_image) }}"> <img
-                                        src="{{ asset('storage/' . $product->featured_image) }}"
-                                        alt="{{ $product->image_alt ?: $product->name }}"> </button>
+                                @php
+                                    $colourImages = is_array($product->color_images)
+                                        ? $product->color_images
+                                        : [];
+
+                                    $colourDotMap = [
+                                        'black' => '#000000',
+                                        'white' => '#ffffff',
+                                        'silver' => '#c0c0c0',
+                                        'grey' => '#808080',
+                                        'gray' => '#808080',
+                                        'blue' => '#2b6cf6',
+                                        'green' => '#31a050',
+                                    ];
+
+                                    $colourOptions = collect($product->colors ?? [])
+                                        ->values()
+                                        ->map(function ($colour, $index) use ($colourImages, $colourDotMap, $product) {
+                                            return [
+                                                'index' => $index,
+                                                'name' => $colour,
+                                                'dot' => $colourDotMap[strtolower($colour)] ?? '#31a050',
+                                                'image' => isset($colourImages[$colour])
+                                                    ? asset('storage/' . $colourImages[$colour])
+                                                    : asset('storage/' . $product->featured_image),
+                                            ];
+                                        });
+                                @endphp
+
+                                @foreach ($colourOptions as $option)
+                                    <button type="button" data-index="{{ $option['index'] }}" data-color="{{ $option['dot'] }}"
+                                        data-bg="rgba(49,160,80,0.10)" data-image="{{ $option['image'] }}">
+                                        <img src="{{ $option['image'] }}">
+                                    </button>
+                                @endforeach
 
                                 <div class="ml-product-color-select">
 
                                     <label class="ml-color-label">
+
                                         <span class="ml-color-dot" id="currentColorDot">
                                         </span>
+
                                         Colour
+
                                     </label>
 
                                     <div class="ml-custom-select" id="mlCustomColorSelect">
@@ -66,7 +98,7 @@
                                         <div class="ml-custom-select-trigger">
 
                                             <span id="mlSelectedColor">
-                                                {{ $product->color_name ?? 'Default' }}
+                                                {{ $product->colors[0] ?? 'Default' }}
                                             </span>
 
                                             <i class="bi bi-chevron-down"></i>
@@ -75,14 +107,20 @@
 
                                         <div class="ml-custom-options">
 
-                                            <div class="ml-custom-option" data-index="0">
+                                            @foreach ($colourOptions as $option)
 
-                                                <span class="color-circle" style="background:#31a050">
-                                                </span>
+                                                <div class="ml-custom-option" data-index="{{ $option['index'] }}"
+                                                    data-color="{{ $option['dot'] }}" data-name="{{ $option['name'] }}"
+                                                    data-image="{{ $option['image'] }}">
 
-                                                {{ $product->color_name ?? 'Default' }}
+                                                    <span class="color-circle" style="background: {{ $option['dot'] }}">
+                                                    </span>
 
-                                            </div>
+                                                    {{ $option['name'] }}
+
+                                                </div>
+
+                                            @endforeach
 
                                         </div>
 
@@ -93,7 +131,6 @@
                             </div>
 
                         </div>
-
                     </div>
                 </div>
 
@@ -119,7 +156,7 @@
 
                         <p class="ml-product-price">
 
-                            @if($product->sale_price)
+                            @if ($product->sale_price)
 
                                 <span class="text-decoration-line-through text-muted">
                                     A${{ number_format($product->regular_price, 2) }}
@@ -140,7 +177,6 @@
                         </p>
 
                         <div class="ml-product-short">
-
                             <p>
                                 {{ Str::words($product->short_description ?: 'No short description available for this product.', 30, '...') }}
 
@@ -149,7 +185,6 @@
                                     <i class="bi bi-arrow-down"></i>
                                 </a>
                             </p>
-
                         </div>
 
                         <div class="ml-product-purchase-box">
@@ -182,7 +217,6 @@
                 </div>
 
             </div>
-
         </div>
     </section>
 
@@ -195,41 +229,37 @@
 
                     <h2>Product Overview</h2>
 
-                    @if($product->short_description)
+                    @if ($product->short_description)
                         <p>{!! $product->short_description !!}</p>
                     @endif
 
                     <h3>Product Specifications</h3>
 
                     <ul>
-                        @if($product->sku)
+                        @if ($product->sku)
                             <li><strong>SKU:</strong> {{ $product->sku }}</li>
                         @endif
 
-                        @if($product->category)
+                        @if ($product->category)
                             <li><strong>Category:</strong> {{ $product->category }}</li>
                         @endif
 
-                        @if($product->brand)
+                        @if ($product->brand)
                             <li><strong>Brand:</strong> {{ $product->brand }}</li>
                         @endif
 
-                        @if($product->product_type)
+                        @if ($product->product_type)
                             <li><strong>Product Type:</strong> {{ $product->product_type }}</li>
                         @endif
 
-                        @if($product->weight)
+                        @if ($product->weight)
                             <li><strong>Weight:</strong> {{ $product->weight }} kg</li>
                         @endif
 
-                        @if($product->length && $product->width && $product->height)
+                        @if ($product->length && $product->width && $product->height)
                             <li>
                                 <strong>Dimensions:</strong>
-                                {{ $product->length }}
-                                ×
-                                {{ $product->width }}
-                                ×
-                                {{ $product->height }} cm
+                                {{ $product->length }} × {{ $product->width }} × {{ $product->height }} cm
                             </li>
                         @endif
 
@@ -241,16 +271,16 @@
                         <li>
                             <strong>Status:</strong>
 
-                            @if($product->stock_status == 'in_stock')
+                            @if ($product->stock_status == 'in_stock')
                                 In Stock
-                            @elseif($product->stock_status == 'low_stock')
+                            @elseif ($product->stock_status == 'low_stock')
                                 Low Stock
                             @else
                                 Out of Stock
                             @endif
                         </li>
 
-                        @if($product->prescription_required)
+                        @if ($product->prescription_required)
                             <li>
                                 <strong>Prescription:</strong>
                                 Required
@@ -278,7 +308,6 @@
         </div>
     </section>
 
-
     <!-- RELATED PRODUCTS -->
     <section class="ml-related-products">
         <div class="container">
@@ -291,7 +320,7 @@
 
             <div class="row g-4">
 
-                @forelse($relatedProducts as $item)
+                @forelse ($relatedProducts as $item)
 
                     <div class="col-md-6 col-xl-3">
 
@@ -299,12 +328,10 @@
 
                             <div class="ml-shop-v2-img">
 
-                                @if($item->featured)
-
+                                @if ($item->featured)
                                     <span class="ml-shop-v2-tag">
                                         Featured
                                     </span>
-
                                 @endif
 
                                 <img src="{{ asset('storage/' . $item->featured_image) }}"
@@ -324,7 +351,7 @@
 
                                 <p>
 
-                                    @if($item->sale_price)
+                                    @if ($item->sale_price)
 
                                         <span class="text-decoration-line-through text-muted">
                                             A${{ number_format($item->regular_price, 2) }}

@@ -5135,18 +5135,13 @@ a.product-view-btn:focus {
 }
 
 .ml-color-dot {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
-    border: 1px solid #ddd;
-    background: transparent;
+    flex-shrink: 0;
 }
 
 /* HIDE ORIGINAL SELECT */
-
-#mlProductColorSelect {
-    display: none;
-}
 
 #mlProductColorSelect {
     display: none;
@@ -5234,6 +5229,7 @@ a.product-view-btn:focus {
     border-radius: 50%;
     flex-shrink: 0;
 }
+
 
 /* PRODUCT INFO */
 

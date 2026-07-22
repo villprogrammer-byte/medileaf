@@ -1,68 +1,117 @@
-@extends('emails.layouts.master')
+<!DOCTYPE html>
+<html>
 
-@section('title', 'New Prescription Enquiry')
+<head>
+    <meta charset="UTF-8">
+    <title>New Prescription Enquiry</title>
+</head>
 
-@section('content')
+<body style="font-family: Arial, Helvetica, sans-serif; color:#333; background:#f7f7f7; padding:20px;">
 
-    @php
-        $fields = [
-            'First Name' => $data['first_name'] ?? '',
-            'Last Name' => $data['last_name'] ?? '',
-            'Email' => $data['email'] ?? '',
-            'Mobile Number' => $data['mobile'] ?? '',
-            'Date of Birth' => $data['dob'] ?? '',
-            'State / Territory' => $data['state'] ?? '',
-            'Existing Patient' => $data['patient'] ?? '',
-            'Need Prescription For' => !empty($data['prescription_for'])
-                ? implode(', ', (array) $data['prescription_for'])
-                : '-',
-            'Currently Have Prescription' => $data['current_prescription'] ?? '',
-            'Additional Notes' => $data['notes'] ?? 'N/A',
-            'Prescription File' => !empty($file) ? 'Attached with this email' : 'No file attached',
-        ];
-    @endphp
-
-    <table width="700" align="center" cellpadding="0" cellspacing="0">
+    <table width="700" align="center" cellpadding="0" cellspacing="0"
+        style="background:#fff;border:1px solid #e5e5e5;border-radius:8px;">
 
         <tr>
-            <td>
-                <h2>New Prescription Enquiry</h2>
+            <td style="background:#2f7d32;color:#fff;padding:20px;">
+                <h2 style="margin:0;">New Prescription Enquiry</h2>
             </td>
         </tr>
 
         <tr>
-            <td>
+            <td style="padding:25px;">
 
-                <p>
-                    A new prescription enquiry has been submitted through the
-                    <strong>MediLeaf Health</strong> website.
+                <p>A new prescription enquiry has been submitted through the <strong>MediLeaf Health</strong> website.
                 </p>
 
-                <table border="1" cellpadding="10" cellspacing="0" width="100%">
-                    @foreach ($fields as $label => $value)
-                        <tr>
-                            <td><strong>{{ $label }}</strong></td>
-                            <td>{{ $value }}</td>
-                        </tr>
-                    @endforeach
+                <table border="1" cellpadding="10" cellspacing="0" width="100%" style="border-collapse:collapse;">
+
+                    <tr>
+                        <td width="35%"><strong>First Name</strong></td>
+                        <td>{{ $data['first_name'] ?? '' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Last Name</strong></td>
+                        <td>{{ $data['last_name'] ?? '' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Email</strong></td>
+                        <td>{{ $data['email'] ?? '' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Mobile Number</strong></td>
+                        <td>{{ $data['mobile'] ?? '' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Date of Birth</strong></td>
+                        <td>{{ $data['dob'] ?? '' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>State / Territory</strong></td>
+                        <td>{{ $data['state'] ?? '' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Existing Patient</strong></td>
+                        <td>{{ $data['patient'] ?? '' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Need Prescription For</strong></td>
+                        <td>
+                            @if(!empty($data['prescription_for']))
+                                {{ implode(', ', (array) $data['prescription_for']) }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Currently Have Prescription</strong></td>
+                        <td>{{ $data['current_prescription'] ?? '' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Additional Notes</strong></td>
+                        <td>{{ $data['notes'] ?? 'N/A' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong>Prescription File</strong></td>
+                        <td>
+                            @if(!empty($file))
+                                Attached with this email
+                            @else
+                                No file attached
+                            @endif
+                        </td>
+                    </tr>
+
                 </table>
 
                 <br>
 
                 <p>
                     <strong>Submitted On:</strong>
-                    {{ ($submittedAt ?? now())->format('d M Y h:i A') }}
+                    {{ now()->format('d M Y h:i A') }}
                 </p>
 
             </td>
         </tr>
 
         <tr>
-            <td>
+            <td style="background:#f5f5f5;padding:15px;font-size:13px;color:#666;text-align:center;">
                 This email was automatically generated from the MediLeaf Health website.
             </td>
         </tr>
 
     </table>
 
-@endsection
+</body>
+
+</html>
