@@ -16,34 +16,13 @@
                 <a href="{{ route('cart') }}"
                     class="ml-cart-btn ml-cart-btn d-none d-md-flex {{ request()->routeIs('cart') ? 'active' : '' }}"
                     aria-label="Shopping Bag">
-
                     <i class="bi bi-bag-fill"></i>
-
                     <span class="ml-cart-count">0</span>
-
-                </a>
-
-                <a href="{{ route('login') }}" class="user-view-btn d-block d-md-none">
-                    <i class="bi bi-person"></i> User Login
                 </a>
             </nav>
 
             <div class="ml-new-actions">
-                <!-- Desktop Switch -->
-                <div class="ml-auth-switch ml-desktop-switch">
-
-                    <a href="{{ route('login') }}" class="ml-auth-tab active" data-target="user">
-                        <i class="bi bi-person"></i>
-                        <span>User Login</span>
-                    </a>
-
-                    <a href="{{ route('admin.login') }}" class="ml-auth-tab" data-target="admin">
-                        <i class="bi bi-person-bounding-box"></i>
-                        <span>Admin Login</span>
-                    </a>
-
-                    <span class="ml-auth-switch-bg"></span>
-                </div>
+                @include('partials.account-menu')
                 <button class="ml-new-menu-btn" id="mlNewMenuBtn" type="button">
                     <span></span>
                     <span></span>

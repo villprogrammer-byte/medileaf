@@ -4,35 +4,41 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
-use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
-use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 
+// NOTE: 'register', 'login', 'otp.form', 'otp.verify', 'otp.resend' are
+// intentionally NOT defined here anymore — they live in routes/web.php
+// using our custom RegisteredUserController / AuthController / OtpController
+// (which implement the email-link verify + OTP login flow). Defining them
+// here too caused a route-name collision that silently overrode our
+// custom OTP flow with Breeze's default session login.
+
 Route::middleware('guest')->group(function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])
-        ->name('register');
 
-    Route::post('register', [RegisteredUserController::class, 'store']);
-
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-        ->name('login');
-
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
-
-    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
+    // ===== OTP-based password reset =====
+    Route::get('forgot-password', [ForgotPasswordController::class, 'showEmailForm'])
         ->name('password.request');
 
-    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
-        ->name('password.email');
+    Route::post('forgot-password/send-otp', [ForgotPasswordController::class, 'sendOtp'])
+        ->name('password.otp.send');
 
-    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
-        ->name('password.reset');
+    Route::get('forgot-password/verify-otp', [ForgotPasswordController::class, 'showOtpForm'])
+        ->name('password.otp.form');
 
-    Route::post('reset-password', [NewPasswordController::class, 'store'])
-        ->name('password.store');
+    Route::post('forgot-password/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])
+        ->name('password.otp.verify');
+
+    Route::post('forgot-password/resend-otp', [ForgotPasswordController::class, 'resendOtp'])
+        ->name('password.otp.resend');
+
+    Route::get('reset-password', [ForgotPasswordController::class, 'showResetForm'])
+        ->name('password.reset.form');
+
+    Route::post('reset-password', [ForgotPasswordController::class, 'resetPassword'])
+        ->name('password.reset.update');
 });
 
 Route::middleware('auth')->group(function () {

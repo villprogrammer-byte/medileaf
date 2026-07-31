@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'About MediLeaf')
+@section('title', 'Home MediLeaf')
 
 @section('content')
     <section class="ml-glass-hero">
@@ -24,16 +24,15 @@
             </p>
 
             <div class="ml-glass-hero-buttons">
-                <a href="https://www.halaxy.com/book/appointment/medileaf-health/location/1332127"
-                    class="ml-glass-btn primary">
+                <button type="button" class="ml-glass-btn primary" data-open-user-popup>
                     Book Consultation
                     <i class="bi bi-arrow-right"></i>
-                </a>
+                </button>
 
-                <a href="services" class="ml-glass-btn secondary">
+                <button type="button" class="ml-glass-btn secondary">
                     Explore Services
                     <i class="bi bi-arrow-right"></i>
-                </a>
+                </button>
             </div>
 
         </div>

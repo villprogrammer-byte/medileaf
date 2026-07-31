@@ -1,149 +1,462 @@
-* {
-    margin: 0;
-    padding: 0;
+*,
+*::before,
+*::after {
     box-sizing: border-box;
 }
 
 html,
 body {
     width: 100%;
-    height: 100%;
-    overflow: hidden;
-    /* Scroll remove */
-    background: #000;
-    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100%;
+    margin: 0;
 }
 
-.container {
-    width: 100vw;
-    height: 100vh;
+body {
+    background: #010812;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+
+.ml-404-page {
     position: relative;
+    width: 100%;
+    min-height: 100vh;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(90deg,
+            rgba(0, 7, 15, 0.86) 0%,
+            rgba(0, 7, 15, 0.58) 42%,
+            rgba(0, 7, 15, 0.12) 72%,
+            rgba(0, 7, 15, 0.04) 100%),
+        url("../img/404-bg.webp") center bottom / cover no-repeat;
+
+    isolation: isolate;
 }
 
-.desktop-404 {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
+/* Soft atmospheric glow */
 
-.mobile-404 {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: none;
-}
-
-
-
-
-.ml-glass-btn {
+.ml-404-page::before {
+    content: "";
     position: absolute;
-    left: 50%;
-    bottom: 8%;
-    transform: translateX(-50%);
-    min-height: 58px;
-    padding: 0 28px 0 30px;
-    border-radius: 50px;
+    inset: 0;
+    background:
+        radial-gradient(circle at 72% 48%,
+            rgba(91, 214, 57, 0.08),
+            transparent 34%),
+        radial-gradient(circle at 50% 100%,
+            rgba(0, 149, 198, 0.1),
+            transparent 36%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Bottom fade */
+
+.ml-404-page::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 190px;
+    background: linear-gradient(180deg,
+            transparent,
+            rgba(0, 4, 10, 0.45));
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* =========================================
+           CONTAINER
+        ========================================= */
+
+.ml-404-container {
+    width: min(1440px, calc(100% - 80px));
+    min-height: 100vh;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(380px, 0.8fr) minmax(540px, 1.35fr);
+    align-items: center;
+    gap: 30px;
+    padding: 60px 0;
+}
+
+/* =========================================
+           LEFT CONTENT
+        ========================================= */
+
+.ml-404-content {
+    position: relative;
+    z-index: 2;
+    max-width: 520px;
+    padding-left: 30px;
+}
+
+.ml-404-oops {
+    margin: 0 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #77d84b;
+    font-size: clamp(22px, 2vw, 34px);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 4px;
+}
+
+.ml-404-oops::before,
+.ml-404-oops::after {
+    content: "";
+    width: 20px;
+    height: 2px;
+    background: #77d84b;
+    box-shadow:
+        0 -6px 0 -0.5px #77d84b,
+        0 6px 0 -0.5px #77d84b;
+    opacity: 0.85;
+}
+
+.ml-404-number {
+    margin: 0;
+    color: #ffffff;
+    font-size: clamp(130px, 13vw, 220px);
+    font-weight: 800;
+    line-height: 0.88;
+    letter-spacing: -10px;
+    text-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.45),
+        0 0 25px rgba(255, 255, 255, 0.08);
+}
+
+.ml-404-title {
+    margin: 30px 0 0;
+    color: #ffffff;
+    font-size: clamp(30px, 3vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.ml-404-title span {
+    color: #75d74b;
+}
+
+.ml-404-lines {
+    width: 255px;
+    margin: 28px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ml-404-lines span {
+    width: 78px;
+    height: 2px;
+    background: linear-gradient(90deg,
+            #7bd34d,
+            rgba(123, 211, 77, 0.25));
+}
+
+.ml-404-description {
+    max-width: 410px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: clamp(18px, 1.4vw, 25px);
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.ml-404-description .ml-leaf {
+    color: #79d74d;
+    font-size: 20px;
+}
+
+/* =========================================
+           BUTTONS
+        ========================================= */
+
+.ml-404-actions {
+    margin-top: 34px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.ml-404-home-btn,
+.ml-404-back-btn {
+    min-height: 50px;
+    padding: 0 22px;
+    border-radius: 10px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 16px;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: 700;
-    transition: .35s ease;
-    z-index: 10;
-    white-space: nowrap;
+    gap: 9px;
+    font-family: "Outfit", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        background-color 0.22s ease,
+        border-color 0.22s ease;
 }
 
-.ml-glass-btn.primary {
-    background: linear-gradient(135deg, #31a050, #7ed13f);
-    color: #fff;
+.ml-404-home-btn {
+    border: 1px solid transparent;
+    background: linear-gradient(135deg,
+            #31a050,
+            #79d441);
+    color: #ffffff;
     box-shadow:
-        0 20px 45px rgba(49, 160, 80, .35),
-        inset 0 1px 0 rgba(255, 255, 255, .15);
+        0 12px 28px rgba(49, 160, 80, 0.24);
 }
 
-.ml-glass-btn i {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, .55);
+.ml-404-home-btn:hover {
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow:
+        0 16px 34px rgba(49, 160, 80, 0.3);
+}
+
+.ml-404-back-btn {
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.07);
+    color: #ffffff;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.ml-404-back-btn:hover {
+    border-color: rgba(117, 215, 75, 0.72);
+    background: rgba(117, 215, 75, 0.12);
+    color: #ffffff;
+
+    transform: translateY(-2px);
+}
+
+/* =========================================
+           RIGHT 404 IMAGE
+        ========================================= */
+
+.ml-404-visual {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    min-width: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
 }
 
-.ml-glass-btn:hover {
-    transform: translateX(-50%) translateY(-3px);
+.ml-404-image {
+    display: block;
+    width: min(100%, 930px);
+    height: auto;
+    max-height: 87vh;
+    object-fit: contain;
+    filter:
+        drop-shadow(0 28px 45px rgba(0, 0, 0, 0.45)) drop-shadow(0 0 28px rgba(83, 211, 61, 0.09));
+
+    animation: ml404Float 5s ease-in-out infinite;
 }
 
-/* Laptop */
-@media (max-width: 1200px) {
-    .ml-glass-btn {
-        bottom: 7%;
+@keyframes ml404Float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
     }
 }
 
-/* Tablet */
-@media (max-width: 992px) {
-    .ml-glass-btn {
-        bottom: 6%;
-        min-height: 54px;
-        padding: 0 24px;
-        font-size: 15px;
+/* =========================================
+           LARGE SCREEN
+        ========================================= */
+
+@media (min-width: 1600px) {
+    .ml-404-container {
+        width: min(1540px, calc(100% - 100px));
+        grid-template-columns: 0.78fr 1.4fr;
+    }
+
+    .ml-404-content {
+        padding-left: 50px;
+    }
+
+    .ml-404-image {
+        width: min(100%, 1020px);
+    }
+}
+
+/* =========================================
+           LAPTOP
+        ========================================= */
+
+@media (max-width: 1199.98px) {
+    .ml-404-container {
+        width: min(1140px, calc(100% - 50px));
+        grid-template-columns: minmax(340px, 0.9fr) minmax(460px, 1.2fr);
         gap: 12px;
     }
 
-    .ml-glass-btn i {
-        width: 30px;
-        height: 30px;
-        font-size: 16px;
+    .ml-404-content {
+        padding-left: 10px;
+    }
+
+    .ml-404-image {
+        width: 108%;
+        max-width: 820px;
     }
 }
 
-/* Mobile */
-@media (max-width: 768px) {
-    .ml-glass-btn {
-        bottom: 40%;
-        min-height: 48px;
-        padding: 0 20px;
-        font-size: 14px;
-        gap: 10px;
+/* =========================================
+           TABLET
+        ========================================= */
+
+@media (max-width: 991.98px) {
+    .ml-404-page {
+        background-position: center bottom;
     }
 
-    .ml-glass-btn i {
-        width: 28px;
-        height: 28px;
-        font-size: 15px;
+    .ml-404-container {
+        width: min(760px, calc(100% - 40px));
+        min-height: 100vh;
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 70px 0 30px;
+        text-align: center;
     }
 
-    .desktop-404 {
-        display: none;
+    .ml-404-content {
+        max-width: 620px;
+        margin: 0 auto;
+        padding: 0;
     }
 
-    .mobile-404 {
-        display: block;
+    .ml-404-oops {
+        justify-content: center;
+    }
+
+    .ml-404-number {
+        font-size: clamp(120px, 28vw, 190px);
+    }
+
+    .ml-404-title {
+        margin-top: 22px;
+    }
+
+    .ml-404-lines {
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .ml-404-description {
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .ml-404-actions {
+        justify-content: center;
+    }
+
+    .ml-404-image {
+        width: min(100%, 720px);
+        max-height: none;
     }
 }
 
-/* Small Mobile */
-@media (max-width: 480px) {
-    .ml-glass-btn {
-        bottom: 38%;
-        min-height: 44px;
-        padding: 0 18px;
-        font-size: 13px;
-        gap: 8px;
+/* =========================================
+           MOBILE
+        ========================================= */
+
+@media (max-width: 575.98px) {
+    .ml-404-page {
+        background: linear-gradient(180deg,
+            rgba(0, 7, 15, 0.78),
+            rgba(0, 7, 15, 0.38)),
+        url("{{ asset('assets/images/404-background.webp') }}") center bottom / cover no-repeat;
     }
 
-    .ml-glass-btn i {
-        width: 24px;
-        height: 24px;
-        font-size: 13px;
+    .ml-404-container {
+        width: calc(100% - 30px);
+        padding: 46px 0 22px;
+    }
+
+    .ml-404-oops {
+        margin-bottom: 16px;
+        font-size: 20px;
+        letter-spacing: 2px;
+    }
+
+    .ml-404-number {
+        font-size: clamp(100px, 34vw, 145px);
+        letter-spacing: -7px;
+    }
+
+    .ml-404-title {
+        margin-top: 20px;
+        font-size: clamp(25px, 8vw, 34px);
+    }
+
+    .ml-404-lines {
+        width: 205px;
+        margin-top: 22px;
+        margin-bottom: 22px;
+    }
+
+    .ml-404-lines span {
+        width: 62px;
+    }
+
+    .ml-404-description {
+        max-width: 330px;
+        font-size: 17px;
+    }
+
+    .ml-404-actions {
+        width: 100%;
+        margin-top: 28px;
+        flex-direction: column;
+    }
+
+    .ml-404-home-btn,
+    .ml-404-back-btn {
+        width: min(100%, 290px);
+    }
+
+    .ml-404-visual {
+        margin-top: -4px;
+    }
+
+    .ml-404-image {
+        width: 112%;
+        max-width: 560px;
+    }
+}
+
+/* =========================================
+           REDUCED MOTION
+        ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .ml-404-image {
+        animation: none;
+    }
+
+    .ml-404-home-btn,
+    .ml-404-back-btn {
+        transition: none;
     }
 }

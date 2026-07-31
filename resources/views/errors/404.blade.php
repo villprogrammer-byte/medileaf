@@ -12,18 +12,60 @@
 
 <body>
 
-    <div class="container">
+    <body>
 
-        <img src="{{ asset('img/404.webp') }}" alt="404 Page" class="desktop-404">
-        <img src="{{ asset('img/mobile-404.webp') }}" alt="404 Page" class="mobile-404">
+        <main class="ml-404-page">
 
+            <div class="ml-404-container">
 
-        <a href="{{ url('/') }}" class="ml-glass-btn primary">
-            <i class="bi bi-arrow-left"></i>Back to Home
-        </a>
+                {{-- LEFT CONTENT --}}
+                <section class="ml-404-content">
 
-    </div>
+                    <div class="ml-404-oops">
+                        OoPS!
+                    </div>
 
-</body>
+                    <h1 class="ml-404-number">
+                        404
+                    </h1>
+
+                    <h2 class="ml-404-title">
+                        Page <span>Not Found</span>
+                    </h2>
+
+                    <div class="ml-404-lines" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    <p class="ml-404-description">
+                        Looks like you’ve wandered off<br>
+                        the healthy path.<br>
+                        Let’s get you back on track!
+                        <i class="bi bi-leaf ml-leaf"></i>
+                    </p>
+
+                    <div class="ml-404-actions">
+
+                        <a href="{{ url('/') }}" class="ml-404-home-btn">
+                            <i class="bi bi-house-door-fill"></i>
+                            Back to Home
+                        </a>
+                    </div>
+
+                </section>
+
+                {{-- RIGHT IMAGE --}}
+                <div class="ml-404-visual">
+
+                    <img src="{{ asset('img/404.webp') }}" alt="Leaf covered 404 illustration with a glowing pathway"
+                        class="ml-404-image">
+                </div>
+
+            </div>
+
+        </main>
+
+    </body>
 
 </html>

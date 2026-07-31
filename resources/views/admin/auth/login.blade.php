@@ -2,231 +2,302 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>@yield('title', 'MediLeaf')</title>
+    <title>Admin Login | MediLeaf</title>
 
-    <meta name="description" content="@yield('meta_description', 'MediLeaf Australia')">
-
-    <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}">
-
-    {{-- Bootstrap --}}
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    {{-- Bootstrap Icons --}}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    {{-- Main CSS --}}
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    @stack('styles')
-
+    <!-- Page CSS (same as admin login design) -->
+    <link rel="stylesheet" href="{{ asset('css/admin-login.css') }}">
 </head>
 
-<body class="pt-0">
-    <section class="ml-login-page">
+<body>
 
-        <div class="ml-login-container">
-            <div class="ml-login-left">
+    <main class="admin-login-page">
 
-                <div class="ml-login-logo">
-                    <img src="{{ asset('img/medileaf-logo.webp') }}" alt="Admin Dashboard">
-                </div>
+        <div class="admin-main-area">
 
-                <div class="ml-login-content">
+            <!-- LEFT 60% IMAGE SECTION -->
+            <section class="admin-visual-panel">
 
-                    <h1>
-                        Welcome
-                        <span>Admin!</span>
-                    </h1>
-                    <p>
-                        Securely manage your pharmacy operations from one centralized dashboard.
-                    </p>
-                </div>
+                <i class="bi bi-leaf-fill leaf-decoration top"></i>
+                <i class="bi bi-leaf-fill leaf-decoration bottom"></i>
 
-                <div class="ml-login-features">
+            </section>
 
-                    <div class="ml-login-feature">
-                        <div class="icon">
-                            <i class="bi bi-bar-chart-line"></i>
-                        </div>
-                        <div>
-                            <h4>Dashboard Analytics</h4>
-                            <p>Monitor sales, orders, revenue, and business performance in real time.</p>
-                        </div>
+            <!-- RIGHT 40% LOGIN SECTION -->
+            <section class="admin-form-panel">
 
-                    </div>
-                    <div class="ml-login-feature">
-                        <div class="icon">
-                            <i class="bi bi-box"></i>
-                        </div>
-                        <div>
-                            <h4>Product Management</h4>
-                            <p>Add, update, organize, and manage your product inventory with ease.</p>
-                        </div>
+                <div class="login-card">
 
-                    </div>
-
-                    <div class="ml-login-feature">
-                        <div class="icon">
-                            <i class="bi bi-truck"></i>
-                        </div>
-                        <div>
-                            <h4>Order Management</h4>
-                            <p>Track, process, and fulfill customer orders efficiently.</p>
-                        </div>
-                    </div>
-
-                    <div class="ml-login-feature">
-                        <div class="icon">
-                            <i class="bi bi-headset"></i>
-                        </div>
-                        <div>
-                            <h4>Customer Management</h4>
-                            <p>Access customer information, purchase history, and account details securely.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="ml-login-products">
-                    <img src="{{ asset('img/admin-dashboard-bg.webp') }}" alt="Admin Dashboard">
-                </div>
-
-            </div>
-            <!-- RIGHT SIDE -->
-
-            <div class="ml-login-right">
-                <div class="text-left">
-                    <a href="{{ route('home') }}" class="ml-admin-back-btn">
+                    <!-- BACK TO HOME BUTTON -->
+                    <a href="{{ route('home') }}" class="back-home-btn" aria-label="Back to home" title="Back to home">
                         <i class="bi bi-arrow-left"></i>
-                        Back to Home
                     </a>
-                </div>
-                <div class="ml-login-card mt-5">
-                    <div class="ml-user-icon">
-                        <div class="circle">
-                            <i class="bi bi-shield-check"></i>
-                        </div>
+
+                    <!-- FIXED TOP (does not scroll) -->
+                    <div class="login-brand-icon">
+                        <i class="bi bi-shield-check"></i>
                     </div>
-                    <h2>Admin Login</h2>
-                    <p>
-                        Sign to access your admin dashboard.
-                    </p>
 
-                    <form method="POST" action="{{ route('admin.login.submit') }}">
-                        @csrf
+                    <div class="login-heading">
 
-                        <div class="ml-form-group">
-                            <label>Email Address</label>
-                            <div class="ml-input">
-                                <i class="bi bi-envelope"></i>
-                                <input type="email" name="email" value="{{ old('email') }}"
-                                    placeholder="Enter your email address" required autofocus>
+                        <h2>
+                            Welcome <span>Admin!</span>
+                        </h2>
+
+                        <p>
+                            Sign in to continue to your admin dashboard
+                        </p>
+
+                    </div>
+
+                    @if (session('status'))
+                        <div class="alert alert-success auth-alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+
+                    @if (session('error'))
+                        <div class="alert alert-danger auth-alert">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+                    <!-- SCROLLABLE AREA (only this scrolls) -->
+                    <div class="login-form-scroll">
+
+                        <!-- ADMIN EMAIL + PASSWORD LOGIN (same markup/attrs as the working admin form — only classes changed for design) -->
+                        <form method="POST" action="{{ route('admin.login.submit') }}">
+
+                            @csrf
+
+                            <!-- EMAIL -->
+                            <div class="form-group">
+
+                                <label for="email" class="form-label required">
+                                    Email Address
+                                </label>
+
+                                <div class="input-wrap">
+
+                                    <i class="bi bi-envelope input-icon"></i>
+
+                                    <input type="email" name="email"
+                                        class="login-input @error('email') is-invalid @enderror"
+                                        placeholder="Enter your email address" value="{{ old('email') }}" required
+                                        autofocus>
+
+                                </div>
+
+                                @error('email')
+                                    <small class="field-error">
+                                        {{ $message }}
+                                    </small>
+                                @enderror
+
                             </div>
 
-                            @error('email')
-                                <small style="color:red">{{ $message }}</small>
-                            @enderror
-                        </div>
+                            <!-- PASSWORD -->
+                            <div class="form-group">
 
-                        <div class="ml-form-group">
-                            <label>Password</label>
+                                <label for="password" class="form-label required">
+                                    Password
+                                </label>
 
-                            <div class="ml-input">
-                                <i class="bi bi-lock"></i>
+                                <div class="input-wrap">
 
-                                <input id="password" type="password" name="password" placeholder="Enter your password"
-                                    required>
+                                    <i class="bi bi-lock input-icon"></i>
 
-                                <button type="button" class="toggle-password">
-                                    <i class="bi bi-eye"></i>
-                                </button>
+                                    <input id="password" type="password" name="password"
+                                        class="login-input @error('password') is-invalid @enderror"
+                                        placeholder="Enter your password" required>
+
+                                    <button type="button" class="password-toggle toggle-password"
+                                        aria-label="Show password">
+
+                                        <i class="bi bi-eye"></i>
+
+                                    </button>
+
+                                </div>
+
+                                @error('password')
+                                    <small class="field-error">
+                                        {{ $message }}
+                                    </small>
+                                @enderror
+
                             </div>
 
-                            @error('password')
-                                <small style="color:red">{{ $message }}</small>
-                            @enderror
-                        </div>
+                            <!-- OPTIONS -->
+                            <div class="login-options">
 
-                        <div class="ml-login-options">
+                                <label class="remember-wrap">
 
-                            <label>
-                                <input type="checkbox" name="remember">
+                                    <input type="checkbox" name="remember">
 
-                                Remember Me
-                            </label>
+                                    <span>Remember Me</span>
 
-                            @if (Route::has('password.request'))
-                                <a href="{{ route('password.request') }}">
-                                    Forgot Password?
-                                </a>
-                            @endif
+                                </label>
 
-                        </div>
+                                @if (Route::has('password.request'))
+                                    <a href="{{ route('admin.password.request') }}" class="forgot-link">
+                                        Forgot Password?
+                                    </a>
 
-                        <button type="submit" class="ml-login-btn">
-                            Sign In to Dashboard
-                            <i class="bi bi-arrow-right"></i>
-                        </button>
+                                @endif
 
-                        <div class="ml-secure-access">
-                            <span class="ml-line"></span>
-
-                            <div class="ml-secure-text">
-                                <i class="bi bi-shield-check"></i>
-                                <span>Secure Admin Access</span>
                             </div>
 
-                            <span class="ml-line"></span>
+                            <!-- LOGIN BUTTON (no OTP / no Turnstile — direct admin login, same as working form) -->
+                            <button type="submit" class="sign-in-button">
+
+                                <i class="bi bi-box-arrow-in-right"></i>
+
+                                <span>
+                                    Sign In to Dashboard
+                                </span>
+
+                            </button>
+
+                        </form>
+
+                    </div>
+                    <!-- END SCROLLABLE AREA -->
+
+                    <!-- FIXED BOTTOM (does not scroll) -->
+                    <div class="login-divider">
+                        <span>Secure Admin Access</span>
+                    </div>
+
+                    <div class="login-card-footer">
+
+                        <div class="footer-security">
+
+                            <i class="bi bi-lock"></i>
+
+                            <span>
+                                Secure Admin Access
+                            </span>
+
                         </div>
 
-                    </form>
+                        <p class="copyright">
+
+                            © {{ date('Y') }}
+
+                            <strong>MediLeaf.</strong>
+
+                            All rights reserved.
+
+                        </p>
+
+                    </div>
+
                 </div>
-                <div class="ml-login-footer">
-                    MediLeaf Health.
-                    All Rights Reserved.
-                </div>
 
-            </div>
+            </section>
 
         </div>
-    </section>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        <!-- BOTTOM SECURITY STRIP -->
+        <section class="security-strip">
 
-            const toggle = document.querySelector(".toggle-password");
+            <div class="security-feature">
 
-            const password = document.getElementById("password");
+                <div class="security-feature-icon">
+                    <i class="bi bi-shield-lock"></i>
+                </div>
 
-            if (toggle) {
+                <div class="security-feature-copy">
 
-                toggle.addEventListener("click", function () {
+                    <strong>
+                        Secure Admin Access
+                    </strong>
 
-                    if (password.type === "password") {
+                    <span>
+                        Multi layer authentication keeps your admin portal protected.
+                    </span>
 
-                        password.type = "text";
+                </div>
 
-                        this.innerHTML = '<i class="bi bi-eye-slash"></i>';
+            </div>
 
-                    } else {
+            <div class="security-feature">
 
-                        password.type = "password";
+                <div class="security-feature-icon">
+                    <i class="bi bi-speedometer2"></i>
+                </div>
 
-                        this.innerHTML = '<i class="bi bi-eye"></i>';
+                <div class="security-feature-copy">
 
-                    }
+                    <strong>
+                        Smart Dashboard
+                    </strong>
 
-                });
+                    <span>
+                        Manage patients, appointments and operations from one place.
+                    </span>
 
-            }
+                </div>
 
-        });
-    </script>
+            </div>
+
+            <div class="security-feature">
+
+                <div class="security-feature-icon">
+                    <i class="bi bi-person-workspace"></i>
+                </div>
+
+                <div class="security-feature-copy">
+
+                    <strong>
+                        Staff Management
+                    </strong>
+
+                    <span>
+                        Control access levels for doctors, staff and administrators.
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="security-feature">
+
+                <div class="security-feature-icon">
+                    <i class="bi bi-clipboard2-pulse"></i>
+                </div>
+
+                <div class="security-feature-copy">
+
+                    <strong>
+                        Real Time Monitoring
+                    </strong>
+
+                    <span>
+                        Track appointments, prescriptions and daily activities instantly.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <!-- Page JS -->
+    <script src="{{ asset('js/admin-login.js') }}"></script>
 
 </body>
 

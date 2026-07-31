@@ -201,6 +201,37 @@ body {
     padding: 34px;
 }
 
+login-card {
+    position: relative;
+    /* isse absolute button card ke andar hi rahega */
+}
+
+.back-home-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 2px solid #16a34a;
+    /* green border, screenshot ke hisab se change kar sakte ho */
+    color: #16a34a;
+    background: transparent;
+    font-size: 18px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.back-home-btn:hover {
+    background: #16a34a;
+    color: #fff;
+}
+
+
 @media(max-width:991px) {
     .ml-admin-sidebar {
         transform: translateX(-100%);

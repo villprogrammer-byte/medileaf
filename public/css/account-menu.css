@@ -1,0 +1,375 @@
+/* =========================================
+   MEDILEAF ACCOUNT MENU
+========================================= */
+
+.ml-account-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    overflow: visible;
+    z-index: 1000;
+}
+
+/* =========================================
+   DESKTOP WRAPPER
+========================================= */
+
+.ml-account-desktop {
+    position: relative;
+    display: block;
+    overflow: visible;
+}
+
+/* =========================================
+   LOGIN BUTTON
+========================================= */
+
+.ml-account-btn {
+    height: 44px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #31a050, #7ed13f);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: "Outfit", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    white-space: nowrap;
+    appearance: none;
+    -webkit-appearance: none;
+    box-shadow: none;
+    transition:
+        background-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.2s ease;
+}
+
+.ml-account-btn:hover,
+.ml-account-btn:focus,
+.ml-account-btn[aria-expanded="true"] {
+    border: 0;
+    outline: 0;
+    background: #11763e;
+    color: #ffffff;
+    box-shadow: 0 8px 20px rgba(22, 139, 75, 0.2);
+}
+
+.ml-account-btn:active {
+    transform: translateY(1px);
+}
+
+.ml-account-btn::after {
+    display: none !important;
+}
+
+.ml-account-btn .bi-person-fill {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.ml-account-arrow {
+    margin-left: 1px;
+
+    font-size: 11px;
+    line-height: 1;
+
+    transition: transform 0.25s ease;
+}
+
+.ml-account-btn.show .ml-account-arrow,
+.ml-account-btn[aria-expanded="true"] .ml-account-arrow {
+    transform: rotate(180deg);
+}
+
+/* =========================================
+   DROPDOWN
+========================================= */
+
+.ml-account-dropdown {
+    position: absolute !important;
+    top: calc(100% + 12px) !important;
+    right: 0 !important;
+    left: auto !important;
+    width: 250px;
+    min-width: 250px;
+    margin: 0 !important;
+    padding: 8px;
+    border: 1px solid #e6ebe7;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+    z-index: 99999 !important;
+}
+
+.dropdown-menu.ml-account-dropdown {
+    display: none;
+}
+
+.dropdown-menu.ml-account-dropdown.show {
+    display: block !important;
+}
+
+/* =========================================
+   MENU OPTIONS
+========================================= */
+
+.ml-account-option {
+    min-height: 64px;
+    padding: 11px 12px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #222222;
+    text-decoration: none;
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.ml-account-option:hover,
+.ml-account-option:focus {
+    background: #f5f8f6;
+    color: #222222;
+    text-decoration: none;
+    transform: translateX(1px);
+}
+
+.ml-account-icon {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    border-radius: 10px;
+    background: #edf8f1;
+    color: #31a050;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ml-account-icon i {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.ml-admin-icon {
+    background: #f2f3f2;
+    color: #31a050;
+}
+
+.ml-account-option-text {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.ml-account-option-text strong {
+    color: #222222;
+    font-family: "Outfit", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.ml-account-option-text small {
+    margin-top: 3px;
+    color: #777777;
+    font-family: "Outfit", sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.25;
+}
+
+.ml-account-divider {
+    height: 1px;
+    margin: 4px 2px;
+    background: #ecefec;
+}
+
+/* =========================================
+   MOBILE LOGIN BUTTON
+========================================= */
+
+.ml-account-mobile {
+    display: none;
+    height: 42px;
+    padding: 0 16px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #31a050, #7ed13f);
+    color: #ffffff;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-family: "Outfit", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.ml-account-mobile:hover,
+.ml-account-mobile:focus {
+    background: #31a050;
+    color: #ffffff;
+    text-decoration: none;
+    box-shadow: 0 7px 18px rgba(22, 139, 75, 0.2);
+}
+
+.ml-account-option.active .ml-admin-icon,
+.ml-account-option[aria-current="page"] .ml-admin-icon {
+    background: #31a050;
+    color: #ffffff;
+    border-color: #31a050;
+}
+
+
+.ml-admin-icon.active {
+    background: #31a050;
+    color: #ffffff;
+}
+
+/* =========================================
+   ONLY OVERFLOW FIX
+   Header position ko change nahi karna
+========================================= */
+
+.ml-new-header,
+.ml-new-header-inner,
+.ml-new-actions {
+    overflow: visible !important;
+}
+
+.ml-new-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* =========================================
+   ACTIVE MENU
+========================================= */
+
+.ml-account-option.active,
+.ml-account-option[aria-current="page"] {
+    background: #f5f8f6;
+}
+
+.ml-account-option.active .ml-account-icon,
+.ml-account-option[aria-current="page"] .ml-account-icon {
+    background: #31a050;
+    color: #ffffff;
+}
+
+.ml-account-option.active .ml-admin-icon,
+.ml-account-option[aria-current="page"] .ml-admin-icon {
+    background: #31a050 !important;
+    color: #ffffff !important;
+}
+
+.ml-account-option.active .ml-account-option-text strong,
+.ml-account-option[aria-current="page"] .ml-account-option-text strong {
+    color: #31a050;
+}
+
+.ml-account-logout-btn .ml-admin-icon {
+    background: #31a050;
+    color: #fff;
+    border-color: #31a050;
+}
+
+/* =========================================
+   LOGOUT BUTTON RESET
+========================================= */
+
+.ml-account-dropdown form {
+    margin: 0;
+}
+
+.ml-account-logout-btn {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    padding: 0;
+    text-align: left;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+.ml-account-logout-btn:focus,
+.ml-account-logout-btn:active {
+    outline: none;
+    border: 0;
+    box-shadow: none;
+}
+
+.ml-account-logout-btn:hover {
+    background: #f5f8f6;
+    border-radius: 10px;
+}
+
+.ml-account-logout-btn:hover .ml-admin-icon {
+    background: #31a050;
+    color: #ffffff;
+}
+
+/* =========================================
+   DESKTOP
+========================================= */
+
+@media (min-width: 992px) {
+    .ml-account-desktop {
+        display: block !important;
+    }
+
+    .ml-account-mobile {
+        display: none !important;
+    }
+}
+
+/* =========================================
+   TABLET AND MOBILE
+========================================= */
+
+@media (max-width: 991.98px) {
+    .ml-account-desktop {
+        display: none !important;
+    }
+
+    .ml-account-mobile {
+        display: inline-flex !important;
+    }
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 575.98px) {
+    .ml-account-mobile {
+        width: 42px;
+        min-width: 42px;
+        height: 42px;
+        padding: 0;
+    }
+
+    .ml-account-mobile span {
+        display: none;
+    }
+
+    .ml-account-mobile .bi-person-fill {
+        font-size: 17px;
+    }
+}

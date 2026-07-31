@@ -1,0 +1,445 @@
+/* =========================================
+   MEDILEAF PAGE LOADER
+========================================= */
+
+:root {
+    --ml-loader-green: #58ad35;
+    --ml-loader-dark-green: #2f8e45;
+    --ml-loader-text: #303532;
+    --ml-loader-muted: #687169;
+}
+
+body.ml-page-is-loading {
+    overflow: hidden;
+}
+
+/* =========================================
+   LOADER BACKGROUND
+========================================= */
+
+.ml-loader {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background-color: #f8fbf5;
+    background-image: url("../img/medileaf-loader-background.webp");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    opacity: 1;
+    visibility: visible;
+    z-index: 999999;
+    transition:
+        opacity 0.65s ease,
+        visibility 0.65s ease;
+}
+
+.ml-loader.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.ml-loader::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(circle at center,
+            rgba(255, 255, 255, 0.12) 0%,
+            rgba(255, 255, 255, 0.04) 46%,
+            rgba(240, 248, 235, 0.06) 100%);
+
+    pointer-events: none;
+}
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.ml-loader-content {
+    position: relative;
+    z-index: 2;
+
+    width: min(760px, calc(100% - 32px));
+
+    padding: clamp(24px, 4vw, 52px) 20px;
+
+    text-align: center;
+
+    animation: mlLoaderEnter 0.9s ease both;
+}
+
+/* =========================================
+   LOGO
+========================================= */
+
+.ml-loader-logo {
+    display: block;
+
+    width: min(250px, 72vw);
+    max-height: 170px;
+
+    margin: 0 auto 24px;
+
+    object-fit: contain;
+
+    filter: drop-shadow(0 10px 18px rgba(54, 102, 54, 0.08));
+}
+
+/* =========================================
+   DIVIDER
+========================================= */
+
+.ml-loader-divider {
+    width: 40px;
+    height: 2px;
+
+    margin: 0 auto 22px;
+
+    border-radius: 999px;
+
+    background: var(--ml-loader-green);
+}
+
+/* =========================================
+   TITLE
+========================================= */
+
+.ml-loader-title {
+    margin: 0;
+
+    color: var(--ml-loader-text);
+
+    font-family: "Outfit", sans-serif;
+    font-size: clamp(29px, 4vw, 46px);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+}
+
+.ml-loader-title span {
+    color: var(--ml-loader-dark-green);
+}
+
+.ml-loader-subtitle {
+    margin: 9px 0 clamp(24px, 4vh, 34px);
+
+    color: var(--ml-loader-muted);
+
+    font-family: "Outfit", sans-serif;
+    font-size: clamp(15px, 1.6vw, 19px);
+    font-weight: 400;
+}
+
+/* =========================================
+   SPINNER
+========================================= */
+
+.ml-loader-spinner {
+    position: relative;
+
+    width: clamp(94px, 9vw, 116px);
+    aspect-ratio: 1;
+
+    margin: 0 auto 12px;
+
+    display: grid;
+    place-items: center;
+}
+
+.ml-loader-ring {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    transform: rotate(-90deg);
+}
+
+.ml-loader-ring circle {
+    fill: none;
+    stroke-width: 7;
+}
+
+.ml-loader-track {
+    stroke: rgba(77, 154, 66, 0.13);
+}
+
+.ml-loader-progress {
+    stroke: url("#loaderGradient");
+    stroke-linecap: round;
+
+    stroke-dasharray: 314;
+    stroke-dashoffset: 314;
+
+    animation:
+        mlLoaderProgress 2.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.ml-loader-leaf {
+    width: 34%;
+    min-width: 30px;
+    max-width: 40px;
+
+    animation:
+        mlLoaderPulse 1.6s ease-in-out infinite;
+}
+
+/* =========================================
+   LOADING TEXT
+========================================= */
+
+.ml-loader-loading-title {
+    margin: 0;
+
+    color: var(--ml-loader-dark-green);
+
+    font-family: "Outfit", sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.ml-loader-loading-text {
+    margin: 3px 0 31px;
+
+    color: var(--ml-loader-muted);
+
+    font-family: "Outfit", sans-serif;
+    font-size: 14px;
+}
+
+/* =========================================
+   FEATURES
+========================================= */
+
+.ml-loader-features {
+    width: min(590px, 100%);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.ml-loader-feature {
+    position: relative;
+
+    padding: 0 clamp(8px, 2vw, 24px);
+}
+
+.ml-loader-feature+.ml-loader-feature::before {
+    content: "";
+    position: absolute;
+    top: 9px;
+    bottom: 9px;
+    left: 0;
+    width: 1px;
+    background:
+        linear-gradient(transparent,
+            rgba(62, 127, 67, 0.25),
+            transparent);
+}
+
+.ml-loader-feature-icon {
+    width: clamp(42px, 5vw, 48px);
+    aspect-ratio: 1;
+
+    margin: 0 auto 8px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid rgba(66, 144, 67, 0.2);
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.62);
+
+    box-shadow:
+        0 8px 20px rgba(48, 101, 52, 0.05);
+
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.ml-loader-feature-icon svg {
+    width: 23px;
+    height: 23px;
+
+    stroke: var(--ml-loader-dark-green);
+}
+
+.ml-loader-feature p {
+    margin: 0;
+
+    color: #535d56;
+
+    font-family: "Outfit", sans-serif;
+    font-size: clamp(10px, 1.25vw, 13px);
+    font-weight: 500;
+
+    white-space: nowrap;
+}
+
+.ml-loader-feature p::after {
+    content: "";
+
+    display: block;
+
+    width: 19px;
+    height: 2px;
+
+    margin: 8px auto 0;
+
+    border-radius: 20px;
+
+    background: var(--ml-loader-green);
+}
+
+/* =========================================
+   ANIMATIONS
+========================================= */
+
+@keyframes mlLoaderEnter {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes mlLoaderProgress {
+    to {
+        stroke-dashoffset: 28;
+    }
+}
+
+@keyframes mlLoaderPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.9;
+    }
+
+    50% {
+        transform: scale(1.08);
+        opacity: 1;
+    }
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 767.98px) {
+    .ml-loader {
+        background-position: center;
+    }
+
+    .ml-loader-content {
+        width: min(620px, calc(100% - 22px));
+
+        padding: 18px 12px 30px;
+    }
+
+    .ml-loader-logo {
+        width: min(175px, 82vw);
+
+        margin-bottom: 19px;
+    }
+
+    .ml-loader-divider {
+        margin-bottom: 18px;
+    }
+
+    .ml-loader-subtitle {
+        margin-bottom: 21px;
+    }
+
+    .ml-loader-loading-text {
+        margin-bottom: 24px;
+    }
+
+    .ml-loader-feature {
+        padding-inline: 6px;
+    }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+    .ml-loader {
+        background-size: cover;
+        background-position: center;
+    }
+
+    .ml-loader-content {
+        transform: translateY(-2vh);
+    }
+
+    .ml-loader-logo {
+        width: 82vw;
+        max-height: 115px;
+    }
+
+    .ml-loader-title {
+        font-size: 28px;
+    }
+
+    .ml-loader-subtitle {
+        font-size: 14px;
+    }
+
+    .ml-loader-loading-title {
+        font-size: 17px;
+    }
+
+    .ml-loader-feature-icon {
+        width: 40px;
+    }
+
+    .ml-loader-feature-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .ml-loader-feature p {
+        font-size: 10px;
+    }
+}
+
+/* =========================================
+   SMALL HEIGHT SCREENS
+========================================= */
+
+@media (max-height: 700px) and (min-width: 768px) {
+    .ml-loader-content {
+        transform: scale(0.88);
+    }
+}
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .ml-loader *,
+    .ml-loader *::before,
+    .ml-loader *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}

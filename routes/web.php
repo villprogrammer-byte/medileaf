@@ -6,9 +6,14 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Prescription\PrescriptionController;
 use App\Http\Controllers\Prescription\UploadPrescriptionController;
 use App\Http\Controllers\Admin\Auth\AdminLoginController;
+use App\Http\Controllers\Admin\Auth\AdminOtpController;
+use App\Http\Controllers\Admin\Auth\AdminForgotPasswordController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\OtpController;
 
 Route::get('/', function () {
     return view('home');
@@ -54,6 +59,18 @@ Route::get('/upload-prescription', [UploadPrescriptionController::class, 'index'
 Route::post('/upload-prescription', [UploadPrescriptionController::class, 'store'])
     ->name('upload.prescription.store');
 
+// =====================================
+// Patient Registration
+// =====================================
+
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [RegisteredUserController::class, 'create'])
+        ->name('register');
+
+    Route::post('/register', [RegisteredUserController::class, 'store'])
+        ->name('register.store');
+});
+
 // Admin Login
 Route::get('/admin/login', [AdminLoginController::class, 'showLoginForm'])
     ->name('admin.login');
@@ -63,6 +80,76 @@ Route::post('/admin/login', [AdminLoginController::class, 'login'])
 
 Route::post('/admin/logout', [AdminLoginController::class, 'logout'])
     ->name('admin.logout');
+
+
+// Admin OTP Verification
+Route::middleware('guest')->group(function () {
+    Route::get('/admin/login/verify-otp', [AdminOtpController::class, 'show'])
+        ->name('admin.otp.form');
+
+    Route::post('/admin/login/verify-otp', [AdminOtpController::class, 'verify'])
+        ->name('admin.otp.verify');
+
+    Route::post('/admin/login/resend-otp', [AdminOtpController::class, 'resend'])
+        ->name('admin.otp.resend');
+});
+
+
+// Admin Forgot Password (OTP-based reset)
+Route::middleware('guest')->group(function () {
+    Route::get('/admin/forgot-password', [AdminForgotPasswordController::class, 'showEmailForm'])
+        ->name('admin.password.request');
+
+    Route::post('/admin/forgot-password/send-otp', [AdminForgotPasswordController::class, 'sendOtp'])
+        ->name('admin.password.otp.send');
+
+    Route::get('/admin/forgot-password/verify-otp', [AdminForgotPasswordController::class, 'showOtpForm'])
+        ->name('admin.password.otp.form');
+
+    Route::post('/admin/forgot-password/verify-otp', [AdminForgotPasswordController::class, 'verifyOtp'])
+        ->name('admin.password.otp.verify');
+
+    Route::post('/admin/forgot-password/resend-otp', [AdminForgotPasswordController::class, 'resendOtp'])
+        ->name('admin.password.otp.resend');
+
+    Route::get('/admin/reset-password', [AdminForgotPasswordController::class, 'showResetForm'])
+        ->name('admin.password.reset.form');
+
+    Route::post('/admin/reset-password', [AdminForgotPasswordController::class, 'resetPassword'])
+        ->name('admin.password.reset.update');
+});
+
+// =====================================
+// Patient Login (OTP Authentication)
+// =====================================
+
+Route::middleware('guest')->group(function () {
+
+    Route::get('/login', [AuthController::class, 'showLogin'])
+        ->name('login');
+
+    Route::post('/login/send-otp', [AuthController::class, 'sendLoginOtp'])
+        ->name('login.otp.send');
+
+    Route::get('/login/verify-otp', [OtpController::class, 'show'])
+        ->name('otp.form');
+
+    Route::post('/login/verify-otp', [OtpController::class, 'verify'])
+        ->name('otp.verify');
+
+    Route::post('/login/resend-otp', [OtpController::class, 'resend'])
+        ->name('otp.resend');
+});
+
+// =====================================
+// Patient Dashboard
+// =====================================
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});
 
 // =====================================
 // Admin Routes
@@ -95,6 +182,9 @@ Route::prefix('admin')
     });
 
 Route::middleware('auth')->group(function () {
+    Route::post('/logout', [OtpController::class, 'logout'])
+        ->name('logout');
+
     Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
 
@@ -103,6 +193,11 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
+
+    // Email verification success page (before redirecting to Halaxy booking)
+    Route::get('/verification-success', function () {
+        return view('auth.verification-success');
+    })->name('verification.success');
 });
 
 require __DIR__ . '/auth.php';

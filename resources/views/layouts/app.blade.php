@@ -24,12 +24,16 @@
     {{-- Main CSS --}}
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/account-menu.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/page-loader.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/user-choice-popup.css') }}">
 
     @stack('styles')
 
 </head>
 
 <body>
+    @include('partials.page-loader')
 
     @include('partials.header')
 
@@ -43,8 +47,14 @@
 
     @include('partials.cart-drawer')
 
+    @include('partials.user-choice-popup')
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="{{ asset('js/page-loader.js') }}"></script>
+    <script src="{{ asset('js/user-choice-popup.js') }}"></script>
+    <script src="{{ asset('js/account-menu.js') }}"></script>
     <script src="{{ asset('js/admin.js') }}"></script>
     <script src="{{ asset('js/cart.js') }}"></script>
     @stack('scripts')
