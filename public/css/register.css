@@ -983,3 +983,16 @@ input {
         height: 76px;
     }
 }
+
+/* Global Cloudflare Turnstile Style */
+
+.turnstile-wrap {
+    border: 1px solid #d9d9d9;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.cf-turnstile {
+    margin: -1px;
+}

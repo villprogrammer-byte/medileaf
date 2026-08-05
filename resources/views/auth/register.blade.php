@@ -197,7 +197,22 @@
 
                             </div>
 
-                            <div class="cf-turnstile my-3" data-sitekey="{{ config('services.turnstile.site_key') }}">
+                            <div class="form-group mt-3">
+
+                                <div class="turnstile-wrap">
+
+                                    <div class="cf-turnstile" data-sitekey="{{ config('services.turnstile.site_key') }}"
+                                        data-theme="light" data-size="flexible">
+                                    </div>
+
+                                </div>
+
+                                @error('cf-turnstile-response')
+                                    <small class="field-error d-block mt-2">
+                                        {{ $message }}
+                                    </small>
+                                @enderror
+
                             </div>
 
                             @error('cf-turnstile-response')

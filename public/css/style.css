@@ -6826,3 +6826,10 @@ FOOTER
         opacity: 1;
     }
 }
+
+/* Global Cloudflare Turnstile Style */
+
+.cf-turnstile {
+    border-radius: 10px;
+    overflow: hidden;
+}
