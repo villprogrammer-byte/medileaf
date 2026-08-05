@@ -14,6 +14,8 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\OtpController;
+use App\Http\Controllers\Auth\SocialAuthController;
+use App\Http\Controllers\User\UserDashboardController;
 
 Route::get('/', function () {
     return view('home');
@@ -71,27 +73,42 @@ Route::middleware('guest')->group(function () {
         ->name('register.store');
 });
 
-// Admin Login
-Route::get('/admin/login', [AdminLoginController::class, 'showLoginForm'])
-    ->name('admin.login');
+// =====================================
+// Admin Authentication
+// Separate "admin" guard
+// =====================================
 
-Route::post('/admin/login', [AdminLoginController::class, 'login'])
-    ->name('admin.login.submit');
+Route::prefix('admin')
+    ->name('admin.')
+    ->middleware('guest:admin')
+    ->group(function () {
 
-Route::post('/admin/logout', [AdminLoginController::class, 'logout'])
-    ->name('admin.logout');
+        Route::get('/login', [AdminLoginController::class, 'showLoginForm'])
+            ->name('login');
 
+        Route::post('/login', [AdminLoginController::class, 'login'])
+            ->name('login.submit');
 
-// Admin OTP Verification
+        Route::get('/login/verify-otp', [AdminOtpController::class, 'show'])
+            ->name('otp.form');
+
+        Route::post('/login/verify-otp', [AdminOtpController::class, 'verify'])
+            ->name('otp.verify');
+
+        Route::post('/login/resend-otp', [AdminOtpController::class, 'resend'])
+            ->name('otp.resend');
+    });
+
+// =====================================
+// Social Login (Google)
+// =====================================
+
 Route::middleware('guest')->group(function () {
-    Route::get('/admin/login/verify-otp', [AdminOtpController::class, 'show'])
-        ->name('admin.otp.form');
+    Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])
+        ->name('social.redirect');
 
-    Route::post('/admin/login/verify-otp', [AdminOtpController::class, 'verify'])
-        ->name('admin.otp.verify');
-
-    Route::post('/admin/login/resend-otp', [AdminOtpController::class, 'resend'])
-        ->name('admin.otp.resend');
+    Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])
+        ->name('social.callback');
 });
 
 
@@ -144,24 +161,30 @@ Route::middleware('guest')->group(function () {
 // =====================================
 // Patient Dashboard
 // =====================================
+// UPDATED: now points to UserDashboardController@index (new design)
+// instead of the old empty view('dashboard') placeholder.
+// URL and route name are UNCHANGED (/dashboard, name: dashboard) so
+// nothing else in the app that calls route('dashboard') breaks.
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])
+        ->name('dashboard');
 });
 
 // =====================================
-// Admin Routes
+// Protected Admin Routes
 // =====================================
 
 Route::prefix('admin')
-    ->middleware(['auth', 'verified'])
     ->name('admin.')
+    ->middleware('auth:admin')
     ->group(function () {
 
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
+
+        Route::post('/logout', [AdminLoginController::class, 'logout'])
+            ->name('logout');
 
         // Products
         Route::resource('products', ProductController::class);
@@ -199,5 +222,8 @@ Route::middleware('auth')->group(function () {
         return view('auth.verification-success');
     })->name('verification.success');
 });
+
+// User Dashboard — extra routes (profile page, order actions, notifications)
+require __DIR__ . '/user.php';
 
 require __DIR__ . '/auth.php';

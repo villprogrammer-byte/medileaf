@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Verify OTP | MediLeaf Admin')
+@section('title', 'Admin OTP Verification | MediLeaf Health')
 
 @section('content')
 
@@ -8,83 +8,127 @@
 
         <div class="user-main-area">
 
+            {{-- LEFT PANEL --}}
             <div class="user-visual-panel">
-                <i class="bi bi-leaf-fill leaf-decoration top"></i>
-                <i class="bi bi-leaf-fill leaf-decoration bottom"></i>
+
+                <div class="visual-content">
+                    <i class="bi bi-leaf-fill leaf-decoration top"></i>
+                    <i class="bi bi-leaf-fill leaf-decoration bottom"></i>
+                </div>
+
             </div>
 
+            {{-- RIGHT PANEL --}}
             <div class="user-form-panel">
 
                 <div class="secure-access-label">
                     <i class="bi bi-shield-check"></i>
-                    Admin Login Verification
+                    Secure Admin Verification
                 </div>
 
                 <div class="login-card">
 
                     <div class="login-brand-icon">
-                        <i class="bi bi-shield-lock-fill"></i>
+                        <i class="bi bi-envelope-check"></i>
                     </div>
 
                     <div class="login-heading">
-                        <h2>Enter <span>OTP</span></h2>
-                        <p>We've sent a 6-digit verification code to your email.</p>
+
+                        <h2>
+                            Verify <span>OTP</span>
+                        </h2>
                     </div>
 
-                    @if (session('success'))
-                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @if(session('success'))
+                        <div class="alert alert-success auth-alert">
+                            {{ session('success') }}
+                        </div>
                     @endif
 
-                    @if ($errors->any())
-                        <div class="alert alert-danger">{{ $errors->first() }}</div>
+                    @if(session('status'))
+                        <div class="alert alert-success auth-alert">
+                            {{ session('status') }}
+                        </div>
                     @endif
 
-                    <form method="POST" action="{{ route('admin.otp.verify') }}">
+                    <div class="otp-note">
+                        Enter the 6-digit code to continue securely to your admin dashboard.
+                    </div>
+
+                    <form method="POST" action="{{ route('admin.otp.verify') }}" id="otpForm">
+
                         @csrf
 
-                        <div class="form-group">
-                            <label for="otp" class="form-label required">OTP Code</label>
+                        <div class="otp-box">
 
-                            <div class="input-wrap">
-                                <i class="bi bi-shield-lock input-icon"></i>
-                                <input type="text" name="otp" id="otp" maxlength="6" inputmode="numeric" pattern="[0-9]*"
-                                    class="login-input @error('otp') is-invalid @enderror" placeholder="Enter 6-digit code"
-                                    required autofocus>
-                            </div>
+                            <input type="text" name="otp" maxlength="6" autocomplete="one-time-code" inputmode="numeric"
+                                class="otp-input @error('otp') is-invalid @enderror" placeholder="000000"
+                                value="{{ old('otp') }}" required>
 
-                            @error('otp')
-                                <small class="field-error">{{ $message }}</small>
-                            @enderror
                         </div>
 
-                        <button type="submit" class="sign-in-button mt-3">
-                            <i class="bi bi-check-circle"></i>
-                            <span>Verify & Continue</span>
+                        @error('otp')
+                            <small class="field-error">
+                                {{ $message }}
+                            </small>
+                        @enderror
+
+                        <button type="submit" class="sign-in-button" id="verifyBtn">
+
+                            <i class="bi bi-shield-lock-fill"></i>
+
+                            Verify &amp; Continue
+
                         </button>
+
                     </form>
 
-                    <form method="POST" action="{{ route('admin.otp.resend') }}" class="mt-2">
-                        @csrf
-                        <button type="submit" class="back-login" style="background:none;border:none;width:100%;">
-                            Resend OTP
-                        </button>
-                    </form>
+                    <div class="login-divider">
+                        Didn't receive the code?
+                    </div>
+
+                    <div class="resend-area">
+
+                        <form method="POST" action="{{ route('admin.otp.resend') }}">
+                            @csrf
+
+                            <button type="submit" class="resend-btn">
+                                Resend OTP
+                            </button>
+                        </form>
+
+                    </div>
 
                     <div class="back-login">
+
                         <a href="{{ route('admin.login') }}">
+
                             <i class="bi bi-arrow-left"></i>
-                            Back to Login
+
+                            Back to Admin Login
+
                         </a>
+
                     </div>
 
                     <div class="login-card-footer">
+
                         <div class="footer-security">
+
                             <i class="bi bi-shield-check"></i>
-                            Your account is protected with OTP verification.
+
+                            Your admin login is protected with OTP verification.
+
                         </div>
+
                         <p class="copyright">
-                            © {{ date('Y') }} <strong>MediLeaf Health</strong>
+
+                            © {{ date('Y') }}
+
+                            <strong>MediLeaf Health</strong>
+
                         </p>
+
                     </div>
 
                 </div>
@@ -96,3 +140,33 @@
     </div>
 
 @endsection
+
+@push('scripts')
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const otpInput = document.querySelector(".otp-input");
+            const otpForm = document.getElementById("otpForm");
+            const verifyButton = document.getElementById("verifyBtn");
+
+            if (otpInput) {
+                otpInput.addEventListener("input", function () {
+                    this.value = this.value
+                        .replace(/\D/g, "")
+                        .substring(0, 6);
+                });
+            }
+
+            if (otpForm && verifyButton) {
+                otpForm.addEventListener("submit", function () {
+                    verifyButton.disabled = true;
+                    verifyButton.innerHTML =
+                        '<i class="bi bi-hourglass-split"></i> Verifying...';
+                });
+            }
+
+        });
+    </script>
+
+@endpush

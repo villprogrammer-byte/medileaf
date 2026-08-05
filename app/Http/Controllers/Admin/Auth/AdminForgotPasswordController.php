@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Mail\ResetPasswordOtpMail;
-use App\Models\User;
-use App\Services\OtpService;
+use App\Models\Admin;
+use App\Services\AdminOtpService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -13,24 +13,30 @@ use Illuminate\Validation\ValidationException;
 
 class AdminForgotPasswordController extends Controller
 {
-    protected OtpService $otpService;
-
-    public function __construct(OtpService $otpService)
-    {
-        $this->otpService = $otpService;
+    public function __construct(
+        protected AdminOtpService $otpService
+    ) {
     }
 
+    /**
+     * Show admin forgot-password email form.
+     */
     public function showEmailForm()
     {
         return view('admin.auth.forgot-password');
     }
 
+    /**
+     * Verify admin email and send reset OTP.
+     */
     public function sendOtp(Request $request)
     {
-        $request->validate(['email' => ['required', 'email']]);
+        $validated = $request->validate([
+            'email' => ['required', 'email'],
+        ]);
 
-        $admin = User::where('email', $request->email)
-            ->where('role', 'admin')
+        $admin = Admin::query()
+            ->where('email', strtolower(trim($validated['email'])))
             ->first();
 
         if (!$admin) {
@@ -41,91 +47,189 @@ class AdminForgotPasswordController extends Controller
 
         $otp = $this->otpService->generate($admin);
 
-        Mail::to($admin->email)->send(new ResetPasswordOtpMail($admin->name, $otp));
+        Mail::to($admin->email)->send(
+            new ResetPasswordOtpMail(
+                $admin->name,
+                $otp
+            )
+        );
 
-        $request->session()->put('admin_reset_user_id', $admin->id);
-        $request->session()->forget('admin_reset_verified');
+        $request->session()->put(
+            'admin_reset_admin_id',
+            $admin->id
+        );
 
-        return redirect()->route('admin.password.otp.form');
+        $request->session()->forget([
+            'admin_reset_verified',
+        ]);
+
+        return redirect()
+            ->route('admin.password.otp.form')
+            ->with(
+                'status',
+                'A password reset OTP has been sent to your admin email address.'
+            );
     }
 
+    /**
+     * Show reset OTP verification page.
+     */
     public function showOtpForm()
     {
-        if (!session()->has('admin_reset_user_id')) {
-            return redirect()->route('admin.password.request');
+        if (!session()->has('admin_reset_admin_id')) {
+            return redirect()
+                ->route('admin.password.request');
         }
 
         return view('admin.auth.forgot-password-otp');
     }
 
+    /**
+     * Verify password reset OTP.
+     */
     public function verifyOtp(Request $request)
     {
-        $request->validate(['otp' => ['required', 'digits:6']]);
+        $validated = $request->validate([
+            'otp' => ['required', 'digits:6'],
+        ]);
 
-        $admin = User::where('id', session('admin_reset_user_id'))
-            ->where('role', 'admin')
-            ->first();
+        $admin = Admin::find(
+            session('admin_reset_admin_id')
+        );
 
         if (!$admin) {
-            return redirect()->route('admin.password.request');
+            $request->session()->forget([
+                'admin_reset_admin_id',
+                'admin_reset_verified',
+            ]);
+
+            return redirect()
+                ->route('admin.password.request')
+                ->withErrors([
+                    'email' => 'The admin account could not be found.',
+                ]);
         }
 
-        if (!$this->otpService->verify($admin, $request->otp)) {
-            return back()->withErrors(['otp' => 'Invalid or expired OTP.']);
+        if (!$this->otpService->verify($admin, $validated['otp'])) {
+            return back()
+                ->withErrors([
+                    'otp' => 'Invalid or expired OTP.',
+                ]);
         }
 
-        $request->session()->put('admin_reset_verified', true);
+        $request->session()->put(
+            'admin_reset_verified',
+            true
+        );
 
-        return redirect()->route('admin.password.reset.form');
+        $request->session()->regenerateToken();
+
+        return redirect()
+            ->route('admin.password.reset.form');
     }
 
+    /**
+     * Show new-password form.
+     */
     public function showResetForm()
     {
-        if (!session()->has('admin_reset_user_id') || !session('admin_reset_verified')) {
-            return redirect()->route('admin.password.request');
+        if (
+            !session()->has('admin_reset_admin_id') ||
+            !session('admin_reset_verified')
+        ) {
+            return redirect()
+                ->route('admin.password.request');
         }
 
         return view('admin.auth.reset-password');
     }
 
+    /**
+     * Save the new admin password.
+     */
     public function resetPassword(Request $request)
     {
-        if (!session()->has('admin_reset_user_id') || !session('admin_reset_verified')) {
-            return redirect()->route('admin.password.request');
+        if (
+            !session()->has('admin_reset_admin_id') ||
+            !session('admin_reset_verified')
+        ) {
+            return redirect()
+                ->route('admin.password.request');
         }
 
-        $request->validate(['password' => ['required', 'string', 'min:8', 'confirmed']]);
+        $validated = $request->validate([
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'confirmed',
+            ],
+        ]);
 
-        $admin = User::where('id', session('admin_reset_user_id'))
-            ->where('role', 'admin')
-            ->first();
+        $admin = Admin::find(
+            session('admin_reset_admin_id')
+        );
 
         if (!$admin) {
-            return redirect()->route('admin.password.request');
+            $request->session()->forget([
+                'admin_reset_admin_id',
+                'admin_reset_verified',
+            ]);
+
+            return redirect()
+                ->route('admin.password.request');
         }
 
-        $admin->update(['password' => Hash::make($request->password)]);
+        $admin->forceFill([
+            'password' => Hash::make($validated['password']),
+        ])->save();
 
-        $request->session()->forget(['admin_reset_user_id', 'admin_reset_verified']);
+        $request->session()->forget([
+            'admin_reset_admin_id',
+            'admin_reset_verified',
+        ]);
 
-        return redirect()->route('admin.login')
-            ->with('status', 'Your password has been reset. Please log in with your new password.');
+        $request->session()->regenerate();
+
+        return redirect()
+            ->route('admin.login')
+            ->with(
+                'status',
+                'Your password has been reset successfully. Please log in with your new password.'
+            );
     }
 
+    /**
+     * Resend password reset OTP.
+     */
     public function resendOtp(Request $request)
     {
-        $admin = User::where('id', session('admin_reset_user_id'))
-            ->where('role', 'admin')
-            ->first();
+        $admin = Admin::find(
+            session('admin_reset_admin_id')
+        );
 
         if (!$admin) {
-            return redirect()->route('admin.password.request');
+            $request->session()->forget([
+                'admin_reset_admin_id',
+                'admin_reset_verified',
+            ]);
+
+            return redirect()
+                ->route('admin.password.request');
         }
 
         $otp = $this->otpService->generate($admin);
 
-        Mail::to($admin->email)->send(new ResetPasswordOtpMail($admin->name, $otp));
+        Mail::to($admin->email)->send(
+            new ResetPasswordOtpMail(
+                $admin->name,
+                $otp
+            )
+        );
 
-        return back()->with('success', 'A new OTP has been sent.');
+        return back()->with(
+            'success',
+            'A new OTP has been sent to your admin email address.'
+        );
     }
 }

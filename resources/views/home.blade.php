@@ -24,12 +24,19 @@
             </p>
 
             <div class="ml-glass-hero-buttons">
-                <button type="button" class="ml-glass-btn primary" data-open-user-popup>
-                    Book Consultation
-                    <i class="bi bi-arrow-right"></i>
-                </button>
+                <!-- <button type="button" class="ml-glass-btn primary" data-open-user-popup>
+                                                Book Consultation
+                                                <i class="bi bi-arrow-right"></i>
+                                            </button> -->
 
-                <button type="button" class="ml-glass-btn secondary">
+                <a href="https://www.halaxy.com/book/appointment/medileaf-health/location/1332127"
+                    class="ml-glass-btn primary">
+                    <i class="bi bi-calendar-check"></i>
+                    Book Appointment
+                </a>
+
+                <button type="button" class="ml-glass-btn secondary"
+                    onclick="window.location.href='{{ route('pharmacy') }}'">
                     Explore Services
                     <i class="bi bi-arrow-right"></i>
                 </button>
@@ -258,12 +265,10 @@
                             Need Prescription
                         </a>
 
-                        <a href="https://www.halaxy.com/book/appointment/medileaf-health/location/1332127"
-                            class="ml-telehealth-btn">
+                        <a href="" class="ml-telehealth-btn" data-open-user-popup>
                             <i class="bi bi-calendar-check"></i>
                             Book Appointment
                         </a>
-
                     </div>
 
                 </div>

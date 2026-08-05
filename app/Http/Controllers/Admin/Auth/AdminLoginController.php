@@ -4,44 +4,34 @@ namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Mail\LoginOtpMail;
-use App\Models\User;
-use App\Services\OtpService;
+use App\Models\Admin;
+use App\Services\AdminOtpService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class AdminLoginController extends Controller
 {
-    protected OtpService $otpService;
-
-    public function __construct(OtpService $otpService)
-    {
-        $this->otpService = $otpService;
+    public function __construct(
+        protected AdminOtpService $otpService
+    ) {
     }
 
-    /**
-     * Show Admin Login Page
-     */
     public function showLoginForm()
     {
         return view('admin.auth.login');
     }
 
-    /**
-     * Step 1: verify admin credentials, then send OTP
-     */
     public function login(Request $request)
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
-            'password' => ['required'],
+            'password' => ['required', 'string'],
         ]);
 
-        $user = User::where('email', $credentials['email'])
-            ->where('role', 'admin')
-            ->first();
+        $admin = Admin::where('email', $credentials['email'])->first();
 
-        if (!$user || !Hash::check($credentials['password'], $user->password)) {
+        if (!$admin || !Hash::check($credentials['password'], $admin->password)) {
             return back()
                 ->withErrors([
                     'email' => 'These credentials do not match our records.',
@@ -49,26 +39,24 @@ class AdminLoginController extends Controller
                 ->onlyInput('email');
         }
 
-        // Generate + send OTP (same service/mailable as patient login)
-        $otp = $this->otpService->generate($user);
+        $otp = $this->otpService->generate($admin);
 
-        Mail::to($user->email)->send(
-            new LoginOtpMail($user->name, $otp)
+        Mail::to($admin->email)->send(
+            new LoginOtpMail($admin->name, $otp)
         );
 
-        // Separate session keys from patient login flow to avoid clashing
-        $request->session()->put('admin_otp_user_id', $user->id);
-        $request->session()->put('admin_remember', $request->boolean('remember'));
+        $request->session()->put('admin_otp_admin_id', $admin->id);
+        $request->session()->put(
+            'admin_remember',
+            $request->boolean('remember')
+        );
 
         return redirect()->route('admin.otp.form');
     }
 
-    /**
-     * Admin Logout
-     */
     public function logout(Request $request)
     {
-        \Illuminate\Support\Facades\Auth::logout();
+        auth('admin')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

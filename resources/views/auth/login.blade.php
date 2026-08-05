@@ -191,12 +191,12 @@
 
                         <!-- GOOGLE LOGIN -->
 
-                        {{-- <a href="{{ route('social.redirect', ['provider' => 'google']) }}"
-                            class="social-button google" aria-label="Continue with Google" title="Continue with Google">
+                        <a href="{{ route('social.redirect', ['provider' => 'google']) }}" class="social-button google"
+                            aria-label="Continue with Google" title="Continue with Google">
 
-                            <img src="{{ asset('google.svg') }}" alt="Google">
+                            <img src="{{ asset('img/google.svg') }}" alt="Google">
 
-                        </a> --}}
+                        </a>
 
                         <!-- SECURE ICON -->
                         <span class="social-button secure" aria-label="Secure login" title="Secure login">
@@ -209,9 +209,10 @@
                         {{-- <a href="{{ route('social.redirect', ['provider' => 'apple']) }}"
                             class="social-button apple" aria-label="Continue with Apple" title="Continue with Apple">
 
-                            <i class="bi bi-apple"></i>
+                            <img src="{{ asset('img/apple.svg') }}" alt="Google">
 
                         </a> --}}
+
 
                     </div>
 

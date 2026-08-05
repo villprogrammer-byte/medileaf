@@ -41,9 +41,9 @@
                 <div class="register-card">
                     
                <!-- BACK TO HOME BUTTON -->
-   <a href="{{ route('home') }}" class="back-home-btn" aria-label="Back to home" title="Back to home">
-       <i class="bi bi-arrow-left"></i>
-   </a>
+                 <a href="{{ route('home') }}" class="back-home-btn" aria-label="Back to home" title="Back to home">
+                  <i class="bi bi-arrow-left"></i>
+                     </a>
                    
                     <!-- FIXED TOP (does not scroll) -->
                     <div class="register-brand-icon">
