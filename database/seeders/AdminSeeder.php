@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -10,13 +10,13 @@ class AdminSeeder extends Seeder
 {
     public function run(): void
     {
-        User::updateOrCreate(
-            ['email' => 'admin@medileaf.com'], // <-- yahan apna admin email daalen
+        Admin::updateOrCreate(
             [
-                'name' => 'Admin',
-                'password' => Hash::make('Admin@123'), // <-- yahan apna password daalen
-                'role' => 'admin',
-                'email_verified_at' => now(),
+                'email' => 'admin@medileaf.com.au',
+            ],
+            [
+                'name' => 'MediLeaf Admin',
+                'password' => Hash::make('admin!@#123zxc@'),
             ]
         );
     }
