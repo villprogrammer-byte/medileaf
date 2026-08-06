@@ -113,26 +113,3 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-// /* Admin Success Message */
-// const successAlert = document.getElementById("mlAdminSuccessAlert");
-// const successClose = document.getElementById("mlAdminSuccessClose");
-
-// if (successAlert) {
-//     if (successClose) {
-//         successClose.addEventListener("click", function () {
-//             successAlert.classList.add("hide");
-
-//             setTimeout(function () {
-//                 successAlert.remove();
-//             }, 300);
-//         });
-//     }
-
-//     setTimeout(function () {
-//         successAlert.classList.add("hide");
-
-//         setTimeout(function () {
-//             successAlert.remove();
-//         }, 300);
-//     }, 4000);
-// }

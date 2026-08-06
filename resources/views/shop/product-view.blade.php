@@ -1,410 +1,290 @@
 @extends('layouts.app')
 
-@section('title', 'About MediLeaf')
+@section('title', $product->seo_title ?: $product->name)
 
-@php
-    use Illuminate\Support\Str;
-@endphp
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/product-view.css') }}">
+@endpush
 
 @section('content')
-    <!-- PRODUCT VIEW PAGE -->
+    @php
+        use Illuminate\Support\Str;
+
+        $variants = $product->activeVariants;
+        $firstVariant = $variants->first();
+        $basePrice = (float) ($product->sale_price ?: $product->regular_price);
+
+        $featuredImage = $product->featured_image
+            ? asset('storage/' . $product->featured_image)
+            : asset('img/product-placeholder.webp');
+
+        $galleryItems = collect([
+            [
+                'label' => 'Main View',
+                'image' => $featuredImage,
+            ],
+        ]);
+
+        $viewLabels = [
+            'Front View',
+            'Left View',
+            'Right View',
+            'Back View',
+            'Top View',
+            'Close-up',
+            'Packaging',
+            'Lifestyle',
+        ];
+
+        foreach (collect($product->gallery_images ?? [])->filter()->values() as $index => $image) {
+            $galleryItems->push([
+                'label' => $viewLabels[$index] ?? ('View ' . ($index + 1)),
+                'image' => asset('storage/' . $image),
+            ]);
+        }
+
+        $initialImage = $firstVariant?->image
+            ? asset('storage/' . $firstVariant->image)
+            : $featuredImage;
+    @endphp
+
     <section class="ml-product-view">
         <div class="container">
 
             <div class="ml-product-breadcrumb">
-                <a href="{{ url('/') }}">Home</a>
-
+                <a href="{{ route('home') }}">Home</a>
                 <span>/</span>
-
                 <a href="{{ route('store') }}">Store</a>
-
                 <span>/</span>
-
                 <strong>{{ $product->name }}</strong>
             </div>
 
-            <!-- Back Button -->
-            <div class="ml-checkout-back-wrap mb-4">
-                <button type="button" class="ml-checkout-back-btn" onclick="history.back()">
-                    <i class="bi bi-arrow-left"></i>
-                    Back to Store
-                </button>
-            </div>
+            <div class="ml-product-layout">
 
-            <div class="row g-5 align-items-start">
+                {{-- Product Gallery --}}
+                <div class="ml-product-gallery-shell">
 
-                <div class="col-lg-6">
-                    <div class="ml-product-gallery">
+                    <div class="ml-product-angle-list">
+                        @foreach ($galleryItems as $index => $item)
+                            <button type="button" class="ml-product-angle-thumb {{ $index === 0 ? 'active' : '' }}"
+                                data-gallery-image="{{ $item['image'] }}" data-gallery-label="{{ $item['label'] }}"
+                                aria-label="Show {{ $item['label'] }}">
+                                <img src="{{ $item['image'] }}" alt="{{ $product->name }} {{ $item['label'] }}">
+                                <span>{{ $item['label'] }}</span>
+                            </button>
+                        @endforeach
+                    </div>
 
-                        <div class="ml-product-main-image" id="mlProductMainBox">
-                            <span class="ml-product-badge">New</span>
-                            <img id="mlProductMainImg" src="{{ asset('storage/' . $product->featured_image) }}"
+                    <div class="ml-product-main-stage">
+
+                        @if ($product->featured)
+                            <span class="ml-product-badge">Featured</span>
+                        @endif
+
+                        <button type="button" class="ml-product-image-nav prev" id="mlGalleryPrev"
+                            aria-label="Previous image">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+
+                        <div class="ml-product-main-image">
+                            <img id="mlProductMainImg" src="{{ $initialImage }}"
                                 alt="{{ $product->image_alt ?: $product->name }}">
                         </div>
 
-                        <div class="ml-product-media-options">
+                        <button type="button" class="ml-product-image-nav next" id="mlGalleryNext" aria-label="Next image">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
 
-                            <div class="ml-product-thumbs">
+                        <div class="ml-product-image-caption" id="mlGalleryCaption">
+                            {{ $firstVariant?->colour_name ? $firstVariant->colour_name . ' Colour' : 'Main View' }}
+                        </div>
 
-                                @php
-                                    $colourImages = is_array($product->color_images)
-                                        ? $product->color_images
-                                        : [];
+                    </div>
 
-                                    $colourDotMap = [
-                                        'black' => '#000000',
-                                        'white' => '#ffffff',
-                                        'silver' => '#c0c0c0',
-                                        'grey' => '#808080',
-                                        'gray' => '#808080',
-                                        'blue' => '#2b6cf6',
-                                        'green' => '#31a050',
-                                    ];
+                </div>
 
-                                    $colourOptions = collect($product->colors ?? [])
-                                        ->values()
-                                        ->map(function ($colour, $index) use ($colourImages, $colourDotMap, $product) {
-                                            return [
-                                                'index' => $index,
-                                                'name' => $colour,
-                                                'dot' => $colourDotMap[strtolower($colour)] ?? '#31a050',
-                                                'image' => isset($colourImages[$colour])
-                                                    ? asset('storage/' . $colourImages[$colour])
-                                                    : asset('storage/' . $product->featured_image),
-                                            ];
-                                        });
-                                @endphp
+                {{-- Product Details --}}
+                <div class="ml-product-info">
 
-                                @foreach ($colourOptions as $option)
-                                    <button type="button" data-index="{{ $option['index'] }}" data-color="{{ $option['dot'] }}"
-                                        data-bg="rgba(49,160,80,0.10)" data-image="{{ $option['image'] }}">
-                                        <img src="{{ $option['image'] }}">
-                                    </button>
-                                @endforeach
+                    <span class="ml-product-category">
+                        {{ $product->category ?: 'Product' }}
+                    </span>
 
-                                <div class="ml-product-color-select">
+                    <h1>{{ $product->name }}</h1>
 
-                                    <label class="ml-color-label">
+                    @php
+                        $currentStock = (int) ($firstVariant?->quantity ?? $product->stock_quantity);
+                    @endphp
 
-                                        <span class="ml-color-dot" id="currentColorDot">
+                    <div class="ml-product-stock">
+                        <span id="mlVariantStock" class="ml-stock-badge
+                                                {{ $currentStock <= 0
+        ? 'out-stock'
+        : ($currentStock <= 5 ? 'low-stock' : 'in-stock') }}">
+                            @if ($currentStock <= 0)
+                                <i class="bi bi-x-circle-fill"></i>
+                                Out of Stock
+
+                            @elseif ($currentStock <= 5)
+                                <i class="bi bi-check-circle-fill"></i>
+                                In Stock
+
+                                <small class="ml-low-stock-message">
+                                    Hurry, only {{ $currentStock }} left
+                                </small>
+
+                            @else
+                                <i class="bi bi-check-circle-fill"></i>
+                                In Stock
+                            @endif
+                        </span>
+                    </div>
+
+                    <p class="ml-product-price">
+                        <strong id="mlVariantPrice">
+                            A${{ number_format($basePrice + (float) ($firstVariant?->price_adjustment ?? 0), 2) }}
+                        </strong>
+                    </p>
+
+                    <div class="ml-product-short">
+                        <p>
+                            {{ Str::words($product->short_description ?: 'No short description available.', 25, '...') }}
+                            <a href="#fullProductDescription" class="ml-see-full-desc">
+                                See full description
+                                <i class="bi bi-arrow-down-circle-fill ps-2"></i>
+                            </a>
+                        </p>
+                    </div>
+
+                    @if ($variants->isNotEmpty())
+                        <div class="ml-product-colour-control">
+
+                            <label class="ml-color-label">Colour</label>
+
+                            {{-- Selected colour dropdown --}}
+                            <div class="ml-custom-select" id="mlProductColourSelect">
+
+                                <button type="button" class="ml-custom-select-trigger" id="mlProductColourTrigger"
+                                    aria-expanded="false">
+                                    <span class="ml-selected-colour-wrap">
+                                        <span class="ml-color-dot" id="mlSelectedColourDot"
+                                            style="background: {{ $firstVariant?->colour_code ?: '#31A050' }}"></span>
+
+                                        <span id="mlVariantName">
+                                            {{ $firstVariant?->colour_name }}
                                         </span>
+                                    </span>
 
-                                        Colour
+                                    <i class="bi bi-chevron-down"></i>
+                                </button>
 
-                                    </label>
+                                <div class="ml-custom-options">
+                                    @foreach ($variants as $variant)
+                                        @php
+                                            $variantImage = $variant->image
+                                                ? asset('storage/' . $variant->image)
+                                                : $featuredImage;
+                                        @endphp
 
-                                    <div class="ml-custom-select" id="mlCustomColorSelect">
+                                        <button type="button"
+                                            class="ml-custom-option ml-product-variant-option {{ $loop->first ? 'active' : '' }}"
+                                            data-variant-id="{{ $variant->id }}" data-name="{{ $variant->colour_name }}"
+                                            data-color="{{ $variant->colour_code ?: '#31A050' }}" data-sku="{{ $variant->sku }}"
+                                            data-stock="{{ $variant->quantity }}"
+                                            data-price="{{ $basePrice + (float) $variant->price_adjustment }}"
+                                            data-image="{{ $variantImage }}">
+                                            <span class="color-circle"
+                                                style="background: {{ $variant->colour_code ?: '#31A050' }}"></span>
 
-                                        <div class="ml-custom-select-trigger">
+                                            <span>{{ $variant->colour_name }}</span>
 
-                                            <span id="mlSelectedColor">
-                                                {{ $product->colors[0] ?? 'Default' }}
-                                            </span>
-
-                                            <i class="bi bi-chevron-down"></i>
-
-                                        </div>
-
-                                        <div class="ml-custom-options">
-
-                                            @foreach ($colourOptions as $option)
-
-                                                <div class="ml-custom-option" data-index="{{ $option['index'] }}"
-                                                    data-color="{{ $option['dot'] }}" data-name="{{ $option['name'] }}"
-                                                    data-image="{{ $option['image'] }}">
-
-                                                    <span class="color-circle" style="background: {{ $option['dot'] }}">
-                                                    </span>
-
-                                                    {{ $option['name'] }}
-
-                                                </div>
-
-                                            @endforeach
-
-                                        </div>
-
-                                    </div>
-
+                                            <img src="{{ $variantImage }}" alt="{{ $variant->colour_name }}">
+                                        </button>
+                                    @endforeach
                                 </div>
 
                             </div>
 
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-6">
-                    <div class="ml-product-info">
-
-                        <span class="ml-product-category">
-                            {{ $product->category }}
-                        </span>
-
-                        <h1>{{ $product->name }}</h1>
-
-                        <div class="ml-product-rating">
-                            <div>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
-                            </div>
-                            <span>4.8 rating</span>
-                        </div>
-
-                        <p class="ml-product-price">
-
-                            @if ($product->sale_price)
-
-                                <span class="text-decoration-line-through text-muted">
-                                    A${{ number_format($product->regular_price, 2) }}
+                            {{-- Always-visible colour image cards --}}
+                            <div class="ml-available-colours">
+                                <span class="ml-available-colours-title">
+                                    Available Colours
                                 </span>
 
-                                <strong class="text-success ms-2">
-                                    A${{ number_format($product->sale_price, 2) }}
-                                </strong>
+                                <div class="ml-colour-card-list">
+                                    @foreach ($variants as $variant)
+                                        @php
+                                            $variantImage = $variant->image
+                                                ? asset('storage/' . $variant->image)
+                                                : $featuredImage;
+                                        @endphp
 
-                            @else
+                                        <button type="button" class="ml-colour-card {{ $loop->first ? 'active' : '' }}"
+                                            data-variant-id="{{ $variant->id }}" data-name="{{ $variant->colour_name }}"
+                                            data-color="{{ $variant->colour_code ?: '#31A050' }}" data-sku="{{ $variant->sku }}"
+                                            data-stock="{{ $variant->quantity }}"
+                                            data-price="{{ $basePrice + (float) $variant->price_adjustment }}"
+                                            data-image="{{ $variantImage }}" aria-label="Select {{ $variant->colour_name }}">
+                                            <span class="ml-colour-card-check">
+                                                <i class="bi bi-check-lg"></i>
+                                            </span>
 
-                                <strong>
-                                    A${{ number_format($product->regular_price, 2) }}
-                                </strong>
+                                            <img src="{{ $variantImage }}" alt="{{ $variant->colour_name }}">
 
-                            @endif
-
-                        </p>
-
-                        <div class="ml-product-short">
-                            <p>
-                                {{ Str::words($product->short_description ?: 'No short description available for this product.', 30, '...') }}
-
-                                <a href="javascript:void(0)" class="ml-product-desc-link" id="scrollToDescription">
-                                    See Full Description
-                                    <i class="bi bi-arrow-down"></i>
-                                </a>
-                            </p>
-                        </div>
-
-                        <div class="ml-product-purchase-box">
-
-                            <div class="ml-product-qty">
-                                <button type="button" id="qtyMinus">−</button>
-                                <input type="number" id="productQty" value="1" min="1">
-                                <button type="button" id="qtyPlus">+</button>
+                                            <span>{{ $variant->colour_name }}</span>
+                                        </button>
+                                    @endforeach
+                                </div>
                             </div>
 
-                            <button class="ml-product-add-btn" type="button" id="productAddToBag">
-                                Add to Bag
-                            </button>
-
                         </div>
-
-                        <button class="ml-product-buy-btn" type="button" id="productBuyNow">
-                            Buy Now
-                        </button>
-
-                        <div class="ml-product-support-note">
-                            <i class="bi bi-info-circle"></i>
-                            <span>
-                                Product availability and suitability may depend on pharmacy guidance or prescription
-                                requirements.
-                            </span>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- PRODUCT DETAILS -->
-    <section class="ml-product-details">
-        <div class="container">
-            <div class="row g-4">
-
-                <div class="ml-product-description-box" id="productDescription">
-
-                    <h2>Product Overview</h2>
-
-                    @if ($product->short_description)
-                        <p>{!! $product->short_description !!}</p>
                     @endif
 
-                    <h3>Product Specifications</h3>
+                    <input type="hidden" id="selectedVariantId" value="{{ $firstVariant?->id }}">
 
-                    <ul>
-                        @if ($product->sku)
-                            <li><strong>SKU:</strong> {{ $product->sku }}</li>
-                        @endif
+                    <label class="ml-quantity-label" for="productQty">
+                        Quantity
+                    </label>
 
-                        @if ($product->category)
-                            <li><strong>Category:</strong> {{ $product->category }}</li>
-                        @endif
+                    <div class="ml-product-purchase-box">
 
-                        @if ($product->brand)
-                            <li><strong>Brand:</strong> {{ $product->brand }}</li>
-                        @endif
+                        <div class="ml-product-qty">
+                            <button type="button" id="qtyMinus" aria-label="Decrease quantity">
+                                −
+                            </button>
 
-                        @if ($product->product_type)
-                            <li><strong>Product Type:</strong> {{ $product->product_type }}</li>
-                        @endif
+                            <input type="number" id="productQty" value="1" min="1"
+                                max="{{ $firstVariant?->quantity ?: max(1, $product->stock_quantity) }}">
 
-                        @if ($product->weight)
-                            <li><strong>Weight:</strong> {{ $product->weight }} kg</li>
-                        @endif
+                            <button type="button" id="qtyPlus" aria-label="Increase quantity">
+                                +
+                            </button>
+                        </div>
 
-                        @if ($product->length && $product->width && $product->height)
-                            <li>
-                                <strong>Dimensions:</strong>
-                                {{ $product->length }} × {{ $product->width }} × {{ $product->height }} cm
-                            </li>
-                        @endif
+                        <button class="ml-product-add-btn" type="button" id="productAddToBag" {{ (($firstVariant?->quantity ?? $product->stock_quantity) <= 0) ? 'disabled' : '' }}>
+                            <i class="bi bi-bag-plus"></i>
+                            Add to Bag
+                        </button>
 
-                        <li>
-                            <strong>Stock:</strong>
-                            {{ $product->stock_quantity }} PCS
-                        </li>
-
-                        <li>
-                            <strong>Status:</strong>
-
-                            @if ($product->stock_status == 'in_stock')
-                                In Stock
-                            @elseif ($product->stock_status == 'low_stock')
-                                Low Stock
-                            @else
-                                Out of Stock
-                            @endif
-                        </li>
-
-                        @if ($product->prescription_required)
-                            <li>
-                                <strong>Prescription:</strong>
-                                Required
-                            </li>
-                        @endif
-
-                    </ul>
-
-                    <h3>Full Description</h3>
-
-                    <div class="ml-product-description">
-                        {!! $product->description !!}
                     </div>
-
-                    <h3>Important Information</h3>
-
-                    <p>
-                        Product availability may vary. Please consult our healthcare
-                        team before purchasing products that require a prescription.
-                    </p>
 
                 </div>
 
             </div>
+
         </div>
     </section>
 
-    <!-- RELATED PRODUCTS -->
-    <section class="ml-related-products">
+    <section class="ml-product-details" id="fullProductDescription">
         <div class="container">
-
-            <div class="ml-related-head">
-                <span>Explore More</span>
-                <h2>Related Products</h2>
-                <p>Discover more pharmacy supported products from the MediLeaf range.</p>
+            <div class="ml-product-description-box">
+                <h2>Product Overview</h2>
+                {!! $product->description !!}
             </div>
-
-            <div class="row g-4">
-
-                @forelse ($relatedProducts as $item)
-
-                    <div class="col-md-6 col-xl-3">
-
-                        <div class="ml-shop-v2-card">
-
-                            <div class="ml-shop-v2-img">
-
-                                @if ($item->featured)
-                                    <span class="ml-shop-v2-tag">
-                                        Featured
-                                    </span>
-                                @endif
-
-                                <img src="{{ asset('storage/' . $item->featured_image) }}"
-                                    alt="{{ $item->image_alt ?: $item->name }}">
-
-                            </div>
-
-                            <div class="ml-shop-v2-body">
-
-                                <span>
-                                    {{ $item->category }}
-                                </span>
-
-                                <h3>
-                                    {{ $item->name }}
-                                </h3>
-
-                                <p>
-
-                                    @if ($item->sale_price)
-
-                                        <span class="text-decoration-line-through text-muted">
-                                            A${{ number_format($item->regular_price, 2) }}
-                                        </span>
-
-                                        <strong class="text-success">
-                                            A${{ number_format($item->sale_price, 2) }}
-                                        </strong>
-
-                                    @else
-
-                                        A${{ number_format($item->regular_price, 2) }}
-
-                                    @endif
-
-                                </p>
-
-                                <a href="{{ route('product-view', $item) }}" class="product-view-btn mb-2">
-                                    View Product
-                                </a>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                @empty
-
-                    <div class="col-12 text-center">
-                        No related products found.
-                    </div>
-
-                @endforelse
-
-            </div>
-
         </div>
     </section>
-
-    <script>
-        window.mlProductConfig = {
-            id: Number({{ $product->id }}),
-            name: @json($product->name),
-            price: Number({{ $product->sale_price ?: $product->regular_price }}),
-            image: @json(
-                $product->featured_image
-                ? asset('storage/' . $product->featured_image)
-                : asset('img/product-placeholder.webp')
-            ),
-            checkoutUrl: @json(route('checkout'))
-        };
-    </script>
-
-    <script src="{{ asset('js/product-view.js') }}"></script>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/product-view.js') }}"></script>
+@endpush

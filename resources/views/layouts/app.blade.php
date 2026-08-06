@@ -7,15 +7,18 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Browser Address Bar Color -->
+    <meta name="theme-color" content="#2F8E45">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="mobile-web-app-capable" content="yes">
+
     <title>@yield('title', 'MediLeaf')</title>
 
     <meta name="description" content="@yield('meta_description', 'MediLeaf Australia')">
 
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}">
-
     {{-- Bootstrap --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-
     {{-- Bootstrap Icons --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"

@@ -4,501 +4,271 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductVariant;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class ProductController extends Controller
 {
-    /**
-     * Show all products.
-     */
     public function index(Request $request)
     {
-        $query = Product::query();
+        $query = Product::query()->withCount('variants');
 
         if ($request->filled('search')) {
             $search = trim((string) $request->search);
 
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'LIKE', "%{$search}%")
-                    ->orWhere('sku', 'LIKE', "%{$search}%")
-                    ->orWhere('brand', 'LIKE', "%{$search}%")
-                    ->orWhere('category', 'LIKE', "%{$search}%")
-                    ->orWhere('product_type', 'LIKE', "%{$search}%");
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('sku', 'like', "%{$search}%")
+                    ->orWhere('brand', 'like', "%{$search}%")
+                    ->orWhere('category', 'like', "%{$search}%")
+                    ->orWhereHas('variants', function ($variantQuery) use ($search) {
+                        $variantQuery
+                            ->where('sku', 'like', "%{$search}%")
+                            ->orWhere('colour_name', 'like', "%{$search}%");
+                    });
             });
         }
 
-        $products = $query
-            ->latest()
-            ->paginate(10);
-
-        $products->appends([
-            'search' => $request->search,
-        ]);
+        $products = $query->latest()->paginate(10)->withQueryString();
 
         return view('admin.products.index', compact('products'));
     }
 
-    /**
-     * Show add product form.
-     */
     public function create()
     {
         return view('admin.products.create');
     }
 
-    /**
-     * Save a new product.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate($this->validationRules());
+        $variants = $request->input('variants', []);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Generate Slug
-        |--------------------------------------------------------------------------
-        */
+        $this->validateVariantRows($variants);
 
-        if (empty($validated['slug'])) {
-            $validated['slug'] = $this->generateUniqueSlug(
-                $validated['name']
+        $uploadedFiles = [];
+
+        try {
+            DB::beginTransaction();
+
+            $validated['slug'] = $validated['slug']
+                ?: $this->generateUniqueSlug($validated['name']);
+
+            unset($validated['variants']);
+
+            if ($request->hasFile('featured_image')) {
+                $validated['featured_image'] = $request
+                    ->file('featured_image')
+                    ->store('products/featured', 'public');
+
+                $uploadedFiles[] = $validated['featured_image'];
+            }
+
+            $validated['gallery_images'] = $request->hasFile('gallery_images')
+                ? $this->storeGalleryImages($request->file('gallery_images'))
+                : [];
+
+            $uploadedFiles = array_merge(
+                $uploadedFiles,
+                $validated['gallery_images']
             );
-        }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Prepare Colours
-        |--------------------------------------------------------------------------
-        */
+            $validated['featured'] = $request->boolean('featured');
+            $validated['prescription_required'] = $request->boolean('prescription_required');
 
-        $customColour = $this->cleanColourName(
-            $validated['custom_colour'] ?? null
-        );
+            $product = Product::create($validated);
 
-        $colors = $this->prepareColours(
-            $validated['colors'] ?? [],
-            $customColour
-        );
-
-        $validated['colors'] = $colors;
-
-        unset(
-            $validated['custom_colour'],
-            $validated['color_images'],
-            $validated['custom_colour_image'],
-            $validated['remove_color_images']
-        );
-
-        /*
-        |--------------------------------------------------------------------------
-        | Featured Image
-        |--------------------------------------------------------------------------
-        */
-
-        if ($request->hasFile('featured_image')) {
-            $validated['featured_image'] = $request
-                ->file('featured_image')
-                ->store('products/featured', 'public');
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Gallery Images
-        |--------------------------------------------------------------------------
-        */
-
-        if ($request->hasFile('gallery_images')) {
-            $validated['gallery_images'] = $this->storeGalleryImages(
-                $request->file('gallery_images')
+            $this->createVariants(
+                product: $product,
+                request: $request,
+                variants: $variants,
+                uploadedFiles: $uploadedFiles
             );
-        } else {
-            $validated['gallery_images'] = [];
+
+            $this->syncProductSummary($product);
+
+            DB::commit();
+
+            return redirect()
+                ->route('admin.products.index')
+                ->with('success', 'Product added successfully.');
+        } catch (Throwable $exception) {
+            DB::rollBack();
+            $this->deleteFileCollection(array_unique($uploadedFiles));
+            report($exception);
+
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'product' => 'Product save nahi hua. Please try again.',
+                ]);
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Colour Images
-        |--------------------------------------------------------------------------
-        */
-
-        $validated['color_images'] = $this->processColourImages(
-            request: $request,
-            selectedColours: $colors,
-            existingImages: [],
-            customColour: $customColour
-        );
-
-        /*
-        |--------------------------------------------------------------------------
-        | Checkbox Values
-        |--------------------------------------------------------------------------
-        */
-
-        $validated['featured'] = $request->boolean('featured');
-
-        $validated['prescription_required'] = $request->boolean(
-            'prescription_required'
-        );
-
-        Product::create($validated);
-
-        return redirect()
-            ->route('admin.products.index')
-            ->with('success', 'Product added successfully.');
     }
 
-    /**
-     * Show one product.
-     */
     public function show(Product $product)
     {
+        $product->load('variants');
+
         return view('admin.products.show', compact('product'));
     }
 
-    /**
-     * Show product edit form.
-     */
     public function edit(Product $product)
     {
+        $product->load('variants');
+
         return view('admin.products.edit', compact('product'));
     }
 
-    /**
-     * Update a product.
-     */
     public function update(Request $request, Product $product)
     {
-        $validated = $request->validate(
-            $this->validationRules($product)
-        );
+        $validated = $request->validate($this->validationRules($product));
+        $variants = $request->input('variants', []);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Generate Slug
-        |--------------------------------------------------------------------------
-        */
+        $this->validateVariantRows($variants, $product);
 
-        if (empty($validated['slug'])) {
-            $validated['slug'] = $this->generateUniqueSlugForUpdate(
-                $validated['name'],
-                $product->id
-            );
-        }
+        $uploadedFiles = [];
+        $filesToDelete = [];
 
-        /*
-        |--------------------------------------------------------------------------
-        | Prepare Colours
-        |--------------------------------------------------------------------------
-        */
+        try {
+            DB::beginTransaction();
 
-        $customColour = $this->cleanColourName(
-            $validated['custom_colour'] ?? null
-        );
+            $validated['slug'] = $validated['slug']
+                ?: $this->generateUniqueSlugForUpdate(
+                    $validated['name'],
+                    $product->id
+                );
 
-        $colors = $this->prepareColours(
-            $validated['colors'] ?? [],
-            $customColour
-        );
+            unset($validated['variants']);
 
-        $validated['colors'] = $colors;
+            if ($request->hasFile('featured_image')) {
+                $newImage = $request
+                    ->file('featured_image')
+                    ->store('products/featured', 'public');
 
-        unset(
-            $validated['custom_colour'],
-            $validated['color_images'],
-            $validated['custom_colour_image'],
-            $validated['remove_color_images']
-        );
+                $uploadedFiles[] = $newImage;
 
-        /*
-        |--------------------------------------------------------------------------
-        | Replace Featured Image
-        |--------------------------------------------------------------------------
-        */
+                if ($product->featured_image) {
+                    $filesToDelete[] = $product->featured_image;
+                }
 
-        if ($request->hasFile('featured_image')) {
-            $this->deletePublicFile($product->featured_image);
+                $validated['featured_image'] = $newImage;
+            }
 
-            $validated['featured_image'] = $request
-                ->file('featured_image')
-                ->store('products/featured', 'public');
-        }
+            if ($request->hasFile('gallery_images')) {
+                $newGallery = $this->storeGalleryImages(
+                    $request->file('gallery_images')
+                );
 
-        /*
-        |--------------------------------------------------------------------------
-        | Replace Gallery Images
-        |--------------------------------------------------------------------------
-        */
+                $uploadedFiles = array_merge($uploadedFiles, $newGallery);
+                $filesToDelete = array_merge(
+                    $filesToDelete,
+                    $this->normaliseArray($product->gallery_images)
+                );
 
-        if ($request->hasFile('gallery_images')) {
-            $this->deleteFileCollection(
-                $this->normaliseArray($product->gallery_images)
+                $validated['gallery_images'] = $newGallery;
+            }
+
+            $validated['featured'] = $request->boolean('featured');
+            $validated['prescription_required'] = $request->boolean('prescription_required');
+
+            $product->update($validated);
+
+            $this->syncVariants(
+                product: $product,
+                request: $request,
+                variants: $variants,
+                uploadedFiles: $uploadedFiles,
+                filesToDelete: $filesToDelete
             );
 
-            $validated['gallery_images'] = $this->storeGalleryImages(
-                $request->file('gallery_images')
-            );
+            $this->syncProductSummary($product);
+
+            DB::commit();
+
+            $this->deleteFileCollection(array_unique($filesToDelete));
+
+            return redirect()
+                ->route('admin.products.index')
+                ->with('success', 'Product updated successfully.');
+        } catch (Throwable $exception) {
+            DB::rollBack();
+            $this->deleteFileCollection(array_unique($uploadedFiles));
+            report($exception);
+
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'product' => 'Product update nahi hua. Please try again.',
+                ]);
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Update Colour Images
-        |--------------------------------------------------------------------------
-        */
-
-        $existingColourImages = $this->normaliseArray(
-            $product->color_images
-        );
-
-        $validated['color_images'] = $this->processColourImages(
-            request: $request,
-            selectedColours: $colors,
-            existingImages: $existingColourImages,
-            customColour: $customColour
-        );
-
-        /*
-        |--------------------------------------------------------------------------
-        | Checkbox Values
-        |--------------------------------------------------------------------------
-        */
-
-        $validated['featured'] = $request->boolean('featured');
-
-        $validated['prescription_required'] = $request->boolean(
-            'prescription_required'
-        );
-
-        $product->update($validated);
-
-        return redirect()
-            ->route('admin.products.index')
-            ->with('success', 'Product updated successfully.');
     }
 
-    /**
-     * Delete a product.
-     */
     public function destroy(Product $product)
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Delete Featured Image
-        |--------------------------------------------------------------------------
-        */
+        $product->load('variants');
 
-        $this->deletePublicFile($product->featured_image);
+        $files = array_filter([
+            $product->featured_image,
+            ...$this->normaliseArray($product->gallery_images),
+            ...$product->variants->pluck('image')->filter()->all(),
+        ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Delete Gallery Images
-        |--------------------------------------------------------------------------
-        */
+        DB::transaction(function () use ($product) {
+            $product->delete();
+        });
 
-        $this->deleteFileCollection(
-            $this->normaliseArray($product->gallery_images)
-        );
-
-        /*
-        |--------------------------------------------------------------------------
-        | Delete Colour Images
-        |--------------------------------------------------------------------------
-        */
-
-        $this->deleteFileCollection(
-            array_values(
-                $this->normaliseArray($product->color_images)
-            )
-        );
-
-        $product->delete();
+        $this->deleteFileCollection(array_unique($files));
 
         return redirect()
             ->route('admin.products.index')
             ->with('success', 'Product deleted successfully.');
     }
 
-    /**
-     * Product validation rules.
-     */
     private function validationRules(?Product $product = null): array
     {
-        $productId = $product?->id;
-
         return [
-            /*
-            |--------------------------------------------------------------------------
-            | Basic Information
-            |--------------------------------------------------------------------------
-            */
-
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-            ],
-
+            'name' => ['required', 'string', 'max:255'],
             'slug' => [
                 'nullable',
                 'string',
                 'max:255',
-                'unique:products,slug,' . ($productId ?? 'NULL'),
+                Rule::unique('products', 'slug')->ignore($product?->id),
             ],
-
             'sku' => [
                 'nullable',
                 'string',
                 'max:100',
-                'unique:products,sku,' . ($productId ?? 'NULL'),
+                Rule::unique('products', 'sku')->ignore($product?->id),
             ],
+            'category' => ['nullable', 'string', 'max:150'],
+            'brand' => ['nullable', 'string', 'max:150'],
+            'product_type' => ['nullable', 'string', 'max:100'],
+            'reference_number' => ['nullable', 'string', 'max:255'],
 
-            'category' => [
-                'nullable',
-                'string',
-                'max:150',
-            ],
+            'regular_price' => ['required', 'numeric', 'min:0'],
+            'sale_price' => ['nullable', 'numeric', 'min:0', 'lte:regular_price'],
+            'cost_price' => ['nullable', 'numeric', 'min:0'],
 
-            'brand' => [
-                'nullable',
-                'string',
-                'max:150',
-            ],
+            'short_description' => ['nullable', 'string'],
+            'description' => ['nullable', 'string'],
 
-            'product_type' => [
-                'nullable',
-                'string',
-                'max:100',
-            ],
-
-            'reference_number' => [
-                'nullable',
-                'string',
-                'max:255',
-            ],
-
-            /*
-            |--------------------------------------------------------------------------
-            | Colours
-            |--------------------------------------------------------------------------
-            */
-
-            'colors' => [
-                'nullable',
-                'array',
-            ],
-
-            'colors.*' => [
-                'nullable',
-                'string',
-                'max:100',
-            ],
-
-            'custom_colour' => [
-                'nullable',
-                'string',
-                'max:100',
-            ],
-
-            'color_images' => [
-                'nullable',
-                'array',
-            ],
-
-            'color_images.*' => [
-                'nullable',
-                'image',
-                'mimes:jpg,jpeg,png,webp',
-                'max:5120',
-            ],
-
-            'custom_colour_image' => [
-                'nullable',
-                'image',
-                'mimes:jpg,jpeg,png,webp',
-                'max:5120',
-            ],
-
-            'remove_color_images' => [
-                'nullable',
-                'array',
-            ],
-
-            'remove_color_images.*' => [
-                'nullable',
-                'string',
-                'max:100',
-            ],
-
-            /*
-            |--------------------------------------------------------------------------
-            | Pricing
-            |--------------------------------------------------------------------------
-            */
-
-            'regular_price' => [
-                'required',
-                'numeric',
-                'min:0',
-            ],
-
-            'sale_price' => [
-                'nullable',
-                'numeric',
-                'min:0',
-            ],
-
-            'cost_price' => [
-                'nullable',
-                'numeric',
-                'min:0',
-            ],
-
-            /*
-            |--------------------------------------------------------------------------
-            | Description
-            |--------------------------------------------------------------------------
-            */
-
-            'short_description' => [
-                'nullable',
-                'string',
-            ],
-
-            'description' => [
-                'nullable',
-                'string',
-            ],
-
-            /*
-            |--------------------------------------------------------------------------
-            | Inventory
-            |--------------------------------------------------------------------------
-            */
-
-            'stock_quantity' => [
-                'required',
-                'integer',
-                'min:0',
-            ],
-
-            'low_stock_alert' => [
-                'nullable',
-                'integer',
-                'min:0',
-            ],
-
+            'stock_quantity' => ['required', 'integer', 'min:0'],
+            'low_stock_alert' => ['nullable', 'integer', 'min:0'],
             'stock_status' => [
                 'required',
-                'in:in_stock,out_of_stock,low_stock',
+                Rule::in([
+                    'in_stock',
+                    'out_of_stock',
+                    'low_stock',
+                ])
             ],
-
-            /*
-            |--------------------------------------------------------------------------
-            | Main Images
-            |--------------------------------------------------------------------------
-            */
 
             'featured_image' => [
                 'nullable',
@@ -506,298 +276,253 @@ class ProductController extends Controller
                 'mimes:jpg,jpeg,png,webp',
                 'max:5120',
             ],
-
-            'gallery_images' => [
-                'nullable',
-                'array',
-            ],
-
+            'gallery_images' => ['nullable', 'array'],
             'gallery_images.*' => [
                 'image',
                 'mimes:jpg,jpeg,png,webp',
                 'max:5120',
             ],
 
-            /*
-            |--------------------------------------------------------------------------
-            | Shipping
-            |--------------------------------------------------------------------------
-            */
+            'weight' => ['nullable', 'numeric', 'min:0'],
+            'length' => ['nullable', 'numeric', 'min:0'],
+            'width' => ['nullable', 'numeric', 'min:0'],
+            'height' => ['nullable', 'numeric', 'min:0'],
 
-            'weight' => [
-                'nullable',
-                'numeric',
-                'min:0',
-            ],
-
-            'length' => [
-                'nullable',
-                'numeric',
-                'min:0',
-            ],
-
-            'width' => [
-                'nullable',
-                'numeric',
-                'min:0',
-            ],
-
-            'height' => [
-                'nullable',
-                'numeric',
-                'min:0',
-            ],
-
-            /*
-            |--------------------------------------------------------------------------
-            | SEO
-            |--------------------------------------------------------------------------
-            */
-
-            'seo_title' => [
-                'nullable',
-                'string',
-                'max:255',
-            ],
-
-            'meta_description' => [
-                'nullable',
-                'string',
-            ],
-
-            'image_alt' => [
-                'nullable',
-                'string',
-                'max:255',
-            ],
-
-            /*
-            |--------------------------------------------------------------------------
-            | Product Options
-            |--------------------------------------------------------------------------
-            */
+            'seo_title' => ['nullable', 'string', 'max:255'],
+            'meta_description' => ['nullable', 'string'],
+            'image_alt' => ['nullable', 'string', 'max:255'],
 
             'status' => [
                 'required',
-                'in:published,draft,hidden',
+                Rule::in([
+                    'published',
+                    'draft',
+                    'hidden',
+                ])
             ],
+
+            'variants' => ['required', 'array', 'min:1'],
+            'variants.*.id' => ['nullable', 'integer'],
+            'variants.*.colour_name' => ['required', 'string', 'max:100'],
+            'variants.*.colour_code' => ['nullable', 'string', 'max:20'],
+            'variants.*.sku' => ['required', 'string', 'max:100'],
+            'variants.*.quantity' => ['required', 'integer', 'min:0'],
+            'variants.*.image' => [
+                'nullable',
+                'image',
+                'mimes:jpg,jpeg,png,webp',
+                'max:5120',
+            ],
+            'variants.*.price_adjustment' => ['nullable', 'numeric', 'min:0'],
+            'variants.*.status' => ['nullable', Rule::in(['active', 'inactive'])],
+            'variants.*.remove_image' => ['nullable', 'boolean'],
         ];
     }
 
-    /**
-     * Combine default and custom colours.
-     */
-    private function prepareColours(
-        array $selectedColours,
-        ?string $customColour = null
-    ): array {
-        $colours = [];
+    private function validateVariantRows(
+        array $variants,
+        ?Product $product = null
+    ): void {
+        $errors = [];
+        $seenSkus = [];
+        $seenColours = [];
 
-        foreach ($selectedColours as $colour) {
-            $cleanColour = $this->cleanColourName($colour);
+        foreach ($variants as $index => $variant) {
+            $sku = trim((string) ($variant['sku'] ?? ''));
+            $colour = trim((string) ($variant['colour_name'] ?? ''));
+            $variantId = isset($variant['id']) ? (int) $variant['id'] : null;
 
-            if ($cleanColour !== null) {
-                $colours[] = $cleanColour;
+            $skuKey = strtolower($sku);
+            $colourKey = strtolower($colour);
+
+            if (in_array($skuKey, $seenSkus, true)) {
+                $errors["variants.{$index}.sku"] =
+                    'Each variant SKU must be unique.';
+            }
+
+            if (in_array($colourKey, $seenColours, true)) {
+                $errors["variants.{$index}.colour_name"] =
+                    'Each colour can only be added once.';
+            }
+
+            $seenSkus[] = $skuKey;
+            $seenColours[] = $colourKey;
+
+            $exists = ProductVariant::query()
+                ->where('sku', $sku)
+                ->when(
+                    $variantId,
+                    fn($query) => $query->whereKeyNot($variantId)
+                )
+                ->exists();
+
+            if ($exists) {
+                $errors["variants.{$index}.sku"] =
+                    'This variant SKU is already in use.';
             }
         }
 
-        if ($customColour !== null) {
-            $colours[] = $customColour;
+        if ($errors) {
+            throw ValidationException::withMessages($errors);
         }
-
-        return array_values(
-            array_unique($colours)
-        );
     }
 
-    /**
-     * Store and update colour-wise images.
-     */
-    private function processColourImages(
+    private function createVariants(
+        Product $product,
         Request $request,
-        array $selectedColours,
-        array $existingImages = [],
-        ?string $customColour = null
-    ): array {
-        $colourImages = [];
+        array $variants,
+        array &$uploadedFiles
+    ): void {
+        foreach ($variants as $index => $variantData) {
+            $image = null;
 
-        /*
-        |--------------------------------------------------------------------------
-        | Keep Images Only for Currently Selected Colours
-        |--------------------------------------------------------------------------
-        */
+            if ($request->hasFile("variants.{$index}.image")) {
+                $image = $request
+                    ->file("variants.{$index}.image")
+                    ->store('products/variants', 'public');
 
-        foreach ($existingImages as $colour => $imagePath) {
-            $cleanColour = $this->cleanColourName($colour);
-
-            if (
-                $cleanColour !== null &&
-                in_array($cleanColour, $selectedColours, true)
-            ) {
-                $colourImages[$cleanColour] = $imagePath;
-            } else {
-                $this->deletePublicFile($imagePath);
+                $uploadedFiles[] = $image;
             }
+
+            $product->variants()->create([
+                'colour_name' => trim($variantData['colour_name']),
+                'colour_code' => $this->cleanColourCode(
+                    $variantData['colour_code'] ?? null
+                ),
+                'sku' => trim($variantData['sku']),
+                'quantity' => (int) $variantData['quantity'],
+                'image' => $image,
+                'price_adjustment' => (float) ($variantData['price_adjustment'] ?? 0),
+                'status' => $variantData['status'] ?? 'active',
+                'sort_order' => $index,
+            ]);
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Remove Specifically Selected Colour Images
-        |--------------------------------------------------------------------------
-        */
-
-        $removeColourImages = $request->input(
-            'remove_color_images',
-            []
-        );
-
-        foreach ($removeColourImages as $colour) {
-            $cleanColour = $this->cleanColourName($colour);
-
-            if (
-                $cleanColour !== null &&
-                isset($colourImages[$cleanColour])
-            ) {
-                $this->deletePublicFile(
-                    $colourImages[$cleanColour]
-                );
-
-                unset($colourImages[$cleanColour]);
-            }
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Upload Default and Existing Colour Images
-        |--------------------------------------------------------------------------
-        */
-
-        $uploadedColourImages = $request->file(
-            'color_images',
-            []
-        );
-
-        foreach ($uploadedColourImages as $colour => $image) {
-            if (!$image instanceof UploadedFile) {
-                continue;
-            }
-
-            $cleanColour = $this->cleanColourName($colour);
-
-            if (
-                $cleanColour === null ||
-                !in_array($cleanColour, $selectedColours, true)
-            ) {
-                continue;
-            }
-
-            if (!empty($colourImages[$cleanColour])) {
-                $this->deletePublicFile(
-                    $colourImages[$cleanColour]
-                );
-            }
-
-            $colourImages[$cleanColour] = $image->store(
-                'products/colors',
-                'public'
-            );
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Upload Custom Colour Image
-        |--------------------------------------------------------------------------
-        */
-
-        if (
-            $customColour !== null &&
-            $request->hasFile('custom_colour_image')
-        ) {
-            if (!empty($colourImages[$customColour])) {
-                $this->deletePublicFile(
-                    $colourImages[$customColour]
-                );
-            }
-
-            $colourImages[$customColour] = $request
-                ->file('custom_colour_image')
-                ->store('products/colors', 'public');
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Preserve Selected Colour Order
-        |--------------------------------------------------------------------------
-        */
-
-        $orderedImages = [];
-
-        foreach ($selectedColours as $colour) {
-            if (!empty($colourImages[$colour])) {
-                $orderedImages[$colour] = $colourImages[$colour];
-            }
-        }
-
-        return $orderedImages;
     }
 
-    /**
-     * Store gallery images.
-     */
+    private function syncVariants(
+        Product $product,
+        Request $request,
+        array $variants,
+        array &$uploadedFiles,
+        array &$filesToDelete
+    ): void {
+        $existing = $product->variants()->get()->keyBy('id');
+        $keptIds = [];
+
+        foreach ($variants as $index => $variantData) {
+            $variantId = isset($variantData['id'])
+                ? (int) $variantData['id']
+                : null;
+
+            $variant = $variantId
+                ? $existing->get($variantId)
+                : null;
+
+            $image = $variant?->image;
+
+            if (!empty($variantData['remove_image']) && $image) {
+                $filesToDelete[] = $image;
+                $image = null;
+            }
+
+            if ($request->hasFile("variants.{$index}.image")) {
+                $newImage = $request
+                    ->file("variants.{$index}.image")
+                    ->store('products/variants', 'public');
+
+                $uploadedFiles[] = $newImage;
+
+                if ($image) {
+                    $filesToDelete[] = $image;
+                }
+
+                $image = $newImage;
+            }
+
+            $values = [
+                'colour_name' => trim($variantData['colour_name']),
+                'colour_code' => $this->cleanColourCode(
+                    $variantData['colour_code'] ?? null
+                ),
+                'sku' => trim($variantData['sku']),
+                'quantity' => (int) $variantData['quantity'],
+                'image' => $image,
+                'price_adjustment' => (float) ($variantData['price_adjustment'] ?? 0),
+                'status' => $variantData['status'] ?? 'active',
+                'sort_order' => $index,
+            ];
+
+            if ($variant) {
+                $variant->update($values);
+                $keptIds[] = $variant->id;
+            } else {
+                $newVariant = $product->variants()->create($values);
+                $keptIds[] = $newVariant->id;
+            }
+        }
+
+        $product->variants()
+            ->whereNotIn('id', $keptIds)
+            ->get()
+            ->each(function (ProductVariant $variant) use (&$filesToDelete) {
+                if ($variant->image) {
+                    $filesToDelete[] = $variant->image;
+                }
+
+                $variant->delete();
+            });
+    }
+
+    private function syncProductSummary(Product $product): void
+    {
+        $variants = $product->variants()->get();
+        $totalStock = (int) $variants->sum('quantity');
+        $lowStockAlert = (int) ($product->low_stock_alert ?? 5);
+
+        $stockStatus = match (true) {
+            $totalStock <= 0 => 'out_of_stock',
+            $totalStock <= $lowStockAlert => 'low_stock',
+            default => 'in_stock',
+        };
+
+        $product->forceFill([
+            'colors' => $variants->pluck('colour_name')->values()->all(),
+            'color_images' => $variants
+                ->filter(fn($variant) => filled($variant->image))
+                ->pluck('image', 'colour_name')
+                ->all(),
+            'stock_quantity' => $totalStock,
+            'stock_status' => $stockStatus,
+        ])->save();
+    }
+
     private function storeGalleryImages(array $images): array
     {
-        $galleryImages = [];
+        $stored = [];
 
         foreach ($images as $image) {
-            if (!$image instanceof UploadedFile) {
-                continue;
+            if ($image instanceof UploadedFile) {
+                $stored[] = $image->store(
+                    'products/gallery',
+                    'public'
+                );
             }
-
-            $galleryImages[] = $image->store(
-                'products/gallery',
-                'public'
-            );
         }
 
-        return $galleryImages;
+        return $stored;
     }
 
-    /**
-     * Delete multiple files.
-     */
     private function deleteFileCollection(array $files): void
     {
         foreach ($files as $file) {
-            $this->deletePublicFile($file);
+            if ($file && Storage::disk('public')->exists($file)) {
+                Storage::disk('public')->delete($file);
+            }
         }
     }
 
-    /**
-     * Delete one file safely from public storage.
-     */
-    private function deletePublicFile(
-        string|null $filePath
-    ): void {
-        if (empty($filePath)) {
-            return;
-        }
-
-        $filePath = trim($filePath);
-
-        if (
-            $filePath !== '' &&
-            Storage::disk('public')->exists($filePath)
-        ) {
-            Storage::disk('public')->delete($filePath);
-        }
-    }
-
-    /**
-     * Convert JSON/string data to an array.
-     */
-    private function normaliseArray(
-        array|string|null $value
-    ): array {
+    private function normaliseArray(array|string|null $value): array
+    {
         if (is_array($value)) {
             return $value;
         }
@@ -811,70 +536,51 @@ class ProductController extends Controller
         return [];
     }
 
-    /**
-     * Clean colour name.
-     */
-    private function cleanColourName(
-        mixed $colour
-    ): ?string {
-        if (!is_string($colour)) {
+    private function cleanColourCode(mixed $value): ?string
+    {
+        if (!is_string($value) || trim($value) === '') {
             return null;
         }
 
-        $colour = trim($colour);
+        $value = trim($value);
 
-        if ($colour === '') {
-            return null;
+        if (preg_match('/^#?[0-9a-fA-F]{6}$/', $value)) {
+            return '#' . strtoupper(ltrim($value, '#'));
         }
 
-        return $colour;
+        return $value;
     }
 
-    /**
-     * Generate a unique slug while creating.
-     */
-    private function generateUniqueSlug(
-        string $name
-    ): string {
-        $baseSlug = Str::slug($name);
-
-        if ($baseSlug === '') {
-            $baseSlug = 'product';
-        }
-
-        $slug = $baseSlug;
-        $counter = 1;
-
-        while (Product::where('slug', $slug)->exists()) {
-            $slug = $baseSlug . '-' . $counter;
-            $counter++;
-        }
-
-        return $slug;
+    private function generateUniqueSlug(string $name): string
+    {
+        return $this->uniqueSlug($name);
     }
 
-    /**
-     * Generate a unique slug while updating.
-     */
     private function generateUniqueSlugForUpdate(
         string $name,
         int $productId
     ): string {
-        $baseSlug = Str::slug($name);
+        return $this->uniqueSlug($name, $productId);
+    }
 
-        if ($baseSlug === '') {
-            $baseSlug = 'product';
-        }
-
-        $slug = $baseSlug;
+    private function uniqueSlug(
+        string $name,
+        ?int $ignoreProductId = null
+    ): string {
+        $base = Str::slug($name) ?: 'product';
+        $slug = $base;
         $counter = 1;
 
         while (
-            Product::where('slug', $slug)
-                ->where('id', '!=', $productId)
+            Product::query()
+                ->where('slug', $slug)
+                ->when(
+                    $ignoreProductId,
+                    fn($query) => $query->whereKeyNot($ignoreProductId)
+                )
                 ->exists()
         ) {
-            $slug = $baseSlug . '-' . $counter;
+            $slug = "{$base}-{$counter}";
             $counter++;
         }
 

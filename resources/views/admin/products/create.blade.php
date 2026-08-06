@@ -2,6 +2,10 @@
 
 @section('title', 'Add Product')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/product-variants.css') }}">
+@endpush
+
 @section('content')
 
     @if ($errors->any())
@@ -121,78 +125,164 @@
                                 placeholder="STORZ & BICKEL">
                         </div>
 
-                        <!-- Colours -->
+                        <!-- Colour Variants -->
                         <div class="col-md-12">
-
-                            <label class="ml-admin-label">
-                                Available Colours
-                            </label>
-
-                            @php
-                                $defaultColours = ['Black', 'Silver', 'White', 'Blue', 'Green'];
-                            @endphp
-
-                            @foreach ($defaultColours as $colour)
-
-                                <div class="border rounded p-3 mb-3">
-
-                                    <div class="form-check mb-3">
-
-                                        <input
-                                            class="form-check-input"
-                                            type="checkbox"
-                                            name="colors[]"
-                                            value="{{ $colour }}"
-                                            id="colour{{ $loop->index }}">
-
-                                        <label
-                                            class="form-check-label fw-semibold"
-                                            for="colour{{ $loop->index }}">
-
-                                            {{ $colour }}
-
-                                        </label>
-
-                                    </div>
-
-                                    <input
-                                        type="file"
-                                        class="form-control"
-                                        name="color_images[{{ $colour }}]"
-                                        accept=".jpg,.jpeg,.png,.webp">
-
-                                    <small class="text-muted">
-                                        Upload image for {{ $colour }}
-                                    </small>
-
+                            <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+                                <div>
+                                    <label class="ml-admin-label mb-1">Colour Variants</label>
+                                    <p class="text-muted mb-0">
+                                        Add each colour with its own SKU, quantity and image.
+                                    </p>
                                 </div>
 
-                            @endforeach
-
-                            <div class="border rounded p-3">
-
-                                <label class="fw-semibold mb-2 d-block">
-                                    Custom Colour
-                                </label>
-
-                                <input
-                                    type="text"
-                                    class="ml-admin-input mb-3"
-                                    name="custom_colour"
-                                    placeholder="Example : Titanium Grey">
-
-                                <input
-                                    type="file"
-                                    class="form-control"
-                                    name="custom_colour_image"
-                                    accept=".jpg,.jpeg,.png,.webp">
-
-                                <small class="text-muted">
-                                    Upload custom colour image.
-                                </small>
-
+                                <button type="button" class="ml-add-colour-btn" id="addVariantBtn">
+                                    <i class="bi bi-plus-circle"></i>
+                                    Add Colour
+                                </button>
                             </div>
 
+                            @php
+                                $oldVariants = old('variants', [
+                                    [
+                                        'colour_name' => '',
+                                        'colour_code' => '#31A050',
+                                        'sku' => '',
+                                        'quantity' => 0,
+                                        'price_adjustment' => 0,
+                                        'status' => 'active',
+                                    ],
+                                ]);
+                            @endphp
+
+                            <div id="variantList" class="ml-variant-list">
+                                @foreach ($oldVariants as $variantIndex => $variant)
+                                    <div class="ml-variant-card" data-variant-row>
+                                        <div class="ml-variant-card-head">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <span class="ml-variant-number">{{ $loop->iteration }}</span>
+                                                <div>
+                                                    <strong>Colour Variant</strong>
+                                                    <small>SKU, stock and image for this colour</small>
+                                                </div>
+                                            </div>
+
+                                            <button type="button" class="ml-variant-remove-btn" data-remove-variant
+                                                aria-label="Remove colour variant">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="row g-3">
+                                            <div class="col-md-5">
+                                                <label class="ml-admin-label">
+                                                    Colour Name <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text"
+                                                    name="variants[{{ $variantIndex }}][colour_name]"
+                                                    value="{{ $variant['colour_name'] ?? '' }}"
+                                                    class="ml-admin-input"
+                                                    placeholder="Example: Black"
+                                                    required>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="ml-admin-label">Colour Code</label>
+                                                <div class="ml-colour-code-field">
+                                                    <input type="color"
+                                                        class="ml-colour-picker"
+                                                        value="{{ $variant['colour_code'] ?? '#31A050' }}"
+                                                        data-colour-picker>
+                                                    <input type="text"
+                                                        name="variants[{{ $variantIndex }}][colour_code]"
+                                                        value="{{ $variant['colour_code'] ?? '#31A050' }}"
+                                                        class="ml-admin-input"
+                                                        placeholder="#000000"
+                                                        maxlength="20"
+                                                        data-colour-code>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="ml-admin-label">
+                                                    Variant SKU <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text"
+                                                    name="variants[{{ $variantIndex }}][sku]"
+                                                    value="{{ $variant['sku'] ?? '' }}"
+                                                    class="ml-admin-input"
+                                                    placeholder="ML-001-BLK"
+                                                    required>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="ml-admin-label">
+                                                    Quantity <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="number"
+                                                    name="variants[{{ $variantIndex }}][quantity]"
+                                                    value="{{ $variant['quantity'] ?? 0 }}"
+                                                    min="0"
+                                                    class="ml-admin-input ml-variant-quantity"
+                                                    placeholder="0"
+                                                    required>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="ml-admin-label">Price Adjustment</label>
+                                                <input type="number"
+                                                    name="variants[{{ $variantIndex }}][price_adjustment]"
+                                                    value="{{ $variant['price_adjustment'] ?? 0 }}"
+                                                    step="0.01"
+                                                    min="0"
+                                                    class="ml-admin-input"
+                                                    placeholder="0.00">
+                                                <small class="text-muted d-block mt-2">
+                                                    Keep 0 when the colour uses the normal product price.
+                                                </small>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="ml-admin-label">Status</label>
+                                                <select name="variants[{{ $variantIndex }}][status]"
+                                                    class="ml-admin-input">
+                                                    <option value="active"
+                                                        {{ ($variant['status'] ?? 'active') === 'active' ? 'selected' : '' }}>
+                                                        Active
+                                                    </option>
+                                                    <option value="inactive"
+                                                        {{ ($variant['status'] ?? '') === 'inactive' ? 'selected' : '' }}>
+                                                        Inactive
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <label class="ml-admin-label">Colour Image</label>
+                                                <input type="file"
+                                                    name="variants[{{ $variantIndex }}][image]"
+                                                    class="form-control ml-variant-image-input"
+                                                    accept=".jpg,.jpeg,.png,.webp"
+                                                    data-variant-image>
+                                                <small class="text-muted d-block mt-2">
+                                                    Upload the image that should appear when this colour is selected.
+                                                </small>
+                                                <div class="ml-variant-image-preview" data-variant-preview></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <div class="ml-variant-summary">
+                                <div>
+                                    <span>Total Colour Variants</span>
+                                    <strong id="variantCount">{{ count($oldVariants) }}</strong>
+                                </div>
+                                <div>
+                                    <span>Total Stock</span>
+                                    <strong><span id="variantTotalStock">0</span> PCS</strong>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="col-md-6">
@@ -333,18 +423,20 @@
                     <div class="row g-4">
 
                         <div class="col-md-4">
-                            <label class="ml-admin-label">
-                                Stock Quantity <span class="text-danger">*</span>
-                            </label>
+                            <label class="ml-admin-label">Total Stock Quantity</label>
 
                             <input
                                 type="number"
                                 name="stock_quantity"
+                                id="stockQuantity"
                                 value="{{ old('stock_quantity', 0) }}"
                                 min="0"
                                 class="ml-admin-input"
-                                placeholder="Enter PCS"
-                                required>
+                                readonly>
+
+                            <small class="text-muted d-block mt-2">
+                                Automatically calculated from all colour quantities.
+                            </small>
                         </div>
 
                         <div class="col-md-4">
@@ -353,6 +445,7 @@
                             <input
                                 type="number"
                                 name="low_stock_alert"
+                                id="lowStockAlert"
                                 value="{{ old('low_stock_alert', 5) }}"
                                 min="0"
                                 class="ml-admin-input"
@@ -360,25 +453,18 @@
                         </div>
 
                         <div class="col-md-4">
-                            <label class="ml-admin-label">
-                                Stock Status <span class="text-danger">*</span>
-                            </label>
+                            <label class="ml-admin-label">Stock Status</label>
 
-                            <select name="stock_status" class="ml-admin-input" required>
+                            <input type="hidden" name="stock_status" id="stockStatus"
+                                value="{{ old('stock_status', 'out_of_stock') }}">
 
-                                <option value="in_stock" {{ old('stock_status', 'in_stock') === 'in_stock' ? 'selected' : '' }}>
-                                    In Stock
-                                </option>
+                            <div class="ml-auto-stock-status" id="stockStatusDisplay">
+                                Out of Stock
+                            </div>
 
-                                <option value="out_of_stock" {{ old('stock_status') === 'out_of_stock' ? 'selected' : '' }}>
-                                    Out of Stock
-                                </option>
-
-                                <option value="low_stock" {{ old('stock_status') === 'low_stock' ? 'selected' : '' }}>
-                                    Low Stock
-                                </option>
-
-                            </select>
+                            <small class="text-muted d-block mt-2">
+                                Automatically updated from total stock.
+                            </small>
                         </div>
 
                     </div>
@@ -639,30 +725,91 @@
 
     </form>
 
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+    <template id="variantTemplate">
+        <div class="ml-variant-card" data-variant-row>
+            <div class="ml-variant-card-head">
+                <div class="d-flex align-items-center gap-3">
+                    <span class="ml-variant-number">1</span>
+                    <div>
+                        <strong>Colour Variant</strong>
+                        <small>SKU, stock and image for this colour</small>
+                    </div>
+                </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
+                <button type="button" class="ml-variant-remove-btn" data-remove-variant
+                    aria-label="Remove colour variant">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
 
-            const descriptionField = document.querySelector("#description");
+            <div class="row g-3">
+                <div class="col-md-5">
+                    <label class="ml-admin-label">
+                        Colour Name <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" data-field="colour_name" class="ml-admin-input"
+                        placeholder="Example: Black" required>
+                </div>
 
-            if (!descriptionField) {
-                console.error("Description field not found.");
-                return;
-            }
+                <div class="col-md-3">
+                    <label class="ml-admin-label">Colour Code</label>
+                    <div class="ml-colour-code-field">
+                        <input type="color" class="ml-colour-picker" value="#31A050" data-colour-picker>
+                        <input type="text" data-field="colour_code" value="#31A050"
+                            class="ml-admin-input" placeholder="#000000" maxlength="20" data-colour-code>
+                    </div>
+                </div>
 
-            if (typeof ClassicEditor === "undefined") {
-                console.error("CKEditor library did not load.");
-                return;
-            }
+                <div class="col-md-4">
+                    <label class="ml-admin-label">
+                        Variant SKU <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" data-field="sku" class="ml-admin-input"
+                        placeholder="ML-001-BLK" required>
+                </div>
 
-            ClassicEditor
-                .create(descriptionField)
-                .catch(function (error) {
-                    console.error("CKEditor error:", error);
-                });
+                <div class="col-md-4">
+                    <label class="ml-admin-label">
+                        Quantity <span class="text-danger">*</span>
+                    </label>
+                    <input type="number" data-field="quantity" value="0" min="0"
+                        class="ml-admin-input ml-variant-quantity" placeholder="0" required>
+                </div>
 
-        });
-    </script>
+                <div class="col-md-4">
+                    <label class="ml-admin-label">Price Adjustment</label>
+                    <input type="number" data-field="price_adjustment" value="0" step="0.01"
+                        min="0" class="ml-admin-input" placeholder="0.00">
+                    <small class="text-muted d-block mt-2">
+                        Keep 0 when the colour uses the normal product price.
+                    </small>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="ml-admin-label">Status</label>
+                    <select data-field="status" class="ml-admin-input">
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="ml-admin-label">Colour Image</label>
+                    <input type="file" data-field="image"
+                        class="form-control ml-variant-image-input"
+                        accept=".jpg,.jpeg,.png,.webp" data-variant-image>
+                    <small class="text-muted d-block mt-2">
+                        Upload the image that should appear when this colour is selected.
+                    </small>
+                    <div class="ml-variant-image-preview" data-variant-preview></div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    @push('scripts')
+        <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+        <script src="{{ asset('js/product-variants.js') }}"></script>
+    @endpush
 
 @endsection

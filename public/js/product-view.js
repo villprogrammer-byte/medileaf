@@ -1,551 +1,426 @@
 document.addEventListener("DOMContentLoaded", function () {
+    "use strict";
 
-    // Blade se pass ki gayi dynamic product config
-    const productConfig = window.mlProductConfig || {};
+    const mainImage = document.getElementById("mlProductMainImg");
+    const galleryCaption = document.getElementById("mlGalleryCaption");
 
-    const qtyInput = document.getElementById("productQty");
-    const qtyMinus = document.getElementById("qtyMinus");
-    const qtyPlus = document.getElementById("qtyPlus");
-
-    const addBtn = document.getElementById("productAddToBag");
-    const buyNowBtn = document.getElementById("productBuyNow");
-
-    const mainImg = document.getElementById("mlProductMainImg");
-    const mainBox = document.getElementById("mlProductMainBox");
-
-    const thumbs = document.querySelectorAll(
-        ".ml-product-thumbs button[data-image]"
+    const galleryThumbs = Array.from(
+        document.querySelectorAll(".ml-product-angle-thumb")
     );
 
-    const colorDot = document.getElementById("currentColorDot");
+    const galleryPrev = document.getElementById("mlGalleryPrev");
+    const galleryNext = document.getElementById("mlGalleryNext");
 
-    const customSelect = document.getElementById(
-        "mlCustomColorSelect"
+    const colourSelect = document.getElementById(
+        "mlProductColourSelect"
     );
 
-    const customTrigger = customSelect
-        ? customSelect.querySelector(
-            ".ml-custom-select-trigger"
-        )
-        : null;
-
-    const selectedText = document.getElementById(
-        "mlSelectedColor"
+    const colourTrigger = document.getElementById(
+        "mlProductColourTrigger"
     );
 
-    const customOptions = customSelect
-        ? customSelect.querySelectorAll(
-            ".ml-custom-option"
-        )
-        : [];
-
-    const scrollToDescription = document.getElementById(
-        "scrollToDescription"
+    const dropdownOptions = Array.from(
+        document.querySelectorAll(".ml-product-variant-option")
     );
 
-    const productDescription = document.getElementById(
-        "productDescription"
+    const colourCards = Array.from(
+        document.querySelectorAll(".ml-colour-card")
     );
 
-    function getCurrentProduct() {
+    const selectedColourDot = document.getElementById(
+        "mlSelectedColourDot"
+    );
 
-        let selectedQuantity = qtyInput
-            ? Number(qtyInput.value)
-            : 1;
+    const variantName = document.getElementById("mlVariantName");
+    const variantSku = document.getElementById("mlVariantSku");
+    const variantStock = document.getElementById("mlVariantStock");
+    const variantPrice = document.getElementById("mlVariantPrice");
+    const selectedVariantId = document.getElementById(
+        "selectedVariantId"
+    );
 
-        if (
-            !Number.isFinite(selectedQuantity) ||
-            selectedQuantity < 1
-        ) {
-            selectedQuantity = 1;
+    const quantityInput = document.getElementById("productQty");
+    const addButton = document.getElementById("productAddToBag");
+    const minusButton = document.getElementById("qtyMinus");
+    const plusButton = document.getElementById("qtyPlus");
 
-            if (qtyInput) {
-                qtyInput.value = 1;
+    let currentGalleryIndex = 0;
+
+    function switchMainImage(imageUrl, label) {
+        if (!mainImage || !imageUrl) {
+            return;
+        }
+
+        mainImage.classList.add("is-switching");
+
+        window.setTimeout(function () {
+            mainImage.src = imageUrl;
+
+            if (label) {
+                mainImage.alt = label;
             }
-        }
 
-        const selectedColour = selectedText
-            ? selectedText.textContent.trim()
-            : "";
-
-        return {
-
-            id: Number(productConfig.id),
-
-            name: productConfig.name || "",
-
-            price: Number(productConfig.price) || 0,
-
-            image: mainImg
-                ? mainImg.src
-                : productConfig.image,
-
-            colour: selectedColour,
-
-            qty: selectedQuantity
-
-        };
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Sync helpers (Option A: thumbs + dropdown represent the SAME colours,
-    | so selecting one must visually highlight the matching entry in the other)
-    |--------------------------------------------------------------------------
-    */
-
-    function highlightThumbOnly(index) {
-
-        const button = thumbs[index];
-
-        if (!button) {
-            return;
-        }
-
-        thumbs.forEach(function (item) {
-            item.classList.remove("active");
-            item.style.borderColor = "transparent";
-            item.style.background = "#fff";
-        });
-
-        const color = button.dataset.color || "";
-        const background = button.dataset.bg || "";
-
-        button.classList.add("active");
-
-        if (color) {
-            button.style.borderColor = color;
-        }
-
-        if (background) {
-            button.style.background = background;
-        }
-    }
-
-    function highlightCustomOptionOnly(index) {
-
-        const option = customOptions[index];
-
-        if (!option) {
-            return;
-        }
-
-        customOptions.forEach(function (item) {
-            item.classList.remove("active");
-        });
-
-        option.classList.add("active");
-    }
-
-    function resetColourSelection() {
-
-        thumbs.forEach(function (item) {
-            item.classList.remove("active");
-            item.style.borderColor = "transparent";
-            item.style.background = "#fff";
-        });
-
-        customOptions.forEach(function (option) {
-            option.classList.remove("active");
-        });
-
-        const firstOption = customOptions[0];
-
-        if (!firstOption) {
-            return;
-        }
-
-        firstOption.classList.add("active");
-
-        const firstColor = firstOption.dataset.color || "#31a050";
-        const firstName = firstOption.dataset.name || "Default";
-        const firstImage = firstOption.dataset.image || productConfig.image;
-
-        if (selectedText) {
-            selectedText.textContent = firstName;
-        }
-
-        if (colorDot) {
-            colorDot.style.background = firstColor;
-            colorDot.style.boxShadow =
-                "0 0 0 1px rgba(0,0,0,.08), 0 4px 14px " +
-                firstColor +
-                "55";
-        }
-
-        if (mainImg && firstImage) {
-            mainImg.src = firstImage;
-        }
-
-        // Keep thumb #0 visually in sync with the default colour
-        highlightThumbOnly(0);
-    }
-
-    function setActiveThumb(index) {
-
-        const button = thumbs[index];
-
-        if (!button) {
-            return;
-        }
-
-        thumbs.forEach(function (item) {
-
-            item.classList.remove("active");
-            item.style.borderColor = "transparent";
-            item.style.background = "#fff";
-
-        });
-
-        const image = button.dataset.image || "";
-
-        const color = button.dataset.color || "";
-
-        const background = button.dataset.bg || "";
-
-        button.classList.add("active");
-
-        if (color) {
-            button.style.borderColor = color;
-        }
-
-        if (background) {
-            button.style.background = background;
-        }
-
-        if (mainBox && background) {
-            mainBox.style.background = background;
-        }
-
-        if (colorDot) {
-
-            if (color) {
-
-                colorDot.style.background = color;
-
-                colorDot.style.boxShadow =
-                    "0 0 0 1px rgba(0,0,0,.08), " +
-                    "0 4px 14px " +
-                    color +
-                    "55";
-
-            } else {
-
-                colorDot.style.background = "transparent";
-                colorDot.style.boxShadow = "none";
-
+            if (galleryCaption) {
+                galleryCaption.textContent = label || "Product View";
             }
-        }
 
-        if (
-            customOptions[index] &&
-            selectedText
-        ) {
-            selectedText.textContent =
-                customOptions[index]
-                    .textContent
-                    .trim();
-        }
-
-        if (mainImg && image) {
-
-            mainImg.style.opacity = "0";
-
-            setTimeout(function () {
-
-                mainImg.src = image;
-                mainImg.style.opacity = "1";
-
-            }, 150);
-        }
-
-        // Keep the matching dropdown option highlighted too
-        highlightCustomOptionOnly(index);
+            mainImage.classList.remove("is-switching");
+        }, 120);
     }
 
-
-    function setActiveColour(option) {
-
-        if (!option) {
+    function showGalleryImage(index) {
+        if (!galleryThumbs.length) {
             return;
         }
 
-        customOptions.forEach(function (item) {
-            item.classList.remove("active");
+        currentGalleryIndex = (
+            index + galleryThumbs.length
+        ) % galleryThumbs.length;
+
+        const selectedThumb = galleryThumbs[currentGalleryIndex];
+
+        galleryThumbs.forEach(function (thumb, thumbIndex) {
+            thumb.classList.toggle(
+                "active",
+                thumbIndex === currentGalleryIndex
+            );
         });
 
-        option.classList.add("active");
+        switchMainImage(
+            selectedThumb.dataset.galleryImage,
+            selectedThumb.dataset.galleryLabel
+        );
 
-        const color = option.dataset.color || "#31a050";
-        const colorName = option.dataset.name || "Default";
-        const image = option.dataset.image || productConfig.image;
-
-        if (selectedText) {
-            selectedText.textContent = colorName;
-        }
-
-        if (colorDot) {
-            colorDot.style.background = color;
-            colorDot.style.boxShadow =
-                "0 0 0 1px rgba(0,0,0,.08), 0 4px 14px " +
-                color +
-                "55";
-        }
-
-        if (mainBox) {
-            mainBox.style.background = color + "12";
-        }
-
-        if (mainImg && image) {
-
-            mainImg.style.opacity = "0";
-
-            setTimeout(function () {
-                mainImg.src = image;
-                mainImg.alt = colorName;
-                mainImg.style.opacity = "1";
-            }, 150);
-        }
-
-        if (customSelect) {
-            customSelect.classList.remove("active");
-        }
-
-        // Keep the matching thumb highlighted too
-        const index = Number(option.dataset.index);
-
-        if (Number.isFinite(index)) {
-            highlightThumbOnly(index);
-        }
+        selectedThumb.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "nearest",
+        });
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Product thumbnail selection
-    |--------------------------------------------------------------------------
-    */
-
-    thumbs.forEach(function (thumb, index) {
-
+    galleryThumbs.forEach(function (thumb, index) {
         thumb.addEventListener("click", function () {
-
-            setActiveThumb(index);
-
+            showGalleryImage(index);
         });
-
     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | Custom colour dropdown
-    |--------------------------------------------------------------------------
-    */
-
-    if (customTrigger && customSelect) {
-
-        customTrigger.addEventListener(
-            "click",
-            function (event) {
-
-                event.stopPropagation();
-
-                customSelect.classList.toggle(
-                    "active"
-                );
-
-            }
-        );
-
-    }
-
-    customOptions.forEach(function (option) {
-
-        option.addEventListener("click", function (event) {
-
-            event.stopPropagation();
-
-            setActiveColour(this);
-
-        });
-
+    galleryPrev?.addEventListener("click", function () {
+        showGalleryImage(currentGalleryIndex - 1);
     });
 
-    document.addEventListener("click", function () {
+    galleryNext?.addEventListener("click", function () {
+        showGalleryImage(currentGalleryIndex + 1);
+    });
 
-        if (customSelect) {
-            customSelect.classList.remove("active");
+    function closeColourDropdown() {
+        if (!colourSelect || !colourTrigger) {
+            return;
         }
 
+        colourSelect.classList.remove("open");
+        colourTrigger.setAttribute("aria-expanded", "false");
+    }
+
+    colourTrigger?.addEventListener("click", function () {
+        if (!colourSelect) {
+            return;
+        }
+
+        const isOpen = colourSelect.classList.toggle("open");
+
+        colourTrigger.setAttribute(
+            "aria-expanded",
+            isOpen ? "true" : "false"
+        );
     });
 
+    document.addEventListener("click", function (event) {
+        if (
+            colourSelect &&
+            !colourSelect.contains(event.target)
+        ) {
+            closeColourDropdown();
+        }
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            closeColourDropdown();
+        }
+    });
+
+    function syncActiveVariant(variantId) {
+        dropdownOptions.forEach(function (option) {
+            option.classList.toggle(
+                "active",
+                option.dataset.variantId === variantId
+            );
+        });
+
+        colourCards.forEach(function (card) {
+            card.classList.toggle(
+                "active",
+                card.dataset.variantId === variantId
+            );
+        });
+    }
+
+    function selectVariant(element) {
+        const stock = Math.max(
+            0,
+            Number(element.dataset.stock || 0)
+        );
+
+        const price = Number(element.dataset.price || 0);
+        const name = element.dataset.name || "Selected Colour";
+        const colour = element.dataset.color || "#31A050";
+        const sku = element.dataset.sku || "Not available";
+        const image = element.dataset.image || "";
+        const id = element.dataset.variantId || "";
+
+        syncActiveVariant(id);
+
+        if (variantName) {
+            variantName.textContent = name;
+        }
+
+        if (selectedColourDot) {
+            selectedColourDot.style.background = colour;
+        }
+
+        if (variantSku) {
+            variantSku.textContent = sku;
+        }
+
+        if (variantStock) {
+            variantStock.classList.remove(
+                "in-stock",
+                "low-stock",
+                "out-stock"
+            );
+
+            if (stock <= 0) {
+                variantStock.classList.add("out-stock");
+
+                variantStock.innerHTML = `
+                    <i class="bi bi-x-circle-fill"></i>
+                    Out of Stock
+                `;
+            } else if (stock <= 5) {
+                variantStock.classList.add("low-stock");
+
+                variantStock.innerHTML = `
+                    <i class="bi bi-check-circle-fill"></i>
+                    In Stock
+                    <small class="ml-low-stock-message">
+                        Hurry, only ${stock} left
+                    </small>
+                `;
+            } else {
+                variantStock.classList.add("in-stock");
+
+                variantStock.innerHTML = `
+                    <i class="bi bi-check-circle-fill"></i>
+                    In Stock
+                `;
+            }
+        }
+
+        if (variantPrice) {
+            variantPrice.textContent = `A$${price.toFixed(2)}`;
+        }
+
+        if (selectedVariantId) {
+            selectedVariantId.value = id;
+        }
+
+        if (quantityInput) {
+            quantityInput.value = "1";
+            quantityInput.max = String(Math.max(stock, 1));
+        }
+
+        if (addButton) {
+            addButton.disabled = stock <= 0;
+        }
+
+        galleryThumbs.forEach(function (thumb) {
+            thumb.classList.remove("active");
+        });
+
+        if (image) {
+            switchMainImage(image, `${name} Colour`);
+        }
+
+        closeColourDropdown();
+    }
+
+    dropdownOptions.forEach(function (option) {
+        option.addEventListener("click", function () {
+            selectVariant(option);
+        });
+    });
+
+    colourCards.forEach(function (card) {
+        card.addEventListener("click", function () {
+            selectVariant(card);
+        });
+    });
+
+    function clampQuantity() {
+        if (!quantityInput) {
+            return;
+        }
+
+        const minimum = Math.max(
+            1,
+            Number(quantityInput.min || 1)
+        );
+
+        const maximum = Math.max(
+            minimum,
+            Number(quantityInput.max || minimum)
+        );
+
+        const value = Math.min(
+            maximum,
+            Math.max(
+                minimum,
+                Number(quantityInput.value || minimum)
+            )
+        );
+
+        quantityInput.value = String(value);
+    }
+
+    minusButton?.addEventListener("click", function () {
+        if (!quantityInput) {
+            return;
+        }
+
+        quantityInput.value = String(
+            Number(quantityInput.value || 1) - 1
+        );
+
+        clampQuantity();
+    });
+
+    plusButton?.addEventListener("click", function () {
+        if (!quantityInput) {
+            return;
+        }
+
+        quantityInput.value = String(
+            Number(quantityInput.value || 1) + 1
+        );
+
+        clampQuantity();
+    });
+
+    quantityInput?.addEventListener("input", clampQuantity);
+    quantityInput?.addEventListener("blur", clampQuantity);
+
     /*
-    |--------------------------------------------------------------------------
-    | | Select first colour by default
-    |--------------------------------------------------------------------------
-    */
+|--------------------------------------------------------------------------
+| Add Selected Variant to Cart
+|--------------------------------------------------------------------------
+*/
 
-    resetColourSelection();
+    addButton?.addEventListener("click", function () {
+        if (
+            !window.MedileafCart ||
+            typeof window.MedileafCart.addToCart !== "function"
+        ) {
+            console.error("MediLeaf cart is not available.");
 
-    /*
-    |--------------------------------------------------------------------------
-    | Quantity controls
-    |--------------------------------------------------------------------------
-    */
+            alert(
+                "Cart could not be loaded. Please refresh the page and try again."
+            );
 
-    if (qtyMinus && qtyInput) {
+            return;
+        }
 
-        qtyMinus.addEventListener(
-            "click",
-            function () {
+        const selectedOption =
+            dropdownOptions.find(function (option) {
+                return option.classList.contains("active");
+            }) ||
+            colourCards.find(function (card) {
+                return card.classList.contains("active");
+            });
 
-                let value = Number(qtyInput.value);
+        if (!selectedOption) {
+            alert("Please select a colour.");
 
-                if (
-                    !Number.isFinite(value) ||
-                    value < 1
-                ) {
-                    value = 1;
-                }
+            return;
+        }
 
-                if (value > 1) {
-                    qtyInput.value = value - 1;
-                }
-
-            }
+        const selectedStock = Math.max(
+            0,
+            Number(selectedOption.dataset.stock || 0)
         );
 
-    }
-
-    if (qtyPlus && qtyInput) {
-
-        qtyPlus.addEventListener(
-            "click",
-            function () {
-
-                let value = Number(qtyInput.value);
-
-                if (
-                    !Number.isFinite(value) ||
-                    value < 1
-                ) {
-                    value = 1;
-                }
-
-                qtyInput.value = value + 1;
-
-            }
+        const selectedQuantity = Math.max(
+            1,
+            Number(quantityInput?.value || 1)
         );
 
-    }
+        if (selectedStock <= 0) {
+            alert("This colour is currently out of stock.");
 
-    if (qtyInput) {
+            return;
+        }
 
-        qtyInput.addEventListener(
-            "change",
-            function () {
+        if (selectedQuantity > selectedStock) {
+            alert(
+                `Only ${selectedStock} item(s) are currently available.`
+            );
 
-                let value = Number(this.value);
+            return;
+        }
 
-                if (
-                    !Number.isFinite(value) ||
-                    value < 1
-                ) {
-                    this.value = 1;
-                }
-
-            }
+        const selectedPrice = Number(
+            selectedOption.dataset.price || 0
         );
 
-    }
+        const selectedImage =
+            selectedOption.dataset.image ||
+            mainImage?.src ||
+            "";
 
-    /*
-    |--------------------------------------------------------------------------
-    | Add to Bag
-    |--------------------------------------------------------------------------
-    */
+        const productName =
+            window.mlProductConfig?.name ||
+            document
+                .querySelector(".ml-product-info h1")
+                ?.textContent
+                ?.trim() ||
+            "";
 
-    if (addBtn) {
+        window.MedileafCart.addToCart({
+            id: Number(
+                window.mlProductConfig?.id || 0
+            ),
 
-        addBtn.addEventListener(
-            "click",
-            function () {
+            variantId: Number(
+                selectedOption.dataset.variantId || 0
+            ),
 
-                if (!window.MedileafCart) {
-                    console.error(
-                        "MedileafCart is not loaded."
-                    );
+            name: productName,
 
-                    return;
-                }
+            colour:
+                selectedOption.dataset.name ||
+                "Default",
 
-                window.MedileafCart.addToCart(
-                    getCurrentProduct()
-                );
+            sku:
+                selectedOption.dataset.sku ||
+                "",
 
-            }
-        );
+            price: selectedPrice,
 
-    }
+            image: selectedImage,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Buy Now
-    |--------------------------------------------------------------------------
-    */
+            qty: selectedQuantity,
 
-    if (buyNowBtn) {
-
-        buyNowBtn.addEventListener(
-            "click",
-            function () {
-
-                if (window.MedileafCart) {
-
-                    window.MedileafCart.addToCart(
-                        getCurrentProduct(),
-                        {
-                            openDrawer: false,
-                            showToast: false
-                        }
-                    );
-
-                }
-
-                if (productConfig.checkoutUrl) {
-
-                    window.location.href =
-                        productConfig.checkoutUrl;
-
-                }
-
-            }
-        );
-
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Scroll to product description
-    |--------------------------------------------------------------------------
-    */
-
-    if (
-        scrollToDescription &&
-        productDescription
-    ) {
-
-        scrollToDescription.addEventListener(
-            "click",
-            function () {
-
-                productDescription.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
-                });
-
-            }
-        );
-
-    }
+            stock: selectedStock
+        });
+    });
 
 });
