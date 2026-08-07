@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="{{ asset('css/account-menu.css') }}">
     <link rel="stylesheet" href="{{ asset('css/page-loader.css') }}">
     <link rel="stylesheet" href="{{ asset('css/user-choice-popup.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/cart.css') }}">
 
     @stack('styles')
 

@@ -25,14 +25,14 @@
 
             <div class="ml-glass-hero-buttons">
                 <!-- <button type="button" class="ml-glass-btn primary" data-open-user-popup>
-                                                Book Consultation
-                                                <i class="bi bi-arrow-right"></i>
-                                            </button> -->
+                                                    Book Consultation
+                                                    <i class="bi bi-arrow-right"></i>
+                                                </button> -->
 
                 <a href="https://www.halaxy.com/book/appointment/medileaf-health/location/1332127"
                     class="ml-glass-btn primary">
-                    <i class="bi bi-calendar-check"></i>
                     Book Appointment
+                    <i class="bi bi-arrow-right"></i>
                 </a>
 
                 <button type="button" class="ml-glass-btn secondary"

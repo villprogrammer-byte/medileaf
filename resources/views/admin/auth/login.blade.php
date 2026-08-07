@@ -25,7 +25,7 @@
                     </a>
 
                     <div class="login-brand-icon">
-                        <i class="bi bi-shield-check"></i>
+                        <i class="bi bi-person-bounding-box"></i>
                     </div>
 
                     <div class="login-heading">

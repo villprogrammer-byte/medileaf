@@ -34,9 +34,7 @@ body.ml-page-is-loading {
     opacity: 1;
     visibility: visible;
     z-index: 999999;
-    transition:
-        opacity 0.65s ease,
-        visibility 0.65s ease;
+    transition: opacity 0.65s ease, visibility 0.65s ease;
 }
 
 .ml-loader.is-hidden {
@@ -49,13 +47,10 @@ body.ml-page-is-loading {
     content: "";
     position: absolute;
     inset: 0;
-
-    background:
-        radial-gradient(circle at center,
+    background: radial-gradient(circle at center,
             rgba(255, 255, 255, 0.12) 0%,
             rgba(255, 255, 255, 0.04) 46%,
             rgba(240, 248, 235, 0.06) 100%);
-
     pointer-events: none;
 }
 
@@ -66,13 +61,9 @@ body.ml-page-is-loading {
 .ml-loader-content {
     position: relative;
     z-index: 2;
-
     width: min(760px, calc(100% - 32px));
-
     padding: clamp(24px, 4vw, 52px) 20px;
-
     text-align: center;
-
     animation: mlLoaderEnter 0.9s ease both;
 }
 
@@ -82,14 +73,10 @@ body.ml-page-is-loading {
 
 .ml-loader-logo {
     display: block;
-
     width: min(250px, 72vw);
     max-height: 170px;
-
     margin: 0 auto 24px;
-
     object-fit: contain;
-
     filter: drop-shadow(0 10px 18px rgba(54, 102, 54, 0.08));
 }
 
@@ -100,11 +87,8 @@ body.ml-page-is-loading {
 .ml-loader-divider {
     width: 40px;
     height: 2px;
-
     margin: 0 auto 22px;
-
     border-radius: 999px;
-
     background: var(--ml-loader-green);
 }
 
@@ -114,9 +98,7 @@ body.ml-page-is-loading {
 
 .ml-loader-title {
     margin: 0;
-
     color: var(--ml-loader-text);
-
     font-family: "Outfit", sans-serif;
     font-size: clamp(29px, 4vw, 46px);
     font-weight: 600;
@@ -130,9 +112,7 @@ body.ml-page-is-loading {
 
 .ml-loader-subtitle {
     margin: 9px 0 clamp(24px, 4vh, 34px);
-
     color: var(--ml-loader-muted);
-
     font-family: "Outfit", sans-serif;
     font-size: clamp(15px, 1.6vw, 19px);
     font-weight: 400;
@@ -144,12 +124,9 @@ body.ml-page-is-loading {
 
 .ml-loader-spinner {
     position: relative;
-
     width: clamp(94px, 9vw, 116px);
     aspect-ratio: 1;
-
     margin: 0 auto 12px;
-
     display: grid;
     place-items: center;
 }
@@ -157,10 +134,8 @@ body.ml-page-is-loading {
 .ml-loader-ring {
     position: absolute;
     inset: 0;
-
     width: 100%;
     height: 100%;
-
     transform: rotate(-90deg);
 }
 
@@ -176,21 +151,16 @@ body.ml-page-is-loading {
 .ml-loader-progress {
     stroke: url("#loaderGradient");
     stroke-linecap: round;
-
     stroke-dasharray: 314;
     stroke-dashoffset: 314;
-
-    animation:
-        mlLoaderProgress 2.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation: mlLoaderProgress 2.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .ml-loader-leaf {
     width: 34%;
     min-width: 30px;
     max-width: 40px;
-
-    animation:
-        mlLoaderPulse 1.6s ease-in-out infinite;
+    animation: mlLoaderPulse 1.6s ease-in-out infinite;
 }
 
 /* =========================================
@@ -199,9 +169,7 @@ body.ml-page-is-loading {
 
 .ml-loader-loading-title {
     margin: 0;
-
     color: var(--ml-loader-dark-green);
-
     font-family: "Outfit", sans-serif;
     font-size: 18px;
     font-weight: 600;
@@ -209,9 +177,7 @@ body.ml-page-is-loading {
 
 .ml-loader-loading-text {
     margin: 3px 0 31px;
-
     color: var(--ml-loader-muted);
-
     font-family: "Outfit", sans-serif;
     font-size: 14px;
 }
@@ -229,7 +195,6 @@ body.ml-page-is-loading {
 
 .ml-loader-feature {
     position: relative;
-
     padding: 0 clamp(8px, 2vw, 24px);
 }
 
@@ -240,8 +205,7 @@ body.ml-page-is-loading {
     bottom: 9px;
     left: 0;
     width: 1px;
-    background:
-        linear-gradient(transparent,
+    background: linear-gradient(transparent,
             rgba(62, 127, 67, 0.25),
             transparent);
 }
@@ -249,20 +213,13 @@ body.ml-page-is-loading {
 .ml-loader-feature-icon {
     width: clamp(42px, 5vw, 48px);
     aspect-ratio: 1;
-
     margin: 0 auto 8px;
-
     display: grid;
     place-items: center;
-
     border: 1px solid rgba(66, 144, 67, 0.2);
     border-radius: 50%;
-
     background: rgba(255, 255, 255, 0.62);
-
-    box-shadow:
-        0 8px 20px rgba(48, 101, 52, 0.05);
-
+    box-shadow: 0 8px 20px rgba(48, 101, 52, 0.05);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
 }
@@ -270,34 +227,25 @@ body.ml-page-is-loading {
 .ml-loader-feature-icon svg {
     width: 23px;
     height: 23px;
-
     stroke: var(--ml-loader-dark-green);
 }
 
 .ml-loader-feature p {
     margin: 0;
-
     color: #535d56;
-
     font-family: "Outfit", sans-serif;
     font-size: clamp(10px, 1.25vw, 13px);
     font-weight: 500;
-
     white-space: nowrap;
 }
 
 .ml-loader-feature p::after {
     content: "";
-
     display: block;
-
     width: 19px;
     height: 2px;
-
     margin: 8px auto 0;
-
     border-radius: 20px;
-
     background: var(--ml-loader-green);
 }
 
@@ -348,13 +296,11 @@ body.ml-page-is-loading {
 
     .ml-loader-content {
         width: min(620px, calc(100% - 22px));
-
         padding: 18px 12px 30px;
     }
 
     .ml-loader-logo {
         width: min(175px, 82vw);
-
         margin-bottom: 19px;
     }
 
@@ -390,7 +336,7 @@ body.ml-page-is-loading {
     }
 
     .ml-loader-logo {
-        width: 82vw;
+        width: 45vw;
         max-height: 115px;
     }
 
