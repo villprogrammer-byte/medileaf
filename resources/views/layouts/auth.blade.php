@@ -14,6 +14,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin-login.css') }}">
 
     @stack('styles')
 
@@ -24,7 +25,8 @@
     @yield('content')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="{{ asset('js/password-toggle.js') }}"></script>
+    @stack('scripts')
     @stack('scripts')
 
 </body>

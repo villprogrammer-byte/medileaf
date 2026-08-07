@@ -4,107 +4,96 @@
 
 @section('content')
 
-    <div class="user-login-page">
+    <x-auth-shell icon="bi-shield-lock-fill" subtitle="Choose a new password for your account." :back-route="route('login')"
+        footer-text="Secure Password Reset" :bg-image="asset('img/login.webp')" :security-features="[
+            [
+                'icon' => 'bi-lock',
+                'title' => 'Secure & Encrypted',
+                'text' => 'Your data is always protected with advanced security.'
+            ],
+            [
+                'icon' => 'bi-cloud-arrow-up',
+                'title' => 'Daily Backup',
+                'text' => 'Automatic backup ensures your data is never lost.'
+            ],
+            [
+                'icon' => 'bi-people',
+                'title' => 'Role Based Access',
+                'text' => 'Secure access management for you and your team.'
+            ],
+            [
+                'icon' => 'bi-headset',
+                'title' => '24/7 Support',
+                'text' => 'We are here anytime you need help.'
+            ],
+        ]">
 
-        <div class="user-main-area">
+        <x-slot:title>
+            Reset <span>Password</span>
+        </x-slot:title>
 
-            <div class="user-visual-panel">
-                <i class="bi bi-leaf-fill leaf-decoration top"></i>
-                <i class="bi bi-leaf-fill leaf-decoration bottom"></i>
-            </div>
+        <form method="POST" action="{{ route('password.reset.update') }}" id="resetPasswordForm">
+            @csrf
 
-            <div class="user-form-panel">
+            <div class="form-group">
 
-                <div class="secure-access-label">
-                    <i class="bi bi-shield-check"></i>
-                    Set New Password
-                </div>
+                <label for="password" class="form-label required">
+                    New Password
+                </label>
 
-                <div class="login-card">
+                <div class="input-wrap">
 
-                    <div class="login-brand-icon">
-                        <i class="bi bi-shield-lock-fill"></i>
-                    </div>
+                    <i class="bi bi-lock input-icon"></i>
 
-                    <div class="login-heading">
-                        <h2>Reset <span>Password</span></h2>
-                        <p>Choose a new password for your account.</p>
-                    </div>
+                    <input type="password" name="password" id="password"
+                        class="admin-login-input @error('password') is-invalid @enderror" placeholder="Enter new password"
+                        autocomplete="new-password" required>
 
-                    <form method="POST" action="{{ route('password.reset.update') }}">
-                        @csrf
-
-                        <div class="form-group">
-                            <label for="password" class="form-label required">New Password</label>
-
-                            <div class="input-wrap">
-                                <i class="bi bi-lock input-icon"></i>
-                                <input type="password" name="password" id="password"
-                                    class="login-input @error('password') is-invalid @enderror"
-                                    placeholder="Enter new password" required>
-
-                                <button type="button" class="password-toggle" data-target="password">
-                                    <i class="bi bi-eye-slash"></i>
-                                </button>
-                            </div>
-
-                            @error('password')
-                                <small class="field-error">{{ $message }}</small>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password_confirmation" class="form-label required">Confirm Password</label>
-
-                            <div class="input-wrap">
-                                <i class="bi bi-lock input-icon"></i>
-                                <input type="password" name="password_confirmation" id="password_confirmation"
-                                    class="login-input" placeholder="Confirm new password" required>
-
-                                <button type="button" class="password-toggle" data-target="password_confirmation">
-                                    <i class="bi bi-eye-slash"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="sign-in-button mt-3">
-                            <i class="bi bi-check-circle"></i>
-                            <span>Reset Password</span>
-                        </button>
-                    </form>
-
-                    <div class="login-card-footer">
-                        <p class="copyright">© {{ date('Y') }} <strong>MediLeaf Health</strong></p>
-                    </div>
+                    <button type="button" class="password-toggle" data-target="password" aria-label="Show password">
+                        <i class="bi bi-eye-slash"></i>
+                    </button>
 
                 </div>
 
+                @error('password')
+                    <small class="field-error">
+                        {{ $message }}
+                    </small>
+                @enderror
+
             </div>
 
-        </div>
+            <div class="form-group">
 
-    </div>
+                <label for="password_confirmation" class="form-label required">
+                    Confirm Password
+                </label>
+
+                <div class="input-wrap">
+
+                    <i class="bi bi-lock input-icon"></i>
+
+                    <input type="password" name="password_confirmation" id="password_confirmation" class="admin-login-input"
+                        placeholder="Confirm new password" autocomplete="new-password" required>
+
+                    <button type="button" class="password-toggle" data-target="password_confirmation"
+                        aria-label="Show password">
+                        <i class="bi bi-eye-slash"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+            <button type="submit" class="sign-in-button mt-3" id="resetPasswordBtn">
+                <i class="bi bi-check-circle"></i>
+                <span>Reset Password</span>
+            </button>
+
+        </form>
+
+    </x-auth-shell>
 
 @endsection
 
-@push('scripts')
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".password-toggle").forEach(function (button) {
-                button.addEventListener("click", function () {
-                    const targetId = this.getAttribute("data-target");
-                    const input = document.getElementById(targetId);
-                    const icon = this.querySelector("i");
-
-                    if (input.type === "password") {
-                        input.type = "text";
-                        icon.classList.replace("bi-eye-slash", "bi-eye");
-                    } else {
-                        input.type = "password";
-                        icon.classList.replace("bi-eye", "bi-eye-slash");
-                    }
-                });
-            });
-        });
-    </script>
-@endpush
+{{-- password-toggle.js loads once from layouts/auth.blade.php --}}

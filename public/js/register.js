@@ -1,21 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    // ============ Password Toggle ============
-    document.querySelectorAll(".password-toggle").forEach(function (button) {
-        button.addEventListener("click", function () {
-            const input = this.parentElement.querySelector("input");
-            const icon = this.querySelector("i");
-
-            if (input.type === "password") {
-                input.type = "text";
-                icon.classList.replace("bi-eye-slash", "bi-eye");
-            } else {
-                input.type = "password";
-                icon.classList.replace("bi-eye", "bi-eye-slash");
-            }
-        });
-    });
-
     // ============ DOB: click anywhere opens calendar + 18+ validation ============
     const dob = document.getElementById("dob");
 

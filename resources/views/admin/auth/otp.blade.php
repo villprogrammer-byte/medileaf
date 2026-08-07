@@ -1,148 +1,60 @@
 @extends('layouts.auth')
 
-@section('title', 'Admin OTP Verification | MediLeaf Health')
+@section('title', 'Verify OTP | MediLeaf Health')
 
 @section('content')
 
-    <div class="user-login-page">
+    <x-auth-shell icon="bi-envelope-check"
+        subtitle="We've sent a secure verification code to your registered email address." :back-route="route('login')"
+        footer-text="Your login is protected with OTP verification." :security-features="[
+                        ['icon' => 'bi-lock', 'title' => 'Secure & Encrypted', 'text' => 'Your data is always protected with advanced security.'],
+                        ['icon' => 'bi-shield-check', 'title' => 'OTP Protected', 'text' => 'Your verification code adds an extra layer of account security.'],
+                        ['icon' => 'bi-person-lock', 'title' => 'Private Access', 'text' => 'Only verified users can continue to protected account areas.'],
+                        ['icon' => 'bi-headset', 'title' => 'Support Available', 'text' => 'Help is available if you have trouble accessing your account.'],
+                    ]">
+        <x-slot:title>Verify <span>OTP</span></x-slot:title>
 
-        <div class="user-main-area">
-
-            {{-- LEFT PANEL --}}
-            <div class="user-visual-panel">
-
-                <div class="visual-content">
-                    <i class="bi bi-leaf-fill leaf-decoration top"></i>
-                    <i class="bi bi-leaf-fill leaf-decoration bottom"></i>
-                </div>
-
-            </div>
-
-            {{-- RIGHT PANEL --}}
-            <div class="user-form-panel">
-
-                <div class="secure-access-label">
-                    <i class="bi bi-shield-check"></i>
-                    Secure Admin Verification
-                </div>
-
-                <div class="login-card">
-
-                    <div class="login-brand-icon">
-                        <i class="bi bi-envelope-check"></i>
-                    </div>
-
-                    <div class="login-heading">
-
-                        <h2>
-                            Verify <span>OTP</span>
-                        </h2>
-                    </div>
-
-                    @if(session('success'))
-                        <div class="alert alert-success auth-alert">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
-                    @if(session('status'))
-                        <div class="alert alert-success auth-alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    <div class="otp-note">
-                        Enter the 6-digit code to continue securely to your admin dashboard.
-                    </div>
-
-                    <form method="POST" action="{{ route('admin.otp.verify') }}" id="otpForm">
-
-                        @csrf
-
-                        <div class="otp-box">
-
-                            <input type="text" name="otp" maxlength="6" autocomplete="one-time-code" inputmode="numeric"
-                                class="otp-input @error('otp') is-invalid @enderror" placeholder="000000"
-                                value="{{ old('otp') }}" required>
-
-                        </div>
-
-                        @error('otp')
-                            <small class="field-error">
-                                {{ $message }}
-                            </small>
-                        @enderror
-
-                        <button type="submit" class="sign-in-button" id="verifyBtn">
-
-                            <i class="bi bi-shield-lock-fill"></i>
-
-                            Verify &amp; Continue
-
-                        </button>
-
-                    </form>
-
-                    <div class="login-divider">
-                        Didn't receive the code?
-                    </div>
-
-                    <div class="resend-area">
-
-                        <form method="POST" action="{{ route('admin.otp.resend') }}">
-                            @csrf
-
-                            <button type="submit" class="resend-btn">
-                                Resend OTP
-                            </button>
-                        </form>
-
-                    </div>
-
-                    <div class="back-login">
-
-                        <a href="{{ route('admin.login') }}">
-
-                            <i class="bi bi-arrow-left"></i>
-
-                            Back to Admin Login
-
-                        </a>
-
-                    </div>
-
-                    <div class="login-card-footer">
-
-                        <div class="footer-security">
-
-                            <i class="bi bi-shield-check"></i>
-
-                            Your admin login is protected with OTP verification.
-
-                        </div>
-
-                        <p class="copyright">
-
-                            © {{ date('Y') }}
-
-                            <strong>MediLeaf Health</strong>
-
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
+        <div class="otp-note">
+            Enter the 6-digit code to continue securely into your account.
         </div>
 
-    </div>
+        <form method="POST" action="{{ route('otp.verify') }}" id="otpForm">
+            @csrf
+
+            <div class="otp-box">
+                <input type="text" name="otp" maxlength="6" autocomplete="one-time-code" inputmode="numeric"
+                    class="otp-input @error('otp') is-invalid @enderror" placeholder="000000" value="{{ old('otp') }}"
+                    required>
+            </div>
+
+            @error('otp')
+                <small class="field-error">{{ $message }}</small>
+            @enderror
+
+            <button type="submit" class="sign-in-button" id="verifyBtn">
+                <i class="bi bi-shield-lock-fill"></i>
+                <span>Verify &amp; Continue</span>
+            </button>
+        </form>
+
+        <div class="resend-area">
+            <form method="POST" action="{{ route('otp.resend') }}">
+                @csrf
+                <button type="submit" class="resend-btn">Resend OTP</button>
+            </form>
+        </div>
+
+        <x-slot:afterForm>
+            <div class="admin-login-divider">
+                <span>Didn't receive the code?</span>
+            </div>
+        </x-slot:afterForm>
+
+    </x-auth-shell>
 
 @endsection
 
 @push('scripts')
-
     <script>
         document.addEventListener("DOMContentLoaded", function () {
 
@@ -152,21 +64,17 @@
 
             if (otpInput) {
                 otpInput.addEventListener("input", function () {
-                    this.value = this.value
-                        .replace(/\D/g, "")
-                        .substring(0, 6);
+                    this.value = this.value.replace(/\D/g, "").substring(0, 6);
                 });
             }
 
             if (otpForm && verifyButton) {
                 otpForm.addEventListener("submit", function () {
                     verifyButton.disabled = true;
-                    verifyButton.innerHTML =
-                        '<i class="bi bi-hourglass-split"></i> Verifying...';
+                    verifyButton.innerHTML = '<i class="bi bi-hourglass-split"></i> Verifying...';
                 });
             }
 
         });
     </script>
-
 @endpush

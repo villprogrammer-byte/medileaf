@@ -10,3 +10,42 @@
 .cf-turnstile {
     margin: -1px;
 }
+
+/* MediLeaf Logo - Desktop par hidden */
+.auth-mobile-logo {
+    display: none;
+}
+
+/* Tablet + Mobile */
+@media (max-width: 991.98px) {
+
+    .auth-mobile-logo {
+        display: flex;
+        position: absolute;
+        top: 24px;
+        right: 20px;
+        z-index: 20;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .auth-mobile-logo img {
+        display: block;
+        width: 112px;
+        height: auto;
+        object-fit: contain;
+    }
+}
+
+/* Mobile */
+@media (max-width: 575.98px) {
+
+    .auth-mobile-logo {
+        top: 25px;
+        right: 18px;
+    }
+
+    .auth-mobile-logo img {
+        width: 100px;
+    }
+}

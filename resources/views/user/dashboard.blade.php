@@ -1,6 +1,3 @@
-dashboard-profile-completion-fixed.blade.php
-
-
 @extends('user.layouts.app')
 
 @section('title', 'My Dashboard')
@@ -9,21 +6,6 @@ dashboard-profile-completion-fixed.blade.php
 
     @php
         $user = auth()->user();
-
-        /*
-        |--------------------------------------------------------------------------
-        | Profile Completion
-        |--------------------------------------------------------------------------
-        */
-
-        /*
-        |--------------------------------------------------------------------------
-        | Profile Completion
-        |--------------------------------------------------------------------------
-        | Registration already saves: name, email, mobile and dob.
-        | Profile completion additionally requires gender and address fields
-        | only when those columns exist in the users table.
-        */
 
         $profileFields = [
             'name' => $user->name ?? null,

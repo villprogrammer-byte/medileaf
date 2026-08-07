@@ -4,68 +4,104 @@
 
 @section('content')
 
-    <div class="user-login-page">
-        <div class="user-main-area">
+    <x-auth-shell icon="bi-patch-check-fill"
+        subtitle="Your account is ready. You'll be redirected to book your appointment shortly." :back-route="route('home')"
+        footer-text="Secure User Access" :bg-image="asset('img/login.webp')" :security-features="[
+                [
+                    'icon' => 'bi-lock',
+                    'title' => 'Secure & Encrypted',
+                    'text' => 'Your data is always protected with advanced security.'
+                ],
+                [
+                    'icon' => 'bi-cloud-arrow-up',
+                    'title' => 'Daily Backup',
+                    'text' => 'Automatic backup ensures your data is never lost.'
+                ],
+                [
+                    'icon' => 'bi-people',
+                    'title' => 'Role Based Access',
+                    'text' => 'Secure access management for you and your team.'
+                ],
+                [
+                    'icon' => 'bi-headset',
+                    'title' => '24/7 Support',
+                    'text' => 'We are here anytime you need help.'
+                ],
+            ]">
 
-            <div class="user-visual-panel">
-                <i class="bi bi-leaf-fill leaf-decoration top"></i>
-                <i class="bi bi-leaf-fill leaf-decoration bottom"></i>
-            </div>
+        <x-slot:title>
+            You're <span>Verified!</span>
+        </x-slot:title>
 
-            <div class="user-form-panel">
+        {{-- Booking Information --}}
+        <div class="alert alert-warning text-center">
 
-                <div class="secure-access-label">
-                    <i class="bi bi-check-circle"></i>
-                    Email Verified
-                </div>
-
-                <div class="login-card">
-
-                    <div class="login-brand-icon">
-                        <i class="bi bi-patch-check-fill" style="color:#16a34a;"></i>
-                    </div>
-
-                    <div class="login-heading">
-                        <h2>You're <span>Verified!</span></h2>
-                        <p>Your account is ready. You'll be redirected to book your appointment shortly.</p>
-                    </div>
-
-                    <div class="alert alert-warning text-center">
-                        For a smooth and secure booking experience, please use the <strong>same phone number</strong> and
-                        <strong>email</strong> address that
-                        you registered with when scheduling your appointment.
-                    </div>
-
-                    <a href="https://www.halaxy.com/book/appointment/medileaf-health/location/1332127"
-                        class="sign-in-button mt-3 text-decoration-none" id="redirect-btn">
-                        <i class="bi bi-calendar-check"></i>
-                        <span>Continue to Book Appointment</span>
-                    </a>
-
-                    <p class="text-center mt-3" style="font-size:13px;color:#888;">
-                        Redirecting automatically in <span id="countdown">5</span> seconds...
-                    </p>
-
-                </div>
-
-            </div>
+            For a smooth and secure booking experience, please use the
+            <strong>same phone number</strong> and
+            <strong>email address</strong> that you registered with when
+            scheduling your appointment.
 
         </div>
-    </div>
 
-    <!-- <script>
-                                        let seconds = 5;
-                                        const countdownEl = document.getElementById('countdown');
-                                        const redirectUrl = 'https://www.halaxy.com/book/appointment/medileaf-health/location/1332127';
+        {{-- Continue to Halaxy --}}
+        <a href="https://www.halaxy.com/book/appointment/medileaf-health/location/1332127"
+            class="sign-in-button mt-3 text-decoration-none" id="redirect-btn">
+            <i class="bi bi-calendar-check"></i>
+            <span>Continue to Book Appointment</span>
+        </a>
 
-                                        const timer = setInterval(() => {
-                                            seconds--;
-                                            countdownEl.textContent = seconds;
-                                            if (seconds <= 0) {
-                                                clearInterval(timer);
-                                                window.location.href = redirectUrl;
-                                            }
-                                        }, 1000);
-                                    </script> -->
+        {{-- Countdown --}}
+        <p class="text-center mt-3" style="font-size:13px;color:#888;">
+            Redirecting automatically in
+            <span id="countdown">5</span> seconds...
+        </p>
+
+        <x-slot:afterForm>
+
+            <div class="admin-login-divider">
+                <span>Email Verified Successfully</span>
+            </div>
+
+        </x-slot:afterForm>
+
+    </x-auth-shell>
 
 @endsection
+
+
+@push('scripts')
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            let seconds = 5;
+
+            const countdownEl = document.getElementById('countdown');
+
+            const redirectUrl =
+                'https://www.halaxy.com/book/appointment/medileaf-health/location/1332127';
+
+            if (!countdownEl) {
+                return;
+            }
+
+            const timer = setInterval(function () {
+
+                seconds--;
+
+                countdownEl.textContent = seconds;
+
+                if (seconds <= 0) {
+
+                    clearInterval(timer);
+
+                    window.location.href = redirectUrl;
+
+                }
+
+            }, 1000);
+
+        });
+    </script>
+
+@endpush

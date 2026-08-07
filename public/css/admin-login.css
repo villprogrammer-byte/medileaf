@@ -21,8 +21,6 @@ body {
     min-height: 100%;
     margin: 0;
     overflow: hidden;
-    font-family: Arial, Helvetica, sans-serif;
-    background: var(--page-background);
     color: var(--text-dark);
 }
 
@@ -45,10 +43,11 @@ input {
 
 .admin-main-area {
     width: 100%;
-    height: calc(100vh - 94px);
-    min-height: 650px;
+    flex: 1 1 auto;
+    min-height: 0;
     display: flex;
 }
+
 
 /* =========================================
            LEFT IMAGE PANEL — 60%
@@ -89,7 +88,7 @@ input {
 }
 
 /* =========================================
-           RIGHT LOGIN PANEL — 40%
+           RIGHT admin-login PANEL — 40%
         ========================================= */
 
 .admin-form-panel {
@@ -145,7 +144,7 @@ input {
     text-decoration: underline;
 }
 
-.login-card {
+.admin-login-card {
     width: min(100%, 500px);
     max-height: calc(100vh - 80px);
     padding: 28px 50px 22px;
@@ -162,7 +161,7 @@ input {
 }
 
 /* Only this area scrolls — icon, heading, divider, social, and footer stay fixed */
-.login-form-scroll {
+.admin-login-form-scroll {
     flex: 1 1 auto;
     min-height: 0;
     overflow-y: auto;
@@ -171,25 +170,25 @@ input {
     margin-right: -6px;
 }
 
-.login-form-scroll::-webkit-scrollbar {
+.admin-login-form-scroll::-webkit-scrollbar {
     width: 6px;
 }
 
-.login-form-scroll::-webkit-scrollbar-track {
+.admin-login-form-scroll::-webkit-scrollbar-track {
     background: #eef4ef;
     border-radius: 10px;
 }
 
-.login-form-scroll::-webkit-scrollbar-thumb {
+.admin-login-form-scroll::-webkit-scrollbar-thumb {
     background: #159447;
     border-radius: 10px;
 }
 
-.login-form-scroll::-webkit-scrollbar-thumb:hover {
+.admin-login-form-scroll::-webkit-scrollbar-thumb:hover {
     background: #0d7d3a;
 }
 
-.login-brand-icon {
+.admin-login-brand-icon {
     width: 86px;
     height: 86px;
     margin: 0 auto 12px;
@@ -206,12 +205,12 @@ input {
     font-size: 47px;
 }
 
-.login-heading {
+.admin-login-heading {
     text-align: center;
     margin-bottom: 25px;
 }
 
-.login-heading h2 {
+.admin-login-heading h2 {
     margin-bottom: 6px;
     color: var(--text-dark);
     font-size: 27px;
@@ -219,11 +218,11 @@ input {
     letter-spacing: -0.7px;
 }
 
-.login-heading h2 span {
+.admin-login-heading h2 span {
     color: var(--primary);
 }
 
-.login-heading p {
+.admin-login-heading p {
     margin: 0;
     color: var(--text-muted);
     font-size: 13px;
@@ -261,7 +260,7 @@ input {
     pointer-events: none;
 }
 
-.login-input {
+.admin-login-input {
     width: 100%;
     height: 53px;
     padding: 0 50px 0 48px;
@@ -277,11 +276,11 @@ input {
         background 0.2s ease;
 }
 
-.login-input::placeholder {
+.admin-login-input::placeholder {
     color: #98a4a8;
 }
 
-.login-input:focus {
+.admin-login-input:focus {
     border-color: var(--primary);
     background: #fff;
     box-shadow: 0 0 0 4px rgba(21, 148, 71, 0.09);
@@ -310,7 +309,7 @@ input {
     background: var(--soft-green);
 }
 
-.login-options {
+.admin-login-options {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -377,7 +376,7 @@ input {
     box-shadow: 0 16px 31px rgba(21, 148, 71, 0.28);
 }
 
-.login-divider {
+.admin-login-divider {
     display: flex;
     align-items: center;
     gap: 15px;
@@ -387,61 +386,21 @@ input {
     white-space: nowrap;
 }
 
-.login-divider::before,
-.login-divider::after {
+.admin-login-divider::before,
+.admin-login-divider::after {
     content: "";
     height: 1px;
     flex: 1;
     background: #e3e9e5;
 }
 
-.social-login-list {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 25px;
-}
 
-.social-button {
-    width: 52px;
-    height: 52px;
-    border: 1px solid #e1e9e3;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: #fff;
-    color: #4a5c62;
-    font-size: 23px;
-    text-decoration: none;
-    box-shadow: 0 7px 18px rgba(29, 61, 39, 0.06);
-    transition:
-        transform 0.2s ease,
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-.social-button:hover {
-    transform: translateY(-3px);
-    border-color: rgba(21, 148, 71, 0.35);
-    box-shadow: 0 12px 24px rgba(29, 61, 39, 0.10);
-}
-
-.social-button img {
-    width: 30px;
-    height: 30px;
-}
-
-.social-button.secure {
-    color: var(--primary);
-}
-
-.login-card-footer {
+.admin-login-card-footer {
     margin-top: 20px;
     text-align: center;
 }
 
-.login-card-footer .footer-security {
+.admin-login-card-footer .footer-security {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -451,29 +410,31 @@ input {
     font-size: 12px;
 }
 
-.login-card-footer .copyright {
+.admin-login-card-footer .copyright {
     margin: 0;
     color: #829096;
     font-size: 12px;
 }
 
-.login-card-footer .copyright strong {
+.admin-login-card-footer .copyright strong {
     color: var(--primary);
 }
 
 /* =========================================
-           BOTTOM SECURITY STRIP
-        ========================================= */
+   BOTTOM SECURITY STRIP
+========================================= */
 
 .security-strip {
     width: 100%;
     height: 94px;
+    flex: 0 0 94px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     background: rgba(252, 255, 253, 0.98);
     border-top: 1px solid #e5eee8;
     box-shadow: 0 -7px 24px rgba(20, 78, 40, 0.03);
-    z-index: 20;
+    position: relative;
+    z-index: 30;
 }
 
 .security-feature {
@@ -508,7 +469,7 @@ input {
     display: block;
     color: #263b42;
     font-size: 12px;
-    font-weight: 800;
+    font-weight: 600;
     margin-bottom: 4px;
 }
 
@@ -521,7 +482,7 @@ input {
 }
 
 
-.login-card {
+.admin-login-card {
     position: relative;
     /* isse absolute button card ke andar hi rahega */
 }
@@ -592,12 +553,12 @@ input {
         font-size: 20px;
     }
 
-    .login-card {
+    .admin-login-card {
         max-width: 430px;
         padding: 28px 30px 20px;
     }
 
-    .login-brand-icon {
+    .admin-login-brand-icon {
         width: 74px;
         height: 74px;
         font-size: 40px;
@@ -663,7 +624,7 @@ input {
         top: 28px;
     }
 
-    .login-card {
+    .admin-login-card {
         width: min(100%, 500px);
         max-width: 500px;
         margin-top: 0;
@@ -673,13 +634,13 @@ input {
         display: none;
     }
 
-    .login-card {
+    .admin-login-card {
         max-height: none;
         overflow: visible;
 
     }
 
-    .login-form-scroll {
+    .admin-login-form-scroll {
         overflow-y: visible;
         padding-right: 0;
         margin-right: 0;
@@ -689,7 +650,7 @@ input {
 @media (max-width: 575.98px) {
     .admin-form-panel {
         align-items: flex-start;
-        padding: 77px 15px 24px;
+        padding: 25px 15px 24px;
     }
 
     .secure-access-label {
@@ -697,30 +658,30 @@ input {
         font-size: 12px;
     }
 
-    .login-card {
+    .admin-login-card {
         padding: 26px 20px 22px;
         border-radius: 20px;
     }
 
-    .login-brand-icon {
+    .admin-login-brand-icon {
         width: 72px;
         height: 72px;
         font-size: 39px;
     }
 
-    .login-heading h2 {
+    .admin-login-heading h2 {
         font-size: 25px;
     }
 
-    .login-input {
+    .admin-login-input {
         height: 51px;
     }
 
-    .login-options {
+    .admin-login-options {
         align-items: flex-start;
     }
 
-    .social-login-list {
+    .social-admin-login-list {
         gap: 18px;
     }
 
@@ -768,19 +729,19 @@ input {
         padding: 10px 17px;
     }
 
-    .login-card {
+    .admin-login-card {
         padding-top: 22px;
         padding-bottom: 17px;
     }
 
-    .login-brand-icon {
+    .admin-login-brand-icon {
         width: 67px;
         height: 67px;
         margin-bottom: 8px;
         font-size: 36px;
     }
 
-    .login-heading {
+    .admin-login-heading {
         margin-bottom: 17px;
     }
 
@@ -788,11 +749,11 @@ input {
         margin-bottom: 12px;
     }
 
-    .login-input {
+    .admin-login-input {
         height: 47px;
     }
 
-    .login-options {
+    .admin-login-options {
         margin-bottom: 15px;
     }
 
@@ -800,7 +761,7 @@ input {
         min-height: 48px;
     }
 
-    .login-divider {
+    .admin-login-divider {
         margin: 17px 0 13px;
     }
 
@@ -809,7 +770,7 @@ input {
         height: 45px;
     }
 
-    .login-card-footer {
+    .admin-login-card-footer {
         margin-top: 13px;
     }
 
@@ -878,18 +839,18 @@ input {
     color: var(--primary-dark);
 }
 
-.back-login {
+.back-admin-login {
     margin-top: 18px;
     text-align: center;
 }
 
-.back-login a {
+.back-admin-login a {
     color: var(--text-muted);
     text-decoration: none;
     font-size: 13px;
 }
 
-.back-login a:hover {
+.back-admin-login a:hover {
     color: var(--primary);
 }
 

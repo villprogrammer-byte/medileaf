@@ -4,101 +4,134 @@
 
 @section('content')
 
-    <div class="user-login-page">
+    <x-auth-shell icon="bi-key-fill" subtitle="Enter your email address and we'll send you a verification code."
+        :back-route="route('login')" footer-text="Your account recovery is protected with OTP verification."
+        :bg-image="asset('img/login.webp')" :security-features="[
+            [
+                'icon' => 'bi-lock',
+                'title' => 'Secure & Encrypted',
+                'text' => 'Your data is always protected with advanced security.'
+            ],
+            [
+                'icon' => 'bi-cloud-arrow-up',
+                'title' => 'Daily Backup',
+                'text' => 'Automatic backup ensures your data is never lost.'
+            ],
+            [
+                'icon' => 'bi-people',
+                'title' => 'Role Based Access',
+                'text' => 'Secure access management for you and your team.'
+            ],
+            [
+                'icon' => 'bi-headset',
+                'title' => '24/7 Support',
+                'text' => 'We are here anytime you need help.'
+            ],
+        ]">
 
-        <div class="user-main-area">
-
-            <div class="user-visual-panel">
-                <i class="bi bi-leaf-fill leaf-decoration top"></i>
-                <i class="bi bi-leaf-fill leaf-decoration bottom"></i>
-            </div>
-
-            <div class="user-form-panel">
-
-                <div class="secure-access-label">
-                    <i class="bi bi-shield-check"></i>
-                    Password Recovery
-                </div>
-
-                <div class="login-card">
-
-                    <div class="login-brand-icon">
-                        <i class="bi bi-key-fill"></i>
-                    </div>
-
-                    <div class="login-heading">
-                        <h2>Forgot <span>Password?</span></h2>
-                        <p>Enter your email address and we'll send you a verification code.</p>
-                    </div>
-
-                    <form method="POST" action="{{ route('password.otp.send') }}">
-                        @csrf
-
-                        <div class="form-group">
-                            <label for="email" class="form-label required">Email Address</label>
-
-                            <div class="input-wrap">
-                                <i class="bi bi-envelope input-icon"></i>
-                                <input type="email" name="email" id="email"
-                                    class="login-input @error('email') is-invalid @enderror"
-                                    placeholder="Enter your email address" value="{{ old('email') }}" required autofocus>
-                            </div>
-
-                            @error('email')
-                                <small class="field-error">{{ $message }}</small>
-                            @enderror
-                        </div>
-
-                        {{-- Cloudflare Turnstile --}}
-
-                        <div class="form-group mt-3">
-
-                            <div class="turnstile-wrap">
-
-                                <div class="cf-turnstile" data-sitekey="{{ config('services.turnstile.site_key') }}"
-                                    data-theme="light" data-size="flexible">
-                                </div>
-
-                            </div>
-
-                            @error('cf-turnstile-response')
-                                <small class="field-error d-block mt-2">
-                                    {{ $message }}
-                                </small>
-                            @enderror
-
-                        </div>
+        <x-slot:title>
+            Forgot <span>Password?</span>
+        </x-slot:title>
 
 
-                        <button type="submit" class="sign-in-button mt-3">
-                            <i class="bi bi-send"></i>
-                            <span>Send Verification Code</span>
-                        </button>
-                    </form>
+        {{-- Forgot Password Form --}}
+        <form method="POST" action="{{ route('password.otp.send') }}" id="forgotPasswordForm">
+            @csrf
 
-                    <div class="back-login">
-                        <a href="{{ route('login') }}">
-                            <i class="bi bi-arrow-left"></i>
-                            Back to Login
-                        </a>
-                    </div>
+            {{-- Email Address --}}
+            <div class="form-group">
 
-                    <div class="login-card-footer">
-                        <div class="footer-security">
-                            <i class="bi bi-shield-check"></i>
-                            Your account recovery is protected with OTP verification.
-                        </div>
-                        <p class="copyright">
-                            © {{ date('Y') }} <strong>MediLeaf Health</strong>
-                        </p>
-                    </div>
+                <label for="email" class="form-label required">
+                    Email Address
+                </label>
+
+                <div class="input-wrap">
+
+                    <i class="bi bi-envelope input-icon"></i>
+
+                    <input type="email" name="email" id="email"
+                        class="admin-login-input @error('email') is-invalid @enderror"
+                        placeholder="Enter your email address" value="{{ old('email') }}" required autofocus
+                        autocomplete="email">
 
                 </div>
 
+                @error('email')
+                    <small class="field-error">
+                        {{ $message }}
+                    </small>
+                @enderror
+
             </div>
 
-        </div>
 
-    </div>
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+            {{-- Cloudflare Turnstile --}}
+            <div class="form-group mt-3">
+
+                <div class="turnstile-wrap">
+
+                    <div class="cf-turnstile" data-sitekey="{{ config('services.turnstile.site_key') }}" data-theme="light"
+                        data-size="flexible"></div>
+
+                </div>
+
+                @error('cf-turnstile-response')
+                    <small class="field-error d-block mt-2">
+                        {{ $message }}
+                    </small>
+                @enderror
+
+            </div>
+
+
+            {{-- Submit --}}
+            <button type="submit" class="sign-in-button mt-3" id="sendResetOtpBtn">
+                <i class="bi bi-send"></i>
+                <span>Send Verification Code</span>
+            </button>
+
+        </form>
+
+
+        {{-- After Form --}}
+        <x-slot:afterForm>
+
+            <div class="admin-login-divider">
+                <span>Back to Login</span>
+            </div>
+
+        </x-slot:afterForm>
+
+    </x-auth-shell>
+
 @endsection
+
+
+@push('scripts')
+
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const form = document.getElementById('forgotPasswordForm');
+            const submitButton = document.getElementById('sendResetOtpBtn');
+
+            if (!form || !submitButton) {
+                return;
+            }
+
+            form.addEventListener('submit', function () {
+
+                submitButton.disabled = true;
+
+                submitButton.innerHTML =
+                    '<i class="bi bi-hourglass-split"></i>' +
+                    '<span>Sending Code...</span>';
+
+            });
+
+        });
+    </script>
+
+@endpush

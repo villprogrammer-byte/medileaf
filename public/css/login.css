@@ -21,7 +21,6 @@ body {
     min-height: 100%;
     margin: 0;
     overflow: hidden;
-    font-family: Arial, Helvetica, sans-serif;
     background: var(--page-background);
     color: var(--text-dark);
 }
@@ -45,8 +44,8 @@ input {
 
 .user-main-area {
     width: 100%;
-    height: calc(100vh - 94px);
-    min-height: 650px;
+    flex: 1 1 auto;
+    min-height: 0;
     display: flex;
 }
 
@@ -467,18 +466,20 @@ input {
 }
 
 /* =========================================
-           BOTTOM SECURITY STRIP
-        ========================================= */
+   BOTTOM SECURITY STRIP
+========================================= */
 
 .security-strip {
     width: 100%;
     height: 94px;
+    flex: 0 0 94px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     background: rgba(252, 255, 253, 0.98);
     border-top: 1px solid #e5eee8;
     box-shadow: 0 -7px 24px rgba(20, 78, 40, 0.03);
-    z-index: 20;
+    position: relative;
+    z-index: 30;
 }
 
 .security-feature {
@@ -513,7 +514,7 @@ input {
     display: block;
     color: #263b42;
     font-size: 12px;
-    font-weight: 800;
+    font-weight: 600;
     margin-bottom: 4px;
 }
 

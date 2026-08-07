@@ -4,197 +4,121 @@
 
 @section('content')
 
-    <div class="user-login-page">
+    <x-auth-shell icon="bi-envelope-check"
+        subtitle="We've sent a secure verification code to your registered email address." :back-route="route('login')"
+        footer-text="Your login is protected with OTP verification." :bg-image="asset('img/login.webp')" :security-features="[
+            [
+                'icon' => 'bi-lock',
+                'title' => 'Secure & Encrypted',
+                'text' => 'Your data is always protected with advanced security.'
+            ],
+            [
+                'icon' => 'bi-cloud-arrow-up',
+                'title' => 'Daily Backup',
+                'text' => 'Automatic backup ensures your data is never lost.'
+            ],
+            [
+                'icon' => 'bi-people',
+                'title' => 'Role Based Access',
+                'text' => 'Secure access management for you and your team.'
+            ],
+            [
+                'icon' => 'bi-headset',
+                'title' => '24/7 Support',
+                'text' => 'We are here anytime you need help.'
+            ],
+        ]">
 
-        <div class="user-main-area">
+        <x-slot:title>
+            Verify <span>OTP</span>
+        </x-slot:title>
 
-            <!-- LEFT PANEL -->
+        <div class="otp-note">
+            Enter the 6-digit code to continue securely into your account.
+        </div>
 
-            <div class="user-visual-panel">
+        <form method="POST" action="{{ route('otp.verify') }}" id="otpForm">
+            @csrf
 
-                <div class="visual-content">
-                    <i class="bi bi-leaf-fill leaf-decoration top"></i>
-                    <i class="bi bi-leaf-fill leaf-decoration bottom"></i>
+            <div class="otp-box">
 
-                </div>
+                <input type="text" name="otp" maxlength="6" autocomplete="one-time-code" inputmode="numeric"
+                    class="otp-input @error('otp') is-invalid @enderror" placeholder="000000" value="{{ old('otp') }}"
+                    required>
 
             </div>
 
-            <!-- RIGHT PANEL -->
+            @error('otp')
+                <small class="field-error">
+                    {{ $message }}
+                </small>
+            @enderror
 
-            <div class="user-form-panel">
+            <button type="submit" class="sign-in-button" id="verifyBtn">
+                <i class="bi bi-shield-lock-fill"></i>
+                <span>Verify &amp; Continue</span>
+            </button>
 
-                <div class="secure-access-label">
-                    <i class="bi bi-shield-check"></i>
-                    Secure OTP Verification
-                </div>
+        </form>
 
-                <div class="login-card">
+        <div class="resend-area">
 
-                    <div class="login-brand-icon">
-                        <i class="bi bi-envelope-check"></i>
-                    </div>
+            <form method="POST" action="{{ route('otp.resend') }}">
+                @csrf
 
-                    <div class="login-heading">
+                <button type="submit" class="resend-btn">
+                    Resend OTP
+                </button>
 
-                        <h2>
-                            Verify <span>OTP</span>
-                        </h2>
-
-                        <p>
-
-                            We've sent a secure verification code to your registered email address.
-
-                        </p>
-
-                    </div>
-
-                    @if(session('success'))
-
-                        <div class="alert alert-success auth-alert">
-
-                            {{ session('success') }}
-
-                        </div>
-
-                    @endif
-
-                    @if(session('status'))
-
-                        <div class="alert alert-success auth-alert">
-
-                            {{ session('status') }}
-
-                        </div>
-
-                    @endif
-
-                    <div class="otp-note">
-
-                        Enter the 6-digit code to continue securely into your account.
-
-                    </div>
-
-                    <form method="POST" action="{{ route('otp.verify') }}" id="otpForm">
-
-                        @csrf
-
-                        <div class="otp-box">
-
-                            <input type="text" name="otp" maxlength="6" autocomplete="one-time-code" inputmode="numeric"
-                                class="otp-input @error('otp') is-invalid @enderror" placeholder="000000"
-                                value="{{ old('otp') }}" required>
-
-                        </div>
-
-                        @error('otp')
-
-                            <small class="field-error">
-
-                                {{ $message }}
-
-                            </small>
-
-                        @enderror
-
-                        <button type="submit" class="sign-in-button" id="verifyBtn">
-
-                            <i class="bi bi-shield-lock-fill"></i>
-
-                            Verify & Continue
-
-                        </button>
-
-                    </form>
-
-                    <div class="login-divider">
-
-                        Didn't receive the code?
-
-                    </div>
-
-                    <div class="resend-area">
-
-                        <form method="POST" action="{{ route('otp.resend') }}">
-
-                            @csrf
-
-                            <button type="submit" class="resend-btn">
-
-                                Resend OTP
-
-                            </button>
-
-                        </form>
-
-                    </div>
-
-                    <div class="back-login">
-
-                        <a href="{{ route('login') }}">
-
-                            <i class="bi bi-arrow-left"></i>
-
-                            Back to Login
-
-                        </a>
-
-                    </div>
-
-                    <div class="login-card-footer">
-
-                        <div class="footer-security">
-
-                            <i class="bi bi-shield-check"></i>
-
-                            Your login is protected with OTP verification.
-
-                        </div>
-
-                        <p class="copyright">
-
-                            © {{ date('Y') }}
-
-                            <strong>MediLeaf Health</strong>
-
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
+            </form>
 
         </div>
 
-    </div>
+        <x-slot:afterForm>
+
+            <div class="admin-login-divider">
+                <span>Didn't receive the code?</span>
+            </div>
+
+        </x-slot:afterForm>
+
+    </x-auth-shell>
 
 @endsection
+
 
 @push('scripts')
 
     <script>
-
         document.addEventListener("DOMContentLoaded", function () {
 
-            const otp = document.querySelector(".otp-input");
+            const otpInput = document.querySelector(".otp-input");
+            const otpForm = document.getElementById("otpForm");
+            const verifyButton = document.getElementById("verifyBtn");
 
-            otp.addEventListener("input", function () {
+            if (otpInput) {
+                otpInput.addEventListener("input", function () {
 
-                this.value = this.value.replace(/\D/g, "").substring(0, 6);
+                    this.value = this.value
+                        .replace(/\D/g, "")
+                        .substring(0, 6);
 
-            });
+                });
+            }
 
-            document.getElementById("otpForm").addEventListener("submit", function () {
+            if (otpForm && verifyButton) {
+                otpForm.addEventListener("submit", function () {
 
-                document.getElementById("verifyBtn").disabled = true;
+                    verifyButton.disabled = true;
 
-                document.getElementById("verifyBtn").innerHTML = '<i class="bi bi-hourglass-split"></i> Verifying...';
+                    verifyButton.innerHTML =
+                        '<i class="bi bi-hourglass-split"></i>' +
+                        '<span>Verifying...</span>';
 
-            });
+                });
+            }
 
         });
-
     </script>
 
 @endpush
