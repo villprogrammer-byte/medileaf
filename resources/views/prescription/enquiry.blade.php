@@ -212,6 +212,24 @@
                                     </label>
                                 </div>
 
+                                <div class="form-group mt-3">
+
+                                    <div class="turnstile-wrap">
+
+                                        <div class="cf-turnstile" data-sitekey="{{ config('services.turnstile.site_key') }}"
+                                            data-theme="light" data-size="flexible">
+                                        </div>
+
+                                    </div>
+
+                                    @error('cf-turnstile-response')
+                                        <small class="field-error d-block mt-2">
+                                            {{ $message }}
+                                        </small>
+                                    @enderror
+
+                                </div>
+
                                 <div class="col-12">
                                     <button type="submit" class="submit-btn">
                                         <i class="fa-regular fa-paper-plane"></i>

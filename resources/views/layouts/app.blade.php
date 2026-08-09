@@ -30,6 +30,8 @@
     <link rel="stylesheet" href="{{ asset('css/account-menu.css') }}">
     <link rel="stylesheet" href="{{ asset('css/page-loader.css') }}">
     <link rel="stylesheet" href="{{ asset('css/user-choice-popup.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/prescription.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/store.css') }}">
     <link rel="stylesheet" href="{{ asset('css/cart.css') }}">
 
     @stack('styles')
@@ -56,10 +58,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script src="{{ asset('js/page-loader.js') }}"></script>
     <script src="{{ asset('js/user-choice-popup.js') }}"></script>
     <script src="{{ asset('js/account-menu.js') }}"></script>
     <script src="{{ asset('js/admin.js') }}"></script>
+    <script src="{{ asset('js/store.js') }}"></script>
     <script src="{{ asset('js/cart.js') }}"></script>
     @stack('scripts')
 

@@ -257,14 +257,49 @@
                                         placeholder="Tell us how we can help" required></textarea>
                                 </div>
 
+
                                 <div class="col-12">
+                                    <div class="medileaf-form-check">
+                                        <input type="checkbox" id="agree_policy" name="agree_policy" value="1" required>
+                                        <label for="agree_policy">
+                                            I have read and agree to the
+                                            <a href="{{ url('/privacy-policy') }}" target="_blank">Privacy Policy</a>
+                                            and
+                                            <a href="{{ url('/terms-conditions') }}" target="_blank">Terms &amp;
+                                                Conditions</a>
+                                        </label>
+                                    </div>
 
+                                    @error('agree_policy')
+                                        <small class="field-error d-block mt-2">
+                                            {{ $message }}
+                                        </small>
+                                    @enderror
+                                </div>
+
+
+                                <div class="form-group mt-3">
+
+                                    <div class="turnstile-wrap">
+
+                                        <div class="cf-turnstile" data-sitekey="{{ config('services.turnstile.site_key') }}"
+                                            data-theme="light" data-size="flexible">
+                                        </div>
+
+                                    </div>
+
+                                    @error('cf-turnstile-response')
+                                        <small class="field-error d-block mt-2">
+                                            {{ $message }}
+                                        </small>
+                                    @enderror
+
+                                </div>
+
+                                <div class="col-12">
                                     <button type="submit" class="medileaf-contact-submit-btn">
-
                                         Send Enquiry
-
                                         <i class="bi bi-arrow-right"></i>
-
                                     </button>
 
                                 </div>

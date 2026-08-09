@@ -1079,93 +1079,39 @@
     }
 }
 
-/* -----------store-------------------------- */
-@media (max-width: 991px) {
-    .ml-shop-v2-filterbar {
-        flex-direction: column;
-        align-items: flex-start;
-    }
 
-    .ml-shop-v2-tools,
-    .ml-shop-v2-search,
-    .ml-shop-v2-search input,
-    .ml-shop-v2-sort,
-    .ml-shop-v2-sort select {
-        width: 100%;
-    }
-
-    .ml-shop-v2-sort {
-        justify-content: space-between;
-    }
-
-    /* ------checkout-section-------- */
-    .ml-checkout-v2-summary {
-        position: static;
-    }
-
+/* ------checkout-section-------- */
+.ml-checkout-v2 {
+    padding: 60px 0;
 }
 
-@media (max-width: 767px) {
-    .ml-shop-v2-hero {
-        padding: 95px 0 80px;
-    }
+.ml-checkout-v2-card,
+.ml-checkout-v2-summary {
+    padding: 24px;
+    border-radius: 22px;
+}
 
-    .ml-shop-v2-section {
-        padding: 60px 0 80px;
-    }
+.ml-payment-v2-option {
+    grid-template-columns: auto 1fr;
+}
 
-    .ml-shop-v2-filterbar {
-        padding: 24px 20px;
-        border-radius: 22px;
-    }
+.ml-payment-v2-option>span {
+    grid-column: 1 / -1;
+    width: fit-content;
+}
 
-    .ml-shop-v2-sort {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+.ml-order-v2-item {
+    grid-template-columns: 58px 1fr;
+}
 
-    .ml-shop-v2-img img {
-        height: 210px;
-    }
+.ml-order-v2-item strong {
+    grid-column: 2;
+}
 
-    .ml-shop-v2-pagination button {
-        width: 48px;
-        height: 48px;
-        font-size: 16px;
-    }
-
-    /* ------checkout-section-------- */
-    .ml-checkout-v2 {
-        padding: 60px 0;
-    }
-
-    .ml-checkout-v2-card,
-    .ml-checkout-v2-summary {
-        padding: 24px;
-        border-radius: 22px;
-    }
-
-    .ml-payment-v2-option {
-        grid-template-columns: auto 1fr;
-    }
-
-    .ml-payment-v2-option>span {
-        grid-column: 1 / -1;
-        width: fit-content;
-    }
-
-    .ml-order-v2-item {
-        grid-template-columns: 58px 1fr;
-    }
-
-    .ml-order-v2-item strong {
-        grid-column: 2;
-    }
-
-    .ml-order-v2-item img {
-        width: 58px;
-        height: 58px;
-    }
+.ml-order-v2-item img {
+    width: 58px;
+    height: 58px;
+}
 
 }
 
@@ -1799,99 +1745,6 @@
 
 }
 
-/* =====================================prescription====================================== */
-
-@media (max-width: 991px) {
-    .prescription-info-card h2 {
-        font-size: 34px;
-    }
-
-    .prescription-form-card,
-    .prescription-info-card {
-        padding: 30px;
-    }
-}
-
-@media (max-width: 767px) {
-
-    .feature-item {
-        gap: 14px;
-        margin-bottom: 22px;
-    }
-
-    .feature-icon {
-        min-width: 48px;
-        width: 48px;
-        height: 48px;
-        font-size: 19px;
-    }
-
-    .feature-item h4 {
-        font-size: 16px;
-    }
-
-    .feature-item p {
-        font-size: 13.5px;
-    }
-
-    .prescription-tabs {
-        flex-direction: column;
-    }
-
-    .tab-btn:first-child {
-        border-right: none;
-        border-bottom: 1px solid #ececec;
-    }
-
-}
-
-@media (max-width: 575px) {
-    .prescription-page {
-        padding: 45px 0;
-    }
-
-    .form-heading {
-        align-items: flex-start;
-        gap: 15px;
-    }
-
-    .form-icon {
-        width: 58px;
-        height: 58px;
-        font-size: 25px;
-    }
-
-    .form-heading h2 {
-        font-size: 24px;
-    }
-
-    .option-box {
-        gap: 20px;
-        flex-wrap: wrap;
-    }
-
-    .prescription-info-card h1 {
-        font-size: 38px;
-    }
-
-    .feature-item {
-        align-items: flex-start;
-    }
-
-    .choose-file-btn {
-        width: 100%;
-        padding: 14px 20px;
-    }
-
-    .prescription-tabs {
-        flex-direction: column;
-    }
-
-    .tab-btn:first-child {
-        border-right: none;
-        border-bottom: 1px solid #e5e7eb;
-    }
-}
 
 /* =============================LOGIN=============================================== */
 
