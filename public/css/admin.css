@@ -1748,18 +1748,25 @@ body {
 
 
 .ck.ck-editor {
-    border-radius: 10px;
-}
-
-.ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content {
-    border-radius: 10px 10px 0 0;
+    border-radius: 16px !important;
     overflow: hidden;
 }
 
-.ck.ck-editor__main>.ck-editor__editable {
-    border-radius: 0 0 10px 10px !important;
+.ck.ck-editor__top {
+    border-radius: 16px 16px 0 0 !important;
+    overflow: hidden;
 }
 
-.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
-    border-radius: 0 0 10px 10px !important;
+.ck.ck-editor__top .ck-sticky-panel,
+.ck.ck-editor__top .ck-sticky-panel__content {
+    border-radius: 16px 16px 0 0 !important;
+    overflow: hidden;
+}
+
+.ck.ck-editor__top .ck-toolbar {
+    border-radius: 16px 16px 0 0 !important;
+}
+
+.ck.ck-editor__main>.ck-editor__editable {
+    border-radius: 0 0 16px 16px !important;
 }
