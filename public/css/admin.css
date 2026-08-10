@@ -1745,3 +1745,21 @@ body {
         height: 50px;
     }
 }
+
+
+.ck.ck-editor {
+    border-radius: 10px;
+}
+
+.ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content {
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+}
+
+.ck.ck-editor__main>.ck-editor__editable {
+    border-radius: 0 0 10px 10px !important;
+}
+
+.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+    border-radius: 0 0 10px 10px !important;
+}
