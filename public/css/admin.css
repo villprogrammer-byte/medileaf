@@ -43,7 +43,7 @@ body {
 }
 
 .ml-admin-nav-title {
-    color: rgba(255, 255, 255, .45);
+    color: rgba(255, 255, 255, 0.45);
     font-size: 12px;
     font-weight: 800;
     letter-spacing: 1px;
@@ -58,11 +58,11 @@ body {
     min-height: 50px;
     padding: 0 16px;
     border-radius: 16px;
-    color: rgba(255, 255, 255, .78);
+    color: rgba(255, 255, 255, 0.78);
     text-decoration: none;
     font-size: 15px;
     font-weight: 700;
-    transition: .3s ease;
+    transition: 0.3s ease;
 }
 
 .ml-admin-nav a i,
@@ -74,13 +74,13 @@ body {
 .ml-admin-nav a.active {
     background: linear-gradient(135deg, #31a050, #8ac641);
     color: #fff;
-    box-shadow: 0 12px 26px rgba(49, 160, 80, .28);
+    box-shadow: 0 12px 26px rgba(49, 160, 80, 0.28);
 }
 
 .ml-admin-sidebar-bottom {
     margin-top: auto;
     padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, .12);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .ml-admin-main {
@@ -91,9 +91,9 @@ body {
 
 .ml-admin-header {
     height: 86px;
-    background: rgba(255, 255, 255, .9);
+    background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(49, 160, 80, .10);
+    border-bottom: 1px solid rgba(49, 160, 80, 0.10);
     padding: 0 34px;
     display: flex;
     align-items: center;
@@ -118,7 +118,7 @@ body {
     width: 420px;
     height: 50px;
     background: #f4f8f5;
-    border: 1px solid rgba(49, 160, 80, .12);
+    border: 1px solid rgba(49, 160, 80, 0.12);
     border-radius: 18px;
     display: flex;
     align-items: center;
@@ -201,9 +201,9 @@ body {
     padding: 34px;
 }
 
-login-card {
+.login-card {
     position: relative;
-    /* isse absolute button card ke andar hi rahega */
+
 }
 
 .back-home-btn {
@@ -217,7 +217,7 @@ login-card {
     justify-content: center;
     border-radius: 50%;
     border: 2px solid #16a34a;
-    /* green border, screenshot ke hisab se change kar sakte ho */
+
     color: #16a34a;
     background: transparent;
     font-size: 18px;
@@ -231,11 +231,10 @@ login-card {
     color: #fff;
 }
 
-
-@media(max-width:991px) {
+@media (max-width: 991px) {
     .ml-admin-sidebar {
         transform: translateX(-100%);
-        transition: .35s ease;
+        transition: 0.35s ease;
     }
 
     .ml-admin-sidebar.show {
@@ -263,7 +262,7 @@ login-card {
     }
 }
 
-@media(max-width:575px) {
+@media (max-width: 575px) {
     .ml-admin-header {
         height: auto;
         padding: 16px;
@@ -283,8 +282,6 @@ login-card {
         padding: 22px 16px;
     }
 }
-
-/* ======================================= */
 
 .ml-admin-page-head {
     display: flex;
@@ -317,7 +314,7 @@ login-card {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    box-shadow: 0 14px 30px rgba(49, 160, 80, .25);
+    box-shadow: 0 14px 30px rgba(49, 160, 80, 0.25);
 }
 
 .ml-admin-stats-grid {
@@ -328,13 +325,13 @@ login-card {
 
 .ml-admin-stat-card {
     background: #fff;
-    border: 1px solid rgba(49, 160, 80, .10);
+    border: 1px solid rgba(49, 160, 80, 0.10);
     border-radius: 26px;
     padding: 26px;
     display: flex;
     align-items: center;
     gap: 18px;
-    box-shadow: 0 18px 45px rgba(31, 45, 34, .07);
+    box-shadow: 0 18px 45px rgba(31, 45, 34, 0.07);
 }
 
 .ml-admin-stat-icon {
@@ -378,13 +375,13 @@ login-card {
     color: #073d22;
 }
 
-@media(max-width:1199px) {
+@media (max-width: 1199px) {
     .ml-admin-stats-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media(max-width:575px) {
+@media (max-width: 575px) {
     .ml-admin-page-head {
         flex-direction: column;
         align-items: flex-start;
@@ -400,23 +397,18 @@ login-card {
     }
 }
 
-/* ===========================
-   Dashboard Cards
-=========================== */
-
 .ml-admin-card {
     background: #fff;
     border-radius: 24px;
     padding: 26px;
-    border: 1px solid rgba(49, 160, 80, .10);
-    box-shadow: 0 15px 45px rgba(20, 61, 36, .06);
+    border: 1px solid rgba(49, 160, 80, 0.10);
+    box-shadow: 0 15px 45px rgba(20, 61, 36, 0.06);
     height: auto;
 }
 
 .ml-product-create-form .row {
     align-items: flex-start;
 }
-
 
 .ml-admin-card-head {
     display: flex;
@@ -449,8 +441,6 @@ login-card {
     color: #173d24;
 }
 
-/* Low Stock */
-
 .ml-low-stock-list {
     display: flex;
     flex-direction: column;
@@ -464,13 +454,13 @@ login-card {
     padding: 16px 18px;
     border-radius: 16px;
     background: #f8fbf7;
-    border: 1px solid rgba(49, 160, 80, .08);
-    transition: .3s;
+    border: 1px solid rgba(49, 160, 80, 0.08);
+    transition: 0.3s;
 }
 
 .ml-low-stock-item:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(49, 160, 80, .08);
+    box-shadow: 0 10px 25px rgba(49, 160, 80, 0.08);
 }
 
 .ml-low-stock-item h6 {
@@ -483,8 +473,6 @@ login-card {
 .ml-low-stock-item small {
     color: #7b8a81;
 }
-
-/* Orders Table */
 
 .table {
     margin: 0;
@@ -500,7 +488,7 @@ login-card {
 }
 
 .table tbody td {
-    border-top: 1px solid rgba(0, 0, 0, .05);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
     padding: 16px 0;
     font-size: 15px;
     vertical-align: middle;
@@ -517,9 +505,7 @@ login-card {
     font-weight: 700;
 }
 
-/* Responsive */
-
-@media(max-width:991px) {
+@media (max-width: 991px) {
 
     .ml-admin-card {
         padding: 22px;
@@ -527,7 +513,7 @@ login-card {
 
 }
 
-@media(max-width:767px) {
+@media (max-width: 767px) {
 
     .ml-admin-card-head {
         flex-direction: column;
@@ -543,10 +529,6 @@ login-card {
 
 }
 
-/* ======================================
-   PRODUCT LIST
-====================================== */
-
 .ml-admin-table-filter {
     width: 280px;
 }
@@ -556,15 +538,15 @@ login-card {
     height: 46px;
     padding: 0 18px;
     border-radius: 14px;
-    border: 1px solid rgba(49, 160, 80, .12);
+    border: 1px solid rgba(49, 160, 80, 0.12);
     outline: none;
     background: #f8fbf7;
-    transition: .3s;
+    transition: 0.3s;
 }
 
 .ml-admin-table-filter input:focus {
     border-color: #31a050;
-    box-shadow: 0 0 0 4px rgba(49, 160, 80, .10);
+    box-shadow: 0 0 0 4px rgba(49, 160, 80, 0.10);
 }
 
 .ml-admin-product-table {
@@ -584,7 +566,7 @@ login-card {
 .ml-admin-product-table tbody td {
     padding: 20px 14px;
     vertical-align: middle;
-    border-bottom: 1px solid rgba(0, 0, 0, .05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .ml-product-cell {
@@ -603,7 +585,7 @@ login-card {
     justify-content: center;
     color: #fff;
     font-size: 28px;
-    box-shadow: 0 12px 30px rgba(49, 160, 80, .20);
+    box-shadow: 0 12px 30px rgba(49, 160, 80, 0.20);
 }
 
 .ml-product-cell h6 {
@@ -623,7 +605,7 @@ login-card {
     border: none;
     border-radius: 12px;
     margin-left: 8px;
-    transition: .3s;
+    transition: 0.3s;
 }
 
 .ml-action-btn.edit {
@@ -650,9 +632,7 @@ login-card {
     color: #fff;
 }
 
-/* Responsive */
-
-@media(max-width:991px) {
+@media (max-width: 991px) {
 
     .ml-admin-table-filter {
         width: 100%;
@@ -661,7 +641,7 @@ login-card {
 
 }
 
-@media(max-width:767px) {
+@media (max-width: 767px) {
 
     .ml-admin-card-head {
         flex-direction: column;
@@ -673,10 +653,6 @@ login-card {
     }
 
 }
-
-/*==================================================
-  ADD PRODUCT PAGE
-==================================================*/
 
 .ml-product-form-card,
 .ml-product-side-card {
@@ -699,13 +675,13 @@ login-card {
     border-radius: 16px;
     background: #fff;
     outline: none;
-    transition: .3s;
+    transition: 0.3s;
     font-size: 15px;
 }
 
 .ml-admin-input:focus {
     border-color: #31a050;
-    box-shadow: 0 0 0 5px rgba(49, 160, 80, .08);
+    box-shadow: 0 0 0 5px rgba(49, 160, 80, 0.08);
 }
 
 .ml-admin-textarea {
@@ -716,7 +692,7 @@ login-card {
     border-radius: 16px;
     resize: none;
     outline: none;
-    transition: .3s;
+    transition: 0.3s;
 }
 
 .ml-admin-long-textarea {
@@ -725,12 +701,8 @@ login-card {
 
 .ml-admin-textarea:focus {
     border-color: #31a050;
-    box-shadow: 0 0 0 5px rgba(49, 160, 80, .08);
+    box-shadow: 0 0 0 5px rgba(49, 160, 80, 0.08);
 }
-
-/*==================================================
-    PRODUCT COLOUR OPTIONS
-==================================================*/
 
 .ml-color-options {
     display: flex;
@@ -757,27 +729,27 @@ login-card {
     padding: 0 20px;
     border-radius: 14px;
     background: #fff;
-    border: 2px solid rgba(49, 160, 80, .15);
+    border: 2px solid rgba(49, 160, 80, 0.15);
     color: #173d24;
     font-size: 14px;
     font-weight: 600;
-    transition: .3s ease;
+    transition: 0.3s ease;
 }
 
 .ml-color-chip:hover span {
-    border-color: #31A050;
-    background: #F3FBF4;
+    border-color: #31a050;
+    background: #f3fbf4;
     transform: translateY(-2px);
 }
 
 .ml-color-chip input:checked+span {
-    background: linear-gradient(135deg, #31A050, #8AC641);
+    background: linear-gradient(135deg, #31a050, #8ac641);
     color: #fff;
-    border-color: #31A050;
-    box-shadow: 0 10px 25px rgba(49, 160, 80, .25);
+    border-color: #31a050;
+    box-shadow: 0 10px 25px rgba(49, 160, 80, 0.25);
 }
 
-CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
+.ml-custom-colour-box {
     margin-top: 22px;
 }
 
@@ -791,19 +763,19 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     min-width: 110px;
     border: none;
     border-radius: 14px;
-    background: linear-gradient(135deg, #31A050, #8AC641);
+    background: linear-gradient(135deg, #31a050, #8ac641);
     color: #fff;
     font-weight: 700;
     padding: 0 18px;
-    transition: .3s ease;
+    transition: 0.3s ease;
 }
 
 .ml-add-colour-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(49, 160, 80, .25);
+    box-shadow: 0 10px 20px rgba(49, 160, 80, 0.25);
 }
 
-@media(max-width:576px) {
+@media (max-width: 576px) {
 
     .ml-custom-colour-wrap {
         flex-direction: column;
@@ -816,7 +788,7 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
 
 }
 
-@media(max-width:576px) {
+@media (max-width: 576px) {
 
     .ml-color-options {
         gap: 10px;
@@ -829,8 +801,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     }
 
 }
-
-/* Publish Card */
 
 .ml-product-status-box {
     margin-bottom: 25px;
@@ -853,8 +823,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     color: #173d24;
 }
 
-/* Switch */
-
 .ml-admin-switch {
     position: relative;
     width: 52px;
@@ -871,7 +839,7 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     inset: 0;
     border-radius: 30px;
     background: #d7dfd8;
-    transition: .3s;
+    transition: 0.3s;
     cursor: pointer;
 }
 
@@ -884,8 +852,8 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     top: 4px;
     border-radius: 50%;
     background: #fff;
-    transition: .3s;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+    transition: 0.3s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .ml-admin-switch input:checked+small {
@@ -895,8 +863,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
 .ml-admin-switch input:checked+small::after {
     left: 26px;
 }
-
-/* Buttons */
 
 .ml-product-publish-actions {
     margin-top: 28px;
@@ -911,7 +877,7 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     border: none;
     border-radius: 16px;
     font-weight: 700;
-    transition: .3s;
+    transition: 0.3s;
 }
 
 .ml-product-draft-btn {
@@ -926,14 +892,12 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
 .ml-product-publish-btn {
     background: linear-gradient(135deg, #31a050, #8ac641);
     color: #fff;
-    box-shadow: 0 14px 30px rgba(49, 160, 80, .25);
+    box-shadow: 0 14px 30px rgba(49, 160, 80, 0.25);
 }
 
 .ml-product-publish-btn:hover {
     transform: translateY(-3px);
 }
-
-/* Upload */
 
 .ml-upload-box {
     min-height: 230px;
@@ -945,7 +909,7 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     align-items: center;
     text-align: center;
     cursor: pointer;
-    transition: .3s;
+    transition: 0.3s;
     padding: 25px;
     background: #f9fcf9;
 }
@@ -971,9 +935,7 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     font-size: 14px;
 }
 
-/* Responsive */
-
-@media(max-width:991px) {
+@media (max-width: 991px) {
 
     .ml-product-side-card {
         margin-top: 0;
@@ -981,7 +943,7 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
 
 }
 
-@media(max-width:767px) {
+@media (max-width: 767px) {
 
     .ml-product-publish-actions {
         flex-direction: column;
@@ -992,10 +954,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     }
 
 }
-
-/*==================================================
-  PRODUCT GALLERY + SHIPPING
-==================================================*/
 
 .ml-product-side-card {
     margin-bottom: 24px;
@@ -1027,14 +985,12 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     z-index: 1;
 }
 
-/* Gallery Upload */
-
 .ml-gallery-upload {
     min-height: 170px;
     margin-bottom: 20px;
-    border: 2px dashed rgba(49, 160, 80, .25);
+    border: 2px dashed rgba(49, 160, 80, 0.25);
     background: #f8fbf7;
-    transition: .35s ease;
+    transition: 0.35s ease;
 }
 
 .ml-gallery-upload:hover {
@@ -1061,8 +1017,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     font-size: 13px;
 }
 
-/* Gallery Preview */
-
 .ml-gallery-preview {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1074,21 +1028,21 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     height: 95px;
     border-radius: 18px;
     background: #f8fbf7;
-    border: 1px solid rgba(49, 160, 80, .10);
+    border: 1px solid rgba(49, 160, 80, 0.10);
     display: flex;
     align-items: center;
     justify-content: center;
     color: #31a050;
     font-size: 30px;
     cursor: pointer;
-    transition: .35s ease;
+    transition: 0.35s ease;
 }
 
 .ml-gallery-item:hover {
     transform: translateY(-4px);
     background: #eef7ef;
     border-color: #31a050;
-    box-shadow: 0 10px 25px rgba(49, 160, 80, .10);
+    box-shadow: 0 10px 25px rgba(49, 160, 80, 0.10);
 }
 
 .ml-gallery-item img {
@@ -1098,8 +1052,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     border-radius: 18px;
 }
 
-/* Shipping */
-
 .ml-product-side-card .mb-3 {
     margin-bottom: 18px !important;
 }
@@ -1108,9 +1060,7 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     background: #fcfdfc;
 }
 
-/* Responsive */
-
-@media(max-width:991px) {
+@media (max-width: 991px) {
 
     .ml-product-publish-card {
         position: static;
@@ -1118,7 +1068,7 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
 
 }
 
-@media(max-width:575px) {
+@media (max-width: 575px) {
 
     .ml-gallery-preview {
         grid-template-columns: repeat(2, 1fr);
@@ -1130,26 +1080,20 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
 
 }
 
-/*==================================================
-    FEATURED IMAGE PREVIEW
-==================================================*/
-
 .ml-featured-preview {
     width: 100%;
     height: 220px;
     object-fit: cover;
     display: block;
     border-radius: 18px;
-    border: 1px solid rgba(49, 160, 80, .10);
-    box-shadow: 0 10px 25px rgba(49, 160, 80, .10);
-    transition: .35s ease;
+    border: 1px solid rgba(49, 160, 80, 0.10);
+    box-shadow: 0 10px 25px rgba(49, 160, 80, 0.10);
+    transition: 0.35s ease;
 }
 
 .ml-featured-preview:hover {
     transform: scale(1.02);
 }
-
-/* Upload box after image upload */
 
 #featuredPreview {
     width: 100%;
@@ -1166,20 +1110,13 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     border-radius: 18px;
 }
 
-@media(max-width:575px) {
+@media (max-width: 575px) {
 
     .ml-featured-preview,
     #featuredPreview img {
         height: 180px;
     }
 
-}
-
-.ml-gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 18px;
 }
 
 .ml-admin-sidebar-bottom form {
@@ -1196,10 +1133,10 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     gap: 14px;
     padding: 0 16px;
     border-radius: 16px;
-    color: rgba(255, 255, 255, .78);
+    color: rgba(255, 255, 255, 0.78);
     font-size: 15px;
     font-weight: 700;
-    transition: .3s ease;
+    transition: 0.3s ease;
 }
 
 .ml-admin-logout-btn i {
@@ -1207,13 +1144,9 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
 }
 
 .ml-admin-logout-btn:hover {
-    background: rgba(255, 255, 255, .10);
+    background: rgba(255, 255, 255, 0.10);
     color: #fff;
 }
-
-/*==================================================
-    ADMIN SUCCESS MESSAGE
-==================================================*/
 
 .ml-admin-success-alert {
     position: relative;
@@ -1222,11 +1155,11 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     gap: 14px;
     margin-bottom: 24px;
     padding: 16px 18px;
-    border: 1px solid rgba(49, 160, 80, .18);
+    border: 1px solid rgba(49, 160, 80, 0.18);
     border-radius: 18px;
     background: linear-gradient(135deg, #f4fbf5, #ffffff);
-    box-shadow: 0 14px 35px rgba(49, 160, 80, .10);
-    animation: mlAdminAlertIn .35s ease;
+    box-shadow: 0 14px 35px rgba(49, 160, 80, 0.10);
+    animation: mlAdminAlertIn 0.35s ease;
 }
 
 .ml-admin-success-icon {
@@ -1240,7 +1173,7 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     background: linear-gradient(135deg, #31a050, #8ac641);
     color: #fff;
     font-size: 22px;
-    box-shadow: 0 10px 24px rgba(49, 160, 80, .22);
+    box-shadow: 0 10px 24px rgba(49, 160, 80, 0.22);
 }
 
 .ml-admin-success-content {
@@ -1271,7 +1204,7 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: .25s ease;
+    transition: 0.25s ease;
 }
 
 .ml-admin-success-close:hover {
@@ -1282,7 +1215,7 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
 .ml-admin-success-alert.hide {
     opacity: 0;
     transform: translateY(-8px);
-    transition: .3s ease;
+    transition: 0.3s ease;
 }
 
 @keyframes mlAdminAlertIn {
@@ -1297,7 +1230,7 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     }
 }
 
-@media(max-width:575px) {
+@media (max-width: 575px) {
     .ml-admin-success-alert {
         align-items: flex-start;
         padding: 14px;
@@ -1308,8 +1241,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
         height: 34px;
     }
 }
-
-/* --------------------------------- */
 
 .ml-product-thumb {
     overflow: hidden;
@@ -1353,11 +1284,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     margin: 0 0 10px;
 }
 
-
-/* ==========================================================
-   ADMIN PRODUCT ACTION BUTTONS
-========================================================== */
-
 .ml-action-btn.view {
     background: #eef4ff;
     color: #2563eb;
@@ -1377,11 +1303,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     background: #198754;
     color: #ffffff;
 }
-
-
-/* ==========================================================
-   PRODUCT SEO STATUS
-========================================================== */
 
 .ml-product-seo-status {
     display: flex;
@@ -1428,11 +1349,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     color: #b26a00;
 }
 
-
-/* ==========================================================
-   UPDATED DATE
-========================================================== */
-
 .ml-product-updated-date {
     display: block;
     color: #173d24;
@@ -1440,11 +1356,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     font-weight: 700;
     white-space: nowrap;
 }
-
-
-/* ==========================================================
-   SEO URL PREVIEW
-========================================================== */
 
 .ml-seo-url-preview {
     padding: 10px 14px;
@@ -1460,11 +1371,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     font-weight: 700;
 }
 
-
-/* ==========================================================
-   SEO SUBSECTION
-========================================================== */
-
 .ml-admin-subsection {
     margin-top: 26px;
     padding-top: 26px;
@@ -1477,11 +1383,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     font-size: 17px;
     font-weight: 800;
 }
-
-
-/* ==========================================================
-   OPEN GRAPH IMAGE
-========================================================== */
 
 .ml-og-image-preview {
     width: 100%;
@@ -1507,11 +1408,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
 .ml-current-og-image {
     margin-bottom: 16px;
 }
-
-
-/* ==========================================================
-   PRODUCT GALLERY HEADER
-========================================================== */
 
 .ml-gallery-add-btn {
     min-height: 42px;
@@ -1542,19 +1438,11 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
         0 10px 22px rgba(49, 160, 80, 0.22);
 }
 
-
-/* ==========================================================
-   GALLERY MANAGER
-========================================================== */
-
 .ml-gallery-manager {
     display: flex;
     flex-direction: column;
     gap: 18px;
 }
-
-
-/* Individual Gallery Card */
 
 .ml-gallery-manager-item {
     position: relative;
@@ -1576,9 +1464,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
         0 12px 28px rgba(23, 61, 36, 0.07);
 }
 
-
-/* Gallery Header */
-
 .ml-gallery-manager-head {
     display: flex;
     align-items: center;
@@ -1592,9 +1477,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     font-size: 14px;
     font-weight: 800;
 }
-
-
-/* Remove Gallery Image */
 
 .ml-gallery-remove-btn {
     width: 38px;
@@ -1619,11 +1501,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     color: #ffffff;
     transform: translateY(-2px);
 }
-
-
-/* ==========================================================
-   GALLERY IMAGE PREVIEW
-========================================================== */
 
 .ml-gallery-upload-preview {
     width: 100%;
@@ -1655,11 +1532,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     object-fit: contain;
     background: #ffffff;
 }
-
-
-/* ==========================================================
-   EMPTY GALLERY STATE
-========================================================== */
 
 .ml-gallery-empty-state {
     min-height: 180px;
@@ -1694,20 +1566,10 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     line-height: 1.6;
 }
 
-
-/* ==========================================================
-   ADMIN FORM HELP TEXT
-========================================================== */
-
 .ml-product-form-card .text-muted,
 .ml-product-side-card .text-muted {
     line-height: 1.55;
 }
-
-
-/* ==========================================================
-   FORM CHECKBOX CLEANUP
-========================================================== */
 
 .ml-product-form-card .form-check-input,
 .ml-product-side-card .form-check-input {
@@ -1728,11 +1590,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
         0 0 0 0.2rem rgba(49, 160, 80, 0.15);
 }
 
-
-/* ==========================================================
-   PRODUCT VIEW / SEO ADMIN INFO
-========================================================== */
-
 .ml-admin-card a:not(.ml-admin-add-btn):not(.ml-action-btn) {
     color: #31a050;
 }
@@ -1740,11 +1597,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
 .ml-admin-card a:not(.ml-admin-add-btn):not(.ml-action-btn):hover {
     color: #23783d;
 }
-
-
-/* ==========================================================
-   RESPONSIVE - TABLET
-========================================================== */
 
 @media (max-width: 991.98px) {
 
@@ -1765,11 +1617,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     }
 
 }
-
-
-/* ==========================================================
-   RESPONSIVE - MOBILE
-========================================================== */
 
 @media (max-width: 767.98px) {
 
@@ -1796,11 +1643,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     }
 
 }
-
-
-/* ==========================================================
-   SMALL MOBILE
-========================================================== */
 
 @media (max-width: 575.98px) {
 
@@ -1836,11 +1678,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
 
 }
 
-
-/* ==========================================================
-   VERY SMALL MOBILE
-========================================================== */
-
 @media (max-width: 380px) {
 
     .ml-gallery-manager-item {
@@ -1856,10 +1693,6 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     }
 
 }
-
-/* ==========================================================
-   VARIANT IMAGE FILE INPUT
-========================================================== */
 
 .ml-variant-card input[type="file"].ml-admin-input {
     min-height: 56px;
