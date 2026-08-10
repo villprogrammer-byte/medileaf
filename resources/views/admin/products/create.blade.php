@@ -448,7 +448,8 @@
                         </label>
 
                         <textarea id="description" name="description" class="ml-admin-textarea ml-admin-long-textarea"
-                            rows="8">{{ old('description') }}</textarea>
+                            rows="8">{{ old('description', $product->description ?? '') }}</textarea>
+
                     </div>
 
                 </div>
