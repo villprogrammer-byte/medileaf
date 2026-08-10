@@ -1856,3 +1856,35 @@ CUSTOM COLOUR=========================================*/ .ml-custom-colour-box {
     }
 
 }
+
+/* ==========================================================
+   VARIANT IMAGE FILE INPUT
+========================================================== */
+
+.ml-variant-card input[type="file"].ml-admin-input {
+    min-height: 56px;
+    padding: 7px 10px;
+    border: 1px solid #dce8de;
+    border-radius: 16px;
+    background: #ffffff;
+    color: #173d24;
+    font-size: 14px;
+}
+
+.ml-variant-card input[type="file"].ml-admin-input::file-selector-button {
+    height: 40px;
+    margin: 0 14px 0 0;
+    padding: 0 16px;
+    border: 0;
+    border-right: 1px solid #dce8de;
+    background: #f5faf5;
+    color: #173d24;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.ml-variant-card input[type="file"].ml-admin-input:hover::file-selector-button {
+    background: #eaf6eb;
+    color: #31a050;
+}
