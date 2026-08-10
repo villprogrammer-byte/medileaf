@@ -1,261 +1,686 @@
 document.addEventListener("DOMContentLoaded", function () {
     "use strict";
 
-    initialiseEditor();
-    initialiseProductVariants();
+    const mainImage = document.getElementById("mlProductMainImg");
+    const galleryCaption = document.getElementById("mlGalleryCaption");
 
-    function initialiseEditor() {
-        const descriptionField = document.getElementById("description");
+    const galleryThumbs = Array.from(
+        document.querySelectorAll(".ml-product-angle-thumb")
+    );
 
-        if (!descriptionField) {
+    const galleryPrev = document.getElementById("mlGalleryPrev");
+    const galleryNext = document.getElementById("mlGalleryNext");
+
+    const colourSelect = document.getElementById("mlProductColourSelect");
+    const colourTrigger = document.getElementById("mlProductColourTrigger");
+
+    const dropdownOptions = Array.from(
+        document.querySelectorAll(".ml-product-variant-option")
+    );
+
+    const colourCards = Array.from(
+        document.querySelectorAll(".ml-colour-card")
+    );
+
+    const selectedColourDot = document.getElementById("mlSelectedColourDot");
+    const variantName = document.getElementById("mlVariantName");
+    const variantSku = document.getElementById("mlVariantSku");
+    const variantStock = document.getElementById("mlVariantStock");
+    const variantPrice = document.getElementById("mlVariantPrice");
+
+    const selectedVariantId = document.getElementById("selectedVariantId");
+
+    const quantityInput = document.getElementById("productQty");
+    const addButton = document.getElementById("productAddToBag");
+    const minusButton = document.getElementById("qtyMinus");
+    const plusButton = document.getElementById("qtyPlus");
+
+    let currentGalleryIndex = 0;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | MAIN IMAGE SWITCH
+    |--------------------------------------------------------------------------
+    */
+
+    function switchMainImage(imageUrl, label, altText) {
+        if (!mainImage || !imageUrl) {
             return;
         }
 
-        if (typeof window.ClassicEditor === "undefined") {
-            console.error("CKEditor library did not load.");
-            return;
-        }
+        mainImage.classList.add("is-switching");
 
-        window.ClassicEditor
-            .create(descriptionField)
-            .catch(function (error) {
-                console.error("CKEditor error:", error);
-            });
+        window.setTimeout(function () {
+            mainImage.src = imageUrl;
+
+            mainImage.alt =
+                altText ||
+                label ||
+                "Product image";
+
+            if (galleryCaption) {
+                galleryCaption.textContent =
+                    label || "Product View";
+            }
+
+            mainImage.classList.remove("is-switching");
+        }, 120);
     }
 
-    function initialiseProductVariants() {
-        const variantList = document.getElementById("variantList");
-        const addVariantButton = document.getElementById("addVariantBtn");
-        const variantTemplate = document.getElementById("variantTemplate");
 
-        if (!variantList || !addVariantButton || !variantTemplate) {
+    /*
+    |--------------------------------------------------------------------------
+    | SHOW GALLERY IMAGE
+    |--------------------------------------------------------------------------
+    */
+
+    function showGalleryImage(index) {
+        if (!galleryThumbs.length) {
             return;
         }
 
-        const variantCount = document.getElementById("variantCount");
-        const variantTotalStock = document.getElementById("variantTotalStock");
-        const stockQuantity = document.getElementById("stockQuantity");
-        const lowStockAlert = document.getElementById("lowStockAlert");
-        const stockStatus = document.getElementById("stockStatus");
-        const stockStatusDisplay = document.getElementById("stockStatusDisplay");
+        currentGalleryIndex =
+            (index + galleryThumbs.length) %
+            galleryThumbs.length;
 
-        function getRows() {
-            return Array.from(
-                variantList.querySelectorAll("[data-variant-row]")
+        const selectedThumb =
+            galleryThumbs[currentGalleryIndex];
+
+        galleryThumbs.forEach(function (thumb, thumbIndex) {
+            thumb.classList.toggle(
+                "active",
+                thumbIndex === currentGalleryIndex
             );
-        }
-
-        function updateVariantNames(row, index) {
-            const variantNumber = row.querySelector(".ml-variant-number");
-
-            if (variantNumber) {
-                variantNumber.textContent = String(index + 1);
-            }
-
-            row.querySelectorAll("[data-field]").forEach(function (field) {
-                const fieldName = field.dataset.field;
-
-                if (fieldName) {
-                    field.name = `variants[${index}][${fieldName}]`;
-                }
-            });
-
-            row.querySelectorAll(
-                'input[name^="variants["], select[name^="variants["]'
-            ).forEach(function (field) {
-                const match = field.name.match(/\]\[([^\]]+)\]$/);
-
-                if (match) {
-                    field.name = `variants[${index}][${match[1]}]`;
-                }
-            });
-        }
-
-        function updateSummary() {
-            const rows = getRows();
-            let totalStock = 0;
-
-            rows.forEach(function (row, index) {
-                updateVariantNames(row, index);
-
-                const quantityInput = row.querySelector(
-                    ".ml-variant-quantity"
-                );
-
-                totalStock += Math.max(
-                    0,
-                    Number(quantityInput?.value || 0)
-                );
-            });
-
-            if (variantCount) {
-                variantCount.textContent = String(rows.length);
-            }
-
-            if (variantTotalStock) {
-                variantTotalStock.textContent = String(totalStock);
-            }
-
-            if (stockQuantity) {
-                stockQuantity.value = String(totalStock);
-            }
-
-            const alertLevel = Math.max(
-                0,
-                Number(lowStockAlert?.value || 0)
-            );
-
-            let statusValue = "in_stock";
-            let statusLabel = "In Stock";
-
-            if (totalStock <= 0) {
-                statusValue = "out_of_stock";
-                statusLabel = "Out of Stock";
-            } else if (totalStock <= alertLevel) {
-                statusValue = "low_stock";
-                statusLabel = "Low Stock";
-            }
-
-            if (stockStatus) {
-                stockStatus.value = statusValue;
-            }
-
-            if (stockStatusDisplay) {
-                stockStatusDisplay.textContent = statusLabel;
-                stockStatusDisplay.className =
-                    `ml-auto-stock-status ${statusValue}`;
-            }
-
-            rows.forEach(function (row) {
-                const removeButton = row.querySelector(
-                    "[data-remove-variant]"
-                );
-
-                if (removeButton) {
-                    removeButton.disabled = rows.length <= 1;
-                }
-            });
-        }
-
-        function bindColourInputs(row) {
-            const picker = row.querySelector("[data-colour-picker]");
-            const codeInput = row.querySelector("[data-colour-code]");
-
-            if (!picker || !codeInput) {
-                return;
-            }
-
-            picker.addEventListener("input", function () {
-                codeInput.value = picker.value.toUpperCase();
-            });
-
-            codeInput.addEventListener("input", function () {
-                const value = codeInput.value.trim();
-
-                if (/^#[0-9A-Fa-f]{6}$/.test(value)) {
-                    picker.value = value;
-                }
-            });
-        }
-
-        function bindImagePreview(row) {
-            const imageInput = row.querySelector("[data-variant-image]");
-            const preview = row.querySelector("[data-variant-preview]");
-
-            if (!imageInput || !preview) {
-                return;
-            }
-
-            imageInput.addEventListener("change", function () {
-                const file = imageInput.files?.[0];
-
-                preview.innerHTML = "";
-
-                if (!file) {
-                    return;
-                }
-
-                if (!file.type.startsWith("image/")) {
-                    imageInput.value = "";
-                    alert("Please select a valid image file.");
-                    return;
-                }
-
-                const reader = new FileReader();
-
-                reader.addEventListener("load", function (event) {
-                    const imageUrl = event.target?.result;
-
-                    if (typeof imageUrl !== "string") {
-                        return;
-                    }
-
-                    const image = document.createElement("img");
-                    image.src = imageUrl;
-                    image.alt = "Variant image preview";
-
-                    preview.appendChild(image);
-                });
-
-                reader.readAsDataURL(file);
-            });
-        }
-
-        function bindRow(row) {
-            if (row.dataset.bound === "true") {
-                return;
-            }
-
-            row.dataset.bound = "true";
-
-            const removeButton = row.querySelector(
-                "[data-remove-variant]"
-            );
-
-            if (removeButton) {
-                removeButton.addEventListener("click", function () {
-                    if (getRows().length <= 1) {
-                        return;
-                    }
-
-                    row.remove();
-                    updateSummary();
-                });
-            }
-
-            const quantityInput = row.querySelector(
-                ".ml-variant-quantity"
-            );
-
-            if (quantityInput) {
-                quantityInput.addEventListener("input", updateSummary);
-            }
-
-            bindColourInputs(row);
-            bindImagePreview(row);
-        }
-
-        addVariantButton.addEventListener("click", function () {
-            const fragment = variantTemplate.content.cloneNode(true);
-            const newRow = fragment.querySelector("[data-variant-row]");
-
-            if (!newRow) {
-                return;
-            }
-
-            variantList.appendChild(fragment);
-            bindRow(newRow);
-            updateSummary();
-
-            newRow
-                .querySelector('[data-field="colour_name"]')
-                ?.focus();
         });
 
-        getRows().forEach(bindRow);
+        switchMainImage(
+            selectedThumb.dataset.galleryImage,
+            selectedThumb.dataset.galleryLabel,
+            selectedThumb.dataset.galleryAlt
+        );
 
-        lowStockAlert?.addEventListener("input", updateSummary);
-
-        updateSummary();
+        selectedThumb.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "nearest",
+        });
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | GALLERY EVENTS
+    |--------------------------------------------------------------------------
+    */
+
+    galleryThumbs.forEach(function (thumb, index) {
+        thumb.addEventListener("click", function () {
+            showGalleryImage(index);
+        });
+    });
+
+
+    galleryPrev?.addEventListener("click", function () {
+        showGalleryImage(currentGalleryIndex - 1);
+    });
+
+
+    galleryNext?.addEventListener("click", function () {
+        showGalleryImage(currentGalleryIndex + 1);
+    });
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | COLOUR DROPDOWN
+    |--------------------------------------------------------------------------
+    */
+
+    function closeColourDropdown() {
+        if (!colourSelect || !colourTrigger) {
+            return;
+        }
+
+        colourSelect.classList.remove("open");
+
+        colourTrigger.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+    }
+
+
+    colourTrigger?.addEventListener("click", function () {
+        if (!colourSelect) {
+            return;
+        }
+
+        const isOpen =
+            colourSelect.classList.toggle("open");
+
+        colourTrigger.setAttribute(
+            "aria-expanded",
+            isOpen ? "true" : "false"
+        );
+    });
+
+
+    document.addEventListener("click", function (event) {
+        if (
+            colourSelect &&
+            !colourSelect.contains(event.target)
+        ) {
+            closeColourDropdown();
+        }
+    });
+
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            closeColourDropdown();
+        }
+    });
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SYNC ACTIVE VARIANT
+    |--------------------------------------------------------------------------
+    */
+
+    function syncActiveVariant(variantId) {
+        dropdownOptions.forEach(function (option) {
+            option.classList.toggle(
+                "active",
+                option.dataset.variantId === variantId
+            );
+        });
+
+        colourCards.forEach(function (card) {
+            card.classList.toggle(
+                "active",
+                card.dataset.variantId === variantId
+            );
+        });
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SELECT VARIANT
+    |--------------------------------------------------------------------------
+    */
+
+    function selectVariant(element) {
+        const stock = Math.max(
+            0,
+            Number(element.dataset.stock || 0)
+        );
+
+        const price =
+            Number(element.dataset.price || 0);
+
+        const name =
+            element.dataset.name ||
+            "Selected Colour";
+
+        const colour =
+            element.dataset.color ||
+            "#31A050";
+
+        const sku =
+            element.dataset.sku ||
+            "Not available";
+
+        const image =
+            element.dataset.image || "";
+
+        const imageAlt =
+            element.dataset.imageAlt ||
+            `${name} product image`;
+
+        const id =
+            element.dataset.variantId || "";
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Active State
+        |--------------------------------------------------------------------------
+        */
+
+        syncActiveVariant(id);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Selected Colour
+        |--------------------------------------------------------------------------
+        */
+
+        if (variantName) {
+            variantName.textContent = name;
+        }
+
+        if (selectedColourDot) {
+            selectedColourDot.style.background =
+                colour;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | SKU
+        |--------------------------------------------------------------------------
+        */
+
+        if (variantSku) {
+            variantSku.textContent = sku;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Stock
+        |--------------------------------------------------------------------------
+        */
+
+        if (variantStock) {
+            variantStock.classList.remove(
+                "in-stock",
+                "low-stock",
+                "out-stock"
+            );
+
+            if (stock <= 0) {
+                variantStock.classList.add(
+                    "out-stock"
+                );
+
+                variantStock.innerHTML = `
+                    <i class="bi bi-x-circle-fill"></i>
+                    Out of Stock
+                `;
+            } else if (stock <= 5) {
+                variantStock.classList.add(
+                    "low-stock"
+                );
+
+                variantStock.innerHTML = `
+                    <i class="bi bi-check-circle-fill"></i>
+                    In Stock
+
+                    <small class="ml-low-stock-message">
+                        Hurry, only ${stock} left
+                    </small>
+                `;
+            } else {
+                variantStock.classList.add(
+                    "in-stock"
+                );
+
+                variantStock.innerHTML = `
+                    <i class="bi bi-check-circle-fill"></i>
+                    In Stock
+                `;
+            }
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Price
+        |--------------------------------------------------------------------------
+        */
+
+        if (variantPrice) {
+            variantPrice.textContent =
+                `A$${price.toFixed(2)}`;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Selected Variant ID
+        |--------------------------------------------------------------------------
+        */
+
+        if (selectedVariantId) {
+            selectedVariantId.value = id;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Quantity
+        |--------------------------------------------------------------------------
+        */
+
+        if (quantityInput) {
+            quantityInput.value = "1";
+
+            quantityInput.max =
+                String(
+                    Math.max(stock, 1)
+                );
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Add Button
+        |--------------------------------------------------------------------------
+        */
+
+        if (addButton) {
+            addButton.disabled =
+                stock <= 0;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Variant Main Image
+        |--------------------------------------------------------------------------
+        */
+
+        galleryThumbs.forEach(function (thumb) {
+            thumb.classList.remove("active");
+        });
+
+        if (image) {
+            switchMainImage(
+                image,
+                `${name} Colour`,
+                imageAlt
+            );
+        }
+
+
+        closeColourDropdown();
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | VARIANT EVENTS
+    |--------------------------------------------------------------------------
+    */
+
+    dropdownOptions.forEach(function (option) {
+        option.addEventListener("click", function () {
+            selectVariant(option);
+        });
+    });
+
+
+    colourCards.forEach(function (card) {
+        card.addEventListener("click", function () {
+            selectVariant(card);
+        });
+    });
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | QUANTITY CLAMP
+    |--------------------------------------------------------------------------
+    */
+
+    function clampQuantity() {
+        if (!quantityInput) {
+            return;
+        }
+
+        const minimum = Math.max(
+            1,
+            Number(quantityInput.min || 1)
+        );
+
+        const maximum = Math.max(
+            minimum,
+            Number(
+                quantityInput.max ||
+                minimum
+            )
+        );
+
+        const value = Math.min(
+            maximum,
+            Math.max(
+                minimum,
+                Number(
+                    quantityInput.value ||
+                    minimum
+                )
+            )
+        );
+
+        quantityInput.value =
+            String(value);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | QUANTITY EVENTS
+    |--------------------------------------------------------------------------
+    */
+
+    minusButton?.addEventListener("click", function () {
+        if (!quantityInput) {
+            return;
+        }
+
+        quantityInput.value = String(
+            Number(
+                quantityInput.value || 1
+            ) - 1
+        );
+
+        clampQuantity();
+    });
+
+
+    plusButton?.addEventListener("click", function () {
+        if (!quantityInput) {
+            return;
+        }
+
+        quantityInput.value = String(
+            Number(
+                quantityInput.value || 1
+            ) + 1
+        );
+
+        clampQuantity();
+    });
+
+
+    quantityInput?.addEventListener(
+        "input",
+        clampQuantity
+    );
+
+    quantityInput?.addEventListener(
+        "blur",
+        clampQuantity
+    );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ADD SELECTED VARIANT TO CART
+    |--------------------------------------------------------------------------
+    */
+
+    addButton?.addEventListener("click", function () {
+        if (
+            !window.MedileafCart ||
+            typeof window.MedileafCart.addToCart !==
+            "function"
+        ) {
+            console.error(
+                "MediLeaf cart is not available."
+            );
+
+            alert(
+                "Cart could not be loaded. Please refresh the page and try again."
+            );
+
+            return;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Find Selected Variant
+        |--------------------------------------------------------------------------
+        */
+
+        const selectedOption =
+            dropdownOptions.find(function (option) {
+                return option.classList.contains(
+                    "active"
+                );
+            }) ||
+            colourCards.find(function (card) {
+                return card.classList.contains(
+                    "active"
+                );
+            });
+
+
+        if (!selectedOption) {
+            alert(
+                "Please select a colour."
+            );
+
+            return;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Stock
+        |--------------------------------------------------------------------------
+        */
+
+        const selectedStock = Math.max(
+            0,
+            Number(
+                selectedOption.dataset.stock ||
+                0
+            )
+        );
+
+
+        const selectedQuantity = Math.max(
+            1,
+            Number(
+                quantityInput?.value ||
+                1
+            )
+        );
+
+
+        if (selectedStock <= 0) {
+            alert(
+                "This colour is currently out of stock."
+            );
+
+            return;
+        }
+
+
+        if (
+            selectedQuantity >
+            selectedStock
+        ) {
+            alert(
+                `Only ${selectedStock} item(s) are currently available.`
+            );
+
+            return;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Price
+        |--------------------------------------------------------------------------
+        */
+
+        const selectedPrice = Number(
+            selectedOption.dataset.price ||
+            0
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Image
+        |--------------------------------------------------------------------------
+        */
+
+        const selectedImage =
+            selectedOption.dataset.image ||
+            mainImage?.src ||
+            "";
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Product Name
+        |--------------------------------------------------------------------------
+        */
+
+        const productName =
+            window.mlProductConfig?.name ||
+            document
+                .querySelector(
+                    ".ml-product-info h1"
+                )
+                ?.textContent
+                ?.trim() ||
+            "";
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Add To Cart
+        |--------------------------------------------------------------------------
+        */
+
+        window.MedileafCart.addToCart({
+            id: Number(
+                window.mlProductConfig?.id ||
+                0
+            ),
+
+            variantId: Number(
+                selectedOption.dataset.variantId ||
+                0
+            ),
+
+            name: productName,
+
+            colour:
+                selectedOption.dataset.name ||
+                "Default",
+
+            sku:
+                selectedOption.dataset.sku ||
+                "",
+
+            price: selectedPrice,
+
+            image: selectedImage,
+
+            qty: selectedQuantity,
+
+            stock: selectedStock,
+        });
+    });
 });

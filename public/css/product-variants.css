@@ -1,9 +1,16 @@
-/* MediLeaf Product Variants */
+/* ==========================================================
+   VARIANT LIST
+========================================================== */
 
 .ml-variant-list {
     display: grid;
     gap: 18px;
 }
+
+
+/* ==========================================================
+   VARIANT CARD
+========================================================== */
 
 .ml-variant-card {
     padding: 20px;
@@ -11,6 +18,11 @@
     border-radius: 18px;
     background: #fbfdfb;
 }
+
+
+/* ==========================================================
+   VARIANT CARD HEADER
+========================================================== */
 
 .ml-variant-card-head {
     display: flex;
@@ -20,7 +32,7 @@
     margin-bottom: 18px;
 }
 
-.ml-variant-card-head > div {
+.ml-variant-card-head>div {
     min-width: 0;
 }
 
@@ -32,47 +44,80 @@
 .ml-variant-card-head strong {
     color: #173d24;
     font-size: 15px;
+    font-weight: 700;
 }
 
 .ml-variant-card-head small {
     margin-top: 2px;
     color: #6b756f;
     font-size: 12px;
+    line-height: 1.5;
 }
+
+
+/* ==========================================================
+   VARIANT NUMBER
+========================================================== */
 
 .ml-variant-number {
     width: 38px;
     height: 38px;
+    flex-shrink: 0;
     border-radius: 12px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
-    background: linear-gradient(135deg, #31a050, #7ed13f);
-    color: #fff;
+
+    background: linear-gradient(135deg,
+            #31a050,
+            #7ed13f);
+    color: #ffffff;
     font-weight: 800;
 }
+
+
+/* ==========================================================
+   REMOVE VARIANT BUTTON
+========================================================== */
 
 .ml-variant-remove-btn {
     width: 40px;
     height: 40px;
+    padding: 0;
     border: 0;
     border-radius: 12px;
-    background: #fff0f0;
-    color: #dc3545;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    background: #fff0f0;
+    color: #dc3545;
+    cursor: pointer;
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.ml-variant-remove-btn:hover:not(:disabled) {
+    background: #dc3545;
+    color: #ffffff;
+    transform: translateY(-2px);
 }
 
 .ml-variant-remove-btn:disabled {
-    opacity: .4;
+    opacity: 0.4;
     cursor: not-allowed;
 }
 
+
+/* ==========================================================
+   COLOUR CODE FIELD
+========================================================== */
+
 .ml-colour-code-field {
     display: grid;
-    grid-template-columns: 56px 1fr;
+    grid-template-columns: 56px minmax(0, 1fr);
+
     gap: 10px;
 }
 
@@ -82,14 +127,21 @@
     padding: 5px;
     border: 1px solid #dce8de;
     border-radius: 14px;
-    background: #fff;
+    background: #ffffff;
+    cursor: pointer;
 }
+
+
+/* ==========================================================
+   VARIANT SUMMARY
+========================================================== */
 
 .ml-variant-summary {
     margin-top: 18px;
     padding: 16px 18px;
     border-radius: 16px;
     display: flex;
+    align-items: center;
     justify-content: space-between;
     gap: 20px;
     background: #eef8ef;
@@ -98,6 +150,7 @@
 .ml-variant-summary div {
     display: flex;
     flex-direction: column;
+
     gap: 3px;
 }
 
@@ -109,7 +162,13 @@
 .ml-variant-summary strong {
     color: #173d24;
     font-size: 17px;
+    font-weight: 800;
 }
+
+
+/* ==========================================================
+   AUTO STOCK STATUS
+========================================================== */
 
 .ml-auto-stock-status {
     min-height: 56px;
@@ -135,20 +194,29 @@
     color: #dc3545;
 }
 
+
+/* ==========================================================
+   VARIANT IMAGE
+========================================================== */
+
 .ml-variant-image-preview,
 .ml-variant-current-image {
     margin-top: 14px;
+}
+
+.ml-variant-image-preview:empty {
+    display: none;
 }
 
 .ml-variant-image-preview img,
 .ml-variant-current-image img {
     width: 120px;
     height: 120px;
-    object-fit: contain;
+    padding: 8px;
     border: 1px solid #dce8de;
     border-radius: 14px;
-    background: #fff;
-    padding: 8px;
+    background: #ffffff;
+    object-fit: contain;
 }
 
 .ml-variant-current-image {
@@ -163,6 +231,11 @@
     font-weight: 600;
 }
 
+
+/* ==========================================================
+   ADD COLOUR BUTTON
+========================================================== */
+
 .ml-add-colour-btn {
     min-height: 46px;
     padding: 0 18px;
@@ -172,27 +245,167 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background: linear-gradient(135deg, #31a050, #7ed13f);
-    color: #fff;
+    background: linear-gradient(135deg,
+            #31a050,
+            #7ed13f);
+    color: #ffffff;
     font-weight: 700;
+    cursor: pointer;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
+.ml-add-colour-btn:hover {
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow:
+        0 10px 22px rgba(49, 160, 80, 0.22);
+}
+
+
+/* ==========================================================
+   FORM CONTROLS INSIDE VARIANT CARD
+========================================================== */
+
+.ml-variant-card .form-control {
+    min-height: 52px;
+    border: 1px solid #dce8de;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: none;
+}
+
+.ml-variant-card .form-control:focus {
+    border-color: #31a050;
+    box-shadow:
+        0 0 0 4px rgba(49, 160, 80, 0.08);
+}
+
+
+/* ==========================================================
+   IMAGE ALT FIELD HELP TEXT
+========================================================== */
+
+.ml-variant-card .text-muted {
+    line-height: 1.5;
+}
+
+
+/* ==========================================================
+   TABLET
+========================================================== */
+
+@media (max-width: 991.98px) {
+
+    .ml-variant-card {
+        padding: 18px;
+    }
+
+}
+
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
 @media (max-width: 767.98px) {
+
     .ml-variant-card {
         padding: 16px;
     }
 
+    .ml-variant-card-head {
+        align-items: flex-start;
+    }
+
     .ml-variant-summary {
         flex-direction: column;
+        align-items: stretch;
+
         gap: 10px;
     }
 
     .ml-colour-code-field {
-        grid-template-columns: 50px 1fr;
+        grid-template-columns: 50px minmax(0, 1fr);
     }
 
     .ml-colour-picker {
         width: 50px;
         height: 52px;
     }
+
+    .ml-add-colour-btn {
+        width: 100%;
+    }
+
+}
+
+
+/* ==========================================================
+   SMALL MOBILE
+========================================================== */
+
+@media (max-width: 575.98px) {
+
+    .ml-variant-card {
+        padding: 14px;
+
+        border-radius: 15px;
+    }
+
+    .ml-variant-card-head {
+        gap: 12px;
+    }
+
+    .ml-variant-number {
+        width: 34px;
+        height: 34px;
+
+        border-radius: 10px;
+
+        font-size: 13px;
+    }
+
+    .ml-variant-remove-btn {
+        width: 36px;
+        height: 36px;
+
+        border-radius: 10px;
+    }
+
+    .ml-variant-image-preview img,
+    .ml-variant-current-image img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .ml-variant-current-image {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+}
+
+
+/* ==========================================================
+   VERY SMALL MOBILE
+========================================================== */
+
+@media (max-width: 380px) {
+
+    .ml-variant-card {
+        padding: 12px;
+    }
+
+    .ml-colour-code-field {
+        grid-template-columns: 46px minmax(0, 1fr);
+    }
+
+    .ml-colour-picker {
+        width: 46px;
+        height: 50px;
+    }
+
 }

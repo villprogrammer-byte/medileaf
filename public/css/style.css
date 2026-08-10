@@ -410,10 +410,10 @@ h6 {
     line-height: 1.6;
 }
 
-/* BUTTONS */
 .ml-glass-hero-buttons {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 16px;
     flex-wrap: wrap;
 }
@@ -429,45 +429,73 @@ h6 {
     text-decoration: none;
     font-size: 16px;
     font-weight: 600;
+    line-height: 1;
 
-    transition: .35s ease;
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease,
+        background 0.35s ease,
+        border-color 0.35s ease;
 }
+
+
+/* PRIMARY */
 
 .ml-glass-btn.primary {
     background: linear-gradient(135deg, #31a050, #7ed13f);
     color: #fff;
-    box-shadow:
-        0 20px 45px rgba(49, 160, 80, .35),
-        inset 0 1px 0 rgba(255, 255, 255, .15);
     border: none;
+    box-shadow:
+        0 20px 45px rgba(49, 160, 80, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
+
+/* SECONDARY */
+
 .ml-glass-btn.secondary {
-    background: rgba(255, 255, 255, .05);
+    background: rgba(255, 255, 255, 0.05);
     color: #fff;
-    border: 1px solid rgba(255, 255, 255, .32);
+    border: 1px solid rgba(255, 255, 255, 0.32);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
 }
 
+
+/* ICON */
+
 .ml-glass-btn i {
     width: 34px;
     height: 34px;
+    min-width: 34px;
     border-radius: 50%;
-
-    border: 1px solid rgba(255, 255, 255, .55);
-
-    display: flex;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-
     font-size: 18px;
+    line-height: 1;
 }
+
+
+/* HOVER */
 
 .ml-glass-btn:hover {
     color: #fff;
-    transform: translateY(-5px);
+    transform: translateY(-4px);
 }
+
+.ml-glass-btn.primary:hover {
+    box-shadow:
+        0 24px 50px rgba(49, 160, 80, 0.42),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.ml-glass-btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.10);
+    border-color: rgba(255, 255, 255, 0.50);
+}
+
 
 /* BACKGROUND SLOW MOTION */
 @keyframes mlHeroZoom {

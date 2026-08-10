@@ -14,10 +14,12 @@ class ProductVariant extends Model
         'sku',
         'quantity',
         'image',
+        'image_alt',
         'price_adjustment',
         'status',
         'sort_order',
     ];
+
 
     protected $casts = [
         'quantity' => 'integer',
@@ -25,10 +27,29 @@ class ProductVariant extends Model
         'sort_order' => 'integer',
     ];
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Product
+    |--------------------------------------------------------------------------
+    */
+
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Final Variant Price
+    |--------------------------------------------------------------------------
+    |
+    | Uses the product sale price when available.
+    | Otherwise regular price is used.
+    | Variant price adjustment is then added.
+    |
+    */
 
     public function getFinalPriceAttribute(): float
     {
@@ -38,6 +59,41 @@ class ProductVariant extends Model
         return (float) $basePrice
             + (float) $this->price_adjustment;
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Variant Image ALT
+    |--------------------------------------------------------------------------
+    |
+    | Admin ALT text is used when supplied.
+    | Otherwise a meaningful fallback is generated automatically.
+    |
+    */
+
+    public function getImageAltValueAttribute(): string
+    {
+        if (filled($this->image_alt)) {
+            return $this->image_alt;
+        }
+
+        $productName = $this->product?->name;
+
+        if ($productName) {
+            return trim(
+                $productName . ' - ' . $this->colour_name
+            );
+        }
+
+        return $this->colour_name ?: 'Product variant';
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Stock Availability
+    |--------------------------------------------------------------------------
+    */
 
     public function isInStock(): bool
     {

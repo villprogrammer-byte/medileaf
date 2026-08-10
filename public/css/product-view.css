@@ -1,6 +1,6 @@
-/* =========================================
-   MEDILEAF RESPONSIVE PRODUCT VIEW
-========================================= */
+/* ==========================================================
+   MEDILEAF PRODUCT VIEW
+========================================================== */
 
 :root {
     --ml-pv-green: #31a050;
@@ -12,16 +12,24 @@
     --ml-pv-white: #ffffff;
 }
 
+/* ==========================================================
+   PRODUCT PAGE
+========================================================== */
+
 .ml-product-view {
     padding: 40px 0 84px;
     background: var(--ml-pv-bg);
 }
 
+/* ==========================================================
+   BREADCRUMB
+========================================================== */
+
 .ml-product-breadcrumb {
     display: flex;
     align-items: center;
-    gap: 10px;
     flex-wrap: wrap;
+    gap: 10px;
     margin-bottom: 30px;
     font-size: 14px;
 }
@@ -30,6 +38,11 @@
     color: var(--ml-pv-green);
     font-weight: 700;
     text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.ml-product-breadcrumb a:hover {
+    color: var(--ml-pv-dark);
 }
 
 .ml-product-breadcrumb span {
@@ -40,6 +53,10 @@
     color: var(--ml-pv-dark);
 }
 
+/* ==========================================================
+   PRODUCT LAYOUT
+========================================================== */
+
 .ml-product-layout {
     display: grid;
     grid-template-columns: minmax(0, 1.18fr) minmax(380px, 0.82fr);
@@ -47,7 +64,9 @@
     align-items: stretch;
 }
 
-/* Gallery */
+/* ==========================================================
+   PRODUCT GALLERY
+========================================================== */
 
 .ml-product-gallery-shell {
     display: grid;
@@ -56,12 +75,17 @@
     height: 100%;
 }
 
+/* ==========================================================
+   GALLERY THUMBNAILS
+========================================================== */
+
 .ml-product-angle-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
     max-height: 640px;
     overflow-y: auto;
+    overflow-x: hidden;
     scrollbar-width: thin;
 }
 
@@ -72,15 +96,16 @@
     border-radius: 18px;
     background: var(--ml-pv-white);
     cursor: pointer;
-    transition: 0.25s ease;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .ml-product-angle-thumb img {
+    display: block;
     width: 100%;
     height: 74px;
-    object-fit: contain;
     border-radius: 12px;
     background: #f9fbf8;
+    object-fit: contain;
 }
 
 .ml-product-angle-thumb span {
@@ -103,17 +128,19 @@
     box-shadow: 0 10px 26px rgba(49, 160, 80, 0.13);
 }
 
+/* ==========================================================
+   MAIN PRODUCT IMAGE STAGE
+========================================================== */
+
 .ml-product-main-stage {
     position: relative;
-    height: 100%;
     min-height: 640px;
+    height: 100%;
     padding: 42px;
-    border: 1px solid rgba(49, 160, 80, 0.1);
+    border: 1px solid rgba(49, 160, 80, 0.10);
     border-radius: 32px;
     background:
-        radial-gradient(circle at 50% 30%,
-            rgba(166, 206, 57, 0.18),
-            transparent 45%),
+        radial-gradient(circle at 50% 30%, rgba(166, 206, 57, 0.18), transparent 45%),
         linear-gradient(145deg, #f1f8ee, #ffffff);
     box-shadow: 0 18px 45px rgba(31, 45, 34, 0.08);
     overflow: hidden;
@@ -131,6 +158,7 @@
 }
 
 .ml-product-main-image img {
+    display: block;
     width: 100%;
     max-height: 520px;
     object-fit: contain;
@@ -142,6 +170,10 @@
     transform: scale(0.985);
 }
 
+/* ==========================================================
+   FEATURED BADGE
+========================================================== */
+
 .ml-product-badge {
     position: absolute;
     top: 22px;
@@ -150,10 +182,14 @@
     padding: 9px 16px;
     border-radius: 999px;
     background: var(--ml-pv-green);
-    color: #fff;
+    color: #ffffff;
     font-size: 12px;
     font-weight: 800;
 }
+
+/* ==========================================================
+   GALLERY NAVIGATION
+========================================================== */
 
 .ml-product-image-nav {
     position: absolute;
@@ -161,13 +197,20 @@
     z-index: 3;
     width: 44px;
     height: 44px;
+    padding: 0;
     border: 1px solid rgba(49, 160, 80, 0.12);
     border-radius: 50%;
     background: linear-gradient(135deg, #31a050, #7ed13f);
     color: var(--ml-pv-white);
     transform: translateY(-50%);
     cursor: pointer;
-    box-shadow: 0 10px 24px rgba(31, 45, 34, 0.1);
+    box-shadow: 0 10px 24px rgba(31, 45, 34, 0.10);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ml-product-image-nav:hover {
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 14px 28px rgba(31, 45, 34, 0.16);
 }
 
 .ml-product-image-nav.prev {
@@ -178,24 +221,38 @@
     right: 18px;
 }
 
+/* ==========================================================
+   IMAGE CAPTION
+========================================================== */
+
 .ml-product-image-caption {
     position: absolute;
     left: 24px;
     bottom: 22px;
+    max-width: calc(100% - 48px);
     padding: 8px 13px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.92);
     color: var(--ml-pv-dark);
     font-size: 12px;
     font-weight: 800;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
-/* Product information */
+/* ==========================================================
+   PRODUCT INFORMATION
+========================================================== */
 
 .ml-product-info {
     position: sticky;
     top: 24px;
+    align-self: start;
     padding: 38px;
+    border: 1px solid rgba(49, 160, 80, 0.08);
     border-radius: 30px;
     background: var(--ml-pv-white);
     box-shadow: 0 18px 45px rgba(31, 45, 34, 0.08);
@@ -218,6 +275,10 @@
     font-weight: 700;
     line-height: 1.08;
 }
+
+/* ==========================================================
+   STOCK
+========================================================== */
 
 .ml-product-stock {
     margin-bottom: 22px;
@@ -249,17 +310,21 @@
     color: #d92d20;
 }
 
+.ml-stock-badge i {
+    font-size: 15px;
+}
+
 .ml-low-stock-message {
     padding-left: 9px;
-    border-left: 1px solid rgba(213, 127, 0, 0.3);
+    border-left: 1px solid rgba(213, 127, 0, 0.30);
     color: #d97706;
     font-size: 13px;
     font-weight: 700;
 }
 
-.ml-stock-badge i {
-    font-size: 15px;
-}
+/* ==========================================================
+   PRODUCT PRICE
+========================================================== */
 
 .ml-product-price {
     margin: 0 0 18px;
@@ -267,6 +332,14 @@
     font-size: 25px;
     font-weight: 500;
 }
+
+.ml-product-price strong {
+    font-weight: 800;
+}
+
+/* ==========================================================
+   SHORT DESCRIPTION
+========================================================== */
 
 .ml-product-short p {
     margin: 0;
@@ -288,6 +361,7 @@
 }
 
 .ml-see-full-desc:hover {
+    color: var(--ml-pv-dark);
     text-decoration: underline;
 }
 
@@ -295,7 +369,9 @@
     font-size: 16px;
 }
 
-/* Colour dropdown */
+/* ==========================================================
+   COLOUR CONTROL
+========================================================== */
 
 .ml-product-colour-control {
     margin: 24px 0;
@@ -310,6 +386,10 @@
     font-weight: 800;
 }
 
+/* ==========================================================
+   CUSTOM COLOUR SELECT
+========================================================== */
+
 .ml-custom-select {
     position: relative;
 }
@@ -320,10 +400,11 @@
     padding: 0 18px;
     border: 1px solid var(--ml-pv-green);
     border-radius: 17px;
-    background: #fff;
+    background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
     color: var(--ml-pv-dark);
     font-size: 15px;
     font-weight: 700;
@@ -339,6 +420,7 @@
 }
 
 .ml-selected-colour-wrap {
+    min-width: 0;
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -348,10 +430,14 @@
 .color-circle {
     width: 16px;
     height: 16px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
     flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    border-radius: 50%;
 }
+
+/* ==========================================================
+   CUSTOM SELECT OPTIONS
+========================================================== */
 
 .ml-custom-options {
     position: absolute;
@@ -360,10 +446,12 @@
     right: 0;
     z-index: 40;
     display: none;
+    max-height: 310px;
     padding: 8px;
     border: 1px solid var(--ml-pv-border);
     border-radius: 18px;
-    background: #fff;
+    background: #ffffff;
+    overflow-y: auto;
     box-shadow: 0 18px 42px rgba(31, 45, 34, 0.16);
 }
 
@@ -379,7 +467,7 @@
     border-radius: 13px;
     background: transparent;
     display: grid;
-    grid-template-columns: 18px 1fr 38px;
+    grid-template-columns: 18px minmax(0, 1fr) 38px;
     gap: 10px;
     align-items: center;
     color: var(--ml-pv-dark);
@@ -402,7 +490,9 @@
     object-fit: contain;
 }
 
-/* Available colours cards */
+/* ==========================================================
+   AVAILABLE COLOURS
+========================================================== */
 
 .ml-available-colours {
     margin-top: 18px;
@@ -428,7 +518,7 @@
     padding: 10px 8px 9px;
     border: 1px solid #e5ebe5;
     border-radius: 16px;
-    background: #fff;
+    background: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -438,7 +528,7 @@
     font-weight: 700;
     cursor: pointer;
     box-shadow: 0 8px 22px rgba(31, 45, 34, 0.05);
-    transition: 0.22s ease;
+    transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
 }
 
 .ml-colour-card:hover {
@@ -468,7 +558,7 @@
     height: 20px;
     border-radius: 50%;
     background: var(--ml-pv-green);
-    color: #fff;
+    color: #ffffff;
     display: none;
     align-items: center;
     justify-content: center;
@@ -479,7 +569,9 @@
     display: flex;
 }
 
-/* Quantity and CTA */
+/* ==========================================================
+   QUANTITY + ADD TO BAG
+========================================================== */
 
 .ml-product-purchase-box {
     display: grid;
@@ -505,6 +597,10 @@
     cursor: pointer;
 }
 
+.ml-product-qty button:hover {
+    background: rgba(49, 160, 80, 0.06);
+}
+
 .ml-product-qty input {
     width: 100%;
     border: 0;
@@ -525,17 +621,15 @@
     height: 56px;
     border: 0;
     border-radius: 50px;
-    background: linear-gradient(135deg,
-            var(--ml-pv-green),
-            var(--ml-pv-lime));
-    color: #fff;
+    background: linear-gradient(135deg, var(--ml-pv-green), var(--ml-pv-lime));
+    color: #ffffff;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 9px;
     font-weight: 800;
     cursor: pointer;
-    transition: 0.22s ease;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
 }
 
 .ml-product-add-btn:hover:not(:disabled) {
@@ -548,25 +642,33 @@
     cursor: not-allowed;
 }
 
-/* Description */
+/* ==========================================================
+   PRODUCT DESCRIPTION
+========================================================== */
 
 .ml-product-details {
     padding: 74px 0;
-    background: #fff;
+    background: #ffffff;
 }
 
 .ml-product-description-box {
     padding: 46px;
     border: 1px solid rgba(49, 160, 80, 0.12);
     border-radius: 30px;
-    background: #fff;
+    background: #ffffff;
     box-shadow: 0 18px 46px rgba(23, 61, 36, 0.07);
 }
 
 .ml-product-description-box h2 {
+    margin-bottom: 24px;
     color: var(--ml-pv-dark);
     font-size: clamp(30px, 4vw, 44px);
     font-weight: 800;
+}
+
+.ml-product-description-box h3,
+.ml-product-description-box h4 {
+    color: var(--ml-pv-dark);
 }
 
 .ml-product-description-box p,
@@ -581,7 +683,37 @@
     height: auto;
 }
 
-/* Tablet */
+/* ==========================================================
+   LARGE TABLET
+========================================================== */
+
+@media (max-width: 1199.98px) {
+    .ml-product-layout {
+        grid-template-columns: minmax(0, 1fr) minmax(340px, 0.85fr);
+        gap: 26px;
+    }
+
+    .ml-product-main-stage {
+        min-height: 560px;
+        padding: 34px;
+    }
+
+    .ml-product-main-image {
+        min-height: 450px;
+    }
+
+    .ml-product-main-image img {
+        max-height: 450px;
+    }
+
+    .ml-product-info {
+        padding: 30px;
+    }
+}
+
+/* ==========================================================
+   TABLET
+========================================================== */
 
 @media (max-width: 991.98px) {
     .ml-product-layout {
@@ -590,32 +722,55 @@
 
     .ml-product-info {
         position: static;
+        padding: 30px;
     }
 
     .ml-product-gallery-shell {
         grid-template-columns: 92px minmax(0, 1fr);
     }
+
+    .ml-product-main-stage {
+        min-height: 540px;
+    }
+
+    .ml-product-main-image {
+        min-height: 430px;
+    }
+
+    .ml-product-main-image img {
+        max-height: 430px;
+    }
 }
 
-/* Mobile */
+/* ==========================================================
+   MOBILE
+========================================================== */
 
 @media (max-width: 767.98px) {
     .ml-product-view {
-        padding: 52px 0 64px;
+        padding: 40px 0 64px;
+    }
+
+    .ml-product-breadcrumb {
+        margin-bottom: 22px;
+        font-size: 13px;
     }
 
     .ml-product-gallery-shell {
         display: flex;
         flex-direction: column-reverse;
+        gap: 14px;
     }
 
     .ml-product-angle-list {
         width: 100%;
         max-height: none;
+        padding-bottom: 5px;
         flex-direction: row;
         overflow-x: auto;
         overflow-y: hidden;
         scroll-snap-type: x proximity;
+        -webkit-overflow-scrolling: touch;
     }
 
     .ml-product-angle-thumb {
@@ -650,8 +805,10 @@
     .ml-colour-card-list {
         display: flex;
         overflow-x: auto;
+        gap: 10px;
         padding-bottom: 6px;
         scroll-snap-type: x proximity;
+        -webkit-overflow-scrolling: touch;
     }
 
     .ml-colour-card {
@@ -664,12 +821,25 @@
         grid-template-columns: 1fr;
     }
 
+    .ml-product-details {
+        padding: 54px 0;
+    }
+
     .ml-product-description-box {
         padding: 30px 24px;
+        border-radius: 24px;
     }
 }
 
+/* ==========================================================
+   SMALL MOBILE
+========================================================== */
+
 @media (max-width: 480px) {
+    .ml-product-view {
+        padding: 30px 0 52px;
+    }
+
     .ml-product-main-stage {
         min-height: 360px;
         padding: 24px 18px;
@@ -696,8 +866,22 @@
         right: 10px;
     }
 
+    .ml-product-image-caption {
+        left: 16px;
+        bottom: 16px;
+        max-width: calc(100% - 32px);
+    }
+
+    .ml-product-badge {
+        top: 15px;
+        left: 15px;
+        padding: 7px 12px;
+        font-size: 11px;
+    }
+
     .ml-product-info {
         padding: 22px 18px;
+        border-radius: 22px;
     }
 
     .ml-product-info h1 {
@@ -713,5 +897,59 @@
         margin-left: 23px;
         padding-left: 0;
         border-left: 0;
+    }
+
+    .ml-custom-select-trigger {
+        height: 54px;
+        border-radius: 15px;
+    }
+
+    .ml-product-qty,
+    .ml-product-add-btn {
+        height: 54px;
+    }
+
+    .ml-product-description-box {
+        padding: 24px 18px;
+    }
+}
+
+/* ==========================================================
+   VERY SMALL MOBILE
+========================================================== */
+
+@media (max-width: 360px) {
+    .ml-product-main-stage {
+        min-height: 330px;
+        padding: 20px 14px;
+    }
+
+    .ml-product-main-image {
+        min-height: 260px;
+    }
+
+    .ml-product-main-image img {
+        max-height: 260px;
+    }
+
+    .ml-product-angle-thumb {
+        width: 78px;
+        min-width: 78px;
+    }
+
+    .ml-product-angle-thumb img {
+        height: 56px;
+    }
+
+    .ml-product-info {
+        padding: 20px 16px;
+    }
+
+    .ml-product-info h1 {
+        font-size: 26px;
+    }
+
+    .ml-product-short p {
+        font-size: 15px;
     }
 }

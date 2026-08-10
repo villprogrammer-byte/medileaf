@@ -66,6 +66,90 @@
 
 }
 
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 991.98px) {
+
+    .ml-glass-hero-buttons {
+        gap: 14px;
+    }
+
+    .ml-glass-btn {
+        min-height: 56px;
+        padding: 0 24px;
+        font-size: 15px;
+        gap: 14px;
+    }
+
+    .ml-glass-btn i {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        font-size: 17px;
+    }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 575.98px) {
+
+    .ml-glass-hero-buttons {
+        width: 100%;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .ml-glass-btn {
+        width: 100%;
+        min-height: 72px;
+        padding: 0 24px;
+        border-radius: 999px;
+        font-size: 17px;
+        font-weight: 700;
+
+        gap: 18px;
+    }
+
+    .ml-glass-btn i {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        font-size: 20px;
+    }
+
+    .ml-glass-btn:hover {
+        transform: none;
+    }
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 380px) {
+
+    .ml-glass-btn {
+        min-height: 64px;
+        padding: 0 20px;
+        font-size: 15px;
+        gap: 14px;
+    }
+
+    .ml-glass-btn i {
+        width: 25px;
+        height: 25px;
+        min-width: 25px;
+        font-size: 18px;
+    }
+}
+
 /* footer---------------------------------------- */
 
 @media(max-width:991px) {
@@ -1348,9 +1432,6 @@
         flex-direction: column;
     }
 
-    .ml-glass-btn {
-        width: 100%;
-    }
 
     .ml-commitment-section {
         padding: 70px 0;

@@ -1,56 +1,67 @@
-/* =====================
-   Store Page
-   ===================== */
+/* ==========================================================
+   MEDILEAF STORE PAGE
+========================================================== */
 
 .ml-shop-v2-section {
-    background: #f7faf5;
-    padding: 80px 0 110px;
     position: relative;
+    padding: 80px 0 110px;
+    background: #f7faf5;
 }
+
+
+/* ==========================================================
+   FILTER BAR
+========================================================== */
 
 .ml-shop-v2-filterbar {
     position: relative;
     z-index: 50;
-    overflow: visible;
-    background: #fff;
-    border-radius: 28px;
-    padding: 28px 32px;
-    margin-bottom: 28px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 25px;
     flex-wrap: wrap;
+    gap: 25px;
+    margin-bottom: 28px;
+    padding: 28px 32px;
+    overflow: visible;
+    border-radius: 28px;
+    background: #ffffff;
     box-shadow: 0 16px 40px rgba(31, 45, 34, 0.08);
 }
 
 .ml-shop-v2-eyebrow {
+    display: inline-block;
+    margin-bottom: 8px;
     color: #31a050;
     font-size: 14px;
     font-weight: 700;
-    margin-bottom: 8px;
-    display: inline-block;
 }
 
 .ml-shop-v2-filterbar h2 {
+    margin: 0;
+    color: #243326;
     font-size: clamp(28px, 4vw, 44px);
     font-weight: 600;
-    color: #243326;
-    margin: 0;
 }
+
+
+/* ==========================================================
+   FILTER TOOLS
+========================================================== */
 
 .ml-shop-v2-tools {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    flex-wrap: wrap;
     position: relative;
     z-index: 60;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
 }
 
-/* =====================
-   Search
-   ===================== */
+
+/* ==========================================================
+   SEARCH
+========================================================== */
 
 .ml-shop-v2-search {
     position: relative;
@@ -60,12 +71,12 @@
     width: 260px;
     max-width: 100%;
     height: 48px;
+    padding: 0 48px 0 18px;
     border: 1px solid #d8e2d6;
     border-radius: 50px;
-    padding: 0 48px 0 18px;
     outline: none;
+    background: #ffffff;
     color: #243326;
-    background: #fff;
     transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -76,41 +87,43 @@
 
 .ml-shop-v2-search i {
     position: absolute;
-    right: 18px;
     top: 50%;
+    right: 18px;
     transform: translateY(-50%);
     color: #31a050;
     pointer-events: none;
 }
 
-/* =====================
-   Sort
-   ===================== */
+
+/* ==========================================================
+   SORT
+========================================================== */
 
 .ml-shop-v2-sort {
+    position: relative;
+    z-index: 70;
     display: flex;
     align-items: center;
     gap: 12px;
-    position: relative;
-    z-index: 70;
     overflow: visible;
 }
 
 .ml-shop-v2-sort label {
-    font-size: 15px;
     color: #4b5563;
+    font-size: 15px;
     white-space: nowrap;
 }
 
-/* =====================
-   Custom Select
-   ===================== */
+
+/* ==========================================================
+   CUSTOM SELECT
+========================================================== */
 
 .ml-custom-select {
     position: relative;
+    z-index: 80;
     width: 100%;
     min-width: 230px;
-    z-index: 80;
 }
 
 .ml-custom-select-trigger {
@@ -119,7 +132,8 @@
     padding: 0 18px;
     border: 1px solid #d8e2d6;
     border-radius: 50px;
-    background: #fff;
+    outline: none;
+    background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -128,7 +142,6 @@
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    outline: none;
     transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -143,9 +156,9 @@
 }
 
 .ml-custom-select-trigger i {
+    flex-shrink: 0;
     color: #31a050;
     font-size: 13px;
-    flex-shrink: 0;
     transition: transform 0.25s ease;
 }
 
@@ -161,11 +174,11 @@
     z-index: 9999;
     display: none;
     max-height: 280px;
-    overflow-y: auto;
     padding: 8px;
-    background: #fff;
+    overflow-y: auto;
     border: 1px solid #e5e5e5;
     border-radius: 18px;
+    background: #ffffff;
     box-shadow: 0 18px 45px rgba(31, 45, 34, 0.16);
 }
 
@@ -175,18 +188,18 @@
 
 .ml-custom-option {
     width: 100%;
-    border: none;
-    background: transparent;
-    text-align: left;
     padding: 11px 14px;
+    border: none;
     border-radius: 12px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #243326;
-    cursor: pointer;
+    background: transparent;
     display: flex;
     align-items: center;
     gap: 10px;
+    color: #243326;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
     transition: background 0.2s ease, color 0.2s ease;
 }
 
@@ -196,32 +209,33 @@
 
 .ml-custom-option.active {
     background: #31a050;
-    color: #fff;
+    color: #ffffff;
 }
 
-/* =====================
-   Category Scroll
-   ===================== */
+
+/* ==========================================================
+   CATEGORY SCROLL
+========================================================== */
 
 .ml-shop-v2-category-scroll {
     display: flex;
     gap: 12px;
+    margin-bottom: 10px;
+    padding: 8px 2px 32px;
     overflow-x: auto;
     overflow-y: hidden;
-    padding: 8px 2px 32px;
-    margin-bottom: 10px;
-    -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
 }
 
 .ml-shop-v2-category-scroll a {
     flex: 0 0 auto;
     padding: 11px 20px;
     border-radius: 50px;
-    background: #fff;
+    background: #ffffff;
     color: #243326;
-    text-decoration: none;
     font-weight: 600;
+    text-decoration: none;
     box-shadow: 0 8px 22px rgba(31, 45, 34, 0.06);
     transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
@@ -229,22 +243,23 @@
 .ml-shop-v2-category-scroll a.active,
 .ml-shop-v2-category-scroll a:hover {
     background: #31a050;
-    color: #fff;
+    color: #ffffff;
 }
 
 .ml-shop-v2-category-scroll a:hover {
     transform: translateY(-1px);
 }
 
-/* =====================
-   Product Card
-   ===================== */
+
+/* ==========================================================
+   PRODUCT CARD
+========================================================== */
 
 .ml-shop-v2-card {
-    background: #fff;
-    border-radius: 34px;
-    overflow: hidden;
     height: 100%;
+    overflow: hidden;
+    border-radius: 34px;
+    background: #ffffff;
     box-shadow: 0 14px 35px rgba(31, 45, 34, 0.07);
     transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
@@ -254,17 +269,17 @@
     box-shadow: 0 22px 45px rgba(31, 45, 34, 0.11);
 }
 
-/* Product Image */
+
+/* ==========================================================
+   PRODUCT IMAGE
+========================================================== */
 
 .ml-shop-v2-img {
     position: relative;
     width: 100%;
     height: 288px;
     overflow: hidden;
-    background: linear-gradient(180deg,
-            #e8eae7 0%,
-            #e4dcda 45%,
-            #dcb4b4 100%);
+    background: linear-gradient(180deg, #e8eae7 0%, #e4dcda 45%, #dcb4b4 100%);
 }
 
 .ml-shop-v2-image-link {
@@ -277,13 +292,13 @@
 }
 
 .ml-shop-v2-img img {
+    display: block;
     width: 100%;
     height: 100%;
     padding: 24px 30px;
+    background: transparent;
     object-fit: contain;
     object-position: center;
-    background: transparent;
-    display: block;
     transition: transform 0.4s ease;
 }
 
@@ -291,29 +306,33 @@
     transform: scale(1.045);
 }
 
-/* Product Badge */
+
+/* ==========================================================
+   PRODUCT BADGE
+========================================================== */
 
 .ml-shop-v2-tag {
     position: absolute;
     top: 18px;
     left: 18px;
     z-index: 3;
+    padding: 8px 13px;
+    border-radius: 50px;
     background: #31a050;
-    color: #fff;
+    color: #ffffff;
     font-size: 12px;
     font-weight: 700;
     line-height: 1;
-    padding: 8px 13px;
-    border-radius: 50px;
 }
 
 .ml-shop-v2-tag.sold {
     background: #353131;
 }
 
-/* =====================
-   Product Body
-   ===================== */
+
+/* ==========================================================
+   PRODUCT BODY
+========================================================== */
 
 .ml-shop-v2-body {
     padding: 30px;
@@ -321,24 +340,25 @@
 
 .ml-shop-v2-category {
     display: block;
+    margin-bottom: 14px;
     color: #20a548;
     font-size: 16px;
     font-weight: 700;
     line-height: 1.3;
-    margin-bottom: 14px;
 }
 
 .ml-shop-v2-body h3 {
     margin: 0 0 18px;
-    font-size: 26px;
-    line-height: 1.25;
-    font-weight: 700;
     color: #18241d;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.25;
 }
 
 .ml-shop-v2-title-link {
     color: inherit;
     text-decoration: none;
+    transition: color 0.2s ease;
 }
 
 .ml-shop-v2-title-link:hover,
@@ -347,77 +367,85 @@
     text-decoration: none;
 }
 
-/* =====================
-   Price
-   ===================== */
+
+/* ==========================================================
+   PRICE
+========================================================== */
 
 .ml-shop-v2-price-wrap {
     margin-bottom: 26px;
 }
 
 .ml-shop-v2-old-price {
+    margin-bottom: 10px;
     color: #239e48;
     font-size: 16px;
     font-weight: 700;
     line-height: 1.2;
     text-decoration: line-through;
-    margin-bottom: 10px;
 }
 
 .ml-shop-v2-price {
     color: #18241d;
     font-size: 27px;
-    line-height: 1.2;
     font-weight: 800;
+    line-height: 1.2;
 }
 
-/* =====================
-   View Product
-   ===================== */
+
+/* ==========================================================
+   VIEW PRODUCT BUTTON
+========================================================== */
 
 .product-view-btn,
 a.product-view-btn {
     width: 100%;
     min-height: 55px;
     padding: 10px 20px;
+    border: 2px solid #27a84d;
+    border-radius: 50px;
+    background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #27a84d;
-    border-radius: 50px;
-    background: #fff;
     color: #22a147;
     font-size: 18px;
     font-weight: 700;
     line-height: 1;
     text-decoration: none;
     cursor: pointer;
-    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
 .product-view-btn:hover,
 .product-view-btn:focus,
 a.product-view-btn:hover,
 a.product-view-btn:focus {
+    border-color: #168a3a;
     background: #f5fbf6;
     color: #168a3a;
-    border-color: #168a3a;
     text-decoration: none;
 }
 
-/* =====================
-   Add To Bag
-   ===================== */
+.product-view-btn:active,
+a.product-view-btn:active {
+    transform: scale(0.99);
+}
+
+
+/* ==========================================================
+   ADD TO BAG BUTTON
+========================================================== */
 
 .ml-shop-v2-body .add-to-bag-btn {
     width: 100%;
     min-height: 55px;
-    padding: 10px 20px;
     margin-top: 12px;
+    padding: 10px 20px;
     border: none;
     border-radius: 50px;
     background: #31a653;
-    color: #fff;
+    color: #ffffff;
     font-size: 18px;
     font-weight: 700;
     line-height: 1;
@@ -425,45 +453,47 @@ a.product-view-btn:focus {
     transition: background 0.25s ease, transform 0.25s ease;
 }
 
-.ml-shop-v2-body .add-to-bag-btn:hover {
+.ml-shop-v2-body .add-to-bag-btn:hover:not(:disabled) {
     background: #268e45;
 }
 
-.ml-shop-v2-body .add-to-bag-btn:active {
+.ml-shop-v2-body .add-to-bag-btn:active:not(:disabled) {
     transform: scale(0.99);
 }
 
 .ml-shop-v2-body .add-to-bag-btn.disabled,
 .ml-shop-v2-body .add-to-bag-btn:disabled {
     background: #9ca3af;
-    color: #fff;
+    color: #ffffff;
     cursor: not-allowed;
     opacity: 1;
 }
 
-/* =====================
-   No Products
-   ===================== */
+
+/* ==========================================================
+   NO PRODUCTS
+========================================================== */
 
 .ml-shop-no-products {
-    text-align: center;
+    display: none;
     padding: 40px 20px;
     color: #4b5563;
     font-size: 18px;
-    display: none;
+    text-align: center;
 }
 
-/* =====================
-   Pagination
-   ===================== */
+
+/* ==========================================================
+   PAGINATION
+========================================================== */
 
 .ml-shop-v2-pagination {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
     gap: 14px;
     margin-top: 55px;
-    flex-wrap: wrap;
 }
 
 .ml-shop-v2-pagination button {
@@ -472,17 +502,21 @@ a.product-view-btn:focus {
     border: none;
     border-radius: 6px;
     background: #f3f1ee;
-    color: #000;
+    color: #000000;
     font-size: 22px;
     font-weight: 700;
     cursor: pointer;
-    transition: background 0.3s ease, color 0.3s ease;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
 }
 
 .ml-shop-v2-pagination button.active,
 .ml-shop-v2-pagination button:hover:not(:disabled) {
     background: #a6ce39;
-    color: #fff;
+    color: #ffffff;
+}
+
+.ml-shop-v2-pagination button:hover:not(:disabled) {
+    transform: translateY(-1px);
 }
 
 .ml-shop-v2-pagination button:disabled {
@@ -490,13 +524,13 @@ a.product-view-btn:focus {
     cursor: not-allowed;
 }
 
-/* =====================
-   Responsive
-   ===================== */
 
-/* Large Tablets / Small Laptops */
+/* ==========================================================
+   LARGE TABLETS / SMALL LAPTOPS
+========================================================== */
 
 @media (max-width: 1199px) {
+
     .ml-shop-v2-img {
         height: 250px;
     }
@@ -512,11 +546,16 @@ a.product-view-btn:focus {
     .ml-shop-v2-price {
         font-size: 25px;
     }
+
 }
 
-/* Tablets */
+
+/* ==========================================================
+   TABLETS
+========================================================== */
 
 @media (max-width: 991px) {
+
     .ml-shop-v2-section {
         padding: 55px 0 75px;
     }
@@ -571,19 +610,24 @@ a.product-view-btn:focus {
         min-height: 56px;
         font-size: 16px;
     }
+
 }
 
-/* Mobile / Small Tablets */
+
+/* ==========================================================
+   MOBILE / SMALL TABLETS
+========================================================== */
 
 @media (max-width: 767px) {
+
     .ml-shop-v2-section {
         padding: 40px 0 60px;
     }
 
     .ml-shop-v2-filterbar {
+        margin-bottom: 20px;
         padding: 20px;
         border-radius: 20px;
-        margin-bottom: 20px;
         flex-direction: column;
         align-items: stretch;
     }
@@ -632,8 +676,8 @@ a.product-view-btn:focus {
 
     .ml-shop-v2-category-scroll {
         gap: 8px;
-        padding: 4px 0 20px;
         margin-bottom: 4px;
+        padding: 4px 0 20px;
     }
 
     .ml-shop-v2-category-scroll a {
@@ -663,13 +707,13 @@ a.product-view-btn:focus {
     }
 
     .ml-shop-v2-category {
-        font-size: 15px;
         margin-bottom: 10px;
+        font-size: 15px;
     }
 
     .ml-shop-v2-body h3 {
-        font-size: 23px;
         margin-bottom: 16px;
+        font-size: 23px;
     }
 
     .ml-shop-v2-price-wrap {
@@ -677,8 +721,8 @@ a.product-view-btn:focus {
     }
 
     .ml-shop-v2-old-price {
-        font-size: 15px;
         margin-bottom: 7px;
+        font-size: 15px;
     }
 
     .ml-shop-v2-price {
@@ -693,28 +737,33 @@ a.product-view-btn:focus {
     }
 
     .ml-shop-v2-pagination {
-        margin-top: 35px;
         gap: 8px;
+        margin-top: 35px;
     }
 
     .ml-shop-v2-pagination button {
         width: 46px;
         height: 46px;
-        font-size: 16px;
         border-radius: 8px;
+        font-size: 16px;
     }
+
 }
 
-/* Small Phones */
+
+/* ==========================================================
+   SMALL PHONES
+========================================================== */
 
 @media (max-width: 480px) {
+
     .ml-shop-v2-section {
         padding: 30px 0 50px;
     }
 
     .ml-shop-v2-section .container {
-        padding-left: 14px;
         padding-right: 14px;
+        padding-left: 14px;
     }
 
     .ml-shop-v2-filterbar {
@@ -723,8 +772,8 @@ a.product-view-btn:focus {
     }
 
     .ml-shop-v2-eyebrow {
-        font-size: 13px;
         margin-bottom: 6px;
+        font-size: 13px;
     }
 
     .ml-shop-v2-filterbar h2 {
@@ -743,8 +792,8 @@ a.product-view-btn:focus {
 
     .ml-custom-options {
         top: calc(100% + 6px);
-        border-radius: 15px;
         max-height: 220px;
+        border-radius: 15px;
     }
 
     .ml-custom-option {
@@ -753,8 +802,8 @@ a.product-view-btn:focus {
     }
 
     .ml-shop-v2-category-scroll {
-        margin-left: -2px;
         margin-right: -2px;
+        margin-left: -2px;
     }
 
     .ml-shop-v2-category-scroll a {
@@ -777,8 +826,8 @@ a.product-view-btn:focus {
     .ml-shop-v2-tag {
         top: 14px;
         left: 14px;
-        font-size: 11px;
         padding: 7px 11px;
+        font-size: 11px;
     }
 
     .ml-shop-v2-body {
@@ -790,9 +839,9 @@ a.product-view-btn:focus {
     }
 
     .ml-shop-v2-body h3 {
+        margin-bottom: 14px;
         font-size: 21px;
         line-height: 1.25;
-        margin-bottom: 14px;
     }
 
     .ml-shop-v2-price-wrap {
@@ -823,14 +872,19 @@ a.product-view-btn:focus {
         height: 42px;
         font-size: 14px;
     }
+
 }
 
-/* Very Small Phones */
+
+/* ==========================================================
+   VERY SMALL PHONES
+========================================================== */
 
 @media (max-width: 360px) {
+
     .ml-shop-v2-section .container {
-        padding-left: 10px;
         padding-right: 10px;
+        padding-left: 10px;
     }
 
     .ml-shop-v2-filterbar {
@@ -867,4 +921,5 @@ a.product-view-btn:focus {
         min-height: 52px;
         font-size: 15px;
     }
+
 }
