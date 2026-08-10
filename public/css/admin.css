@@ -1694,30 +1694,54 @@ body {
 
 }
 
-.ml-variant-card input[type="file"].ml-admin-input {
-    min-height: 56px;
-    padding: 7px 10px;
+.ml-variant-card .ml-variant-image-input.form-control {
+    display: block;
+    width: 100%;
+    height: 56px;
+    padding: 0;
     border: 1px solid #dce8de;
     border-radius: 16px;
     background: #ffffff;
     color: #173d24;
-    font-size: 14px;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow: hidden;
+    box-shadow: none;
 }
 
-.ml-variant-card input[type="file"].ml-admin-input::file-selector-button {
-    height: 40px;
-    margin: 0 14px 0 0;
-    padding: 0 16px;
+.ml-variant-card .ml-variant-image-input.form-control:focus {
+    border-color: #31a050;
+    box-shadow: 0 0 0 5px rgba(49, 160, 80, 0.08);
+}
+
+.ml-variant-card .ml-variant-image-input.form-control::file-selector-button {
+    height: 54px;
+    margin: 0 16px 0 0;
+    padding: 0 18px;
     border: 0;
     border-right: 1px solid #dce8de;
-    background: #f5faf5;
+    border-radius: 15px 0 0 15px;
+    background: #f4f8f5;
     color: #173d24;
     font-family: inherit;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
+    transition: 0.3s ease;
 }
 
-.ml-variant-card input[type="file"].ml-admin-input:hover::file-selector-button {
+.ml-variant-card .ml-variant-image-input.form-control:hover::file-selector-button {
     background: #eaf6eb;
     color: #31a050;
+}
+
+@media (max-width: 767.98px) {
+    .ml-variant-card .ml-variant-image-input.form-control {
+        height: 52px;
+    }
+
+    .ml-variant-card .ml-variant-image-input.form-control::file-selector-button {
+        height: 50px;
+    }
 }
