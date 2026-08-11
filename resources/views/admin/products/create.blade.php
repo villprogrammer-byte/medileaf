@@ -38,8 +38,6 @@
         class="ml-product-create-form" id="mlProductForm">
         @csrf
 
-        <input type="text" name="website" value="" style="display:none !important">
-
         <div class="row g-4">
 
             {{-- =========================================================
