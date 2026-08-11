@@ -209,8 +209,9 @@
                         <form class="medileaf-contact-form" action="{{ route('contact.send') }}" method="POST">
                             @csrf
 
-                            <div class="row g-4">
+                            <input type="text" name="website" value="" style="display:none !important">
 
+                            <div class="row g-4">
                                 <div class="col-md-6">
                                     <label class="medileaf-form-label">First Name</label>
                                     <input type="text" name="first_name" class="form-control medileaf-form-control"
@@ -223,30 +224,75 @@
                                         placeholder="Last name" required>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <label class="medileaf-form-label">Phone Number</label>
-                                    <input type="text" name="phone" class="form-control medileaf-form-control"
-                                        placeholder="Phone number" required>
+                                <div class="medileaf-phone-wrap">
+
+                                    <span class="medileaf-country-code">
+                                        🇦🇺 +61
+                                    </span>
+
+                                    <input type="tel" name="phone" class="form-control medileaf-form-control"
+                                        placeholder="4XX XXX XXX" maxlength="9" inputmode="numeric" pattern="[0-9]*"
+                                        oninput="this.value=this.value.replace(/[^0-9]/g,'')" required>
+
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-12">
                                     <label class="medileaf-form-label">Email Address</label>
                                     <input type="email" name="email" class="form-control medileaf-form-control"
                                         placeholder="Email address" required>
                                 </div>
 
-                                <div class="col-12">
-                                    <label class="medileaf-form-label">Reason For Contact</label>
+                                <div class="ml-contact-select" id="contactReasonSelect">
 
-                                    <select name="reason" class="form-select medileaf-form-control" required>
+                                    <button type="button" class="ml-contact-select-trigger">
 
-                                        <option value="">Select an option</option>
-                                        <option value="Consultation Booking">Consultation Booking</option>
-                                        <option value="Treatment Enquiry">Treatment Enquiry</option>
-                                        <option value="Prescription Support">Prescription Support</option>
-                                        <option value="General Enquiry">General Enquiry</option>
+                                        <span id="contactReasonLabel">
+                                            Select an option
+                                        </span>
 
-                                    </select>
+                                        <i class="bi bi-chevron-down"></i>
+
+                                    </button>
+
+                                    <div class="ml-contact-options">
+
+                                        <button type="button" class="ml-contact-option" data-value="Consultation Booking">
+
+                                            <span>
+                                                Consultation Booking
+                                            </span>
+
+                                        </button>
+
+                                        <button type="button" class="ml-contact-option" data-value="Treatment Enquiry">
+
+                                            <span>
+                                                Treatment Enquiry
+                                            </span>
+
+                                        </button>
+
+                                        <button type="button" class="ml-contact-option" data-value="Prescription Support">
+
+                                            <span>
+                                                Prescription Support
+                                            </span>
+
+                                        </button>
+
+                                        <button type="button" class="ml-contact-option" data-value="General Enquiry">
+
+                                            <span>
+                                                General Enquiry
+                                            </span>
+
+                                        </button>
+
+                                    </div>
+
+
+                                    <input type="hidden" name="reason" id="contactReasonInput" required>
+
                                 </div>
 
                                 <div class="col-12">
