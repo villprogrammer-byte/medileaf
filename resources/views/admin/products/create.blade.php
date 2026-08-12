@@ -123,7 +123,7 @@
                                     </label>
 
                                     <p class="text-muted mb-0">
-                                        Add each colour with its own SKU, quantity, image and image ALT text.
+                                        Add colour variants only when the product has different colour options.
                                     </p>
                                 </div>
 
@@ -136,17 +136,7 @@
 
 
                             @php
-                                $oldVariants = old('variants', [
-                                    [
-                                        'colour_name' => '',
-                                        'colour_code' => '#31A050',
-                                        'sku' => '',
-                                        'quantity' => 0,
-                                        'price_adjustment' => 0,
-                                        'status' => 'active',
-                                        'image_alt' => '',
-                                    ],
-                                ]);
+                                $oldVariants = old('variants', []);
                             @endphp
 
 
@@ -478,7 +468,7 @@
                                 value="{{ old('stock_quantity', 0) }}" min="0" class="ml-admin-input" readonly>
 
                             <small class="text-muted d-block mt-2">
-                                Automatically calculated from all colour quantities.
+                                Automatically calculated when colour variants are added.
                             </small>
                         </div>
 

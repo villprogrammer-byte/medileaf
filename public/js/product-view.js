@@ -347,7 +347,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 return card.classList.contains("active");
             });
 
-        if (!selectedOption) {
+        const hasVariants =
+            dropdownOptions.length > 0 ||
+            colourCards.length > 0;
+
+        if (hasVariants && !selectedOption) {
             alert("Please select a colour.");
 
             return;
@@ -355,7 +359,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const selectedStock = Math.max(
             0,
-            Number(selectedOption.dataset.stock || 0)
+            Number(
+                selectedOption?.dataset.stock ??
+                window.mlProductConfig?.stock ??
+                0
+            )
         );
 
         const selectedQuantity = Math.max(
@@ -378,12 +386,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const selectedPrice = Number(
-            selectedOption.dataset.price || 0
+            selectedOption?.dataset.price ??
+            window.mlProductConfig?.price ??
+            0
         );
 
         const selectedImage =
-            selectedOption.dataset.image ||
+            selectedOption?.dataset.image ||
             mainImage?.src ||
+            window.mlProductConfig?.image ||
             "";
 
         const productName =
@@ -399,18 +410,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 window.mlProductConfig?.id || 0
             ),
 
-            variantId: Number(
-                selectedOption.dataset.variantId || 0
-            ),
+            variantId: selectedOption
+                ? Number(selectedOption.dataset.variantId || 0)
+                : null,
 
             name: productName,
 
             colour:
-                selectedOption.dataset.name ||
-                "Default",
+                selectedOption?.dataset.name ||
+                "",
 
             sku:
-                selectedOption.dataset.sku ||
+                selectedOption?.dataset.sku ||
+                window.mlProductConfig?.sku ||
                 "",
 
             price: selectedPrice,

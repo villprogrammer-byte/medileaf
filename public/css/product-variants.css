@@ -1,16 +1,7 @@
-/* ==========================================================
-   VARIANT LIST
-========================================================== */
-
 .ml-variant-list {
     display: grid;
     gap: 18px;
 }
-
-
-/* ==========================================================
-   VARIANT CARD
-========================================================== */
 
 .ml-variant-card {
     padding: 20px;
@@ -18,11 +9,6 @@
     border-radius: 18px;
     background: #fbfdfb;
 }
-
-
-/* ==========================================================
-   VARIANT CARD HEADER
-========================================================== */
 
 .ml-variant-card-head {
     display: flex;
@@ -54,11 +40,6 @@
     line-height: 1.5;
 }
 
-
-/* ==========================================================
-   VARIANT NUMBER
-========================================================== */
-
 .ml-variant-number {
     width: 38px;
     height: 38px;
@@ -67,18 +48,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
-    background: linear-gradient(135deg,
-            #31a050,
-            #7ed13f);
+    background: linear-gradient(135deg, #31a050, #7ed13f);
     color: #ffffff;
     font-weight: 800;
 }
-
-
-/* ==========================================================
-   REMOVE VARIANT BUTTON
-========================================================== */
 
 .ml-variant-remove-btn {
     width: 40px;
@@ -92,10 +65,7 @@
     background: #fff0f0;
     color: #dc3545;
     cursor: pointer;
-    transition:
-        background 0.25s ease,
-        color 0.25s ease,
-        transform 0.25s ease;
+    transition: background .25s ease, color .25s ease, transform .25s ease;
 }
 
 .ml-variant-remove-btn:hover:not(:disabled) {
@@ -105,19 +75,13 @@
 }
 
 .ml-variant-remove-btn:disabled {
-    opacity: 0.4;
+    opacity: .4;
     cursor: not-allowed;
 }
-
-
-/* ==========================================================
-   COLOUR CODE FIELD
-========================================================== */
 
 .ml-colour-code-field {
     display: grid;
     grid-template-columns: 56px minmax(0, 1fr);
-
     gap: 10px;
 }
 
@@ -130,11 +94,6 @@
     background: #ffffff;
     cursor: pointer;
 }
-
-
-/* ==========================================================
-   VARIANT SUMMARY
-========================================================== */
 
 .ml-variant-summary {
     margin-top: 18px;
@@ -150,7 +109,6 @@
 .ml-variant-summary div {
     display: flex;
     flex-direction: column;
-
     gap: 3px;
 }
 
@@ -164,11 +122,6 @@
     font-size: 17px;
     font-weight: 800;
 }
-
-
-/* ==========================================================
-   AUTO STOCK STATUS
-========================================================== */
 
 .ml-auto-stock-status {
     min-height: 56px;
@@ -193,11 +146,6 @@
     background: #fff0f0;
     color: #dc3545;
 }
-
-
-/* ==========================================================
-   VARIANT IMAGE
-========================================================== */
 
 .ml-variant-image-preview,
 .ml-variant-current-image {
@@ -225,17 +173,6 @@
     gap: 14px;
 }
 
-.ml-variant-current-image span {
-    color: #6b756f;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-
-/* ==========================================================
-   ADD COLOUR BUTTON
-========================================================== */
-
 .ml-add-colour-btn {
     min-height: 46px;
     padding: 0 18px;
@@ -245,28 +182,11 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background: linear-gradient(135deg,
-            #31a050,
-            #7ed13f);
+    background: linear-gradient(135deg, #31a050, #7ed13f);
     color: #ffffff;
     font-weight: 700;
     cursor: pointer;
-    transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
 }
-
-.ml-add-colour-btn:hover {
-    color: #ffffff;
-    transform: translateY(-2px);
-    box-shadow:
-        0 10px 22px rgba(49, 160, 80, 0.22);
-}
-
-
-/* ==========================================================
-   FORM CONTROLS INSIDE VARIANT CARD
-========================================================== */
 
 .ml-variant-card .form-control {
     min-height: 52px;
@@ -278,39 +198,20 @@
 
 .ml-variant-card .form-control:focus {
     border-color: #31a050;
-    box-shadow:
-        0 0 0 4px rgba(49, 160, 80, 0.08);
+    box-shadow: 0 0 0 4px rgba(49, 160, 80, .08);
 }
-
-
-/* ==========================================================
-   IMAGE ALT FIELD HELP TEXT
-========================================================== */
 
 .ml-variant-card .text-muted {
     line-height: 1.5;
 }
 
-
-/* ==========================================================
-   TABLET
-========================================================== */
-
 @media (max-width: 991.98px) {
-
     .ml-variant-card {
         padding: 18px;
     }
-
 }
 
-
-/* ==========================================================
-   MOBILE
-========================================================== */
-
 @media (max-width: 767.98px) {
-
     .ml-variant-card {
         padding: 16px;
     }
@@ -322,7 +223,6 @@
     .ml-variant-summary {
         flex-direction: column;
         align-items: stretch;
-
         gap: 10px;
     }
 
@@ -338,39 +238,24 @@
     .ml-add-colour-btn {
         width: 100%;
     }
-
 }
 
-
-/* ==========================================================
-   SMALL MOBILE
-========================================================== */
-
 @media (max-width: 575.98px) {
-
     .ml-variant-card {
         padding: 14px;
-
         border-radius: 15px;
-    }
-
-    .ml-variant-card-head {
-        gap: 12px;
     }
 
     .ml-variant-number {
         width: 34px;
         height: 34px;
-
         border-radius: 10px;
-
         font-size: 13px;
     }
 
     .ml-variant-remove-btn {
         width: 36px;
         height: 36px;
-
         border-radius: 10px;
     }
 
@@ -382,19 +267,11 @@
 
     .ml-variant-current-image {
         align-items: flex-start;
-
         flex-direction: column;
     }
-
 }
 
-
-/* ==========================================================
-   VERY SMALL MOBILE
-========================================================== */
-
 @media (max-width: 380px) {
-
     .ml-variant-card {
         padding: 12px;
     }
@@ -407,5 +284,4 @@
         width: 46px;
         height: 50px;
     }
-
 }

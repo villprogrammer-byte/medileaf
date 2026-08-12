@@ -550,7 +550,12 @@
         window.mlProductConfig = {
             id: @json($product->id),
             name: @json($product->name),
-            url: @json($product->public_url)
+            url: @json($product->public_url),
+            sku: @json($product->sku),
+            price: @json($basePrice),
+            stock: @json((int) $product->stock_quantity),
+            image: @json($featuredImage),
+            hasVariants: @json($variants->isNotEmpty())
         };
     </script>
 

@@ -87,7 +87,9 @@ class ProductController extends Controller
             []
         );
 
-        $this->validateVariantRows($variants);
+        if (!empty($variants)) {
+            $this->validateVariantRows($variants);
+        }
 
         $uploadedFiles = [];
 
@@ -309,10 +311,12 @@ class ProductController extends Controller
             []
         );
 
-        $this->validateVariantRows(
-            $variants,
-            $product
-        );
+        if (!empty($variants)) {
+            $this->validateVariantRows(
+                $variants,
+                $product
+            );
+        }
 
         $uploadedFiles = [];
         $filesToDelete = [];
@@ -877,9 +881,8 @@ class ProductController extends Controller
             */
 
             'variants' => [
-                'required',
+                'nullable',
                 'array',
-                'min:1',
             ],
 
             'variants.*.id' => [
@@ -1054,6 +1057,10 @@ class ProductController extends Controller
         array $variants,
         array &$uploadedFiles
     ): void {
+        if (empty($variants)) {
+            return;
+        }
+
         foreach (
             $variants as $index => $variantData
         ) {
@@ -1131,6 +1138,11 @@ class ProductController extends Controller
         array &$uploadedFiles,
         array &$filesToDelete
     ): void {
+        if (empty($variants)) {
+            $product->variants()->delete();
+            return;
+        }
+
         $existing = $product
             ->variants()
             ->get()
@@ -1685,10 +1697,11 @@ class ProductController extends Controller
             ->orderBy('sort_order')
             ->get();
 
-        $totalStock =
-            (int) $variants->sum(
-                'quantity'
-            );
+        $hasVariants = $variants->isNotEmpty();
+
+        $totalStock = $hasVariants
+            ? (int) $variants->sum('quantity')
+            : (int) $product->stock_quantity;
 
         $lowStockAlert =
             (int) (

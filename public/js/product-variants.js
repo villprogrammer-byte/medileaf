@@ -295,6 +295,18 @@ function initialiseProductVariants() {
 
         let totalStock = 0;
 
+        if (rows.length === 0) {
+            if (variantCount) {
+                variantCount.textContent = "0";
+            }
+
+            if (variantTotalStock) {
+                variantTotalStock.textContent = "0";
+            }
+
+            return;
+        }
+
 
         rows.forEach(
             function (row, index) {
@@ -345,7 +357,7 @@ function initialiseProductVariants() {
         }
 
 
-        if (stockQuantity) {
+        if (stockQuantity && rows.length > 0) {
             stockQuantity.value =
                 String(totalStock);
         }
@@ -425,8 +437,7 @@ function initialiseProductVariants() {
                 );
 
             if (removeButton) {
-                removeButton.disabled =
-                    rows.length <= 1;
+                removeButton.disabled = false;
             }
         });
     }
@@ -722,14 +733,6 @@ function initialiseProductVariants() {
             removeButton.addEventListener(
                 "click",
                 function () {
-                    if (
-                        getRows().length <=
-                        1
-                    ) {
-                        return;
-                    }
-
-
                     const colourName =
                         row.querySelector(
                             'input[name*="[colour_name]"], [data-field="colour_name"]'
