@@ -11,10 +11,11 @@
         </div>
     </div>
 
-
     <div class="row g-4">
 
-        {{-- Add Author --}}
+        {{-- =====================================================
+        ADD AUTHOR / REVIEWER
+        ====================================================== --}}
         <div class="col-xl-4">
 
             <div class="ml-admin-card">
@@ -22,7 +23,7 @@
                 <div class="ml-admin-card-head">
                     <h4>
                         <i class="bi bi-person-plus"></i>
-                        Add Author
+                        Add Author / Reviewer
                     </h4>
                 </div>
 
@@ -32,6 +33,7 @@
 
                     <div class="ml-admin-blog-form-body">
 
+                        {{-- Name --}}
                         <div class="mb-4">
 
                             <label class="ml-admin-label">
@@ -40,7 +42,7 @@
 
                             <input type="text" name="name" value="{{ old('name') }}"
                                 class="form-control ml-admin-input @error('name') is-invalid @enderror"
-                                placeholder="Author name" required>
+                                placeholder="Author or reviewer name" required>
 
                             @error('name')
                                 <div class="invalid-feedback">
@@ -51,18 +53,66 @@
                         </div>
 
 
+                        {{-- Role --}}
                         <div class="mb-4">
 
                             <label class="ml-admin-label">
-                                Role
+                                Role <span class="text-danger">*</span>
                             </label>
 
-                            <input type="text" name="role" value="{{ old('role') }}"
-                                class="form-control ml-admin-input @error('role') is-invalid @enderror"
-                                placeholder="e.g. Health Writer">
+                            @php
+                                $currentRole = old('role');
+                            @endphp
+
+                            <div class="ml-custom-select">
+
+                                <button type="button" class="ml-custom-select-btn">
+                                    <span class="ml-custom-select-value">
+                                        @if($currentRole === 'author')
+                                            Author
+                                        @elseif($currentRole === 'reviewer')
+                                            Reviewer
+                                        @elseif($currentRole === 'both')
+                                            Author & Reviewer
+                                        @else
+                                            Select role
+                                        @endif
+                                    </span>
+
+                                    <i class="bi bi-chevron-down"></i>
+                                </button>
+
+
+                                <div class="ml-custom-select-menu">
+
+                                    <button type="button"
+                                        class="ml-custom-option {{ $currentRole === 'author' ? 'selected' : '' }}"
+                                        data-value="author">
+                                        Author
+                                    </button>
+
+                                    <button type="button"
+                                        class="ml-custom-option {{ $currentRole === 'reviewer' ? 'selected' : '' }}"
+                                        data-value="reviewer">
+                                        Reviewer
+                                    </button>
+
+                                    <button type="button"
+                                        class="ml-custom-option {{ $currentRole === 'both' ? 'selected' : '' }}"
+                                        data-value="both">
+                                        Author & Reviewer
+                                    </button>
+
+                                </div>
+
+
+                                <input type="hidden" name="role" value="{{ $currentRole }}" required>
+
+                            </div>
+
 
                             @error('role')
-                                <div class="invalid-feedback">
+                                <div class="invalid-feedback d-block">
                                     {{ $message }}
                                 </div>
                             @enderror
@@ -70,6 +120,7 @@
                         </div>
 
 
+                        {{-- Bio --}}
                         <div class="mb-4">
 
                             <label class="ml-admin-label">
@@ -78,7 +129,7 @@
 
                             <textarea name="bio" rows="4"
                                 class="form-control ml-admin-input ml-admin-blog-textarea @error('bio') is-invalid @enderror"
-                                placeholder="Short author biography...">{{ old('bio') }}</textarea>
+                                placeholder="Short author or reviewer biography...">{{ old('bio') }}</textarea>
 
                             @error('bio')
                                 <div class="invalid-feedback">
@@ -89,17 +140,21 @@
                         </div>
 
 
+                        {{-- Photo --}}
                         <div class="mb-4">
 
                             <label class="ml-admin-label">
                                 Photo
                             </label>
 
-                            <input type="text" name="image" value="{{ old('image') }}"
-                                class="form-control ml-admin-input @error('image') is-invalid @enderror"
-                                placeholder="img/blog/authors/name.webp">
+                            <input type="file" name="photo" accept=".jpg,.jpeg,.png,.webp"
+                                class="form-control ml-admin-input @error('photo') is-invalid @enderror">
 
-                            @error('image')
+                            <div class="ml-admin-blog-help">
+                                JPG, JPEG, PNG or WEBP. Maximum 2MB.
+                            </div>
+
+                            @error('photo')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -108,6 +163,7 @@
                         </div>
 
 
+                        {{-- Active --}}
                         <label class="ml-admin-blog-featured-check mb-4">
 
                             <input type="checkbox" name="is_active" value="1" @checked(old('is_active', true))>
@@ -119,9 +175,10 @@
                         </label>
 
 
+                        {{-- Submit --}}
                         <button type="submit" class="ml-admin-add-btn">
                             <i class="bi bi-person-plus"></i>
-                            Add Author
+                            Add Author / Reviewer
                         </button>
 
                     </div>
@@ -133,7 +190,9 @@
         </div>
 
 
-        {{-- Existing Authors --}}
+        {{-- =====================================================
+        EXISTING AUTHORS
+        ====================================================== --}}
         <div class="col-xl-8">
 
             <div class="ml-admin-card">
@@ -142,7 +201,7 @@
 
                     <h4>
                         <i class="bi bi-people"></i>
-                        Existing Authors
+                        Existing Authors & Reviewers
                     </h4>
 
                     <span class="ml-admin-blog-post-count">
@@ -177,6 +236,7 @@
 
                                     <tr>
 
+                                        {{-- Name --}}
                                         <td>
 
                                             <div class="ml-admin-blog-author-name">
@@ -194,15 +254,27 @@
                                         </td>
 
 
+                                        {{-- Role --}}
                                         <td>
 
                                             <span class="ml-admin-blog-author-role">
-                                                {{ $author->role ?? '—' }}
+
+                                                @if($author->role === 'author')
+                                                    Author
+                                                @elseif($author->role === 'reviewer')
+                                                    Reviewer
+                                                @elseif($author->role === 'both')
+                                                    Author & Reviewer
+                                                @else
+                                                    —
+                                                @endif
+
                                             </span>
 
                                         </td>
 
 
+                                        {{-- Status --}}
                                         <td>
 
                                             <span class="ml-admin-blog-status {{ $author->is_active ? 'published' : 'draft' }}">
@@ -212,22 +284,25 @@
                                         </td>
 
 
+                                        {{-- Actions --}}
                                         <td>
 
                                             <div class="ml-admin-blog-actions">
 
+                                                {{-- Edit --}}
                                                 <a href="#" class="ml-admin-blog-action-btn" title="Edit">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
 
 
+                                                {{-- Delete --}}
                                                 <form method="POST" action="{{ route('admin.blog.authors.destroy', $author) }}">
 
                                                     @csrf
                                                     @method('DELETE')
 
                                                     <button type="submit" class="ml-admin-blog-action-btn delete" title="Delete"
-                                                        onclick="return confirm('Delete this author?')">
+                                                        onclick="return confirm('Delete this author / reviewer?')">
                                                         <i class="bi bi-trash3"></i>
                                                     </button>
 
@@ -256,7 +331,7 @@
                         </div>
 
                         <h4>
-                            No authors found
+                            No authors or reviewers found
                         </h4>
 
                         <p>

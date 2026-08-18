@@ -1903,3 +1903,126 @@ body {
         max-height: 170px;
     }
 }
+
+
+/* =========================================================
+   MEDILEAF CUSTOM SELECT
+   ========================================================= */
+
+.ml-custom-select {
+    position: relative;
+    width: 100%;
+}
+
+.ml-custom-select-btn {
+    width: 100%;
+    min-height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    background: #ffffff;
+    border: 1px solid #d9e7dc;
+    border-radius: 14px;
+    color: #234333;
+    font-family: "Outfit", sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ml-custom-select-btn:hover {
+    border-color: #b9d7c0;
+}
+
+.ml-custom-select.open .ml-custom-select-btn {
+    border-color: #31a050;
+    box-shadow: 0 0 0 3px rgba(49, 160, 80, 0.10);
+}
+
+.ml-custom-select-btn i {
+    color: #31a050;
+    font-size: 14px;
+    transition: transform 0.2s ease;
+}
+
+.ml-custom-select.open .ml-custom-select-btn i {
+    transform: rotate(180deg);
+}
+
+
+/* Dropdown box */
+
+.ml-custom-select-menu {
+    position: absolute;
+    z-index: 9999;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background: #ffffff;
+    border: 1px solid #e4ebe6;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(24, 55, 38, 0.14);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition:
+        opacity 0.18s ease,
+        visibility 0.18s ease,
+        transform 0.18s ease;
+}
+
+.ml-custom-select.open .ml-custom-select-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+
+/* Options */
+
+.ml-custom-option {
+    width: 100%;
+    display: block;
+    padding: 13px 18px;
+    margin-bottom: 6px;
+    border: 0;
+    border-radius: 14px;
+    background: transparent;
+    color: #1d1d1d;
+    text-align: left;
+    font-family: "Outfit", sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.ml-custom-option:hover {
+    background: #31a050;
+    color: #fff;
+}
+
+.ml-custom-option.selected {
+    background: #31a050;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.ml-custom-option.selected:hover {
+    background: #31a050;
+    color: #ffffff;
+}
+
+
+/* Hidden actual form value */
+
+.ml-custom-select input[type="hidden"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}

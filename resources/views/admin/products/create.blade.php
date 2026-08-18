@@ -76,31 +76,43 @@
                                 placeholder="ML-001">
                         </div>
 
-
                         <div class="col-md-4">
                             <label class="ml-admin-label">Category</label>
 
-                            <select name="category" id="productCategory" class="ml-admin-input">
-                                <option value="">Select Category</option>
+                            <div class="ml-custom-select" data-name="category">
 
-                                <option value="Vaporisers" {{ old('category') === 'Vaporisers' ? 'selected' : '' }}>
-                                    Vaporisers
-                                </option>
+                                <button type="button" class="ml-custom-select-btn">
+                                    <span class="ml-custom-select-value">
+                                        Select Category
+                                    </span>
 
-                                <option value="Accessories" {{ old('category') === 'Accessories' ? 'selected' : '' }}>
-                                    Accessories
-                                </option>
+                                    <i class="bi bi-chevron-down"></i>
+                                </button>
 
-                                <option value="Wellness Products" {{ old('category') === 'Wellness Products' ? 'selected' : '' }}>
-                                    Wellness Products
-                                </option>
+                                <div class="ml-custom-select-menu">
 
-                                <option value="Pharmacy Support" {{ old('category') === 'Pharmacy Support' ? 'selected' : '' }}>
-                                    Pharmacy Support
-                                </option>
-                            </select>
+                                    <button type="button" class="ml-custom-option" data-value="Vaporisers">
+                                        Vaporisers
+                                    </button>
+
+                                    <button type="button" class="ml-custom-option" data-value="Accessories">
+                                        Accessories
+                                    </button>
+
+                                    <button type="button" class="ml-custom-option" data-value="Wellness Products">
+                                        Wellness Products
+                                    </button>
+
+                                    <button type="button" class="ml-custom-option" data-value="Pharmacy Support">
+                                        Pharmacy Support
+                                    </button>
+
+                                </div>
+
+                                <input type="hidden" name="category" value="{{ old('category') }}">
+
+                            </div>
                         </div>
-
 
                         <div class="col-md-4">
                             <label class="ml-admin-label">Brand</label>
@@ -330,21 +342,37 @@
                                 Product Type
                             </label>
 
-                            <select name="product_type" class="ml-admin-input">
-                                <option value="Physical Product" {{ old('product_type', 'Physical Product') === 'Physical Product' ? 'selected' : '' }}>
-                                    Physical Product
-                                </option>
+                            <div class="ml-custom-select">
 
-                                <option value="Medical Device" {{ old('product_type') === 'Medical Device' ? 'selected' : '' }}>
-                                    Medical Device
-                                </option>
+                                <button type="button" class="ml-custom-select-btn">
+                                    <span class="ml-custom-select-value">
+                                        {{ old('product_type', 'Physical Product') }}
+                                    </span>
 
-                                <option value="Accessory" {{ old('product_type') === 'Accessory' ? 'selected' : '' }}>
-                                    Accessory
-                                </option>
-                            </select>
+                                    <i class="bi bi-chevron-down"></i>
+                                </button>
+
+                                <div class="ml-custom-select-menu">
+
+                                    <button type="button" class="ml-custom-option" data-value="Physical Product">
+                                        Physical Product
+                                    </button>
+
+                                    <button type="button" class="ml-custom-option" data-value="Medical Device">
+                                        Medical Device
+                                    </button>
+
+                                    <button type="button" class="ml-custom-option" data-value="Accessory">
+                                        Accessory
+                                    </button>
+
+                                </div>
+
+                                <input type="hidden" name="product_type"
+                                    value="{{ old('product_type', 'Physical Product') }}">
+
+                            </div>
                         </div>
-
 
                         <div class="col-md-6">
                             <label class="ml-admin-label">

@@ -15,3 +15,50 @@ document.addEventListener('DOMContentLoaded', function () {
         button.classList.remove('active');
     });
 });
+
+// ==========================blog======================================
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const description = document.querySelector('#description');
+
+    if (!description) {
+        return;
+    }
+
+    if (typeof ClassicEditor === 'undefined') {
+        console.error('CKEditor is not loaded.');
+        return;
+    }
+
+    ClassicEditor
+        .create(description, {
+            toolbar: [
+                'undo',
+                'redo',
+                '|',
+                'heading',
+                '|',
+                'bold',
+                'italic',
+                '|',
+                'link',
+                'insertImage',
+                'insertTable',
+                'blockQuote',
+                '|',
+                'bulletedList',
+                'numberedList',
+                '|',
+                'outdent',
+                'indent'
+            ]
+        })
+        .then(editor => {
+            window.blogDescriptionEditor = editor;
+        })
+        .catch(error => {
+            console.error('CKEditor initialisation error:', error);
+        });
+
+});

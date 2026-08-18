@@ -1195,14 +1195,6 @@
     .ml-admin-blog-form-body textarea.ml-admin-blog-textarea-rows-3:placeholder-shown {
         line-height: 90px !important;
     }
-}
-
-
-
-@media (max-width: 767px) {
-    .ml-admin-blog-form-body textarea.ml-admin-blog-textarea {
-        min-height: 100px;
-    }
 
     .ml-admin-blog-form-body textarea.ml-admin-blog-textarea.ml-admin-blog-textarea-empty {
         padding-top: 35px !important;
@@ -1213,4 +1205,204 @@
         padding-top: 24px !important;
         padding-bottom: 24px !important;
     }
+}
+
+/* =========================================================
+   BLOG POST TAGS
+   ========================================================= */
+
+.ml-admin-blog-tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 4px 0;
+}
+
+.ml-admin-blog-tag-option {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+
+    margin: 0;
+    padding: 0;
+
+    cursor: pointer;
+}
+
+.ml-admin-blog-tag-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.ml-admin-blog-tag-option span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 7px 12px;
+    color: #31503c;
+    background: #f7faf7;
+    border: 1px solid #d9e7dc;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.ml-admin-blog-tag-option:hover span {
+    color: #176b35;
+    background: #edf7ee;
+    border-color: #b8d4bd;
+}
+
+.ml-admin-blog-tag-option input:checked+span {
+    color: #176b35;
+    background: #edf7ee;
+    border-color: #31a050;
+    box-shadow: 0 0 0 1px rgba(49, 160, 80, 0.08);
+}
+
+/* =========================================================
+   BLOG AUTHOR PHOTO FILE INPUT
+   ========================================================= */
+
+.ml-admin-input[type="file"] {
+    width: 100%;
+    height: 54px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+
+    color: #52645a;
+    background: #ffffff;
+
+    border: 1px solid #d9e7dc;
+    border-radius: 14px;
+
+    font-family: "Outfit", sans-serif;
+    font-size: 14px;
+    line-height: 52px;
+
+    cursor: pointer;
+    box-shadow: none;
+}
+
+.ml-admin-input[type="file"]:focus {
+    border-color: #31a050;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(49, 160, 80, 0.10);
+}
+
+/* Native Choose File button */
+.ml-admin-input[type="file"]::file-selector-button {
+    height: 52px;
+
+    margin: 0 14px 0 -14px;
+    padding: 0 18px;
+
+    border: 0;
+    border-right: 1px solid #d9e7dc;
+
+    background: #f5f9f6;
+    color: #176b35;
+
+    font-family: "Outfit", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.ml-admin-input[type="file"]::file-selector-button:hover {
+    background: #edf7ee;
+}
+
+/* =========================================================
+   CUSTOM NATIVE SELECT
+   ========================================================= */
+
+.ml-admin-input.form-select {
+    width: 100%;
+    min-height: 54px;
+    padding: 0 44px 0 16px;
+
+    border: 1px solid #d9e7dc;
+    border-radius: 14px;
+
+    background-color: #fff;
+
+    color: #234333;
+
+    font-family: "Outfit", sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    box-shadow: none;
+    transition: all 0.2s ease;
+}
+
+/* Hover */
+.ml-admin-input.form-select:hover {
+    border-color: #b9d7c0;
+}
+
+/* Focus */
+.ml-admin-input.form-select:focus {
+    border-color: #31a050;
+
+    outline: none;
+
+    box-shadow:
+        0 0 0 3px rgba(49, 160, 80, 0.10);
+}
+
+/* Disabled */
+.ml-admin-input.form-select:disabled {
+    background-color: #f5f8f6;
+    color: #8a9990;
+    cursor: not-allowed;
+}
+
+/* Placeholder / first option */
+.ml-admin-input.form-select option:first-child {
+    color: #7a8980;
+}
+
+/* Dropdown options */
+.ml-admin-input.form-select option {
+    padding: 10px;
+    font-family: "Outfit", sans-serif;
+}
+
+/* =========================================================
+   BLOG FEATURED IMAGE
+   ========================================================= */
+
+.ml-admin-blog-current-image {
+    padding: 12px;
+    border: 1px solid #dce9df;
+    border-radius: 14px;
+    background: #f8fbf9;
+}
+
+.ml-admin-blog-current-image img {
+    display: block;
+    width: 100%;
+    max-height: 220px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.ml-admin-blog-current-image small {
+    display: block;
+    color: #607568;
+    font-size: 13px;
+    word-break: break-all;
 }

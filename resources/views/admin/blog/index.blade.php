@@ -78,21 +78,40 @@
                         Category
                     </label>
 
-                    <select name="category">
+                    <div class="ml-custom-select">
 
-                        <option value="">
-                            All Categories
-                        </option>
+                        <button type="button" class="ml-custom-select-btn">
+                            <span class="ml-custom-select-value">
+                                {{ request('category')
+        ? optional($categories->firstWhere('id', request('category')))->name
+        : 'All Categories' }}
+                            </span>
 
-                        @foreach($categories as $category)
+                            <i class="bi bi-chevron-down"></i>
+                        </button>
 
-                            <option value="{{ $category->id }}" @selected(request('category') == $category->id)>
-                                {{ $category->name }}
-                            </option>
+                        <div class="ml-custom-select-menu">
 
-                        @endforeach
+                            <button type="button" class="ml-custom-option {{ !request('category') ? 'selected' : '' }}"
+                                data-value="">
+                                All Categories
+                            </button>
 
-                    </select>
+                            @foreach($categories as $category)
+
+                                <button type="button"
+                                    class="ml-custom-option {{ request('category') == $category->id ? 'selected' : '' }}"
+                                    data-value="{{ $category->id }}">
+                                    {{ $category->name }}
+                                </button>
+
+                            @endforeach
+
+                        </div>
+
+                        <input type="hidden" name="category" value="{{ request('category') }}">
+
+                    </div>
 
                 </div>
 
@@ -104,25 +123,48 @@
                         Status
                     </label>
 
-                    <select name="status">
+                    <div class="ml-custom-select">
 
-                        <option value="">
-                            All Status
-                        </option>
+                        <button type="button" class="ml-custom-select-btn">
 
-                        <option value="published" @selected(request('status') === 'published')>
-                            Published
-                        </option>
+                            <span class="ml-custom-select-value">
+                                @if(request('status') === 'published')
+                                    Published
+                                @elseif(request('status') === 'draft')
+                                    Draft
+                                @else
+                                    All Status
+                                @endif
+                            </span>
 
-                        <option value="draft" @selected(request('status') === 'draft')>
-                            Draft
-                        </option>
+                            <i class="bi bi-chevron-down"></i>
 
-                        <option value="scheduled" @selected(request('status') === 'scheduled')>
-                            Scheduled
-                        </option>
+                        </button>
 
-                    </select>
+                        <div class="ml-custom-select-menu">
+
+                            <button type="button" class="ml-custom-option {{ !request('status') ? 'selected' : '' }}"
+                                data-value="">
+                                All Status
+                            </button>
+
+                            <button type="button"
+                                class="ml-custom-option {{ request('status') === 'published' ? 'selected' : '' }}"
+                                data-value="published">
+                                Published
+                            </button>
+
+                            <button type="button"
+                                class="ml-custom-option {{ request('status') === 'draft' ? 'selected' : '' }}"
+                                data-value="draft">
+                                Draft
+                            </button>
+
+                        </div>
+
+                        <input type="hidden" name="status" value="{{ request('status') }}">
+
+                    </div>
 
                 </div>
 
@@ -134,21 +176,48 @@
                         Featured
                     </label>
 
-                    <select name="featured">
+                    <div class="ml-custom-select">
 
-                        <option value="">
-                            All Posts
-                        </option>
+                        <button type="button" class="ml-custom-select-btn">
 
-                        <option value="yes" @selected(request('featured') === 'yes')>
-                            Featured
-                        </option>
+                            <span class="ml-custom-select-value">
+                                @if(request('featured') === 'yes')
+                                    Featured
+                                @elseif(request('featured') === 'no')
+                                    Not Featured
+                                @else
+                                    All Posts
+                                @endif
+                            </span>
 
-                        <option value="no" @selected(request('featured') === 'no')>
-                            Not Featured
-                        </option>
+                            <i class="bi bi-chevron-down"></i>
 
-                    </select>
+                        </button>
+
+                        <div class="ml-custom-select-menu">
+
+                            <button type="button" class="ml-custom-option {{ !request('featured') ? 'selected' : '' }}"
+                                data-value="">
+                                All Posts
+                            </button>
+
+                            <button type="button"
+                                class="ml-custom-option {{ request('featured') === 'yes' ? 'selected' : '' }}"
+                                data-value="yes">
+                                Featured
+                            </button>
+
+                            <button type="button"
+                                class="ml-custom-option {{ request('featured') === 'no' ? 'selected' : '' }}"
+                                data-value="no">
+                                Not Featured
+                            </button>
+
+                        </div>
+
+                        <input type="hidden" name="featured" value="{{ request('featured') }}">
+
+                    </div>
 
                 </div>
 
@@ -250,20 +319,22 @@
 
                                                     <div class="ml-admin-blog-thumb">
 
-                                                        @if($post->featured_image)
+    @if($post->featured_image)
 
-                                                            <img src="{{ asset($post->featured_image) }}"
-                                                                alt="{{ $post->featured_image_alt ?: $post->title }}">
+        <img
+            src="{{ asset('storage/' . $post->featured_image) }}"
+            alt="{{ $post->featured_image_alt ?: $post->title }}"
+        >
 
-                                                        @else
+    @else
 
-                                                            <span>
-                                                                <i class="bi bi-file-earmark-text"></i>
-                                                            </span>
+        <span>
+            <i class="bi bi-file-earmark-text"></i>
+        </span>
 
-                                                        @endif
+    @endif
 
-                                                    </div>
+</div>
 
 
                                                     <div>
@@ -337,7 +408,7 @@
                                                 {{ $post->published_at
                                 ? $post->published_at->format('d M Y')
                                 : '—'
-                                                                                                                                                                                                                                                                                                    }}
+                                                                                                                                                                                                                                                                                                                                                                                                                            }}
 
                                             </td>
 

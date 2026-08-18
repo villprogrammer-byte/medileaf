@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\BlogAuthor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class BlogAuthorController extends Controller
@@ -26,7 +27,7 @@ class BlogAuthorController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'slug' => ['nullable', 'string', 'max:255', 'unique:blog_authors,slug'],
+            'slug' => ['nullable', 'string', 'max:255'],
             'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'bio' => ['nullable', 'string'],
             'credentials' => ['nullable', 'string'],
@@ -35,15 +36,34 @@ class BlogAuthorController extends Controller
             'is_active' => ['nullable', 'boolean'],
         ]);
 
+        /*
+        |--------------------------------------------------------------------------
+        | Generate Unique Slug Automatically
+        |--------------------------------------------------------------------------
+        */
+
+        $validated['slug'] = $this->generateUniqueSlug(
+            $validated['slug'] ?? $validated['name']
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Author Photo
+        |--------------------------------------------------------------------------
+        */
+
         if ($request->hasFile('photo')) {
-            $validated['photo'] = $request->file('photo')->store('blog/authors', 'public');
+            $validated['photo'] = $request
+                ->file('photo')
+                ->store('blog/authors', 'public');
         }
 
         $validated['is_active'] = $request->boolean('is_active', true);
 
         BlogAuthor::create($validated);
 
-        return redirect()->route('admin.blog.authors')
+        return redirect()
+            ->route('admin.blog.authors')
             ->with('success', 'Author / reviewer created successfully.');
     }
 
@@ -55,7 +75,6 @@ class BlogAuthorController extends Controller
                 'nullable',
                 'string',
                 'max:255',
-                Rule::unique('blog_authors', 'slug')->ignore($blogAuthor->id),
             ],
             'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'bio' => ['nullable', 'string'],
@@ -65,27 +84,54 @@ class BlogAuthorController extends Controller
             'is_active' => ['nullable', 'boolean'],
         ]);
 
+        /*
+        |--------------------------------------------------------------------------
+        | Generate Unique Slug Automatically
+        |--------------------------------------------------------------------------
+        */
+
+        $validated['slug'] = $this->generateUniqueSlug(
+            $validated['slug'] ?? $validated['name'],
+            $blogAuthor->id
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Author Photo
+        |--------------------------------------------------------------------------
+        */
+
         if ($request->hasFile('photo')) {
             if ($blogAuthor->photo) {
                 Storage::disk('public')->delete($blogAuthor->photo);
             }
 
-            $validated['photo'] = $request->file('photo')->store('blog/authors', 'public');
+            $validated['photo'] = $request
+                ->file('photo')
+                ->store('blog/authors', 'public');
         }
 
         $validated['is_active'] = $request->boolean('is_active');
 
         $blogAuthor->update($validated);
 
-        return redirect()->route('admin.blog.authors')
+        return redirect()
+            ->route('admin.blog.authors')
             ->with('success', 'Author / reviewer updated successfully.');
     }
 
     public function destroy(BlogAuthor $blogAuthor)
     {
-        if ($blogAuthor->authoredPosts()->exists() || $blogAuthor->reviewedPosts()->exists()) {
-            return redirect()->route('admin.blog.authors')
-                ->with('error', 'This author / reviewer cannot be deleted while assigned to blog posts.');
+        if (
+            $blogAuthor->authoredPosts()->exists() ||
+            $blogAuthor->reviewedPosts()->exists()
+        ) {
+            return redirect()
+                ->route('admin.blog.authors')
+                ->with(
+                    'error',
+                    'This author / reviewer cannot be deleted while assigned to blog posts.'
+                );
         }
 
         if ($blogAuthor->photo) {
@@ -94,7 +140,56 @@ class BlogAuthorController extends Controller
 
         $blogAuthor->delete();
 
-        return redirect()->route('admin.blog.authors')
+        return redirect()
+            ->route('admin.blog.authors')
             ->with('success', 'Author / reviewer deleted successfully.');
+    }
+
+    /**
+     * Generate a unique slug.
+     *
+     * Examples:
+     *
+     * John Smith
+     * → john-smith
+     *
+     * If john-smith already exists:
+     * → john-smith-2
+     *
+     * If john-smith-2 already exists:
+     * → john-smith-3
+     */
+    private function generateUniqueSlug(
+        string $value,
+        ?int $ignoreId = null
+    ): string {
+        $slug = Str::slug($value);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Fallback
+        |--------------------------------------------------------------------------
+        */
+
+        if ($slug === '') {
+            $slug = 'author';
+        }
+
+        $originalSlug = $slug;
+        $counter = 2;
+
+        while (
+            BlogAuthor::where('slug', $slug)
+                ->when(
+                    $ignoreId,
+                    fn($query) => $query->where('id', '!=', $ignoreId)
+                )
+                ->exists()
+        ) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
     }
 }

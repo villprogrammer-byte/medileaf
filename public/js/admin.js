@@ -887,3 +887,111 @@ document.addEventListener("DOMContentLoaded", function () {
             );
     }
 });
+
+/* =========================================================
+   MEDILEAF CUSTOM SELECT
+   ========================================================= */
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const customSelects = document.querySelectorAll('.ml-custom-select');
+
+    customSelects.forEach(function (select) {
+
+        const button = select.querySelector('.ml-custom-select-btn');
+        const valueDisplay = select.querySelector('.ml-custom-select-value');
+        const hiddenInput = select.querySelector('input[type="hidden"]');
+        const options = select.querySelectorAll('.ml-custom-option');
+
+        if (!button || !valueDisplay || !hiddenInput) {
+            return;
+        }
+
+
+        /* Existing value */
+        if (hiddenInput.value) {
+
+            const selectedOption = select.querySelector(
+                '.ml-custom-option[data-value="' +
+                CSS.escape(hiddenInput.value) +
+                '"]'
+            );
+
+            if (selectedOption) {
+
+                valueDisplay.textContent =
+                    selectedOption.textContent.trim();
+
+                selectedOption.classList.add('selected');
+            }
+        }
+
+
+        /* Open dropdown */
+        button.addEventListener('click', function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            /* Close other dropdowns */
+            customSelects.forEach(function (otherSelect) {
+
+                if (otherSelect !== select) {
+                    otherSelect.classList.remove('open');
+                }
+
+            });
+
+            select.classList.toggle('open');
+        });
+
+
+        /* Select option */
+        options.forEach(function (option) {
+
+            option.addEventListener('click', function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                const value = this.getAttribute('data-value');
+                const text = this.textContent.trim();
+
+                /* Set actual form value */
+                hiddenInput.value = value;
+
+                /* Change visible text */
+                valueDisplay.textContent = text;
+
+                /* Remove old selected state */
+                options.forEach(function (item) {
+                    item.classList.remove('selected');
+                });
+
+                /* Add selected state */
+                this.classList.add('selected');
+
+                /* Close */
+                select.classList.remove('open');
+            });
+
+        });
+
+    });
+
+
+    /* Close when clicking outside */
+
+    document.addEventListener('click', function (event) {
+
+        customSelects.forEach(function (select) {
+
+            if (!select.contains(event.target)) {
+                select.classList.remove('open');
+            }
+
+        });
+
+    });
+
+});
