@@ -121,7 +121,7 @@
                 <a href="{{ route('login') }}" class="ml-account-option">
 
                     <span class="ml-account-icon">
-                        <i class="bi bi-person"></i>
+                        <i class="bi bi-person-fill"></i>
                     </span>
 
                     <span class="ml-account-option-text">
@@ -138,7 +138,7 @@
                 <a href="{{ url('/admin/login') }}" class="ml-account-option">
 
                     <span class="ml-account-icon ml-admin-icon">
-                        <i class="bi bi-shield-lock"></i>
+                        <i class="bi bi-person-workspace"></i>
                     </span>
 
                     <span class="ml-account-option-text">

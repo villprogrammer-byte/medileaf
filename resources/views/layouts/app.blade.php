@@ -11,6 +11,7 @@
     <title>@yield('title', 'MediLeaf')</title>
     <meta name="description" content="@yield('meta_description', 'MediLeaf Australia')">
     <meta name="robots" content="@yield('robots', 'index,follow')">
+    <meta name="google-site-verification" content="google-site-verification=jtnpuIIWLs_FzMtX4zNqXIOSXzOjfAWLdQ6jDysQ6_c">
 
     @hasSection('canonical_url')
         <link rel="canonical" href="@yield('canonical_url')">
@@ -53,6 +54,18 @@
     <link rel="stylesheet" href="{{ asset('css/cart.css') }}">
 
     @stack('styles')
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K44X811DVR"></script>
+
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-K44X811DVR');
+ </script>
+ 
 </head>
 
 <body>

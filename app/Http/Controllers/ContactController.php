@@ -36,7 +36,7 @@ class ContactController extends Controller
                     'MediLeaf Website'
                 );
 
-                $mail->to('admin@medileaf.com.au');
+                $mail->to('medileaf.pottspoint@gmail.com', 'MediLeaf Contact Form');
 
                 $mail->replyTo(
                     $data['email'],

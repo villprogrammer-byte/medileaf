@@ -1765,9 +1765,141 @@ body {
 
 .ck.ck-editor__top .ck-toolbar {
     border-radius: 16px 16px 0 0 !important;
+    border-color: #d4ddd6 !important;
+    background: #fff !important;
 }
 
 .ck.ck-editor__main>.ck-editor__editable {
     min-height: 130px;
     border-radius: 0 0 16px 16px !important;
+    border-color: #d4ddd6 !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.ml-admin-nav-group {
+    width: 100%;
+}
+
+.ml-admin-nav-parent {
+    width: 100%;
+    min-height: 50px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 16px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.78);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: left;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.ml-admin-nav-parent>i:first-child {
+    font-size: 19px;
+    flex-shrink: 0;
+}
+
+.ml-admin-nav-parent:hover,
+.ml-admin-nav-parent.active,
+.ml-admin-nav-parent[aria-expanded="true"] {
+    background: linear-gradient(135deg, #31a050, #8ac641);
+    color: #fff;
+    box-shadow: 0 12px 26px rgba(49, 160, 80, 0.28);
+}
+
+.ml-admin-nav-parent:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.ml-admin-nav-parent:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.55);
+    outline-offset: 2px;
+}
+
+.ml-admin-nav-arrow {
+    margin-left: auto;
+    font-size: 25px !important;
+    transition: transform 0.3s ease;
+}
+
+.ml-admin-nav-parent[aria-expanded="true"] .ml-admin-nav-arrow {
+    transform: rotate(180deg);
+}
+
+.ml-admin-submenu {
+    max-height: 190px;
+    margin-top: 2px;
+    padding: 4px 0 2px 18px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.ml-admin-submenu::-webkit-scrollbar {
+    width: 5px;
+}
+
+.ml-admin-submenu::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.ml-admin-submenu::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 20px;
+}
+
+.ml-admin-submenu::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.40);
+}
+
+.ml-admin-submenu.show {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ml-admin-submenu a {
+    min-height: 46px;
+    padding: 0 14px;
+    border-radius: 13px;
+    color: rgba(255, 255, 255, 0.70);
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.ml-admin-submenu a i {
+    width: 19px;
+    font-size: 17px;
+    flex-shrink: 0;
+}
+
+.ml-admin-submenu a:hover,
+.ml-admin-submenu a.active {
+    background: rgba(255, 255, 255, 0.10);
+    color: #fff;
+    box-shadow: none;
+}
+
+@media (max-height: 760px) {
+    .ml-admin-submenu {
+        max-height: 150px;
+    }
+}
+
+@media (max-width: 575px) {
+    .ml-admin-submenu {
+        max-height: 170px;
+    }
 }

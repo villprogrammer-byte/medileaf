@@ -10,6 +10,11 @@ use App\Http\Controllers\Admin\Auth\AdminOtpController;
 use App\Http\Controllers\Admin\Auth\AdminForgotPasswordController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\BlogCategoryController;
+use App\Http\Controllers\Admin\BlogTagController;
+use App\Http\Controllers\Admin\BlogAuthorController;
+use App\Http\Controllers\Admin\BlogRedirectController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthController;
@@ -26,6 +31,9 @@ Route::view('/clinic', 'pages.clinic')->name('clinic');
 Route::view('/pharmacy', 'pages.pharmacy')->name('pharmacy');
 Route::view('/contact', 'pages.contact')->name('contact');
 Route::view('/blog', 'pages.blog')->name('blog');
+Route::get('/blog/{slug}', [BlogController::class, 'show'])
+    ->where('slug', '[a-z0-9\-]+')
+    ->name('blog.view');
 Route::view('/terms', 'pages.terms')->name('terms');
 Route::get('/store', [StoreController::class, 'index'])->name('store');
 Route::view('/cart', 'shop.cart')->name('cart');
@@ -86,9 +94,9 @@ Route::prefix('admin')
     ->name('admin.')
     ->middleware('auth:admin')
     ->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        Route::post('/logout', [AdminLoginController::class, 'logout'])->name('logout');
+        Route::get('/dashboard', [DashboardController::class, 'index'])
+            ->name('dashboard');
 
         Route::resource('products', ProductController::class);
 
@@ -99,6 +107,100 @@ Route::prefix('admin')
         Route::get('/orders/completed', function () {
             return view('admin.orders.completed');
         })->name('orders.completed');
+
+        /*
+        |--------------------------------------------------------------------------
+        | BLOG
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('blog')->name('blog.')->group(function () {
+
+            /*
+            |--------------------------------------------------------------------------
+            | Categories, Tags, Authors & Redirects
+            | These MUST come before /{blogPost}
+            |--------------------------------------------------------------------------
+            */
+
+            Route::get('/categories', [BlogCategoryController::class, 'index'])
+                ->name('categories');
+
+            Route::post('/categories', [BlogCategoryController::class, 'store'])
+                ->name('categories.store');
+
+            Route::put('/categories/{blogCategory}', [BlogCategoryController::class, 'update'])
+                ->name('categories.update');
+
+            Route::delete('/categories/{blogCategory}', [BlogCategoryController::class, 'destroy'])
+                ->name('categories.destroy');
+
+            Route::get('/tags', [BlogTagController::class, 'index'])
+                ->name('tags');
+
+            Route::post('/tags', [BlogTagController::class, 'store'])
+                ->name('tags.store');
+
+            Route::put('/tags/{blogTag}', [BlogTagController::class, 'update'])
+                ->name('tags.update');
+
+            Route::delete('/tags/{blogTag}', [BlogTagController::class, 'destroy'])
+                ->name('tags.destroy');
+
+            Route::get('/authors', [BlogAuthorController::class, 'index'])
+                ->name('authors');
+
+            Route::post('/authors', [BlogAuthorController::class, 'store'])
+                ->name('authors.store');
+
+            Route::put('/authors/{blogAuthor}', [BlogAuthorController::class, 'update'])
+                ->name('authors.update');
+
+            Route::delete('/authors/{blogAuthor}', [BlogAuthorController::class, 'destroy'])
+                ->name('authors.destroy');
+
+            Route::get('/redirects', [BlogRedirectController::class, 'index'])
+                ->name('redirects');
+
+            Route::post('/redirects', [BlogRedirectController::class, 'store'])
+                ->name('redirects.store');
+
+            Route::put('/redirects/{blogRedirect}', [BlogRedirectController::class, 'update'])
+                ->name('redirects.update');
+
+            Route::delete('/redirects/{blogRedirect}', [BlogRedirectController::class, 'destroy'])
+                ->name('redirects.destroy');
+
+            /*
+            |--------------------------------------------------------------------------
+            | Blog Posts
+            |--------------------------------------------------------------------------
+            */
+
+            Route::get('/', [BlogController::class, 'index'])
+                ->name('index');
+
+            Route::get('/create', [BlogController::class, 'create'])
+                ->name('create');
+
+            Route::post('/', [BlogController::class, 'store'])
+                ->name('store');
+
+            Route::get('/{blogPost}/edit', [BlogController::class, 'edit'])
+                ->name('edit');
+
+            Route::get('/{blogPost}', [BlogController::class, 'show'])
+                ->name('show');
+
+            Route::put('/{blogPost}', [BlogController::class, 'update'])
+                ->name('update');
+
+            Route::delete('/{blogPost}', [BlogController::class, 'destroy'])
+                ->name('destroy');
+        });
+
+        Route::post('/logout', [AdminLoginController::class, 'logout'])
+            ->name('logout');
 
         Route::get('/settings', function () {
             return view('admin.settings');
