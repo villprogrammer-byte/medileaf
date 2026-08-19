@@ -1,24 +1,24 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Blog Preview')
+@section('title', 'View Blog Post')
 
 @section('content')
 
     <div class="ml-admin-page-head">
 
         <div>
-            <h1>{{ $blogPost->title }}</h1>
-            <p>Admin preview of this article.</p>
+            <h1>View Post</h1>
+            <p>Review the published blog content and post details.</p>
         </div>
 
-        <div class="d-flex align-items-center gap-2">
+        <div class="d-flex gap-2">
 
             <a href="{{ route('admin.blog.index') }}" class="ml-admin-secondary-btn">
                 <i class="bi bi-arrow-left"></i>
                 All Posts
             </a>
 
-            <a href="{{ route('admin.blog.edit', $blogPost) }}" class="ml-admin-add-btn">
+            <a href="{{ route('admin.blog.edit', ['blogPost' => $blogPost]) }}" class="ml-admin-add-btn">
                 <i class="bi bi-pencil"></i>
                 Edit Post
             </a>
@@ -30,61 +30,79 @@
 
     <div class="row g-4">
 
-        {{-- Article Preview --}}
+        {{-- =========================================================
+        MAIN CONTENT
+        ========================================================== --}}
+
         <div class="col-xl-8">
 
-            <div class="ml-admin-card ml-admin-blog-preview">
+            <div class="ml-admin-card ml-admin-blog-show-card">
 
-                @if($blogPost->featured_image)
+                <div class="ml-admin-card-head">
 
-                    <div class="ml-admin-blog-preview-image">
+                    <div>
+                        <h4>
+                            <i class="bi bi-journal-text"></i>
+                            {{ $blogPost->title }}
+                        </h4>
 
-                        <img src="{{ asset($blogPost->featured_image) }}"
-                            alt="{{ $blogPost->featured_image_alt ?: $blogPost->title }}">
-
+                        <small class="text-muted">
+                            /blog/{{ $blogPost->slug }}
+                        </small>
                     </div>
 
-                @endif
+                    @php
+                        $statusClass = match ($blogPost->status) {
+                            'published' => 'published',
+                            'scheduled' => 'scheduled',
+                            default => 'draft',
+                        };
+                    @endphp
+
+                    <span class="ml-admin-blog-status {{ $statusClass }}">
+                        {{ ucfirst($blogPost->status) }}
+                    </span>
+
+                </div>
 
 
-                <div class="ml-admin-blog-preview-content">
+                <div class="p-4">
 
-                    <div class="ml-admin-blog-preview-meta">
+                    @if($blogPost->featured_image)
 
-                        @if($blogPost->category)
+                        <div class="mb-4"
+                            style="overflow:hidden;border-radius:18px;border:1px solid #e2ebe4;background:#f7faf7;">
 
-                            <span class="ml-admin-blog-category">
-                                {{ $blogPost->category->name }}
-                            </span>
+                            <img src="{{ asset('storage/' . ltrim($blogPost->featured_image, '/')) }}"
+                                alt="{{ $blogPost->featured_image_alt ?: $blogPost->title }}"
+                                style="display:block;width:100%;height:auto;max-height:520px;object-fit:cover;">
 
-                        @endif
-
-                        <span class="ml-admin-blog-date">
-                            {{ $blogPost->published_at
-        ? $blogPost->published_at->format('d M Y')
-        : 'Draft'
-                                    }}
-                        </span>
-
-                    </div>
-
-
-                    <h2 class="ml-admin-blog-preview-title">
-                        {{ $blogPost->title }}
-                    </h2>
-
-
-                    @if($blogPost->excerpt)
-
-                        <p class="ml-admin-blog-preview-excerpt">
-                            {{ $blogPost->excerpt }}
-                        </p>
+                        </div>
 
                     @endif
 
 
-                    <div class="ml-admin-blog-preview-body">
+                    @if($blogPost->excerpt)
+
+                        <div class="mb-4">
+
+                            <h5 class="mb-2">
+                                Excerpt
+                            </h5>
+
+                            <p class="text-muted mb-0">
+                                {{ $blogPost->excerpt }}
+                            </p>
+
+                        </div>
+
+                    @endif
+
+
+                    <div class="ml-admin-blog-show-content">
+
                         {!! $blogPost->content !!}
+
                     </div>
 
                 </div>
@@ -94,84 +112,78 @@
         </div>
 
 
-        {{-- Article Information --}}
+        {{-- =========================================================
+        SIDEBAR
+        ========================================================== --}}
+
         <div class="col-xl-4">
 
             <div class="ml-admin-card mb-4">
 
                 <div class="ml-admin-card-head">
-
                     <h4>
                         <i class="bi bi-info-circle"></i>
-                        Post Information
+                        Post Details
                     </h4>
-
                 </div>
 
+                <div class="p-4">
 
-                <div class="ml-admin-blog-preview-info">
-
-                    <div>
-                        <span>Status</span>
-
-                        @php
-                            $statusClass = match ($blogPost->status) {
-                                'published' => 'published',
-                                'scheduled' => 'scheduled',
-                                default => 'draft',
-                            };
-                        @endphp
+                    <div class="mb-3">
+                        <small class="text-muted d-block mb-1">
+                            Category
+                        </small>
 
                         <strong>
-                            <span class="ml-admin-blog-status {{ $statusClass }}">
-                                {{ ucfirst($blogPost->status) }}
-                            </span>
+                            {{ $blogPost->category?->name ?? 'Uncategorised' }}
                         </strong>
                     </div>
 
 
-                    <div>
-                        <span>Author</span>
+                    <div class="mb-3">
+                        <small class="text-muted d-block mb-1">
+                            Author
+                        </small>
+
                         <strong>
                             {{ $blogPost->author?->name ?? '—' }}
                         </strong>
                     </div>
 
 
-                    <div>
-                        <span>Reviewer</span>
+                    @if($blogPost->reviewer)
+
+                        <div class="mb-3">
+                            <small class="text-muted d-block mb-1">
+                                Reviewer
+                            </small>
+
+                            <strong>
+                                {{ $blogPost->reviewer->name }}
+                            </strong>
+                        </div>
+
+                    @endif
+
+
+                    <div class="mb-3">
+                        <small class="text-muted d-block mb-1">
+                            Published
+                        </small>
+
                         <strong>
-                            {{ $blogPost->reviewer?->name ?? '—' }}
+                            {{ $blogPost->published_at?->format('d M Y, h:i A') ?? 'Not published' }}
                         </strong>
                     </div>
 
 
-                    <div>
-                        <span>Reading Time</span>
+                    <div class="mb-0">
+                        <small class="text-muted d-block mb-1">
+                            Reading Time
+                        </small>
+
                         <strong>
-                            {{ $blogPost->reading_time
-        ? $blogPost->reading_time . ' min'
-        : '—'
-                                    }}
-                        </strong>
-                    </div>
-
-
-                    <div>
-                        <span>Published</span>
-                        <strong>
-                            {{ $blogPost->published_at
-        ? $blogPost->published_at->format('d M Y, h:i A')
-        : 'Not published'
-                                    }}
-                        </strong>
-                    </div>
-
-
-                    <div>
-                        <span>Slug</span>
-                        <strong class="ml-admin-blog-preview-slug">
-                            /blog/{{ $blogPost->slug }}
+                            {{ $blogPost->reading_time ?? 1 }} min
                         </strong>
                     </div>
 
@@ -180,29 +192,30 @@
             </div>
 
 
-            @if($blogPost->tags->count())
+            @if($blogPost->featured_image)
 
                 <div class="ml-admin-card">
 
                     <div class="ml-admin-card-head">
-
                         <h4>
-                            <i class="bi bi-tags"></i>
-                            Tags
+                            <i class="bi bi-image"></i>
+                            Featured Image
                         </h4>
-
                     </div>
 
+                    <div class="p-4">
 
-                    <div class="ml-admin-blog-preview-tags">
+                        <img src="{{ asset('storage/' . ltrim($blogPost->featured_image, '/')) }}"
+                            alt="{{ $blogPost->featured_image_alt ?: $blogPost->title }}"
+                            style="display:block;width:100%;height:auto;border-radius:14px;">
 
-                        @foreach($blogPost->tags as $tag)
+                        @if($blogPost->featured_image_alt)
 
-                            <span class="ml-admin-blog-category">
-                                {{ $tag->name }}
-                            </span>
+                            <small class="text-muted d-block mt-3">
+                                ALT: {{ $blogPost->featured_image_alt }}
+                            </small>
 
-                        @endforeach
+                        @endif
 
                     </div>
 
@@ -215,7 +228,3 @@
     </div>
 
 @endsection
-
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/admin-blog.css') }}">
-@endpush

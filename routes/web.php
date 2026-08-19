@@ -31,7 +31,7 @@ Route::view('/clinic', 'pages.clinic')->name('clinic');
 Route::view('/pharmacy', 'pages.pharmacy')->name('pharmacy');
 Route::view('/contact', 'pages.contact')->name('contact');
 Route::view('/blog', 'pages.blog')->name('blog');
-Route::get('/blog/{slug}', [BlogController::class, 'show'])
+Route::get('/blog/{slug}', [BlogController::class, 'publicShow'])
     ->where('slug', '[a-z0-9\-]+')
     ->name('blog.view');
 Route::view('/terms', 'pages.terms')->name('terms');
