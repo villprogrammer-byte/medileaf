@@ -24,6 +24,7 @@
 function bootMediLeafProductAdmin() {
     initialiseEditor();
     initialiseProductVariants();
+    initialiseProductUrlPreview();
 }
 
 
@@ -126,6 +127,126 @@ function initialiseEditor() {
                 error
             );
         });
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Product URL Preview
+|--------------------------------------------------------------------------
+|
+| Updates the admin Product URL immediately when:
+| - Category changes
+| - Product name changes
+| - Slug changes
+|
+| Example:
+| Vaporisers + Volcano Hybrid Vaporise
+| -> /vaporisers/volcano-hybrid-vaporise
+|
+*/
+
+function initialiseProductUrlPreview() {
+    const categoryField =
+        document.getElementById("productCategory");
+
+    const nameField =
+        document.getElementById("productName");
+
+    const slugField =
+        document.getElementById("productSlug");
+
+    const urlPreview =
+        document.getElementById("productUrlPreview");
+
+
+    if (
+        !categoryField ||
+        !slugField ||
+        !urlPreview
+    ) {
+        return;
+    }
+
+
+    function makeSlug(value) {
+        return String(value || "")
+            .trim()
+            .toLowerCase()
+            .replace(/&/g, " and ")
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "");
+    }
+
+
+    function updateUrlPreview() {
+        const category =
+            makeSlug(categoryField.value);
+
+        let productSlug =
+            slugField.value.trim();
+
+        /*
+        | If slug is empty, use the product name
+        | for the preview only.
+        */
+        if (!productSlug && nameField) {
+            productSlug =
+                makeSlug(nameField.value);
+        } else {
+            productSlug =
+                makeSlug(productSlug);
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Do not show "uncategorised" when a category
+        | has been selected.
+        |--------------------------------------------------------------------------
+        */
+
+        if (!category) {
+            urlPreview.textContent =
+                productSlug
+                    ? `/uncategorised/${productSlug}`
+                    : "/uncategorised/product";
+            return;
+        }
+
+
+        urlPreview.textContent =
+            productSlug
+                ? `/${category}/${productSlug}`
+                : `/${category}/product`;
+    }
+
+
+    categoryField.addEventListener(
+        "change",
+        updateUrlPreview
+    );
+
+
+    slugField.addEventListener(
+        "input",
+        updateUrlPreview
+    );
+
+
+    nameField?.addEventListener(
+        "input",
+        updateUrlPreview
+    );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Initial Preview
+    |--------------------------------------------------------------------------
+    */
+
+    updateUrlPreview();
 }
 
 

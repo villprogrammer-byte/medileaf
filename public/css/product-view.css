@@ -12,18 +12,10 @@
     --ml-pv-white: #ffffff;
 }
 
-/* ==========================================================
-   PRODUCT PAGE
-========================================================== */
-
 .ml-product-view {
-    padding: 40px 0 84px;
+    padding: 40px 0 60px;
     background: var(--ml-pv-bg);
 }
-
-/* ==========================================================
-   BREADCRUMB
-========================================================== */
 
 .ml-product-breadcrumb {
     display: flex;
@@ -47,15 +39,12 @@
 
 .ml-product-breadcrumb span {
     color: #98a2b3;
+    font-weight: 700;
 }
 
 .ml-product-breadcrumb strong {
     color: var(--ml-pv-dark);
 }
-
-/* ==========================================================
-   PRODUCT LAYOUT
-========================================================== */
 
 .ml-product-layout {
     display: grid;
@@ -64,20 +53,12 @@
     align-items: stretch;
 }
 
-/* ==========================================================
-   PRODUCT GALLERY
-========================================================== */
-
 .ml-product-gallery-shell {
     display: grid;
     grid-template-columns: 106px minmax(0, 1fr);
     gap: 18px;
     height: 100%;
 }
-
-/* ==========================================================
-   GALLERY THUMBNAILS
-========================================================== */
 
 .ml-product-angle-list {
     display: flex;
@@ -128,10 +109,6 @@
     box-shadow: 0 10px 26px rgba(49, 160, 80, 0.13);
 }
 
-/* ==========================================================
-   MAIN PRODUCT IMAGE STAGE
-========================================================== */
-
 .ml-product-main-stage {
     position: relative;
     min-height: 640px;
@@ -170,10 +147,6 @@
     transform: scale(0.985);
 }
 
-/* ==========================================================
-   FEATURED BADGE
-========================================================== */
-
 .ml-product-badge {
     position: absolute;
     top: 22px;
@@ -186,10 +159,6 @@
     font-size: 12px;
     font-weight: 800;
 }
-
-/* ==========================================================
-   GALLERY NAVIGATION
-========================================================== */
 
 .ml-product-image-nav {
     position: absolute;
@@ -221,10 +190,6 @@
     right: 18px;
 }
 
-/* ==========================================================
-   IMAGE CAPTION
-========================================================== */
-
 .ml-product-image-caption {
     position: absolute;
     left: 24px;
@@ -242,10 +207,6 @@
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
-
-/* ==========================================================
-   PRODUCT INFORMATION
-========================================================== */
 
 .ml-product-info {
     position: sticky;
@@ -275,10 +236,6 @@
     font-weight: 700;
     line-height: 1.08;
 }
-
-/* ==========================================================
-   STOCK
-========================================================== */
 
 .ml-product-stock {
     margin-bottom: 22px;
@@ -322,10 +279,6 @@
     font-weight: 700;
 }
 
-/* ==========================================================
-   PRODUCT PRICE
-========================================================== */
-
 .ml-product-price {
     margin: 0 0 18px;
     color: var(--ml-pv-dark);
@@ -336,10 +289,6 @@
 .ml-product-price strong {
     font-weight: 800;
 }
-
-/* ==========================================================
-   SHORT DESCRIPTION
-========================================================== */
 
 .ml-product-short p {
     margin: 0;
@@ -369,10 +318,6 @@
     font-size: 16px;
 }
 
-/* ==========================================================
-   COLOUR CONTROL
-========================================================== */
-
 .ml-product-colour-control {
     margin: 24px 0;
 }
@@ -385,10 +330,6 @@
     font-size: 14px;
     font-weight: 800;
 }
-
-/* ==========================================================
-   CUSTOM COLOUR SELECT
-========================================================== */
 
 .ml-custom-select {
     position: relative;
@@ -434,10 +375,6 @@
     border: 1px solid rgba(0, 0, 0, 0.10);
     border-radius: 50%;
 }
-
-/* ==========================================================
-   CUSTOM SELECT OPTIONS
-========================================================== */
 
 .ml-custom-options {
     position: absolute;
@@ -489,10 +426,6 @@
     background: #f8fbf7;
     object-fit: contain;
 }
-
-/* ==========================================================
-   AVAILABLE COLOURS
-========================================================== */
 
 .ml-available-colours {
     margin-top: 18px;
@@ -569,10 +502,6 @@
     display: flex;
 }
 
-/* ==========================================================
-   QUANTITY + ADD TO BAG
-========================================================== */
-
 .ml-product-purchase-box {
     display: grid;
     grid-template-columns: 150px minmax(0, 1fr);
@@ -642,50 +571,454 @@
     cursor: not-allowed;
 }
 
-/* ==========================================================
-   PRODUCT DESCRIPTION
-========================================================== */
-
 .ml-product-details {
-    padding: 74px 0;
-    background: #ffffff;
+    padding: 76px 0;
+    background:
+        linear-gradient(180deg, #f8fbf7 0%, #ffffff 180px);
 }
 
 .ml-product-description-box {
-    padding: 46px;
-    border: 1px solid rgba(49, 160, 80, 0.12);
-    border-radius: 30px;
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 52px 54px;
+    border: 1px solid #e3ebe3;
+    border-radius: 28px;
     background: #ffffff;
-    box-shadow: 0 18px 46px rgba(23, 61, 36, 0.07);
+    box-shadow: 0 16px 42px rgba(23, 61, 36, 0.07);
+    color: #56615a;
+    overflow: hidden;
 }
 
 .ml-product-description-box h2 {
-    margin-bottom: 24px;
+    margin: 0 0 28px;
     color: var(--ml-pv-dark);
-    font-size: clamp(30px, 4vw, 44px);
+    font-size: clamp(26px, 3vw, 36px);
     font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
 }
 
-.ml-product-description-box h3,
-.ml-product-description-box h4 {
+.ml-product-description-box h3 {
+    margin: 42px 0 16px;
     color: var(--ml-pv-dark);
+    font-size: 25px;
+    font-weight: 800;
+    line-height: 1.3;
 }
 
-.ml-product-description-box p,
-.ml-product-description-box li {
+.ml-product-description-box h4 {
+    margin: 30px 0 13px;
+    color: var(--ml-pv-dark);
+    font-size: 19px;
+    font-weight: 800;
+    line-height: 1.35;
+}
+
+.ml-product-description-box p {
+    margin: 0 0 17px;
     color: #56615a;
     font-size: 16px;
     line-height: 1.85;
 }
 
-.ml-product-description-box img {
-    max-width: 100%;
-    height: auto;
+.ml-product-description-box strong {
+    color: var(--ml-pv-dark);
+    font-weight: 800;
+}
+
+.ml-product-description-box table {
+    width: 100%;
+    margin: 28px 0 34px;
+    border: 1px solid #e3ebe3;
+    border-radius: 16px;
+    border-spacing: 0;
+    border-collapse: separate;
+    table-layout: fixed;
+    overflow: hidden;
+    background: #ffffff;
+    font-size: 15px;
+    line-height: 1.55;
+}
+
+.ml-product-description-box table th,
+.ml-product-description-box table td {
+    padding: 15px 18px;
+    border: 0;
+    border-bottom: 1px solid #e6ece7;
+    text-align: left;
+    vertical-align: top;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+.ml-product-description-box table th:first-child,
+.ml-product-description-box table td:first-child {
+    width: 32%;
+}
+
+.ml-product-description-box table th:last-child,
+.ml-product-description-box table td:last-child {
+    width: 68%;
+}
+
+.ml-product-description-box table th {
+    color: #ffffff;
+    background: var(--ml-pv-dark);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+}
+
+.ml-product-description-box table td {
+    color: #344054;
+    background: #ffffff;
+}
+
+.ml-product-description-box table tr:nth-child(even) td {
+    background: #f9fbf9;
+}
+
+.ml-product-description-box table tr:hover td {
+    background: #f1f8f0;
+}
+
+.ml-product-description-box table tr:last-child td {
+    border-bottom: 0;
+}
+
+.ml-product-description-box table td:first-child {
+    color: var(--ml-pv-dark);
+    font-weight: 700;
 }
 
 /* ==========================================================
-   LARGE TABLET
+   REMOVE UNWANTED EDITOR BULLETS
+   FIX: descendant selectors (no ">") so tables wrapped inside
+   .table-responsive or any other wrapper element inside an
+   <li> are still matched and the bullet is removed.
 ========================================================== */
+
+.ml-product-description-box>ul,
+.ml-product-description-box>ol {
+    padding-left: 0;
+    list-style: none;
+}
+
+.ml-product-description-box>ul>li:has(h1),
+.ml-product-description-box>ul>li:has(h2),
+.ml-product-description-box>ul>li:has(h3),
+.ml-product-description-box>ul>li:has(h4),
+.ml-product-description-box>ul>li:has(table),
+.ml-product-description-box>ol>li:has(h1),
+.ml-product-description-box>ol>li:has(h2),
+.ml-product-description-box>ol>li:has(h3),
+.ml-product-description-box>ol>li:has(h4),
+.ml-product-description-box>ol>li:has(table) {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.ml-product-description-box li:has(table) {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.ml-product-description-box li:has(table)::marker {
+    content: "";
+}
+
+/* Keep genuine content lists styled normally. */
+
+.ml-product-description-box ul:not(:has(li table)),
+.ml-product-description-box ol:not(:has(li table)) {
+    margin: 0 0 22px;
+    padding-left: 28px;
+}
+
+.ml-product-description-box ul:not(:has(li table)) {
+    list-style: disc;
+}
+
+.ml-product-description-box ol:not(:has(li table)) {
+    list-style: decimal;
+}
+
+.ml-product-description-box li {
+    margin: 7px 0;
+    color: #56615a;
+    font-size: 16px;
+    line-height: 1.75;
+}
+
+.ml-product-description-box li::marker {
+    color: var(--ml-pv-green);
+}
+
+.ml-product-description-box .table-responsive {
+    width: 100%;
+    margin: 28px 0 34px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.ml-product-description-box .table-responsive table {
+    margin: 0;
+    min-width: 650px;
+}
+
+.ml-product-description-box img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 26px auto;
+    border-radius: 14px;
+}
+
+.ml-product-description-box blockquote {
+    margin: 26px 0;
+    padding: 18px 22px;
+    border-left: 4px solid var(--ml-pv-green);
+    border-radius: 0 12px 12px 0;
+    background: #f5faf4;
+    color: #56615a;
+}
+
+.ml-product-description-box hr {
+    margin: 34px 0;
+    border: 0;
+    border-top: 1px solid #e3ebe3;
+}
+
+.ml-product-description-box> :first-child {
+    margin-top: 0;
+}
+
+.ml-product-description-box> :last-child {
+    margin-bottom: 0;
+}
+
+.ml-product-description-box pre {
+    display: block;
+    width: 100%;
+    margin: 24px 0 30px;
+    padding: 20px 22px;
+
+    border: 1px solid #dce9df;
+    border-left: 4px solid var(--ml-pv-green);
+    border-radius: 14px;
+
+    background: #f7faf7;
+    color: #26382d;
+
+    font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        "Liberation Mono",
+        "Courier New",
+        monospace;
+
+    font-size: 14px;
+    line-height: 1.75;
+
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+
+    overflow-x: auto;
+    box-sizing: border-box;
+}
+
+.ml-product-description-box li:has(pre) {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.ml-product-description-box li:has(pre)::marker {
+    content: "";
+}
+
+.ml-product-description-box {
+    position: relative;
+    border: 1px solid #dce9df;
+    border-left: 4px solid var(--ml-pv-green);
+}
+
+/* ==========================================================
+   REMOVE EDITOR BULLETS BEFORE BLOCK ELEMENTS
+   FIX: descendant selectors — catches wrapper divs like
+   .table-responsive too, not just direct/p children.
+========================================================== */
+
+.ml-product-description-box li:has(table),
+.ml-product-description-box li:has(pre),
+.ml-product-description-box li:has(h1),
+.ml-product-description-box li:has(h2),
+.ml-product-description-box li:has(h3),
+.ml-product-description-box li:has(h4) {
+    list-style: none !important;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.ml-product-description-box li:has(table)::marker,
+.ml-product-description-box li:has(pre)::marker,
+.ml-product-description-box li:has(h1)::marker,
+.ml-product-description-box li:has(h2)::marker,
+.ml-product-description-box li:has(h3)::marker,
+.ml-product-description-box li:has(h4)::marker {
+    content: "";
+}
+
+.ml-product-description-box table {
+    border-color: #dce9df;
+}
+
+.ml-product-description-box table th {
+    background: #f2f8f3;
+    color: var(--ml-pv-dark);
+    border-bottom: 1px solid #dce9df;
+}
+
+.ml-product-description-box table td {
+    border-bottom: 1px solid #e4ece6;
+}
+
+.ml-product-description-box table tr:nth-child(even) td {
+    background: #fbfdfb;
+}
+
+@media (max-width: 767.98px) {
+    .ml-product-description-box {
+        border-left-width: 3px;
+    }
+
+    .ml-product-description-box pre {
+        padding: 16px 17px;
+        font-size: 13px;
+        line-height: 1.65;
+        border-radius: 12px;
+    }
+}
+
+/* ==========================================================
+   TABLE — ABSOLUTELY NO LIST MARKERS
+   FIX: descendant selector (no ">") for the li rule so wrapper
+   divs like .table-responsive don't defeat marker removal.
+========================================================== */
+
+.ml-product-description-box table,
+.ml-product-description-box table thead,
+.ml-product-description-box table tbody,
+.ml-product-description-box table tfoot,
+.ml-product-description-box table tr,
+.ml-product-description-box table th,
+.ml-product-description-box table td {
+    list-style: none !important;
+    list-style-type: none !important;
+}
+
+.ml-product-description-box table th::marker,
+.ml-product-description-box table td::marker,
+.ml-product-description-box table tr::marker {
+    content: none !important;
+}
+
+.ml-product-description-box table th::before,
+.ml-product-description-box table td::before {
+    content: none !important;
+}
+
+.ml-product-description-box li:has(table) {
+    list-style: none !important;
+    list-style-type: none !important;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+}
+
+.ml-product-description-box li:has(table)::marker {
+    content: none !important;
+}
+
+@media (max-width: 767.98px) {
+    .ml-product-details {
+        padding: 58px 0;
+    }
+
+    .ml-product-description-box {
+        padding: 34px 28px;
+        border-radius: 24px;
+    }
+
+    .ml-product-description-box h2 {
+        font-size: 29px;
+    }
+
+    .ml-product-description-box h3 {
+        margin-top: 34px;
+        font-size: 22px;
+    }
+
+    .ml-product-description-box p,
+    .ml-product-description-box li {
+        font-size: 15px;
+        line-height: 1.75;
+    }
+
+    .ml-product-description-box table {
+        min-width: 650px;
+        font-size: 14px;
+    }
+
+    .ml-product-description-box table th,
+    .ml-product-description-box table td {
+        padding: 13px 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ml-product-details {
+        padding: 48px 0;
+    }
+
+    .ml-product-description-box {
+        padding: 28px 20px;
+        border-radius: 20px;
+    }
+
+    .ml-product-description-box h2 {
+        font-size: 26px;
+    }
+
+    .ml-product-description-box h3 {
+        font-size: 20px;
+    }
+
+    .ml-product-description-box h4 {
+        font-size: 18px;
+    }
+
+    .ml-product-description-box ul:not(:has(li table)),
+    .ml-product-description-box ol:not(:has(li table)) {
+        padding-left: 23px;
+    }
+
+    .ml-product-description-box table {
+        min-width: 600px;
+    }
+
+    .ml-product-description-box table th,
+    .ml-product-description-box table td {
+        padding: 11px 12px;
+    }
+}
 
 @media (max-width: 1199.98px) {
     .ml-product-layout {
@@ -710,10 +1043,6 @@
         padding: 30px;
     }
 }
-
-/* ==========================================================
-   TABLET
-========================================================== */
 
 @media (max-width: 991.98px) {
     .ml-product-layout {
@@ -741,10 +1070,6 @@
         max-height: 430px;
     }
 }
-
-/* ==========================================================
-   MOBILE
-========================================================== */
 
 @media (max-width: 767.98px) {
     .ml-product-view {
@@ -831,10 +1156,6 @@
     }
 }
 
-/* ==========================================================
-   SMALL MOBILE
-========================================================== */
-
 @media (max-width: 480px) {
     .ml-product-view {
         padding: 30px 0 52px;
@@ -913,10 +1234,6 @@
         padding: 24px 18px;
     }
 }
-
-/* ==========================================================
-   VERY SMALL MOBILE
-========================================================== */
 
 @media (max-width: 360px) {
     .ml-product-main-stage {

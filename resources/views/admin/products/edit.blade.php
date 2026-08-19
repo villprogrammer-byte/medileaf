@@ -566,10 +566,11 @@
 
                             <input type="number" name="stock_quantity" id="stockQuantity"
                                 value="{{ old('stock_quantity', $product->stock_quantity) }}" min="0" class="ml-admin-input"
-                                readonly>
+                                placeholder="Example: 25">
 
-                            <small class="text-muted d-block mt-2">
-                                Automatically calculated when colour variants are added.
+                            <small class="text-muted d-block mt-2" id="stockQuantityHelp">
+                                Enter total stock manually. If colour variants are added, this value will be calculated
+                                automatically.
                             </small>
 
                         </div>

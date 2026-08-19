@@ -85,7 +85,9 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("productSlug");
 
         const productCategory =
-            document.getElementById("productCategory");
+            document.querySelector(
+                '.ml-custom-select[data-name="category"] input[name="category"]'
+            );
 
         const productUrlPreview =
             document.getElementById("productUrlPreview");
@@ -191,9 +193,45 @@ document.addEventListener("DOMContentLoaded", function () {
         */
 
         productCategory?.addEventListener(
+            "input",
+            updateUrlPreview
+        );
+
+        productCategory?.addEventListener(
             "change",
             updateUrlPreview
         );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Custom Category Dropdown
+        |--------------------------------------------------------------------------
+        | The custom select changes the hidden category input directly.
+        | Watch that value so the URL preview updates immediately.
+        |--------------------------------------------------------------------------
+        */
+
+        let lastCategoryValue =
+            productCategory?.value || "";
+
+        if (productCategory) {
+            window.setInterval(function () {
+
+                const currentCategoryValue =
+                    productCategory.value || "";
+
+                if (
+                    currentCategoryValue !==
+                    lastCategoryValue
+                ) {
+                    lastCategoryValue =
+                        currentCategoryValue;
+
+                    updateUrlPreview();
+                }
+
+            }, 100);
+        }
 
 
         /*
@@ -209,16 +247,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const category =
                 slugify(
-                    productCategory?.value ||
-                    "uncategorised"
-                ) || "uncategorised";
+                    productCategory?.value || ""
+                );
 
             const slug =
                 slugify(productSlug.value) ||
                 "product-slug";
 
             productUrlPreview.textContent =
-                `/${category}/${slug}`;
+                category
+                    ? `/${category}/${slug}`
+                    : `/category/${slug}`;
         }
 
 

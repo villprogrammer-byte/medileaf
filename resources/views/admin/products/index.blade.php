@@ -302,7 +302,7 @@
                             <td class="text-end">
 
                                 {{-- Admin View --}}
-                                <a href="{{ route('admin.products.show', $product) }}" class="ml-action-btn view"
+                                <a href="{{ route('admin.products.show', $product) }}" class="ml-action-btn view mb-2"
                                     title="View Product Details">
                                     <i class="bi bi-eye"></i>
                                 </a>
@@ -311,16 +311,16 @@
                                 {{-- Public Product --}}
                                 @if ($product->status === 'published')
 
-                                    <a href="{{ $publicUrl }}" target="_blank" rel="noopener" class="ml-action-btn live"
+                                    <a href="{{ $publicUrl }}" target="_blank" rel="noopener" class="ml-action-btn live mb-2"
                                         title="View Live Product">
                                         <i class="bi bi-box-arrow-up-right"></i>
                                     </a>
 
                                 @endif
 
-
+<br>
                                 {{-- Edit --}}
-                                <a href="{{ route('admin.products.edit', $product) }}" class="ml-action-btn edit"
+                                <a href="{{ route('admin.products.edit', $product) }}" class="ml-action-btn edit mb-2"
                                     title="Edit Product">
                                     <i class="bi bi-pencil"></i>
                                 </a>
