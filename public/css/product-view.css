@@ -13,7 +13,7 @@
 }
 
 .ml-product-view {
-    padding: 40px 0 60px;
+    padding: 40px 0 84px;
     background: var(--ml-pv-bg);
 }
 
@@ -39,7 +39,6 @@
 
 .ml-product-breadcrumb span {
     color: #98a2b3;
-    font-weight: 700;
 }
 
 .ml-product-breadcrumb strong {
@@ -310,7 +309,7 @@
 }
 
 .ml-see-full-desc:hover {
-    color: var(--ml-pv-dark);
+    color: var(--ml-pv-green);
     text-decoration: underline;
 }
 
@@ -578,11 +577,13 @@
 }
 
 .ml-product-description-box {
+    position: relative;
     width: 100%;
     max-width: 1180px;
     margin: 0 auto;
     padding: 52px 54px;
-    border: 1px solid #e3ebe3;
+    border: 1px solid #dce9df;
+    border-left: 4px solid var(--ml-pv-green);
     border-radius: 28px;
     background: #ffffff;
     box-shadow: 0 16px 42px rgba(23, 61, 36, 0.07);
@@ -630,7 +631,7 @@
 .ml-product-description-box table {
     width: 100%;
     margin: 28px 0 34px;
-    border: 1px solid #e3ebe3;
+    border: 1px solid #dce9df;
     border-radius: 16px;
     border-spacing: 0;
     border-collapse: separate;
@@ -694,61 +695,35 @@
 }
 
 /* ==========================================================
-   REMOVE UNWANTED EDITOR BULLETS
-   FIX: descendant selectors (no ">") so tables wrapped inside
-   .table-responsive or any other wrapper element inside an
-   <li> are still matched and the bullet is removed.
+   LIST BULLETS — always on by default
+   FIX: no more list-level on/off switch (that was the bug —
+   it hid bullets for the WHOLE <ul>/<ol> the moment ANY table
+   existed anywhere inside it). Bullets now stay on for every
+   list unconditionally; only the one <li> that actually wraps
+   a table/pre/heading loses its own marker, further down.
+
+   ALIGNMENT FIX: padding-left reduced so the bullet marker
+   sits directly under the heading's left edge instead of
+   being pushed further right (was causing the heading and
+   list to look "front/back" offset instead of lined up).
 ========================================================== */
 
-.ml-product-description-box>ul,
-.ml-product-description-box>ol {
-    padding-left: 0;
-    list-style: none;
-}
-
-.ml-product-description-box>ul>li:has(h1),
-.ml-product-description-box>ul>li:has(h2),
-.ml-product-description-box>ul>li:has(h3),
-.ml-product-description-box>ul>li:has(h4),
-.ml-product-description-box>ul>li:has(table),
-.ml-product-description-box>ol>li:has(h1),
-.ml-product-description-box>ol>li:has(h2),
-.ml-product-description-box>ol>li:has(h3),
-.ml-product-description-box>ol>li:has(h4),
-.ml-product-description-box>ol>li:has(table) {
-    list-style: none;
-    margin-left: 0;
-    padding-left: 0;
-}
-
-.ml-product-description-box li:has(table) {
-    list-style: none;
-    margin-left: 0;
-    padding-left: 0;
-}
-
-.ml-product-description-box li:has(table)::marker {
-    content: "";
-}
-
-/* Keep genuine content lists styled normally. */
-
-.ml-product-description-box ul:not(:has(li table)),
-.ml-product-description-box ol:not(:has(li table)) {
+.ml-product-description-box ul,
+.ml-product-description-box ol {
     margin: 0 0 22px;
-    padding-left: 28px;
+    padding-left: 20px;
 }
 
-.ml-product-description-box ul:not(:has(li table)) {
+.ml-product-description-box ul {
     list-style: disc;
 }
 
-.ml-product-description-box ol:not(:has(li table)) {
+.ml-product-description-box ol {
     list-style: decimal;
 }
 
 .ml-product-description-box li {
-    margin: 7px 0;
+    margin: 16px 0;
     color: #56615a;
     font-size: 16px;
     line-height: 1.75;
@@ -835,26 +810,11 @@
     box-sizing: border-box;
 }
 
-.ml-product-description-box li:has(pre) {
-    list-style: none;
-    margin-left: 0;
-    padding-left: 0;
-}
-
-.ml-product-description-box li:has(pre)::marker {
-    content: "";
-}
-
-.ml-product-description-box {
-    position: relative;
-    border: 1px solid #dce9df;
-    border-left: 4px solid var(--ml-pv-green);
-}
-
 /* ==========================================================
    REMOVE EDITOR BULLETS BEFORE BLOCK ELEMENTS
-   FIX: descendant selectors — catches wrapper divs like
-   .table-responsive too, not just direct/p children.
+   Uses descendant selectors (no ">") so it also catches a
+   table wrapped in .table-responsive or any other wrapper
+   div inside an <li> — not just a direct/p child.
 ========================================================== */
 
 .ml-product-description-box li:has(table),
@@ -863,7 +823,7 @@
 .ml-product-description-box li:has(h2),
 .ml-product-description-box li:has(h3),
 .ml-product-description-box li:has(h4) {
-    list-style: none !important;
+    list-style: none;
     margin-left: 0;
     padding-left: 0;
 }
@@ -877,24 +837,6 @@
     content: "";
 }
 
-.ml-product-description-box table {
-    border-color: #dce9df;
-}
-
-.ml-product-description-box table th {
-    background: #f2f8f3;
-    color: var(--ml-pv-dark);
-    border-bottom: 1px solid #dce9df;
-}
-
-.ml-product-description-box table td {
-    border-bottom: 1px solid #e4ece6;
-}
-
-.ml-product-description-box table tr:nth-child(even) td {
-    background: #fbfdfb;
-}
-
 @media (max-width: 767.98px) {
     .ml-product-description-box {
         border-left-width: 3px;
@@ -906,45 +848,6 @@
         line-height: 1.65;
         border-radius: 12px;
     }
-}
-
-/* ==========================================================
-   TABLE — ABSOLUTELY NO LIST MARKERS
-   FIX: descendant selector (no ">") for the li rule so wrapper
-   divs like .table-responsive don't defeat marker removal.
-========================================================== */
-
-.ml-product-description-box table,
-.ml-product-description-box table thead,
-.ml-product-description-box table tbody,
-.ml-product-description-box table tfoot,
-.ml-product-description-box table tr,
-.ml-product-description-box table th,
-.ml-product-description-box table td {
-    list-style: none !important;
-    list-style-type: none !important;
-}
-
-.ml-product-description-box table th::marker,
-.ml-product-description-box table td::marker,
-.ml-product-description-box table tr::marker {
-    content: none !important;
-}
-
-.ml-product-description-box table th::before,
-.ml-product-description-box table td::before {
-    content: none !important;
-}
-
-.ml-product-description-box li:has(table) {
-    list-style: none !important;
-    list-style-type: none !important;
-    padding-left: 0 !important;
-    margin-left: 0 !important;
-}
-
-.ml-product-description-box li:has(table)::marker {
-    content: none !important;
 }
 
 @media (max-width: 767.98px) {
@@ -1005,9 +908,9 @@
         font-size: 18px;
     }
 
-    .ml-product-description-box ul:not(:has(li table)),
-    .ml-product-description-box ol:not(:has(li table)) {
-        padding-left: 23px;
+    .ml-product-description-box ul,
+    .ml-product-description-box ol {
+        padding-left: 18px;
     }
 
     .ml-product-description-box table {
