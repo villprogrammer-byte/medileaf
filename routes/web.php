@@ -28,6 +28,7 @@ Route::get('/', function () {
 
 Route::view('/about', 'pages.about')->name('about');
 Route::view('/clinic', 'pages.clinic')->name('clinic');
+Route::view('/Practitioners', 'pages.Practitioners')->name('Practitioners');
 Route::view('/pharmacy', 'pages.pharmacy')->name('pharmacy');
 Route::view('/contact', 'pages.contact')->name('contact');
 Route::view('/blog', 'pages.blog')->name('blog');

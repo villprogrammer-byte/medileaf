@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'About MediLeaf')
+@section('title', 'Clinic MediLeaf')
 
 @section('content')
     <section class="ml-pharmacy-hero">

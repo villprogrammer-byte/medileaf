@@ -8,6 +8,8 @@
                 <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Home</a>
                 <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">About</a>
                 <a href="{{ route('clinic') }}" class="{{ request()->routeIs('clinic') ? 'active' : '' }}">Clinic</a>
+                <a href="{{ route('Practitioners') }}"
+                    class="{{ request()->routeIs('practitioners') ? 'active' : '' }}">Practitioners</a>
                 <a href="{{ route('pharmacy') }}"
                     class="{{ request()->routeIs('pharmacy') ? 'active' : '' }}">Pharmacy</a>
                 <a href="{{ route('store') }}" class="{{ request()->routeIs('store') ? 'active' : '' }}">Store</a>
