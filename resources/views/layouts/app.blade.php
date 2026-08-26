@@ -52,6 +52,7 @@
     <link rel="stylesheet" href="{{ asset('css/prescription.css') }}">
     <link rel="stylesheet" href="{{ asset('css/store.css') }}">
     <link rel="stylesheet" href="{{ asset('css/cart.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/practitioner.css') }}">
 
     @stack('styles')
 

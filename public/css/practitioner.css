@@ -1,0 +1,1506 @@
+/* ========================practitioner page strat============================================ */
+
+
+.ml-practitioner-features,
+.ml-practitioner-pathway,
+.ml-practitioner-management,
+.ml-practitioner-pharmacy,
+.ml-practitioner-final {
+    position: relative;
+    width: 100%;
+}
+
+/* TOP FEATURES */
+.ml-practitioner-features {
+    padding: 75px 0;
+    background: #fff;
+}
+
+.ml-practitioner-features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.ml-practitioner-feature-card {
+    min-height: 265px;
+    padding: 34px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: #fff;
+    border: 1px solid rgba(23, 61, 36, .08);
+    border-radius: 14px;
+    box-shadow: 0 12px 38px rgba(31, 45, 34, .07);
+    transition: .35s ease;
+}
+
+.ml-practitioner-feature-card:hover {
+    transform: translateY(-7px);
+    border-color: rgba(49, 160, 80, .20);
+    box-shadow: 0 22px 52px rgba(31, 45, 34, .12);
+}
+
+.ml-practitioner-feature-icon {
+    width: 92px;
+    height: 92px;
+    margin-bottom: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f4f8f4, #e8f1e9);
+    color: #087039;
+    font-size: 38px;
+}
+
+.ml-practitioner-feature-card h3 {
+    margin: 0 0 10px;
+    color: #353131;
+    font-size: 18px;
+    line-height: 1.35;
+    font-weight: 700;
+}
+
+.ml-practitioner-feature-card p {
+    max-width: 220px;
+    margin: 0;
+    color: #343b37;
+    font-size: 17px;
+    line-height: 1.65;
+}
+
+/* PATHWAY */
+.ml-practitioner-pathway {
+    padding: 82px 0 95px;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at center, rgba(49, 160, 80, .035), transparent 56%),
+        linear-gradient(90deg, #f7faf7 0%, #fff 50%, #f7faf7 100%);
+}
+
+.ml-practitioner-pathway .container {
+    position: relative;
+    z-index: 2;
+}
+
+.ml-practitioner-pathway-leaf {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    width: 220px;
+    height: 100%;
+    background-image: url('../img/pathway-leaves.webp');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: left top;
+    pointer-events: none;
+    opacity: .72;
+}
+
+.ml-practitioner-pathway-leaf-left {
+    left: -25px;
+}
+
+.ml-practitioner-pathway-leaf-right {
+    right: -25px;
+    transform: scaleX(-1);
+}
+
+.ml-practitioner-pathway-head {
+    max-width: 900px;
+    margin: 0 auto 67px;
+    text-align: center;
+}
+
+.ml-practitioner-kicker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 13px;
+    color: #126d37;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .4px;
+    text-transform: uppercase;
+}
+
+.ml-practitioner-kicker span {
+    width: 42px;
+    height: 1px;
+    background: #318f50;
+}
+
+.ml-practitioner-pathway-head h2 {
+    margin: 14px 0 0;
+    color: #1d211f;
+    font-size: clamp(31px, 4vw, 47px);
+    line-height: 1.22;
+    font-weight: 600;
+}
+
+.ml-practitioner-pathway-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px;
+}
+
+.ml-practitioner-pathway-grid::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    top: 29px;
+    left: 11%;
+    right: 11%;
+    height: 5px;
+    background-image: radial-gradient(circle, #14733c 2px, transparent 3px);
+    background-size: 14px 5px;
+    background-repeat: repeat-x;
+}
+
+.ml-practitioner-pathway-item {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.ml-pathway-number {
+    position: relative;
+    z-index: 4;
+    width: 62px;
+    height: 62px;
+    margin: 0 auto -25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #31a050, #7ed13f);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    box-shadow: 0 11px 25px rgba(8, 96, 48, .24);
+}
+
+.ml-pathway-icon {
+    width: 124px;
+    height: 124px;
+    margin: 0 auto 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #fff;
+    color: #087039;
+    font-size: 42px;
+    border: 1px solid rgba(23, 61, 36, .05);
+    box-shadow: 0 14px 42px rgba(31, 45, 34, .07);
+}
+
+.ml-practitioner-pathway-item h3 {
+    margin: 0 0 11px;
+    color: #353131;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.ml-practitioner-pathway-item p {
+    font-size: 17px;
+    line-height: 1.8;
+    color: #4b5563;
+    max-width: 830px;
+    margin: 0 auto;
+}
+
+/* COMMON */
+.ml-practitioner-label {
+    margin-bottom: 10px;
+    color: #14753d;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+}
+
+.ml-practitioner-copy h2,
+.ml-practitioner-pharmacy-content h2 {
+    margin: 0;
+    color: #191f1b;
+    font-size: clamp(32px, 4vw, 46px);
+    line-height: 1.2;
+    font-weight: 600;
+}
+
+.ml-practitioner-copy h2 span,
+.ml-practitioner-pharmacy-content h2 span {
+    display: block;
+}
+
+.ml-practitioner-title-line {
+    width: 68px;
+    height: 3px;
+    margin: 18px 0 26px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #31a050, #a6ce39);
+}
+
+.ml-practitioner-copy p,
+.ml-practitioner-pharmacy-content>p {
+    margin: 0 0 24px;
+    color: #333a36;
+    font-size: 17px;
+    line-height: 1.85;
+}
+
+/* MANAGEMENT */
+.ml-practitioner-management {
+    padding: 95px 0;
+    background: #fff;
+}
+
+.ml-practitioner-copy {
+    max-width: 590px;
+}
+
+.ml-practitioner-manages-card {
+    position: relative;
+    min-height: 480px;
+    padding: 42px;
+    border-radius: 18px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #08713a, #04572c);
+    box-shadow: 0 24px 62px rgba(13, 85, 45, .16);
+}
+
+.ml-practitioner-dna-bg {
+    position: absolute;
+    z-index: 1;
+    inset: 0 0 0 auto;
+    width: 54%;
+    background-image: url('../img/manages-dna.webp');
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: auto 112%;
+    opacity: .38;
+    pointer-events: none;
+}
+
+.ml-practitioner-manages-card::after {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(8, 113, 58, 1) 0%, rgba(8, 113, 58, .98) 45%, rgba(8, 113, 58, .82) 68%, rgba(8, 113, 58, .34) 100%);
+    pointer-events: none;
+}
+
+.ml-practitioner-manages-content {
+    position: relative;
+    z-index: 3;
+}
+
+.ml-practitioner-manages-card h3 {
+    margin: 0 0 27px;
+    color: #fff;
+    font-size: 27px;
+    font-weight: 600;
+}
+
+.ml-practitioner-manages-list {
+    width: 72%;
+    max-width: 395px;
+    display: grid;
+}
+
+.ml-practitioner-manages-list>div {
+    min-height: 55px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #fff;
+    border-bottom: 1px solid rgba(255, 255, 255, .11);
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.ml-practitioner-manages-list>div:last-child {
+    border-bottom: 0;
+}
+
+.ml-manage-check {
+    flex: 0 0 31px;
+    width: 31px;
+    height: 31px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #fff;
+    color: #168344;
+    font-size: 15px;
+}
+
+/* PHARMACY */
+.ml-practitioner-pharmacy {
+    padding: 10px 0 100px;
+    background: #fff;
+}
+
+.ml-practitioner-pharmacy .row {
+    align-items: stretch;
+}
+
+.ml-practitioner-pharmacy-image {
+    position: relative;
+    height: 100%;
+    min-height: 610px;
+    overflow: hidden;
+    border-radius: 18px;
+    background: #eef4ef;
+    box-shadow: 0 22px 58px rgba(31, 45, 34, .10);
+}
+
+.ml-practitioner-pharmacy-image img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.ml-practitioner-delivery-seal {
+    position: absolute;
+    z-index: 3;
+    top: 28px;
+    right: 28px;
+    width: 115px;
+    height: 115px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #087139, #045329);
+    color: #fff;
+    border: 5px solid #fff;
+    box-shadow: 0 12px 27px rgba(0, 0, 0, .18);
+}
+
+.ml-practitioner-delivery-seal i {
+    margin-bottom: 4px;
+    font-size: 22px;
+}
+
+.ml-practitioner-delivery-seal strong {
+    font-size: 9px;
+    letter-spacing: .45px;
+}
+
+.ml-practitioner-delivery-seal span {
+    margin-top: 2px;
+    font-size: 9px;
+}
+
+.ml-practitioner-pharmacy-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.ml-practitioner-pharmacy-highlight {
+    margin-top: 26px;
+    padding: 19px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #f2f8f3, #e9f3eb);
+    border: 1px solid rgba(49, 160, 80, .07);
+    color: #141a16;
+    line-height: 1.48;
+}
+
+.ml-practitioner-highlight-icon {
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #27894b;
+    border-radius: 50%;
+    color: #168344;
+    font-size: 19px;
+}
+
+.ml-practitioner-pharmacy-highlight strong {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.ml-practitioner-pharmacy-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 34px;
+}
+
+.ml-practitioner-pharmacy-point {
+    padding: 0 18px;
+    text-align: center;
+}
+
+.ml-practitioner-pharmacy-point:not(:last-child) {
+    border-right: 1px solid rgba(20, 122, 60, .28);
+}
+
+.ml-practitioner-pharmacy-point i {
+    display: block;
+    margin-bottom: 11px;
+    color: #087039;
+    font-size: 30px;
+}
+
+.ml-practitioner-pharmacy-point strong {
+    display: block;
+    color: #12713a;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.ml-practitioner-pharmacy-point span {
+    display: block;
+    margin-top: 6px;
+    color: #404a44;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* FINAL CTA */
+.ml-practitioner-final {
+    padding: 0 0 95px;
+    background: #fff;
+}
+
+.ml-practitioner-final-card {
+    position: relative;
+    padding: 38px 44px;
+    border-radius: 18px;
+    overflow: hidden;
+    background-image: url('../img/cta-leaves.webp');
+    background-repeat: no-repeat;
+    background-position: center right;
+    background-size: cover;
+    box-shadow: 0 20px 52px rgba(13, 85, 45, .16);
+}
+
+.ml-practitioner-final-card::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(3, 94, 46, .18) 0%, rgba(3, 94, 46, .06) 58%, rgba(3, 94, 46, 0) 100%);
+    pointer-events: none;
+}
+
+.ml-practitioner-final-card .row {
+    position: relative;
+    z-index: 2;
+}
+
+.ml-practitioner-final-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.ml-practitioner-final-icon {
+    flex: 0 0 90px;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, .70);
+    color: #fff;
+    font-size: 35px;
+}
+
+.ml-practitioner-final-left h2 {
+    margin: 0 0 8px;
+    color: #fff;
+    font-size: 27px;
+    font-weight: 600;
+}
+
+.ml-practitioner-final-left p {
+    max-width: 430px;
+    margin: 0;
+    color: rgba(255, 255, 255, .87);
+    font-size: 14px;
+    line-height: 1.72;
+}
+
+.ml-practitioner-final-contact {
+    display: grid;
+    gap: 15px;
+    padding-left: 42px;
+    border-left: 1px solid rgba(255, 255, 255, .32);
+}
+
+.ml-practitioner-final-contact a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.ml-practitioner-contact-icon {
+    flex: 0 0 46px;
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, .58);
+    border-radius: 50%;
+    color: #fff;
+    font-size: 18px;
+}
+
+.ml-practitioner-final-contact small {
+    display: block;
+    color: rgba(255, 255, 255, .70);
+    font-size: 11px;
+}
+
+.ml-practitioner-final-contact strong {
+    display: block;
+    margin-top: 1px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+@media (max-width: 1199.98px) {
+    .ml-practitioner-features-grid {
+        gap: 16px;
+    }
+
+    .ml-practitioner-pathway-grid {
+        gap: 18px;
+    }
+
+    .ml-practitioner-dna-bg {
+        width: 56%;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .ml-practitioner-features {
+        padding: 60px 0;
+    }
+
+    .ml-practitioner-features-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ml-practitioner-feature-card {
+        min-height: 235px;
+    }
+
+    .ml-practitioner-pathway {
+        padding: 72px 0 80px;
+    }
+
+    .ml-practitioner-pathway-leaf {
+        width: 145px;
+        opacity: .50;
+    }
+
+    .ml-practitioner-pathway-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 60px 30px;
+    }
+
+    .ml-practitioner-pathway-grid::before {
+        display: none;
+    }
+
+    .ml-practitioner-management {
+        padding: 78px 0;
+    }
+
+    .ml-practitioner-copy {
+        max-width: 100%;
+    }
+
+    .ml-practitioner-manages-card {
+        margin-top: 10px;
+        min-height: 440px;
+    }
+
+    .ml-practitioner-dna-bg {
+        width: 50%;
+    }
+
+    .ml-practitioner-pharmacy {
+        padding-bottom: 80px;
+    }
+
+    .ml-practitioner-pharmacy-image {
+        min-height: 520px;
+    }
+
+    .ml-practitioner-pharmacy-content {
+        padding-top: 12px;
+    }
+
+    .ml-practitioner-final-contact {
+        margin-top: 8px;
+        padding: 25px 0 0;
+        border-left: 0;
+        border-top: 1px solid rgba(255, 255, 255, .28);
+    }
+}
+
+@media (max-width: 767.98px) {
+    .ml-practitioner-features {
+        padding: 45px 0;
+    }
+
+    .ml-practitioner-features-grid {
+        gap: 12px;
+    }
+
+    .ml-practitioner-feature-card {
+        min-height: 215px;
+        padding: 22px 12px;
+    }
+
+    .ml-practitioner-feature-icon {
+        width: 68px;
+        height: 68px;
+        margin-bottom: 17px;
+        font-size: 28px;
+    }
+
+    .ml-practitioner-feature-card h3 {
+        font-size: 15px;
+    }
+
+    .ml-practitioner-feature-card p {
+        font-size: 12px;
+        line-height: 1.55;
+    }
+
+    .ml-practitioner-pathway {
+        padding: 62px 0 70px;
+    }
+
+    .ml-practitioner-pathway-leaf {
+        width: 95px;
+        opacity: .36;
+    }
+
+    .ml-practitioner-pathway-head {
+        margin-bottom: 52px;
+    }
+
+    .ml-practitioner-kicker {
+        gap: 8px;
+        font-size: 10px;
+    }
+
+    .ml-practitioner-kicker span {
+        width: 22px;
+    }
+
+    .ml-practitioner-pathway-head h2 {
+        font-size: 29px;
+    }
+
+    .ml-practitioner-pathway-grid {
+        grid-template-columns: 1fr;
+        gap: 48px;
+    }
+
+    .ml-practitioner-pathway-item {
+        max-width: 370px;
+        margin: 0 auto;
+    }
+
+    .ml-practitioner-copy h2,
+    .ml-practitioner-pharmacy-content h2 {
+        font-size: 31px;
+    }
+
+    .ml-practitioner-copy p,
+    .ml-practitioner-pharmacy-content>p {
+        font-size: 15px;
+        line-height: 1.78;
+    }
+
+    .ml-practitioner-management {
+        padding: 65px 0;
+    }
+
+    .ml-practitioner-manages-card {
+        min-height: auto;
+        padding: 32px 24px;
+    }
+
+    .ml-practitioner-dna-bg {
+        right: -45px;
+        width: 65%;
+        opacity: .22;
+        background-size: auto 105%;
+    }
+
+    .ml-practitioner-manages-list {
+        width: 88%;
+    }
+
+    .ml-practitioner-manages-card h3 {
+        font-size: 24px;
+    }
+
+    .ml-practitioner-manages-list>div {
+        min-height: 52px;
+        font-size: 14px;
+    }
+
+    .ml-practitioner-pharmacy-image {
+        min-height: 430px;
+    }
+
+    .ml-practitioner-delivery-seal {
+        top: 15px;
+        right: 15px;
+        width: 92px;
+        height: 92px;
+    }
+
+    .ml-practitioner-pharmacy-highlight {
+        padding: 17px;
+        font-size: 14px;
+    }
+
+    .ml-practitioner-pharmacy-grid {
+        grid-template-columns: 1fr;
+        margin-top: 28px;
+    }
+
+    .ml-practitioner-pharmacy-point {
+        display: grid;
+        grid-template-columns: 50px 1fr;
+        padding: 17px 0;
+        text-align: left;
+    }
+
+    .ml-practitioner-pharmacy-point:not(:last-child) {
+        border-right: 0;
+        border-bottom: 1px solid rgba(20, 122, 60, .15);
+    }
+
+    .ml-practitioner-pharmacy-point i {
+        grid-row: span 2;
+        margin: 0;
+        font-size: 28px;
+    }
+
+    .ml-practitioner-pharmacy-point span {
+        margin-top: 3px;
+    }
+
+    .ml-practitioner-final {
+        padding-bottom: 65px;
+    }
+
+    .ml-practitioner-final-card {
+        padding: 30px 24px;
+        background-position: 67% center;
+    }
+
+    .ml-practitioner-final-left {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 17px;
+    }
+
+    .ml-practitioner-final-icon {
+        flex-basis: 70px;
+        width: 70px;
+        height: 70px;
+        font-size: 27px;
+    }
+
+    .ml-practitioner-final-left h2 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ml-practitioner-feature-card {
+        min-height: 200px;
+        padding: 20px 9px;
+    }
+
+    .ml-practitioner-feature-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+    }
+
+    .ml-practitioner-feature-card h3 {
+        font-size: 14px;
+    }
+
+    .ml-practitioner-pathway-leaf {
+        width: 68px;
+        opacity: .30;
+    }
+
+    .ml-practitioner-pathway-head h2 {
+        font-size: 27px;
+    }
+
+    .ml-pathway-number {
+        width: 56px;
+        height: 56px;
+    }
+
+    .ml-pathway-icon {
+        width: 106px;
+        height: 106px;
+        font-size: 35px;
+    }
+
+    .ml-practitioner-manages-list {
+        width: 100%;
+    }
+
+    .ml-practitioner-dna-bg {
+        right: -65px;
+        width: 80%;
+        opacity: .18;
+    }
+
+    .ml-practitioner-pharmacy-image {
+        min-height: 360px;
+    }
+
+    .ml-practitioner-final-card {
+        padding: 28px 20px;
+        background-position: 70% center;
+    }
+
+    .ml-practitioner-final-left h2 {
+        font-size: 23px;
+    }
+
+    .ml-practitioner-final-contact strong {
+        font-size: 14px;
+    }
+}
+
+/* =========================================================
+   PRACTITIONER REFERRAL MODAL
+   ========================================================= */
+
+.ml-practitioner-final-icon {
+    width: 112px;
+    height: 112px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 50%;
+    background: transparent;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 112px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.ml-practitioner-final-icon i {
+    font-size: 2.2rem;
+}
+
+.ml-practitioner-final-icon:hover {
+    background: #ffffff;
+    color: #08733f;
+    border-color: #ffffff;
+    transform: translateY(-2px);
+}
+
+
+/* Modal */
+
+.ml-practitioner-referral-modal .modal-dialog {
+    max-width: 980px;
+    margin: 1.5rem auto;
+    min-height: calc(100vh - 3rem);
+    display: flex;
+    align-items: flex-start;
+}
+
+.ml-practitioner-referral-modal .modal-content {
+    width: 100%;
+    max-height: calc(100vh - 3rem);
+    border: 0;
+    border-radius: 24px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 30px 80px rgba(0, 55, 30, 0.22);
+}
+
+
+/* Header */
+
+.ml-referral-modal-header {
+    position: relative;
+    padding: 28px 32px;
+    background: linear-gradient(135deg, #31a050, #7ed13f);
+    color: #ffffff;
+}
+
+.ml-referral-modal-heading {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding-right: 45px;
+}
+
+.ml-referral-modal-icon {
+    width: 58px;
+    height: 58px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 58px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.ml-referral-modal-icon i {
+    font-size: 1.65rem;
+}
+
+.ml-referral-modal-heading span {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    opacity: 0.75;
+}
+
+.ml-referral-modal-heading h2 {
+    margin: 0;
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.ml-referral-modal-heading p {
+    margin: 4px 0 0;
+    font-size: 0.9rem;
+    opacity: 0.85;
+}
+
+.ml-referral-modal-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: 2px solid white;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ml-referral-modal-close:hover {
+    background: #ffffff;
+    color: #08733f;
+}
+
+
+/* Body */
+
+.ml-referral-modal-body {
+    padding: 32px;
+    max-height: calc(100vh - 190px);
+    overflow-y: auto;
+}
+
+
+/* Practitioner banner */
+
+.ml-referral-practitioner-banner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    margin-bottom: 32px;
+    border: 1px solid #dceee3;
+    border-radius: 14px;
+    background: #f4faf6;
+}
+
+.ml-referral-practitioner-banner-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #e1f2e7;
+    color: #16834b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 48px;
+}
+
+.ml-referral-practitioner-banner-icon i {
+    font-size: 1.3rem;
+}
+
+.ml-referral-practitioner-banner small {
+    display: block;
+    margin-bottom: 2px;
+    color: #5f7769;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+.ml-referral-practitioner-banner strong {
+    display: block;
+    color: #083e28;
+    font-size: 1rem;
+}
+
+.ml-referral-practitioner-banner span {
+    display: block;
+    margin-top: 2px;
+    color: #68796f;
+    font-size: 0.82rem;
+}
+
+
+/* Section heading */
+
+.ml-referral-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.ml-referral-section-number {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #a4cf36;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 700;
+    flex: 0 0 36px;
+}
+
+.ml-referral-section-heading h3 {
+    margin: 0;
+    color: #063f28;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.ml-referral-section-heading p {
+    margin: 2px 0 0;
+    color: #7a887f;
+    font-size: 0.8rem;
+}
+
+.ml-referral-section-heading>span {
+    margin-left: auto;
+    color: #7a887f;
+    font-size: 0.78rem;
+}
+
+
+/* Labels */
+
+.ml-referral-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #18231e;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+.ml-referral-label span {
+    color: #16834b;
+}
+
+
+/* Inputs */
+
+.ml-referral-input-wrap,
+.ml-referral-textarea-wrap {
+    position: relative;
+}
+
+.ml-referral-input-wrap>i,
+.ml-referral-textarea-wrap>i {
+    position: absolute;
+    left: 17px;
+    top: 50%;
+    z-index: 2;
+    color: #19844d;
+    font-size: 1rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.ml-referral-textarea-wrap>i {
+    top: 18px;
+    transform: none;
+}
+
+.ml-referral-input-wrap input,
+.ml-referral-input-wrap select,
+.ml-referral-textarea-wrap textarea {
+    width: 100%;
+    border: 1px solid #dfe8e2;
+    border-radius: 11px;
+    background: #fbfcfb;
+    color: #24332b;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.ml-referral-input-wrap input,
+.ml-referral-input-wrap select {
+    height: 50px;
+    padding: 0 16px 0 46px;
+}
+
+.ml-referral-textarea-wrap textarea {
+    min-height: 105px;
+    padding: 15px 16px 15px 46px;
+    resize: vertical;
+}
+
+.ml-referral-input-wrap input::placeholder,
+.ml-referral-textarea-wrap textarea::placeholder {
+    color: #a1aaa5;
+}
+
+.ml-referral-input-wrap input:focus,
+.ml-referral-input-wrap select:focus,
+.ml-referral-textarea-wrap textarea:focus {
+    border-color: #54a86f;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(84, 168, 111, 0.10);
+}
+
+
+/* Consent */
+
+.ml-referral-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    margin-top: 25px;
+    padding: 15px 17px;
+    border: 1px solid #e3ebe5;
+    border-radius: 11px;
+    background: #f9fbf9;
+}
+
+.ml-referral-consent input {
+    width: 17px;
+    height: 17px;
+    margin-top: 2px;
+    accent-color: #18834c;
+    flex: 0 0 17px;
+}
+
+.ml-referral-consent span {
+    color: #647169;
+    font-size: 0.8rem;
+    line-height: 1.55;
+}
+
+
+/* Security */
+
+.ml-referral-security {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
+    padding: 13px 15px;
+    border-radius: 11px;
+    background: #f3f8f4;
+}
+
+.ml-referral-security-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: #e0f1e6;
+    color: #18834c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 38px;
+}
+
+.ml-referral-security strong {
+    display: block;
+    color: #17432e;
+    font-size: 0.82rem;
+}
+
+.ml-referral-security span {
+    display: block;
+    margin-top: 2px;
+    color: #738078;
+    font-size: 0.75rem;
+}
+
+
+/* Footer */
+
+.ml-referral-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid #e7ece8;
+}
+
+.ml-referral-cancel-btn,
+.ml-referral-submit-btn {
+    min-height: 46px;
+    padding: 0 22px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ml-referral-cancel-btn {
+    border: 1px solid #d8e2dc;
+    background: #ffffff;
+    color: #536159;
+}
+
+.ml-referral-cancel-btn:hover {
+    background: #f5f8f6;
+}
+
+.ml-referral-submit-btn {
+    border: 0;
+    background: linear-gradient(135deg, #31a050, #7ed13f);
+    color: #ffffff;
+    box-shadow: 0 7px 18px rgba(25, 136, 79, 0.18);
+}
+
+.ml-referral-submit-btn:hover {
+    background: #116e3f;
+    transform: translateY(-1px);
+}
+
+.ml-referral-submit-btn i {
+    margin-right: 7px;
+}
+
+
+/* Mobile */
+
+@media (max-width: 767.98px) {
+
+    .ml-practitioner-referral-modal .modal-dialog {
+        margin: 0.6rem;
+    }
+
+    .ml-practitioner-referral-modal .modal-content {
+        border-radius: 18px;
+    }
+
+    .ml-referral-modal-header {
+        padding: 22px 20px;
+    }
+
+    .ml-referral-modal-heading {
+        gap: 12px;
+    }
+
+    .ml-referral-modal-icon {
+        width: 48px;
+        height: 48px;
+        flex-basis: 48px;
+    }
+
+    .ml-referral-modal-heading h2 {
+        font-size: 1.25rem;
+    }
+
+    .ml-referral-modal-heading p {
+        font-size: 0.78rem;
+    }
+
+    .ml-referral-modal-close {
+        top: 18px;
+        right: 17px;
+    }
+
+    .ml-referral-modal-body {
+        padding: 22px 18px;
+        max-height: calc(100vh - 150px);
+    }
+
+    .ml-referral-practitioner-banner {
+        align-items: flex-start;
+        padding: 15px;
+    }
+
+    .ml-referral-section-heading>span {
+        display: none;
+    }
+
+    .ml-referral-modal-footer {
+        flex-direction: column-reverse;
+    }
+
+    .ml-referral-cancel-btn,
+    .ml-referral-submit-btn {
+        width: 100%;
+    }
+
+}
+
+/* ========================================================================
+   PRACTITIONER REFERRAL MODAL - FIXED VIEW / STACKING
+========================================================================= */
+
+.ml-practitioner-referral-modal {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 99999 !important;
+    overflow: hidden !important;
+}
+
+.ml-practitioner-referral-modal .modal-dialog {
+    position: relative;
+    z-index: 100000;
+    width: calc(100% - 48px);
+    max-width: 1290px;
+    height: calc(100vh - 48px);
+    margin: 24px auto !important;
+    display: flex;
+    align-items: center;
+}
+
+.ml-practitioner-referral-modal .modal-content {
+    width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    border: 0;
+    border-radius: 22px;
+    background: #fff;
+    box-shadow: 0 30px 100px rgba(0, 0, 0, .28);
+}
+
+
+/* Bootstrap backdrop */
+
+.modal-backdrop {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 99990 !important;
+    background: #07130d !important;
+}
+
+.modal-backdrop.show {
+    opacity: .72 !important;
+}
+
+
+/* Make sure navbar cannot appear above modal */
+
+header,
+.navbar,
+.ml-navbar,
+.site-header,
+.fixed-top,
+.sticky-top {
+    z-index: 1000;
+}
+
+
+/* Modal body scroll only */
+
+.ml-practitioner-referral-modal .modal-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.ml-practitioner-referral-modal .ml-referral-modal-header {
+    flex: 0 0 auto;
+}
+
+.ml-practitioner-referral-modal .ml-referral-modal-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.ml-practitioner-referral-modal .modal-dialog {
+    width: 100% !important;
+    max-width: 900px !important;
+    margin: 24px auto !important;
+}
+
+.ml-practitioner-referral-modal .modal-content {
+    width: 100% !important;
+    margin: 0 auto !important;
+}
+
+
+/* Mobile */
+
+@media (max-width: 767.98px) {
+
+    .ml-practitioner-referral-modal .modal-dialog {
+        width: calc(100% - 16px);
+        height: calc(100vh - 16px);
+        margin: 8px auto !important;
+    }
+
+    .ml-practitioner-referral-modal .modal-content {
+        border-radius: 16px;
+    }
+}
