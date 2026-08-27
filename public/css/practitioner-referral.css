@@ -1,75 +1,9 @@
-/* ========================practitioner page strat============================================ */
-
-
-.ml-practitioner-features,
 .ml-practitioner-pathway,
 .ml-practitioner-management,
 .ml-practitioner-pharmacy,
 .ml-practitioner-final {
     position: relative;
     width: 100%;
-}
-
-/* TOP FEATURES */
-.ml-practitioner-features {
-    padding: 75px 0;
-    background: #fff;
-}
-
-.ml-practitioner-features-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 24px;
-}
-
-.ml-practitioner-feature-card {
-    min-height: 265px;
-    padding: 34px 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    background: #fff;
-    border: 1px solid rgba(23, 61, 36, .08);
-    border-radius: 14px;
-    box-shadow: 0 12px 38px rgba(31, 45, 34, .07);
-    transition: .35s ease;
-}
-
-.ml-practitioner-feature-card:hover {
-    transform: translateY(-7px);
-    border-color: rgba(49, 160, 80, .20);
-    box-shadow: 0 22px 52px rgba(31, 45, 34, .12);
-}
-
-.ml-practitioner-feature-icon {
-    width: 92px;
-    height: 92px;
-    margin-bottom: 26px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #f4f8f4, #e8f1e9);
-    color: #087039;
-    font-size: 38px;
-}
-
-.ml-practitioner-feature-card h3 {
-    margin: 0 0 10px;
-    color: #353131;
-    font-size: 18px;
-    line-height: 1.35;
-    font-weight: 700;
-}
-
-.ml-practitioner-feature-card p {
-    max-width: 220px;
-    margin: 0;
-    color: #343b37;
-    font-size: 17px;
-    line-height: 1.65;
 }
 
 /* PATHWAY */
@@ -589,9 +523,6 @@
 }
 
 @media (max-width: 1199.98px) {
-    .ml-practitioner-features-grid {
-        gap: 16px;
-    }
 
     .ml-practitioner-pathway-grid {
         gap: 18px;
@@ -603,17 +534,6 @@
 }
 
 @media (max-width: 991.98px) {
-    .ml-practitioner-features {
-        padding: 60px 0;
-    }
-
-    .ml-practitioner-features-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .ml-practitioner-feature-card {
-        min-height: 235px;
-    }
 
     .ml-practitioner-pathway {
         padding: 72px 0 80px;
@@ -671,35 +591,6 @@
 }
 
 @media (max-width: 767.98px) {
-    .ml-practitioner-features {
-        padding: 45px 0;
-    }
-
-    .ml-practitioner-features-grid {
-        gap: 12px;
-    }
-
-    .ml-practitioner-feature-card {
-        min-height: 215px;
-        padding: 22px 12px;
-    }
-
-    .ml-practitioner-feature-icon {
-        width: 68px;
-        height: 68px;
-        margin-bottom: 17px;
-        font-size: 28px;
-    }
-
-    .ml-practitioner-feature-card h3 {
-        font-size: 15px;
-    }
-
-    .ml-practitioner-feature-card p {
-        font-size: 12px;
-        line-height: 1.55;
-    }
-
     .ml-practitioner-pathway {
         padding: 62px 0 70px;
     }
@@ -847,17 +738,6 @@
 }
 
 @media (max-width: 480px) {
-    .ml-practitioner-feature-card {
-        min-height: 200px;
-        padding: 20px 9px;
-    }
-
-    .ml-practitioner-feature-icon {
-        width: 60px;
-        height: 60px;
-        font-size: 24px;
-    }
-
     .ml-practitioner-feature-card h3 {
         font-size: 14px;
     }
@@ -910,56 +790,26 @@
     }
 }
 
+
+
 /* =========================================================
-   PRACTITIONER REFERRAL MODAL
+   PRACTITIONER REFERRAL SECTION (converted from modal)
    ========================================================= */
 
-.ml-practitioner-final-icon {
-    width: 112px;
-    height: 112px;
-    padding: 0;
-    border: 1px solid rgba(255, 255, 255, 0.55);
-    border-radius: 50%;
-    background: transparent;
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 112px;
-    cursor: pointer;
-    transition: all 0.25s ease;
+.ml-practitioner-referral-section {
+    padding: 0 0 100px;
+    background: #fff;
+    scroll-margin-top: 100px;
 }
 
-.ml-practitioner-final-icon i {
-    font-size: 2.2rem;
-}
-
-.ml-practitioner-final-icon:hover {
-    background: #ffffff;
-    color: #08733f;
-    border-color: #ffffff;
-    transform: translateY(-2px);
-}
-
-
-/* Modal */
-
-.ml-practitioner-referral-modal .modal-dialog {
+.ml-referral-card {
     max-width: 980px;
-    margin: 1.5rem auto;
-    min-height: calc(100vh - 3rem);
-    display: flex;
-    align-items: flex-start;
-}
-
-.ml-practitioner-referral-modal .modal-content {
-    width: 100%;
-    max-height: calc(100vh - 3rem);
-    border: 0;
+    margin: 0 auto;
     border-radius: 24px;
     overflow: hidden;
     background: #ffffff;
-    box-shadow: 0 30px 80px rgba(0, 55, 30, 0.22);
+    box-shadow: 0 30px 80px rgba(0, 55, 30, 0.10);
+    border: 1px solid rgba(23, 61, 36, .06);
 }
 
 
@@ -976,7 +826,6 @@
     display: flex;
     align-items: center;
     gap: 18px;
-    padding-right: 45px;
 }
 
 .ml-referral-modal-icon {
@@ -1017,36 +866,11 @@
     opacity: 0.85;
 }
 
-.ml-referral-modal-close {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    width: 38px;
-    height: 38px;
-    padding: 0;
-    border: 2px solid white;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.08);
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.ml-referral-modal-close:hover {
-    background: #ffffff;
-    color: #08733f;
-}
-
 
 /* Body */
 
 .ml-referral-modal-body {
     padding: 32px;
-    max-height: calc(100vh - 190px);
-    overflow-y: auto;
 }
 
 
@@ -1342,12 +1166,12 @@
 
 @media (max-width: 767.98px) {
 
-    .ml-practitioner-referral-modal .modal-dialog {
-        margin: 0.6rem;
+    .ml-practitioner-referral-section {
+        padding-bottom: 60px;
     }
 
-    .ml-practitioner-referral-modal .modal-content {
-        border-radius: 18px;
+    .ml-referral-card {
+        border-radius: 16px;
     }
 
     .ml-referral-modal-header {
@@ -1372,14 +1196,8 @@
         font-size: 0.78rem;
     }
 
-    .ml-referral-modal-close {
-        top: 18px;
-        right: 17px;
-    }
-
     .ml-referral-modal-body {
         padding: 22px 18px;
-        max-height: calc(100vh - 150px);
     }
 
     .ml-referral-practitioner-banner {
@@ -1402,105 +1220,461 @@
 
 }
 
-/* ========================================================================
-   PRACTITIONER REFERRAL MODAL - FIXED VIEW / STACKING
-========================================================================= */
+/* =========================================================
+   PREMIUM PRACTITIONER REFERRAL FORM
+   ========================================================= */
 
-.ml-practitioner-referral-modal {
-    position: fixed !important;
-    inset: 0 !important;
-    z-index: 99999 !important;
-    overflow: hidden !important;
+.ml-practitioner-referral-section {
+    padding: 80px 0 100px;
+    background:
+        radial-gradient(circle at top right, rgba(126, 209, 63, .12), transparent 35%),
+        linear-gradient(180deg, #ffffff, #f7fbf8);
 }
 
-.ml-practitioner-referral-modal .modal-dialog {
+.ml-referral-card {
+    max-width: 1080px;
+    margin: 0 auto;
+    border-radius: 30px;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid rgba(8, 112, 57, .08);
+    box-shadow: 0 35px 90px rgba(8, 70, 35, .14);
+}
+
+.ml-referral-modal-header {
+    padding: 36px 45px;
+    background:
+        linear-gradient(135deg, #045d31, #0b8648);
     position: relative;
-    z-index: 100000;
-    width: calc(100% - 48px);
-    max-width: 1290px;
-    height: calc(100vh - 48px);
-    margin: 24px auto !important;
+}
+
+.ml-referral-modal-header:after {
+    content: "";
+    position: absolute;
+    right: -80px;
+    top: -80px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .08);
+}
+
+.ml-referral-modal-heading {
+    position: relative;
+    z-index: 2;
+}
+
+.ml-referral-modal-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, .14);
+    backdrop-filter: blur(10px);
+}
+
+.ml-referral-modal-icon i {
+    font-size: 32px;
+}
+
+.ml-referral-modal-heading h2 {
+    font-size: 34px;
+    letter-spacing: -.5px;
+}
+
+.ml-referral-modal-body {
+    padding: 45px;
+}
+
+.ml-referral-practitioner-banner {
+    padding: 24px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #f1faf4, #ffffff);
+    border: 1px solid #d9eee1;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .04);
+}
+
+.ml-referral-section-heading {
+    margin-top: 42px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #edf2ee;
+}
+
+.ml-referral-section-number {
+    width: 46px;
+    height: 46px;
+    background: linear-gradient(135deg, #31a050, #7ed13f);
+    box-shadow: 0 10px 20px rgba(49, 160, 80, .25);
+}
+
+.ml-referral-section-heading h3 {
+    font-size: 22px;
+}
+
+.ml-referral-input-wrap input,
+.ml-referral-textarea-wrap textarea {
+    background: #fff;
+    border: 1px solid #dce8df;
+    border-radius: 15px;
+    min-height: 58px;
+    transition: .3s;
+}
+
+.ml-referral-input-wrap input:hover,
+.ml-referral-textarea-wrap textarea:hover {
+    border-color: #8bcf9e;
+}
+
+.ml-referral-input-wrap input:focus,
+.ml-referral-textarea-wrap textarea:focus {
+    box-shadow: 0 0 0 5px rgba(49, 160, 80, .10);
+}
+
+.ml-referral-consent {
+    border-radius: 16px;
+    background: #f7fbf8;
+    padding: 20px;
+}
+
+.ml-referral-security {
+    border-radius: 18px;
+    padding: 18px 22px;
+    background: linear-gradient(135deg, #edf8f1, #f8fcf9);
+}
+
+.ml-referral-modal-footer {
+    margin-top: 35px;
+}
+
+.ml-referral-submit-btn {
+    min-height: 56px;
+    padding: 0 34px;
+    border-radius: 14px;
+    font-size: 16px;
+    background: linear-gradient(135deg, #31a050, #76c93d);
+    box-shadow: 0 15px 35px rgba(49, 160, 80, .25);
+}
+
+.ml-referral-submit-btn:hover {
+    transform: translateY(-3px);
+}
+
+@media(max-width:767px) {
+
+    .ml-referral-modal-body,
+    .ml-referral-modal-header {
+        padding: 25px 20px;
+    }
+
+    .ml-referral-modal-heading h2 {
+        font-size: 25px;
+    }
+}
+
+
+/* =========================================================
+   PREMIUM SPLIT REFERRAL DESIGN
+   ========================================================= */
+
+.ml-practitioner-referral-section {
+    padding: 90px 0;
+    background:
+        radial-gradient(circle at top right, rgba(126, 209, 63, .15), transparent 35%),
+        linear-gradient(180deg, #fff, #f5faf7);
+}
+
+.ml-referral-card {
+    max-width: 1280px;
+    display: flex;
+    overflow: hidden;
+    border-radius: 32px;
+    background: #fff;
+    box-shadow: 0 35px 100px rgba(0, 50, 25, .16);
+}
+
+.ml-referral-side-panel {
+    width: 38%;
+    padding: 55px 45px;
+    color: #fff;
+    background:
+        linear-gradient(180deg, rgba(4, 93, 49, .85), rgba(3, 70, 36, .85)),
+        url('../img/practitioner.webp') center bottom/cover no-repeat;
+    position: relative;
+}
+
+.ml-referral-side-panel:after {
+    content: "";
+    position: absolute;
+    right: -80px;
+    bottom: -80px;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .08);
+}
+
+.ml-referral-brand {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+}
+
+.ml-referral-side-panel h2 {
+    color: #fff;
+    font-size: 38px;
+    line-height: 1.15;
+    margin-bottom: 22px;
+}
+
+.ml-referral-side-panel p {
+    color: rgba(255, 255, 255, .85);
+    line-height: 1.8;
+}
+
+.ml-referral-side-points {
+    margin-top: 45px;
+}
+
+.ml-referral-side-points div {
     display: flex;
     align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .15);
 }
 
-.ml-practitioner-referral-modal .modal-content {
-    width: 100%;
-    max-height: 100%;
-    overflow: hidden;
-    border: 0;
-    border-radius: 22px;
+.ml-referral-side-points i {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .12);
+}
+
+.ml-referral-form-panel {
+    width: 62%;
     background: #fff;
-    box-shadow: 0 30px 100px rgba(0, 0, 0, .28);
+}
+
+.ml-referral-modal-header {
+    background: #fff;
+    color: #123;
+    padding: 45px 45px 20px;
+}
+
+.ml-referral-modal-heading h2 {
+    color: #103b28;
+}
+
+.ml-referral-modal-heading p {
+    color: #718078;
+}
+
+.ml-referral-modal-icon {
+    background: #e9f8ef;
+    color: #128149;
+}
+
+.ml-referral-modal-body {
+    padding: 25px 45px 45px;
+}
+
+@media(max-width:991px) {
+    .ml-referral-card {
+        display: block;
+    }
+
+    .ml-referral-side-panel,
+    .ml-referral-form-panel {
+        width: 100%;
+    }
 }
 
 
-/* Bootstrap backdrop */
+/* =========================================================
+   FINAL REFERRAL FORM PREMIUM LAYOUT FIX
+   ========================================================= */
 
-.modal-backdrop {
-    position: fixed !important;
-    inset: 0 !important;
-    z-index: 99990 !important;
-    background: #07130d !important;
+.ml-referral-card {
+    max-width: 1280px;
+    min-height: 820px;
+    display: flex;
 }
 
-.modal-backdrop.show {
-    opacity: .72 !important;
-}
-
-
-/* Make sure navbar cannot appear above modal */
-
-header,
-.navbar,
-.ml-navbar,
-.site-header,
-.fixed-top,
-.sticky-top {
-    z-index: 1000;
-}
-
-
-/* Modal body scroll only */
-
-.ml-practitioner-referral-modal .modal-content {
+.ml-referral-side-panel {
+    width: 40%;
+    min-height: 820px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
-.ml-practitioner-referral-modal .ml-referral-modal-header {
+.ml-referral-form-panel {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+}
+
+.ml-referral-modal-header {
     flex: 0 0 auto;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: #ffffff;
 }
 
-.ml-practitioner-referral-modal .ml-referral-modal-body {
-    flex: 1 1 auto;
-    min-height: 0;
+.ml-referral-modal-body {
+    flex: 1;
+    max-height: 620px;
     overflow-y: auto;
+    padding-right: 35px;
 }
 
-.ml-practitioner-referral-modal .modal-dialog {
-    width: 100% !important;
-    max-width: 900px !important;
-    margin: 24px auto !important;
+/* Custom scrollbar only form area */
+.ml-referral-modal-body::-webkit-scrollbar {
+    width: 7px;
 }
 
-.ml-practitioner-referral-modal .modal-content {
-    width: 100% !important;
-    margin: 0 auto !important;
+.ml-referral-modal-body::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    background: #9bd17d;
 }
 
+/* Fixed submit area */
+.ml-referral-modal-footer {
+    flex: 0 0 auto;
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    background: #ffffff;
+    padding: 20px 45px;
+    margin: 0;
+}
 
-/* Mobile */
+/* Premium section number */
+.ml-referral-section-number {
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: linear-gradient(135deg, #31a050, #7ed13f) !important;
+    color: #fff !important;
+    font-weight: 800;
+    font-size: 16px;
+    box-shadow: 0 12px 28px rgba(49, 160, 80, .25);
+}
 
-@media (max-width: 767.98px) {
+/* Premium input spacing */
+.ml-referral-input-wrap input,
+.ml-referral-textarea-wrap textarea {
+    border-radius: 16px;
+    min-height: 58px;
+    padding-left: 50px;
+}
 
-    .ml-practitioner-referral-modal .modal-dialog {
-        width: calc(100% - 16px);
-        height: calc(100vh - 16px);
-        margin: 8px auto !important;
+/* Submit button premium */
+.ml-referral-submit-btn {
+    min-height: 58px;
+    padding: 0 38px;
+    border-radius: 16px;
+    font-size: 16px;
+}
+
+/* Responsive */
+@media(max-width:991px) {
+
+    .ml-referral-card {
+        display: block;
+        min-height: auto;
     }
 
-    .ml-practitioner-referral-modal .modal-content {
-        border-radius: 16px;
+    .ml-referral-side-panel,
+    .ml-referral-form-panel {
+        width: 100%;
     }
+
+    .ml-referral-side-panel {
+        min-height: auto;
+    }
+
+    .ml-referral-modal-body {
+        max-height: none;
+        overflow: visible;
+    }
+
+    .ml-referral-modal-footer {
+        position: static;
+        padding: 20px;
+    }
+}
+
+.ml-success-popup {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, .45);
+    backdrop-filter: blur(5px);
+}
+
+.ml-success-popup-card {
+    position: relative;
+    width: 550px;
+    max-width: 90%;
+    padding: 40px 35px;
+    border-radius: 24px;
+    background: #fff;
+    text-align: center;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, .18);
+}
+
+.ml-popup-close {
+    position: absolute;
+    top: 15px;
+    right: 18px;
+    border: 0;
+    background: none;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.ml-popup-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8f7ed;
+    color: #16834b;
+    font-size: 42px;
+}
+
+.ml-success-popup-card h3 {
+    color: #123b29;
+    margin-bottom: 12px;
+}
+
+.ml-success-popup-card p {
+    color: #65736b;
+    line-height: 1.6;
+}
+
+.ml-popup-btn {
+    margin-top: 20px;
+    padding: 12px 35px;
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    background: linear-gradient(135deg, #31a050, #7ed13f);
+    cursor: pointer;
 }

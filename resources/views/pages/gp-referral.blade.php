@@ -69,34 +69,6 @@
             </div>
         </div>
     </section>
-
-    <section class="ml-practitioner-features">
-        <div class="container">
-            <div class="ml-practitioner-features-grid">
-                <article class="ml-practitioner-feature-card">
-                    <div class="ml-practitioner-feature-icon"><i class="bi bi-clipboard2-pulse"></i></div>
-                    <h3>Clinical Assessment</h3>
-                    <p>Eligibility screening by experienced practitioners</p>
-                </article>
-                <article class="ml-practitioner-feature-card">
-                    <div class="ml-practitioner-feature-icon"><i class="bi bi-file-earmark-check"></i></div>
-                    <h3>Regulatory Support</h3>
-                    <p>Appropriate clinical and regulatory pathways</p>
-                </article>
-                <article class="ml-practitioner-feature-card">
-                    <div class="ml-practitioner-feature-icon"><i class="bi bi-arrow-repeat"></i></div>
-                    <h3>Continuity of Care</h3>
-                    <p>Ongoing patient management and follow up</p>
-                </article>
-                <article class="ml-practitioner-feature-card">
-                    <div class="ml-practitioner-feature-icon"><i class="bi bi-shield-lock"></i></div>
-                    <h3>Secure &amp; Discreet</h3>
-                    <p>Patient focused communication and dispensing</p>
-                </article>
-            </div>
-        </div>
-    </section>
-
     <section class="ml-practitioner-pathway">
         <div class="ml-practitioner-pathway-leaf ml-practitioner-pathway-leaf-left" aria-hidden="true"></div>
         <div class="ml-practitioner-pathway-leaf ml-practitioner-pathway-leaf-right" aria-hidden="true"></div>
@@ -240,10 +212,10 @@
                 <div class="row align-items-center g-4">
                     <div class="col-lg-6">
                         <div class="ml-practitioner-final-left">
-                            <button type="button" class="ml-practitioner-final-icon" data-bs-toggle="modal"
-                                data-bs-target="#practitionerReferralModal" aria-label="Open practitioner referral form">
+                            <a href="#practitioner-referral" class="ml-practitioner-final-icon"
+                                aria-label="Go to practitioner referral form">
                                 <i class="bi bi-person-plus"></i>
-                            </button>
+                            </a>
                             <div>
                                 <h2>Ready to refer a patient?</h2>
                                 <p>
@@ -273,353 +245,255 @@
     </section>
 
 
-    {{-- Practitioner Referral Modal --}}
-    <div class="modal fade ml-practitioner-referral-modal" id="practitionerReferralModal" tabindex="-1"
-        aria-labelledby="practitionerReferralModalLabel" aria-hidden="true">
+    {{-- Success Popup --}}
+    @if(session('success'))
+        <div id="successPopup" class="ml-success-popup">
+            <div class="ml-success-popup-card">
 
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
+                <button type="button" class="ml-popup-close" onclick="closeSuccessPopup()">
+                    &times;
+                </button>
 
-                {{-- Modal Header --}}
-                <div class="ml-referral-modal-header">
-
-                    <div class="ml-referral-modal-heading">
-
-                        <div class="ml-referral-modal-icon">
-                            <i class="bi bi-person-plus"></i>
-                        </div>
-
-                        <div>
-                            <span>MEDILEAF HEALTH</span>
-
-                            <h2 id="practitionerReferralModalLabel">
-                                Practitioner Referral
-                            </h2>
-
-                            <p>
-                                Refer a patient securely to our clinical team.
-                            </p>
-                        </div>
-
-                    </div>
-
-                    <button type="button" class="ml-referral-modal-close" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="bi bi-x-lg"></i>
-                    </button>
-
+                <div class="ml-popup-icon">
+                    <i class="bi bi-check-circle-fill"></i>
                 </div>
 
+                <h3>Referral Submitted Successfully</h3>
 
-                {{-- Modal Body --}}
-                <div class="ml-referral-modal-body">
+                <p>{{ session('success') }}</p>
 
-                    <div class="ml-referral-practitioner-banner">
-
-                        <div class="ml-referral-practitioner-banner-icon">
-                            <i class="bi bi-person-badge"></i>
-                        </div>
-
-                        <div>
-                            <small>REFERRING PRACTITIONER</small>
-
-                            <strong>
-                                Practitioner Referral
-                            </strong>
-
-                            <span>
-                                Please provide your professional and patient details below.
-                            </span>
-                        </div>
-
-                    </div>
-
-
-                    <form action="#" method="POST">
-
-                        @csrf
-
-                        {{-- Practitioner Details --}}
-                        <div class="ml-referral-section-heading">
-                            <div class="ml-referral-section-number">1</div>
-
-                            <div>
-                                <h3>Practitioner Details</h3>
-                                <p>Your professional contact information</p>
-                            </div>
-
-                            <span>Required</span>
-                        </div>
-
-                        <div class="row g-4">
-
-                            <div class="col-md-6">
-
-                                <label class="ml-referral-label">
-                                    Practitioner Name <span>*</span>
-                                </label>
-
-                                <div class="ml-referral-input-wrap">
-                                    <i class="bi bi-person-badge"></i>
-
-                                    <input type="text" name="practitioner_name" placeholder="Enter practitioner name"
-                                        required>
-                                </div>
-
-                            </div>
-
-
-                            <div class="col-md-6">
-
-                                <label class="ml-referral-label">
-                                    Practice / Clinic Name
-                                </label>
-
-                                <div class="ml-referral-input-wrap">
-                                    <i class="bi bi-building"></i>
-
-                                    <input type="text" name="practice_name" placeholder="Enter practice or clinic name">
-                                </div>
-
-                            </div>
-
-
-                            <div class="col-md-6">
-
-                                <label class="ml-referral-label">
-                                    Practitioner Email <span>*</span>
-                                </label>
-
-                                <div class="ml-referral-input-wrap">
-                                    <i class="bi bi-envelope"></i>
-
-                                    <input type="email" name="practitioner_email" placeholder="Enter professional email"
-                                        required>
-                                </div>
-
-                            </div>
-
-
-                            <div class="col-md-6">
-
-                                <label class="ml-referral-label">
-                                    Practitioner Phone <span>*</span>
-                                </label>
-
-                                <div class="ml-referral-input-wrap">
-                                    <i class="bi bi-telephone"></i>
-
-                                    <input type="tel" name="practitioner_phone" placeholder="Enter contact number" required>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        {{-- Patient Details --}}
-                        <div class="ml-referral-section-heading mt-5">
-
-                            <div class="ml-referral-section-number">2</div>
-
-                            <div>
-                                <h3>Patient Details</h3>
-                                <p>Information about the patient being referred</p>
-                            </div>
-
-                            <span>Required</span>
-
-                        </div>
-
-
-                        <div class="row g-4">
-
-                            <div class="col-md-6">
-
-                                <label class="ml-referral-label">
-                                    First Name <span>*</span>
-                                </label>
-
-                                <div class="ml-referral-input-wrap">
-                                    <i class="bi bi-person"></i>
-
-                                    <input type="text" name="patient_first_name" placeholder="Enter patient's first name"
-                                        required>
-                                </div>
-
-                            </div>
-
-
-                            <div class="col-md-6">
-
-                                <label class="ml-referral-label">
-                                    Surname <span>*</span>
-                                </label>
-
-                                <div class="ml-referral-input-wrap">
-                                    <i class="bi bi-person"></i>
-
-                                    <input type="text" name="patient_last_name" placeholder="Enter patient's surname"
-                                        required>
-                                </div>
-
-                            </div>
-
-
-                            <div class="col-md-6">
-
-                                <label class="ml-referral-label">
-                                    Patient Email <span>*</span>
-                                </label>
-
-                                <div class="ml-referral-input-wrap">
-                                    <i class="bi bi-envelope"></i>
-
-                                    <input type="email" name="patient_email" placeholder="Enter patient's email" required>
-                                </div>
-
-                            </div>
-
-
-                            <div class="col-md-6">
-
-                                <label class="ml-referral-label">
-                                    Patient Phone <span>*</span>
-                                </label>
-
-                                <div class="ml-referral-input-wrap">
-                                    <i class="bi bi-telephone"></i>
-
-                                    <input type="tel" name="patient_phone" placeholder="Enter patient's phone number"
-                                        required>
-                                </div>
-
-                            </div>
-
-
-                            <div class="col-md-6">
-
-                                <label class="ml-referral-label">
-                                    Date of Birth <span>*</span>
-                                </label>
-
-                                <div class="ml-referral-input-wrap">
-                                    <i class="bi bi-calendar3"></i>
-
-                                    <input type="date" name="patient_dob" required>
-                                </div>
-
-                            </div>
-
-
-                            <div class="col-md-6">
-
-                                <label class="ml-referral-label">
-                                    Medicare Number
-                                </label>
-
-                                <div class="ml-referral-input-wrap">
-                                    <i class="bi bi-card-text"></i>
-
-                                    <input type="text" name="medicare_number" placeholder="Enter Medicare number">
-                                </div>
-
-                            </div>
-
-
-                            <div class="col-12">
-
-                                <label class="ml-referral-label">
-                                    Additional Information
-                                </label>
-
-                                <div class="ml-referral-textarea-wrap">
-
-                                    <i class="bi bi-pencil-square"></i>
-
-                                    <textarea name="notes" rows="4"
-                                        placeholder="Please provide any relevant referral information..."></textarea>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        {{-- Consent --}}
-                        <div class="ml-referral-consent">
-
-                            <input type="checkbox" name="consent" value="1" required>
-
-                            <span>
-                                I confirm that I am authorised to provide this referral
-                                information and consent to MediLeaf Health contacting me
-                                regarding this referral.
-                            </span>
-
-                        </div>
-
-
-                        {{-- Turnstile --}}
-
-                        <div class="form-group mt-3">
-
-                            <div class="turnstile-wrap">
-
-                                <div class="cf-turnstile" data-sitekey="{{ config('services.turnstile.site_key') }}"
-                                    data-theme="light" data-size="flexible">
-                                </div>
-
-                            </div>
-
-                            @error('cf-turnstile-response')
-                                <small class="field-error d-block mt-2">
-                                    {{ $message }}
-                                </small>
-                            @enderror
-
-                        </div>
-
-                        <div class="ml-referral-security">
-
-                            <div class="ml-referral-security-icon">
-                                <i class="bi bi-shield-check"></i>
-                            </div>
-
-                            <div>
-                                <strong>Secure Referral</strong>
-
-                                <span>
-                                    Your information is handled securely and used only
-                                    for the purpose of this referral.
-                                </span>
-                            </div>
-
-                        </div>
-
-
-                        {{-- Footer --}}
-                        <div class="ml-referral-modal-footer">
-
-                            <button type="button" class="ml-referral-cancel-btn" data-bs-dismiss="modal">
-                                Cancel
-                            </button>
-
-                            <button type="submit" class="ml-referral-submit-btn">
-
-                                <i class="bi bi-send"></i>
-
-                                Submit Referral
-
-                            </button>
-
-                        </div>
-
-                    </form>
-
-                </div>
+                <button type="button" class="ml-popup-btn" onclick="closeSuccessPopup()">
+                    Done
+                </button>
 
             </div>
         </div>
-    </div>
+    @endif
+
+    {{-- Practitioner Referral Section (converted from modal) --}}
+    <section class="ml-practitioner-referral-section" id="practitioner-referral">
+        <div class="container">
+            <div class="ml-referral-card">
+
+                <div class="ml-referral-side-panel">
+                    <div class="ml-referral-brand">MEDILEAF HEALTH</div>
+                    <h2>Supporting Better<br>Healthcare Through<br>Trusted Referrals</h2>
+                    <p>Connect your patients with our clinical team through a secure and streamlined referral process.</p>
+                    <div class="ml-referral-side-points">
+                        <div><i class="bi bi-shield-check"></i><span>Secure Patient Information</span></div>
+                        <div><i class="bi bi-person-check"></i><span>Professional Clinical Review</span></div>
+                        <div><i class="bi bi-heart-pulse"></i><span>Better Patient Outcomes</span></div>
+                    </div>
+                </div>
+
+                <div class="ml-referral-form-panel">
+
+                    {{-- Header --}}
+                    <div class="ml-referral-modal-header">
+                        <div class="ml-referral-modal-heading">
+                            <div class="ml-referral-modal-icon">
+                                <i class="bi bi-person-plus"></i>
+                            </div>
+                            <div>
+                                <span>MEDILEAF HEALTH</span>
+                                <h2>Submit Your Patient Referral</h2>
+                                <p>Complete the secure referral form below and our clinical team will review the patient
+                                    information.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Body --}}
+                    <div class="ml-referral-modal-body">
+
+                        <form action="{{ route('gp-referral.store') }}" method="POST">
+                            @csrf
+
+                            {{-- Practitioner Details --}}
+                            <div class="ml-referral-section-heading">
+                                <div class="ml-referral-section-number"><span>01</span></div>
+                                <div>
+                                    <h3>Practitioner Details</h3>
+                                    <p>Your professional contact information</p>
+                                </div>
+                                <span>Required</span>
+                            </div>
+
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <label class="ml-referral-label">Practitioner Name <span>*</span></label>
+                                    <div class="ml-referral-input-wrap">
+                                        <i class="bi bi-person-badge"></i>
+                                        <input type="text" name="practitioner_name" placeholder="Enter practitioner name"
+                                            required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="ml-referral-label">Practice / Clinic Name</label>
+                                    <div class="ml-referral-input-wrap">
+                                        <i class="bi bi-building"></i>
+                                        <input type="text" name="practice_name" placeholder="Enter practice or clinic name">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="ml-referral-label">Practitioner Email <span>*</span></label>
+                                    <div class="ml-referral-input-wrap">
+                                        <i class="bi bi-envelope"></i>
+                                        <input type="email" name="practitioner_email" placeholder="Enter professional email"
+                                            required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="ml-referral-label">Practitioner Phone <span>*</span></label>
+                                    <div class="ml-referral-input-wrap">
+                                        <i class="bi bi-telephone"></i>
+                                        <input type="tel" name="practitioner_phone" placeholder="Enter contact number"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Patient Details --}}
+                            <div class="ml-referral-section-heading mt-5">
+                                <div class="ml-referral-section-number"><span>02</span></div>
+                                <div>
+                                    <h3>Patient Details</h3>
+                                    <p>Information about the patient being referred</p>
+                                </div>
+                                <span>Required</span>
+                            </div>
+
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <label class="ml-referral-label">First Name <span>*</span></label>
+                                    <div class="ml-referral-input-wrap">
+                                        <i class="bi bi-person"></i>
+                                        <input type="text" name="patient_first_name"
+                                            placeholder="Enter patient's first name" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="ml-referral-label">Surname <span>*</span></label>
+                                    <div class="ml-referral-input-wrap">
+                                        <i class="bi bi-person"></i>
+                                        <input type="text" name="patient_last_name" placeholder="Enter patient's surname"
+                                            required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="ml-referral-label">Patient Email <span>*</span></label>
+                                    <div class="ml-referral-input-wrap">
+                                        <i class="bi bi-envelope"></i>
+                                        <input type="email" name="patient_email" placeholder="Enter patient's email"
+                                            required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="ml-referral-label">Patient Phone <span>*</span></label>
+                                    <div class="ml-referral-input-wrap">
+                                        <i class="bi bi-telephone"></i>
+                                        <input type="tel" name="patient_phone" placeholder="Enter patient's phone number"
+                                            required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="ml-referral-label">Date of Birth <span>*</span></label>
+                                    <div class="ml-referral-input-wrap">
+                                        <i class="bi bi-calendar3"></i>
+                                        <input type="date" name="patient_dob" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="ml-referral-label">Medicare Number</label>
+                                    <div class="ml-referral-input-wrap">
+                                        <i class="bi bi-card-text"></i>
+                                        <input type="text" name="medicare_number" placeholder="Enter Medicare number">
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="ml-referral-label">Additional Information</label>
+                                    <div class="ml-referral-textarea-wrap">
+                                        <i class="bi bi-pencil-square"></i>
+                                        <textarea name="notes" rows="4"
+                                            placeholder="Please provide any relevant referral information..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Referral Information --}}
+                            <div class="ml-referral-section-heading mt-5">
+                                <div class="ml-referral-section-number"><span>03</span></div>
+                                <div>
+                                    <h3>Referral Information</h3>
+                                    <p>Provide any additional clinical details relevant to the referral.</p>
+                                </div>
+                            </div>
+
+                            {{-- Consent --}}
+                            <div class="ml-referral-consent">
+                                <input type="checkbox" name="consent" value="1" required>
+                                <span>
+                                    I confirm that I am authorised to provide this referral
+                                    information and consent to MediLeaf Health contacting me
+                                    regarding this referral.
+                                </span>
+                            </div>
+
+                            {{-- Turnstile --}}
+                            <div class="form-group mt-3">
+                                <div class="turnstile-wrap">
+                                    <div class="cf-turnstile" data-sitekey="{{ config('services.turnstile.site_key') }}"
+                                        data-theme="light" data-size="flexible">
+                                    </div>
+                                </div>
+                                @error('cf-turnstile-response')
+                                    <small class="field-error d-block mt-2">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="ml-referral-security">
+                                <div class="ml-referral-security-icon">
+                                    <i class="bi bi-shield-check"></i>
+                                </div>
+                                <div>
+                                    <strong>Secure Referral</strong>
+                                    <span>Your information is handled securely and used only for the purpose of this
+                                        referral.</span>
+                                </div>
+                            </div>
+
+                            {{-- Footer --}}
+                            <div class="ml-referral-modal-footer">
+                                <button type="submit" class="ml-referral-submit-btn">
+                                    <i class="bi bi-send"></i>
+                                    Submit Referral
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function closeSuccessPopup() {
+            const popup = document.getElementById('successPopup');
+
+            if (popup) {
+                popup.style.display = 'none';
+            }
+        }
+    </script>
+
 @endsection

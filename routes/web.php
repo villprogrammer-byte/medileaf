@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PractitionerReferralController;
 use App\Http\Controllers\Prescription\PrescriptionController;
 use App\Http\Controllers\Prescription\UploadPrescriptionController;
 use App\Http\Controllers\Admin\Auth\AdminLoginController;
@@ -29,6 +30,8 @@ Route::get('/', function () {
 Route::view('/about', 'pages.about')->name('about');
 Route::view('/clinic', 'pages.clinic')->name('clinic');
 Route::view('/gp-referral', 'pages.gp-referral')->name('gp-referral');
+Route::post('/gp-referral', [PractitionerReferralController::class, 'store'])
+    ->name('gp-referral.store');
 Route::view('/pharmacy', 'pages.pharmacy')->name('pharmacy');
 Route::view('/contact', 'pages.contact')->name('contact');
 Route::view('/blog', 'pages.blog')->name('blog');
