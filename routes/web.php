@@ -1,27 +1,35 @@
 <?php
+
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PractitionerReferralController;
+use App\Http\Controllers\StoreController;
 use App\Http\Controllers\Prescription\PrescriptionController;
 use App\Http\Controllers\Prescription\UploadPrescriptionController;
-use App\Http\Controllers\Admin\Auth\AdminLoginController;
-use App\Http\Controllers\Admin\Auth\AdminOtpController;
-use App\Http\Controllers\Admin\Auth\AdminForgotPasswordController;
-use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\BlogController;
-use App\Http\Controllers\Admin\BlogCategoryController;
-use App\Http\Controllers\Admin\BlogTagController;
-use App\Http\Controllers\Admin\BlogAuthorController;
-use App\Http\Controllers\Admin\BlogRedirectController;
-use App\Http\Controllers\StoreController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\User\UserDashboardController;
+use App\Http\Controllers\Admin\Auth\AdminLoginController;
+use App\Http\Controllers\Admin\Auth\AdminOtpController;
+use App\Http\Controllers\Admin\Auth\AdminForgotPasswordController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\HalaxyPatientController;
+use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\BlogCategoryController;
+use App\Http\Controllers\Admin\BlogTagController;
+use App\Http\Controllers\Admin\BlogAuthorController;
+use App\Http\Controllers\Admin\BlogRedirectController;
+
+/*
+|--------------------------------------------------------------------------
+| Public Pages
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', function () {
     return view('home');
@@ -29,20 +37,42 @@ Route::get('/', function () {
 
 Route::view('/about', 'pages.about')->name('about');
 Route::view('/clinic', 'pages.clinic')->name('clinic');
+Route::view('/pharmacy', 'pages.pharmacy')->name('pharmacy');
+Route::view('/contact', 'pages.contact')->name('contact');
+Route::view('/terms', 'pages.terms')->name('terms');
+
 Route::view('/gp-referral', 'pages.gp-referral')->name('gp-referral');
 Route::post('/gp-referral', [PractitionerReferralController::class, 'store'])
     ->name('gp-referral.store');
-Route::view('/pharmacy', 'pages.pharmacy')->name('pharmacy');
-Route::view('/contact', 'pages.contact')->name('contact');
+
+Route::post('/contact-send', [ContactController::class, 'send'])->name('contact.send');
+
+/*
+|--------------------------------------------------------------------------
+| Blog (Public)
+|--------------------------------------------------------------------------
+*/
+
 Route::view('/blog', 'pages.blog')->name('blog');
 Route::get('/blog/{slug}', [BlogController::class, 'publicShow'])
     ->where('slug', '[a-z0-9\-]+')
     ->name('blog.view');
-Route::view('/terms', 'pages.terms')->name('terms');
+
+/*
+|--------------------------------------------------------------------------
+| Store / Cart / Checkout
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/store', [StoreController::class, 'index'])->name('store');
 Route::view('/cart', 'shop.cart')->name('cart');
 Route::view('/checkout', 'shop.checkout')->name('checkout');
-Route::post('/contact-send', [ContactController::class, 'send'])->name('contact.send');
+
+/*
+|--------------------------------------------------------------------------
+| Prescriptions
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/prescription', [PrescriptionController::class, 'index'])->name('prescription');
 Route::post('/prescription', [PrescriptionController::class, 'store'])->name('prescription.store');
@@ -50,10 +80,22 @@ Route::post('/prescription', [PrescriptionController::class, 'store'])->name('pr
 Route::get('/upload-prescription', [UploadPrescriptionController::class, 'index'])->name('upload.prescription');
 Route::post('/upload-prescription', [UploadPrescriptionController::class, 'store'])->name('upload.prescription.store');
 
+/*
+|--------------------------------------------------------------------------
+| User Registration
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
     Route::post('/register', [RegisteredUserController::class, 'store'])->name('register.store');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Admin Auth (Login / OTP)
+|--------------------------------------------------------------------------
+*/
 
 Route::prefix('admin')
     ->name('admin.')
@@ -67,10 +109,22 @@ Route::prefix('admin')
         Route::post('/login/resend-otp', [AdminOtpController::class, 'resend'])->name('otp.resend');
     });
 
+/*
+|--------------------------------------------------------------------------
+| Social Auth
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware('guest')->group(function () {
     Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])->name('social.redirect');
     Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])->name('social.callback');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Admin Forgot / Reset Password
+|--------------------------------------------------------------------------
+*/
 
 Route::middleware('guest')->group(function () {
     Route::get('/admin/forgot-password', [AdminForgotPasswordController::class, 'showEmailForm'])->name('admin.password.request');
@@ -82,6 +136,12 @@ Route::middleware('guest')->group(function () {
     Route::post('/admin/reset-password', [AdminForgotPasswordController::class, 'resetPassword'])->name('admin.password.reset.update');
 });
 
+/*
+|--------------------------------------------------------------------------
+| User Auth (Login / OTP)
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login/send-otp', [AuthController::class, 'sendLoginOtp'])->name('login.otp.send');
@@ -90,9 +150,21 @@ Route::middleware('guest')->group(function () {
     Route::post('/login/resend-otp', [OtpController::class, 'resend'])->name('otp.resend');
 });
 
+/*
+|--------------------------------------------------------------------------
+| Authenticated User Dashboard
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Admin Panel
+|--------------------------------------------------------------------------
+*/
 
 Route::prefix('admin')
     ->name('admin.')
@@ -104,6 +176,23 @@ Route::prefix('admin')
 
         Route::resource('products', ProductController::class);
 
+        /*
+        |--------------------------------------------------------------------------
+        | Halaxy Patients
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('halaxy-patients')
+            ->name('halaxy-patients.')
+            ->group(function () {
+
+                Route::get('/', [HalaxyPatientController::class, 'index'])
+                    ->name('index');
+
+                Route::get('/{patientId}', [HalaxyPatientController::class, 'show'])
+                    ->name('show');
+            });
+
         Route::get('/orders/pending', function () {
             return view('admin.orders.pending');
         })->name('orders.pending');
@@ -114,7 +203,7 @@ Route::prefix('admin')
 
         /*
         |--------------------------------------------------------------------------
-        | BLOG
+        | Blog (Admin)
         |--------------------------------------------------------------------------
         */
 
@@ -211,6 +300,12 @@ Route::prefix('admin')
         })->name('settings');
     });
 
+/*
+|--------------------------------------------------------------------------
+| Authenticated User Account
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [OtpController::class, 'logout'])->name('logout');
 
@@ -223,9 +318,21 @@ Route::middleware('auth')->group(function () {
     })->name('verification.success');
 });
 
-require __DIR__ . '/user.php';
+/*
+|--------------------------------------------------------------------------
+| Route File Includes
+|--------------------------------------------------------------------------
+*/
 
+require __DIR__ . '/user.php';
 require __DIR__ . '/auth.php';
+
+/*
+|--------------------------------------------------------------------------
+| Product / Store Catch-alls
+| These MUST stay last — {categorySlug}/{productSlug} is a wildcard match.
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/product/{product}', [StoreController::class, 'legacyRedirect'])
     ->whereNumber('product')

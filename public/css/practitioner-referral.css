@@ -1501,6 +1501,8 @@
     max-width: 1280px;
     min-height: 820px;
     display: flex;
+    overflow: hidden;
+    border-radius: 32px;
 }
 
 .ml-referral-side-panel {
@@ -1516,6 +1518,7 @@
     display: flex;
     flex-direction: column;
     background: #ffffff;
+    overflow: hidden;
 }
 
 .ml-referral-modal-header {
@@ -1677,4 +1680,12 @@
     color: #fff;
     background: linear-gradient(135deg, #31a050, #7ed13f);
     cursor: pointer;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+#practitioner-referral {
+    scroll-margin-top: 100px;
 }

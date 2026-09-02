@@ -34,4 +34,23 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Halaxy API
+    |--------------------------------------------------------------------------
+    */
+
+    'halaxy' => [
+        'base_url' => env(
+            'HALAXY_BASE_URL',
+            'https://au-api.halaxy.com/main'
+        ),
+        'client_id' => env('HALAXY_CLIENT_ID'),
+        'client_secret' => env('HALAXY_CLIENT_SECRET'),
+        'user_agent' => env(
+            'HALAXY_USER_AGENT',
+            'MediLeaf (admin@medileaf.co.au)'
+        ),
+    ],
+
 ];

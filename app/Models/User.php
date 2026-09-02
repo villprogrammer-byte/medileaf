@@ -27,6 +27,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'mobile',
         'dob',
         'password',
+        'halaxy_patient_id',
     ];
 
     /**
@@ -49,6 +50,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'dob' => 'date',
         ];
     }
 

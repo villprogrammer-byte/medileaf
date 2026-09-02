@@ -22,7 +22,7 @@
                         </p>
 
                         <div class="ml-pharmacy-hero-actions">
-                            <a href="" class="ml-pharmacy-hero-link">
+                            <a href="#practitioner-referral" class="ml-pharmacy-hero-link">
                                 <i class="bi bi-person-fill-add"></i>
                                 Refer a Patient
                             </a>
