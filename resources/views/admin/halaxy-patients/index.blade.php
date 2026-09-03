@@ -4,91 +4,115 @@
 
 @section('content')
 
-    <div class="container-fluid px-0">
+    <div class="ml-halaxy-page">
 
-        <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-4">
+        {{-- =====================================================
+        PAGE HEADER
+        ====================================================== --}}
+        <div class="ml-halaxy-page-head">
 
             <div>
-                <h1 class="h3 mb-1">Halaxy Patients</h1>
-                <p class="text-muted mb-0">
-                    View existing patients connected through the Halaxy API.
+                <h1>Halaxy Patients</h1>
+                <p>
+                    View and manage existing patients connected through the Halaxy API.
                 </p>
             </div>
 
-            <div>
-                <a href="{{ route('admin.halaxy-patients.index') }}" class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-clockwise me-1"></i>
+            <div class="ml-halaxy-head-actions">
+
+                <a href="{{ route('admin.halaxy-patients.index') }}" class="ml-halaxy-secondary-btn">
+
+                    <i class="bi bi-arrow-clockwise"></i>
+
                     Refresh
+
                 </a>
+
             </div>
 
         </div>
 
+
+        {{-- =====================================================
+        ERROR MESSAGES
+        ====================================================== --}}
         @if(session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
+
+            <div class="ml-halaxy-alert error">
+
+                <i class="bi bi-exclamation-circle-fill"></i>
+
+                <div>
+                    {{ session('error') }}
+                </div>
+
             </div>
+
         @endif
+
 
         @if(isset($error))
-            <div class="alert alert-danger">
-                {{ $error }}
+
+            <div class="ml-halaxy-alert error">
+
+                <i class="bi bi-exclamation-circle-fill"></i>
+
+                <div>
+                    {{ $error }}
+                </div>
+
             </div>
+
         @endif
 
-        <div class="card border-0 shadow-sm mb-4">
 
-            <div class="card-body">
+        {{-- =====================================================
+        SEARCH
+        ====================================================== --}}
+        <div class="ml-halaxy-card ml-halaxy-search-card">
 
-                <form method="GET" action="{{ route('admin.halaxy-patients.index') }}">
+            <div class="ml-halaxy-card-body">
 
-                    <div class="row g-2 align-items-end">
+                <form method="GET" action="{{ route('admin.halaxy-patients.index') }}" class="ml-halaxy-search-form">
 
-                        <div class="col-lg-6 col-md-8">
+                    <div class="ml-halaxy-search-field">
 
-                            <label class="form-label fw-semibold">
-                                Search Patient
-                            </label>
+                        <label class="ml-halaxy-search-label">
+                            Search Patient
+                        </label>
 
-                            <div class="input-group">
+                        <div class="ml-halaxy-search-box">
 
-                                <span class="input-group-text bg-white">
-                                    <i class="bi bi-search"></i>
-                                </span>
+                            <i class="bi bi-search"></i>
 
-                                <input type="text" name="search" value="{{ $search ?? '' }}" class="form-control"
-                                    placeholder="Search by patient name">
-
-                            </div>
+                            <input type="text" name="search" value="{{ $search ?? '' }}"
+                                placeholder="Search by patient name" autocomplete="off">
 
                         </div>
-
-                        <div class="col-lg-auto col-md-4">
-
-                            <button type="submit" class="btn btn-success w-100">
-
-                                <i class="bi bi-search me-1"></i>
-                                Search
-
-                            </button>
-
-                        </div>
-
-                        @if(!empty($search))
-
-                            <div class="col-lg-auto">
-
-                                <a href="{{ route('admin.halaxy-patients.index') }}" class="btn btn-light border w-100">
-
-                                    Clear
-
-                                </a>
-
-                            </div>
-
-                        @endif
 
                     </div>
+
+
+                    <button type="submit" class="ml-halaxy-primary-btn">
+
+                        <i class="bi bi-search"></i>
+
+                        Search
+
+                    </button>
+
+
+                    @if(!empty($search))
+
+                        <a href="{{ route('admin.halaxy-patients.index') }}" class="ml-halaxy-secondary-btn">
+
+                            <i class="bi bi-x-lg"></i>
+
+                            Clear
+
+                        </a>
+
+                    @endif
 
                 </form>
 
@@ -96,294 +120,348 @@
 
         </div>
 
-        <div class="card border-0 shadow-sm">
 
-            <div class="card-header bg-white border-bottom py-3">
+        {{-- =====================================================
+        PATIENT LIST
+        ====================================================== --}}
+        <div class="ml-halaxy-card">
 
-                <div class="d-flex align-items-center justify-content-between">
+            <div class="ml-halaxy-card-head">
 
-                    <div>
+                <h4>
+                    <i class="bi bi-people"></i>
+                    Patient List
+                </h4>
 
-                        <h5 class="mb-0">
-                            Patient List
-                        </h5>
-
-                    </div>
-
-                    <span class="badge bg-light text-dark border">
-
-                        {{ count($patients ?? []) }} shown
-
-                    </span>
-
-                </div>
+                <span class="ml-halaxy-count-badge">
+                    {{ count($patients ?? []) }} shown
+                </span>
 
             </div>
 
-            <div class="card-body p-0">
 
-                @if(!empty($patients) && count($patients))
+            @if(!empty($patients) && count($patients))
 
-                    <div class="table-responsive">
+                <div class="ml-halaxy-table-wrap">
 
-                        <table class="table table-hover align-middle mb-0">
+                    <table class="ml-halaxy-table">
 
-                            <thead class="table-light">
+                        <thead>
 
-                                <tr>
+                            <tr>
 
-                                    <th class="ps-4">
-                                        Patient
-                                    </th>
+                                <th style="padding-left: 26px;">
+                                    Patient
+                                </th>
 
-                                    <th>
-                                        Email
-                                    </th>
+                                <th>
+                                    Email
+                                </th>
 
-                                    <th>
-                                        Phone
-                                    </th>
+                                <th>
+                                    Phone
+                                </th>
 
-                                    <th>
-                                        Date of Birth
-                                    </th>
+                                <th>
+                                    Date of Birth
+                                </th>
 
-                                    <th>
-                                        Halaxy ID
-                                    </th>
+                                <th>
+                                    Halaxy ID
+                                </th>
 
-                                    <th class="text-end pe-4">
-                                        Action
-                                    </th>
+                                <th style="text-align: right; padding-right: 26px;">
+                                    Action
+                                </th>
 
-                                </tr>
+                            </tr>
 
-                            </thead>
+                        </thead>
 
-                            <tbody>
 
-                                @foreach($patients as $patient)
+                        <tbody>
 
-                                    @php
+                            @foreach($patients as $patient)
 
-                                        $firstName =
-                                            $patient['name'][0]['given'][0]
-                                            ?? '';
+                                            @php
 
-                                        $lastName =
-                                            $patient['name'][0]['family']
-                                            ?? '';
+                                                $firstName =
+                                                    $patient['name'][0]['given'][0]
+                                                    ?? '';
 
-                                        $fullName =
-                                            trim($firstName . ' ' . $lastName);
+                                                $lastName =
+                                                    $patient['name'][0]['family']
+                                                    ?? '';
 
-                                        if (!$fullName) {
-                                            $fullName = 'Unnamed Patient';
-                                        }
+                                                $fullName =
+                                                    trim($firstName . ' ' . $lastName);
 
-                                        $email = null;
-                                        $phone = null;
+                                                if (!$fullName) {
+                                                    $fullName = 'Unnamed Patient';
+                                                }
 
-                                        foreach ($patient['telecom'] ?? [] as $telecom) {
 
-                                            if (
-                                                ($telecom['system'] ?? null) === 'email'
-                                                && !$email
-                                            ) {
-                                                $email = $telecom['value'] ?? null;
-                                            }
+                                                $email = null;
+                                                $phone = null;
 
-                                            if (
-                                                ($telecom['system'] ?? null) === 'phone'
-                                                && !$phone
-                                            ) {
-                                                $phone = $telecom['value'] ?? null;
-                                            }
-                                        }
+                                                foreach ($patient['telecom'] ?? [] as $telecom) {
 
-                                        $patientId =
-                                            $patient['id']
-                                            ?? null;
+                                                    if (
+                                                        ($telecom['system'] ?? null) === 'email'
+                                                        && !$email
+                                                    ) {
+                                                        $email = $telecom['value'] ?? null;
+                                                    }
 
-                                    @endphp
+                                                    if (
+                                                        ($telecom['system'] ?? null) === 'phone'
+                                                        && !$phone
+                                                    ) {
+                                                        $phone = $telecom['value'] ?? null;
+                                                    }
 
-                                    <tr>
+                                                }
 
-                                        <td class="ps-4">
 
-                                            <div class="d-flex align-items-center gap-3">
+                                                $patientId =
+                                                    $patient['id']
+                                                    ?? null;
 
-                                                <div class="rounded-circle bg-success-subtle text-success d-flex align-items-center justify-content-center fw-bold"
-                                                    style="width:42px;height:42px;min-width:42px;">
+                                            @endphp
 
-                                                    {{ strtoupper(substr($firstName ?: $fullName, 0, 1)) }}
 
-                                                </div>
+                                            <tr>
 
-                                                <div>
+                                                {{-- Patient --}}
+                                                <td style="padding-left: 26px;">
 
-                                                    <div class="fw-semibold text-dark">
-                                                        {{ $fullName }}
+                                                    <div class="ml-halaxy-patient-cell">
+
+                                                        <div class="ml-halaxy-avatar">
+
+                                                            {{ strtoupper(
+                                    substr(
+                                        $firstName ?: $fullName,
+                                        0,
+                                        1
+                                    )
+                                ) }}
+
+                                                        </div>
+
+
+                                                        <div class="ml-halaxy-patient-info">
+
+                                                            <div class="ml-halaxy-patient-name">
+                                                                {{ $fullName }}
+                                                            </div>
+
+
+                                                            @if(!empty($patient['gender']))
+
+                                                                <span class="ml-halaxy-patient-meta">
+                                                                    {{ $patient['gender'] }}
+                                                                </span>
+
+                                                            @endif
+
+                                                        </div>
+
                                                     </div>
 
-                                                    @if(!empty($patient['gender']))
+                                                </td>
 
-                                                        <small class="text-muted text-capitalize">
 
-                                                            {{ $patient['gender'] }}
+                                                {{-- Email --}}
+                                                <td>
 
-                                                        </small>
+                                                    @if($email)
+
+                                                        <a href="mailto:{{ $email }}" class="ml-halaxy-link">
+
+                                                            {{ $email }}
+
+                                                        </a>
+
+                                                    @else
+
+                                                        <span class="text-muted">
+                                                            —
+                                                        </span>
 
                                                     @endif
 
-                                                </div>
+                                                </td>
 
-                                            </div>
 
-                                        </td>
+                                                {{-- Phone --}}
+                                                <td>
 
-                                        <td>
+                                                    @if($phone)
 
-                                            @if($email)
+                                                        <a href="tel:{{ $phone }}" class="ml-halaxy-link">
 
-                                                <a href="mailto:{{ $email }}" class="text-decoration-none">
+                                                            {{ $phone }}
 
-                                                    {{ $email }}
+                                                        </a>
 
-                                                </a>
+                                                    @else
 
-                                            @else
+                                                        <span class="text-muted">
+                                                            —
+                                                        </span>
 
-                                                <span class="text-muted">
-                                                    —
-                                                </span>
+                                                    @endif
 
-                                            @endif
+                                                </td>
 
-                                        </td>
 
-                                        <td>
+                                                {{-- DOB --}}
+                                                <td>
 
-                                            {{ $phone ?: '—' }}
+                                                    @if(!empty($patient['birthDate']))
 
-                                        </td>
+                                                                        {{ \Carbon\Carbon::parse(
+                                                            $patient['birthDate']
+                                                        )->format('d M Y') }}
 
-                                        <td>
+                                                    @else
 
-                                            @if(!empty($patient['birthDate']))
+                                                        <span class="text-muted">
+                                                            —
+                                                        </span>
 
-                                                {{ \Carbon\Carbon::parse($patient['birthDate'])->format('d M Y') }}
+                                                    @endif
 
-                                            @else
+                                                </td>
 
-                                                <span class="text-muted">
-                                                    —
-                                                </span>
 
-                                            @endif
+                                                {{-- Halaxy ID --}}
+                                                <td>
 
-                                        </td>
+                                                    @if($patientId)
 
-                                        <td>
+                                                        <span class="ml-halaxy-id">
+                                                            {{ $patientId }}
+                                                        </span>
 
-                                            <code>
-                                                    {{ $patientId ?: '—' }}
-                                                </code>
+                                                    @else
 
-                                        </td>
+                                                        <span class="text-muted">
+                                                            —
+                                                        </span>
 
-                                        <td class="text-end pe-4">
+                                                    @endif
 
-                                            @if($patientId)
+                                                </td>
 
-                                                <a href="{{ route('admin.halaxy-patients.show', $patientId) }}"
-                                                    class="btn btn-sm btn-outline-success">
 
-                                                    View
+                                                {{-- Action --}}
+                                                <td style="text-align: right; padding-right: 26px;">
 
-                                                    <i class="bi bi-arrow-right ms-1"></i>
+                                                    @if($patientId)
 
-                                                </a>
+                                                                        <a href="{{ route(
+                                                            'admin.halaxy-patients.show',
+                                                            ['patientId' => $patientId]
+                                                        ) }}" class="ml-halaxy-view-btn">
 
-                                            @endif
+                                                                            View
 
-                                        </td>
+                                                                            <i class="bi bi-arrow-right"></i>
 
-                                    </tr>
+                                                                        </a>
 
-                                @endforeach
+                                                    @endif
 
-                            </tbody>
+                                                </td>
 
-                        </table>
+                                            </tr>
 
-                    </div>
+                            @endforeach
 
-                @else
+                        </tbody>
 
-                    <div class="text-center py-5">
+                    </table>
 
-                        <div class="mb-3">
+                </div>
 
-                            <i class="bi bi-people fs-1 text-muted"></i>
+
+                {{-- =================================================
+                PAGINATION
+                ================================================== --}}
+                @if(($currentPage ?? 1) > 1 || count($patients ?? []) >= 30)
+
+                    <div class="ml-halaxy-card-footer">
+
+                        <div class="ml-halaxy-pagination">
+
+                            @if(($currentPage ?? 1) > 1)
+
+                                    <a href="{{ route(
+                                    'admin.halaxy-patients.index',
+                                    [
+                                        'page' => $currentPage - 1,
+                                        'search' => $search ?? null
+                                    ]
+                                ) }}" class="ml-halaxy-pagination-btn">
+
+                                        <i class="bi bi-chevron-left"></i>
+
+                                        Previous
+
+                                    </a>
+
+                            @else
+
+                                <span></span>
+
+                            @endif
+
+
+                            @if(count($patients ?? []) >= 30)
+
+                                    <a href="{{ route(
+                                    'admin.halaxy-patients.index',
+                                    [
+                                        'page' => $currentPage + 1,
+                                        'search' => $search ?? null
+                                    ]
+                                ) }}" class="ml-halaxy-pagination-btn">
+
+                                        Next
+
+                                        <i class="bi bi-chevron-right"></i>
+
+                                    </a>
+
+                            @endif
 
                         </div>
-
-                        <h5>
-                            No patients found
-                        </h5>
-
-                        <p class="text-muted mb-0">
-
-                            No Halaxy patients matched the current request.
-
-                        </p>
 
                     </div>
 
                 @endif
 
-            </div>
 
-            @if(($currentPage ?? 1) > 1 || count($patients ?? []) >= 30)
+            @else
 
-                <div class="card-footer bg-white">
+                {{-- =================================================
+                EMPTY STATE
+                ================================================== --}}
+                <div class="ml-halaxy-empty">
 
-                    <div class="d-flex justify-content-between">
-
-                        @if(($currentPage ?? 1) > 1)
-
-                                    <a href="{{ route('admin.halaxy-patients.index', [
-                                'page' => $currentPage - 1,
-                                'search' => $search ?? null
-                            ]) }}" class="btn btn-outline-secondary">
-
-                                        <i class="bi bi-chevron-left"></i>
-                                        Previous
-
-                                    </a>
-
-                        @else
-
-                            <span></span>
-
-                        @endif
-
-                        @if(count($patients ?? []) >= 30)
-
-                                    <a href="{{ route('admin.halaxy-patients.index', [
-                                'page' => $currentPage + 1,
-                                'search' => $search ?? null
-                            ]) }}" class="btn btn-outline-secondary">
-
-                                        Next
-                                        <i class="bi bi-chevron-right"></i>
-
-                                    </a>
-
-                        @endif
-
+                    <div class="ml-halaxy-empty-icon">
+                        <i class="bi bi-people"></i>
                     </div>
+
+                    <h5>
+                        No patients found
+                    </h5>
+
+                    <p>
+                        No Halaxy patients matched the current request.
+                    </p>
 
                 </div>
 

@@ -6,13 +6,27 @@
 
     @php
 
+        /*
+        |--------------------------------------------------------------------------
+        | Patient basic information
+        |--------------------------------------------------------------------------
+        */
+
         $firstName = $patient['name'][0]['given'][0] ?? '';
         $lastName = $patient['name'][0]['family'] ?? '';
+
         $fullName = trim($firstName . ' ' . $lastName);
 
         if (!$fullName) {
             $fullName = 'Unnamed Patient';
         }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Contact information
+        |--------------------------------------------------------------------------
+        */
 
         $email = null;
         $phone = null;
@@ -34,6 +48,13 @@
             }
         }
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | Address
+        |--------------------------------------------------------------------------
+        */
+
         $address = null;
 
         if (!empty($patient['address'][0])) {
@@ -41,6 +62,7 @@
             $addressParts = [];
 
             if (!empty($patient['address'][0]['line'])) {
+
                 $addressParts = array_merge(
                     $addressParts,
                     $patient['address'][0]['line']
@@ -66,106 +88,192 @@
             $address = implode(', ', $addressParts);
         }
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | Patient ID / Avatar
+        |--------------------------------------------------------------------------
+        */
+
+        $patientId = $patient['id'] ?? null;
+
+        $initial = strtoupper(
+            substr(
+                $firstName ?: $fullName,
+                0,
+                1
+            )
+        );
+
     @endphp
 
-    <div class="container-fluid px-0">
 
-        {{-- Page Header --}}
-        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+    <div class="ml-halaxy-page">
+
+
+        {{-- =========================================================
+        PAGE HEADER
+        ========================================================== --}}
+        <div class="ml-halaxy-page-head">
 
             <div>
 
-                <div class="d-flex align-items-center gap-2 mb-2">
+                <a href="{{ route('admin.halaxy-patients.index') }}" class="ml-halaxy-back-btn">
+                    <i class="bi bi-arrow-left"></i>
+                    Halaxy Patients
+                </a>
 
-                    <a href="{{ route('admin.halaxy-patients.index') }}" class="text-decoration-none text-muted">
-                        <i class="bi bi-arrow-left"></i>
-                        Halaxy Patients
-                    </a>
-
-                </div>
-
-                <h1 class="h3 mb-1">
+                <h1 class="mt-3">
                     {{ $fullName }}
                 </h1>
 
-                <p class="text-muted mb-0">
-
+                <p>
                     Halaxy Patient ID:
 
-                    <code>
-                        {{ $patient['id'] ?? '—' }}
-                    </code>
+                    @if($patientId)
 
+                        <span class="ml-halaxy-id">
+                            {{ $patientId }}
+                        </span>
+
+                    @else
+
+                        <span>—</span>
+
+                    @endif
                 </p>
 
             </div>
 
-            <div>
 
-                <a href="{{ route('admin.halaxy-patients.show', $patient['id']) }}" class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-clockwise me-1"></i>
-                    Refresh
-                </a>
+            <div class="ml-halaxy-head-actions">
+
+                @if($patientId)
+
+                            <a href="{{ route(
+                        'admin.halaxy-patients.show',
+                        ['patientId' => $patientId]
+                    ) }}" class="ml-halaxy-secondary-btn">
+                                <i class="bi bi-arrow-clockwise"></i>
+                                Refresh
+                            </a>
+
+                @endif
 
             </div>
 
         </div>
 
 
-        {{-- Patient Overview --}}
+
+        {{-- =========================================================
+        TOP SECTION
+        ========================================================== --}}
         <div class="row g-4 mb-4">
 
+
+            {{-- =====================================================
+            PATIENT PROFILE
+            ====================================================== --}}
             <div class="col-xl-8">
 
-                <div class="card border-0 shadow-sm h-100">
+                <div class="ml-halaxy-card h-100">
 
-                    <div class="card-header bg-white py-3">
+                    <div class="ml-halaxy-card-head">
 
-                        <h5 class="mb-0">
+                        <h4>
+                            <i class="bi bi-person-vcard"></i>
                             Patient Profile
-                        </h5>
+                        </h4>
+
+
+                        @if(($patient['active'] ?? false) === true)
+
+                            <span class="ml-halaxy-status active">
+                                <i class="bi bi-check-circle-fill"></i>
+                                Active
+                            </span>
+
+                        @elseif(array_key_exists('active', $patient))
+
+                            <span class="ml-halaxy-status neutral">
+                                Inactive
+                            </span>
+
+                        @endif
 
                     </div>
 
-                    <div class="card-body">
 
-                        <div class="row g-4">
+                    <div class="ml-halaxy-card-body">
 
-                            <div class="col-md-6">
 
-                                <div class="text-muted small mb-1">
+                        {{-- Patient Heading --}}
+                        <div class="ml-halaxy-patient-summary mb-4">
+
+                            <div class="ml-halaxy-patient-summary-avatar">
+                                {{ $initial }}
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    {{ $fullName }}
+                                </h3>
+
+                                <p class="text-capitalize mb-0">
+                                    {{ $patient['gender'] ?? 'Patient' }}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        {{-- Profile Information --}}
+                        <div class="ml-halaxy-info-grid">
+
+
+                            {{-- Full Name --}}
+                            <div class="ml-halaxy-info-item">
+
+                                <span class="ml-halaxy-info-label">
                                     Full Name
-                                </div>
+                                </span>
 
-                                <div class="fw-semibold">
+                                <div class="ml-halaxy-info-value">
                                     {{ $fullName }}
                                 </div>
 
                             </div>
 
-                            <div class="col-md-6">
 
-                                <div class="text-muted small mb-1">
+                            {{-- Gender --}}
+                            <div class="ml-halaxy-info-item">
+
+                                <span class="ml-halaxy-info-label">
                                     Gender
-                                </div>
+                                </span>
 
-                                <div class="fw-semibold text-capitalize">
+                                <div class="ml-halaxy-info-value text-capitalize">
                                     {{ $patient['gender'] ?? '—' }}
                                 </div>
 
                             </div>
 
-                            <div class="col-md-6">
 
-                                <div class="text-muted small mb-1">
+                            {{-- Email --}}
+                            <div class="ml-halaxy-info-item">
+
+                                <span class="ml-halaxy-info-label">
                                     Email
-                                </div>
+                                </span>
 
-                                <div>
+                                <div class="ml-halaxy-info-value">
 
                                     @if($email)
 
-                                        <a href="mailto:{{ $email }}" class="text-decoration-none">
+                                        <a href="mailto:{{ $email }}" class="ml-halaxy-link">
                                             {{ $email }}
                                         </a>
 
@@ -179,29 +287,21 @@
 
                             </div>
 
-                            <div class="col-md-6">
 
-                                <div class="text-muted small mb-1">
+                            {{-- Phone --}}
+                            <div class="ml-halaxy-info-item">
+
+                                <span class="ml-halaxy-info-label">
                                     Phone
-                                </div>
+                                </span>
 
-                                <div>
-                                    {{ $phone ?: '—' }}
-                                </div>
+                                <div class="ml-halaxy-info-value">
 
-                            </div>
+                                    @if($phone)
 
-                            <div class="col-md-6">
-
-                                <div class="text-muted small mb-1">
-                                    Date of Birth
-                                </div>
-
-                                <div>
-
-                                    @if(!empty($patient['birthDate']))
-
-                                        {{ \Carbon\Carbon::parse($patient['birthDate'])->format('d M Y') }}
+                                        <a href="tel:{{ $phone }}" class="ml-halaxy-link">
+                                            {{ $phone }}
+                                        </a>
 
                                     @else
 
@@ -213,23 +313,51 @@
 
                             </div>
 
-                            <div class="col-md-6">
 
-                                <div class="text-muted small mb-1">
-                                    Patient Status
+                            {{-- DOB --}}
+                            <div class="ml-halaxy-info-item">
+
+                                <span class="ml-halaxy-info-label">
+                                    Date of Birth
+                                </span>
+
+                                <div class="ml-halaxy-info-value">
+
+                                    @if(!empty($patient['birthDate']))
+
+                                                                    {{ \Carbon\Carbon::parse(
+                                            $patient['birthDate']
+                                        )->format('d M Y') }}
+
+                                    @else
+
+                                        —
+
+                                    @endif
+
                                 </div>
 
-                                <div>
+                            </div>
+
+
+                            {{-- Status --}}
+                            <div class="ml-halaxy-info-item">
+
+                                <span class="ml-halaxy-info-label">
+                                    Patient Status
+                                </span>
+
+                                <div class="ml-halaxy-info-value">
 
                                     @if(($patient['active'] ?? false) === true)
 
-                                        <span class="badge bg-success-subtle text-success">
+                                        <span class="ml-halaxy-status active">
                                             Active
                                         </span>
 
                                     @elseif(array_key_exists('active', $patient))
 
-                                        <span class="badge bg-secondary-subtle text-secondary">
+                                        <span class="ml-halaxy-status neutral">
                                             Inactive
                                         </span>
 
@@ -243,16 +371,18 @@
 
                             </div>
 
-                            <div class="col-12">
+                        </div>
 
-                                <div class="text-muted small mb-1">
-                                    Address
-                                </div>
 
-                                <div>
-                                    {{ $address ?: '—' }}
-                                </div>
+                        {{-- Address --}}
+                        <div class="ml-halaxy-info-item mt-4">
 
+                            <span class="ml-halaxy-info-label">
+                                Address
+                            </span>
+
+                            <div class="ml-halaxy-info-value">
+                                {{ $address ?: '—' }}
                             </div>
 
                         </div>
@@ -264,20 +394,25 @@
             </div>
 
 
-            {{-- Next Appointment --}}
+
+            {{-- =====================================================
+            NEXT APPOINTMENT
+            ====================================================== --}}
             <div class="col-xl-4">
 
-                <div class="card border-0 shadow-sm h-100">
+                <div class="ml-halaxy-card h-100">
 
-                    <div class="card-header bg-white py-3">
+                    <div class="ml-halaxy-card-head">
 
-                        <h5 class="mb-0">
+                        <h4>
+                            <i class="bi bi-calendar-check"></i>
                             Next Appointment
-                        </h5>
+                        </h4>
 
                     </div>
 
-                    <div class="card-body">
+
+                    <div class="ml-halaxy-card-body">
 
                         @if($nextAppointment)
 
@@ -292,68 +427,141 @@
                                     ?? null;
 
                                 $nextStatus =
-                                    $nextAppointment['status']
-                                    ?? 'unknown';
+                                    strtolower(
+                                        $nextAppointment['status']
+                                        ?? 'unknown'
+                                    );
+
+                                $nextPractitioner =
+                                    $nextAppointment['practitioner_name']
+                                    ?? 'Practitioner';
+
+                                $nextStatusClass =
+                                    match ($nextStatus) {
+
+                                        'booked',
+                                        'fulfilled' =>
+                                        'active',
+
+                                        'cancelled',
+                                        'noshow' =>
+                                        'cancelled',
+
+                                        'arrived',
+                                        'checked-in' =>
+                                        'info',
+
+                                        'pending',
+                                        'proposed' =>
+                                        'pending',
+
+                                        default =>
+                                        'neutral'
+                                    };
 
                             @endphp
 
-                            <div class="d-flex align-items-center gap-3 mb-4">
 
-                                <div class="rounded-circle bg-success-subtle text-success d-flex align-items-center justify-content-center"
-                                    style="width:52px;height:52px;min-width:52px;">
-                                    <i class="bi bi-calendar-check fs-4"></i>
-                                </div>
+                            <div class="ml-halaxy-record">
 
-                                <div>
+                                <div class="ml-halaxy-record-left">
 
-                                    @if($nextStart)
+                                    <div class="ml-halaxy-record-icon">
+                                        <i class="bi bi-calendar-check"></i>
+                                    </div>
 
-                                        <div class="fw-semibold fs-5">
 
-                                            {{ \Carbon\Carbon::parse($nextStart)->format('d M Y') }}
+                                    <div class="ml-halaxy-record-content">
 
-                                        </div>
+                                        @if($nextStart)
 
-                                        <div class="text-muted">
+                                                                    <div class="ml-halaxy-record-title">
 
-                                            {{ \Carbon\Carbon::parse($nextStart)->format('h:i A') }}
+                                                                        {{ \Carbon\Carbon::parse(
+                                                $nextStart
+                                            )->format('d M Y') }}
 
-                                            @if($nextEnd)
+                                                                    </div>
 
-                                                -
-                                                {{ \Carbon\Carbon::parse($nextEnd)->format('h:i A') }}
 
-                                            @endif
+                                                                    <div class="ml-halaxy-record-meta">
 
-                                        </div>
+                                                                        {{ \Carbon\Carbon::parse(
+                                                $nextStart
+                                            )->format('h:i A') }}
 
-                                    @endif
+                                                                        @if($nextEnd)
+
+                                                                                                    <span>
+                                                                                                        -
+                                                                                                    </span>
+
+                                                                                                    {{ \Carbon\Carbon::parse(
+                                                                                $nextEnd
+                                                                            )->format('h:i A') }}
+
+                                                                        @endif
+
+                                                                    </div>
+
+                                        @else
+
+                                            <div class="ml-halaxy-record-title">
+                                                Appointment
+                                            </div>
+
+                                        @endif
+
+                                    </div>
 
                                 </div>
 
                             </div>
 
-                            <div class="mb-3">
 
-                                <div class="text-muted small">
-                                    Status
-                                </div>
+                            {{-- Practitioner --}}
+                            <div class="ml-halaxy-info-item mt-4">
 
-                                <span class="badge bg-primary-subtle text-primary text-capitalize">
-                                    {{ $nextStatus }}
+                                <span class="ml-halaxy-info-label">
+                                    Practitioner
                                 </span>
 
+                                <div class="ml-halaxy-info-value">
+
+                                    <i class="bi bi-person-badge me-1"></i>
+                                    {{ $nextPractitioner }}
+
+                                </div>
+
                             </div>
+
+
+                            <div class="mt-4">
+
+                                <span class="ml-halaxy-info-label">
+                                    Status
+                                </span>
+
+                                <div class="mt-2">
+
+                                    <span class="ml-halaxy-status {{ $nextStatusClass }}">
+                                        {{ ucfirst($nextStatus) }}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
 
                             @if(!empty($nextAppointment['description']))
 
-                                <div>
+                                <div class="ml-halaxy-info-item mt-4">
 
-                                    <div class="text-muted small">
+                                    <span class="ml-halaxy-info-label">
                                         Description
-                                    </div>
+                                    </span>
 
-                                    <div>
+                                    <div class="ml-halaxy-info-value">
                                         {{ $nextAppointment['description'] }}
                                     </div>
 
@@ -361,17 +569,41 @@
 
                             @endif
 
+
+                            @if(!empty($nextAppointment['id']))
+
+                                <div class="ml-halaxy-info-item mt-4">
+
+                                    <span class="ml-halaxy-info-label">
+                                        Appointment ID
+                                    </span>
+
+                                    <div>
+
+                                        <span class="ml-halaxy-id">
+                                            {{ $nextAppointment['id'] }}
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            @endif
+
+
                         @else
 
-                            <div class="text-center py-4">
+                            <div class="ml-halaxy-empty">
 
-                                <i class="bi bi-calendar-x fs-1 text-muted"></i>
+                                <div class="ml-halaxy-empty-icon">
+                                    <i class="bi bi-calendar-x"></i>
+                                </div>
 
-                                <h6 class="mt-3">
+                                <h5>
                                     No upcoming appointment
-                                </h6>
+                                </h5>
 
-                                <p class="text-muted small mb-0">
+                                <p>
                                     No future appointment was found for this patient.
                                 </p>
 
@@ -388,418 +620,557 @@
         </div>
 
 
-        {{-- Appointments --}}
-        <div class="card border-0 shadow-sm mb-4">
 
-            <div class="card-header bg-white py-3">
+        {{-- =========================================================
+        APPOINTMENTS
+        ========================================================== --}}
+        <div class="ml-halaxy-card mb-4">
 
-                <div class="d-flex justify-content-between align-items-center">
+            <div class="ml-halaxy-card-head">
 
-                    <h5 class="mb-0">
-                        Appointments
-                    </h5>
+                <h4>
+                    <i class="bi bi-calendar3"></i>
+                    Appointments
+                </h4>
 
-                    <span class="badge bg-light text-dark border">
-                        {{ count($appointments ?? []) }}
-                    </span>
-
-                </div>
+                <span class="ml-halaxy-count-badge">
+                    {{ count($appointments ?? []) }}
+                </span>
 
             </div>
 
-            <div class="card-body p-0">
 
-                @if(!empty($appointments) && count($appointments))
+            @if(!empty($appointments) && count($appointments))
 
-                    <div class="table-responsive">
+                <div class="ml-halaxy-table-wrap">
 
-                        <table class="table table-hover align-middle mb-0">
+                    <table class="ml-halaxy-table">
 
-                            <thead class="table-light">
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Time
+                                </th>
+
+                                <th>
+                                    Practitioner
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Description
+                                </th>
+
+                                <th>
+                                    Appointment ID
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            @foreach($appointments as $appointment)
+
+                                @php
+
+                                    $start =
+                                        $appointment['start']
+                                        ?? null;
+
+                                    $end =
+                                        $appointment['end']
+                                        ?? null;
+
+                                    $status =
+                                        strtolower(
+                                            $appointment['status']
+                                            ?? 'unknown'
+                                        );
+
+                                    $description =
+                                        $appointment['description']
+                                        ?? '—';
+
+                                    $practitionerName =
+                                        $appointment['practitioner_name']
+                                        ?? 'Practitioner';
+
+
+                                    $statusClass =
+                                        match ($status) {
+
+                                            'booked',
+                                            'fulfilled' =>
+                                            'active',
+
+                                            'cancelled',
+                                            'noshow' =>
+                                            'cancelled',
+
+                                            'arrived',
+                                            'checked-in' =>
+                                            'info',
+
+                                            'pending',
+                                            'proposed' =>
+                                            'pending',
+
+                                            default =>
+                                            'neutral'
+                                        };
+
+                                @endphp
+
 
                                 <tr>
 
-                                    <th class="ps-4">
-                                        Date
-                                    </th>
+                                    {{-- Date --}}
+                                    <td>
 
-                                    <th>
-                                        Time
-                                    </th>
+                                        @if($start)
 
-                                    <th>
-                                        Status
-                                    </th>
+                                                            <strong>
+                                                                {{ \Carbon\Carbon::parse(
+                                                $start
+                                            )->format('d M Y') }}
+                                                            </strong>
 
-                                    <th>
-                                        Description
-                                    </th>
+                                        @else
 
-                                    <th>
-                                        Appointment ID
-                                    </th>
+                                            —
+
+                                        @endif
+
+                                    </td>
+
+
+                                    {{-- Time --}}
+                                    <td>
+
+                                        @if($start)
+
+                                                            {{ \Carbon\Carbon::parse(
+                                                $start
+                                            )->format('h:i A') }}
+
+                                                            @if($end)
+
+                                                                            -
+                                                                            {{ \Carbon\Carbon::parse(
+                                                                    $end
+                                                                )->format('h:i A') }}
+
+                                                            @endif
+
+                                        @else
+
+                                            —
+
+                                        @endif
+
+                                    </td>
+
+
+                                    {{-- Practitioner --}}
+                                    <td>
+
+                                        <div class="ml-halaxy-patient-cell">
+
+                                            <div class="ml-halaxy-avatar">
+                                                <i class="fa-solid fa-user-doctor"></i>
+                                            </div>
+
+                                            <div class="ml-halaxy-patient-info">
+
+                                                <div class="ml-halaxy-patient-name">
+                                                    {{ $practitionerName }}
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    {{-- Status --}}
+                                    <td>
+
+                                        <span class="ml-halaxy-status {{ $statusClass }}">
+                                            {{ ucfirst($status) }}
+                                        </span>
+
+                                    </td>
+
+
+                                    {{-- Description --}}
+                                    <td>
+                                        {{ $description }}
+                                    </td>
+
+
+                                    {{-- Appointment ID --}}
+                                    <td>
+
+                                        @if(!empty($appointment['id']))
+
+                                            <span class="ml-halaxy-id">
+                                                {{ $appointment['id'] }}
+                                            </span>
+
+                                        @else
+
+                                            —
+
+                                        @endif
+
+                                    </td>
 
                                 </tr>
 
-                            </thead>
+                            @endforeach
 
-                            <tbody>
+                        </tbody>
 
-                                @foreach($appointments as $appointment)
+                    </table>
 
-                                    @php
+                </div>
 
-                                        $start =
-                                            $appointment['start']
-                                            ?? null;
 
-                                        $end =
-                                            $appointment['end']
-                                            ?? null;
+            @else
 
-                                        $status =
-                                            $appointment['status']
-                                            ?? '—';
+                <div class="ml-halaxy-empty">
 
-                                        $description =
-                                            $appointment['description']
-                                            ?? '—';
-
-                                    @endphp
-
-                                    <tr>
-
-                                        <td class="ps-4">
-
-                                            @if($start)
-
-                                                {{ \Carbon\Carbon::parse($start)->format('d M Y') }}
-
-                                            @else
-
-                                                —
-
-                                            @endif
-
-                                        </td>
-
-                                        <td>
-
-                                            @if($start)
-
-                                                {{ \Carbon\Carbon::parse($start)->format('h:i A') }}
-
-                                                @if($end)
-
-                                                    -
-                                                    {{ \Carbon\Carbon::parse($end)->format('h:i A') }}
-
-                                                @endif
-
-                                            @else
-
-                                                —
-
-                                            @endif
-
-                                        </td>
-
-                                        <td>
-
-                                            @php
-
-                                                $statusClass =
-                                                    match ($status) {
-                                                        'booked',
-                                                        'fulfilled' =>
-                                                        'bg-success-subtle text-success',
-
-                                                        'cancelled',
-                                                        'noshow' =>
-                                                        'bg-danger-subtle text-danger',
-
-                                                        'arrived',
-                                                        'checked-in' =>
-                                                        'bg-info-subtle text-info',
-
-                                                        default =>
-                                                        'bg-secondary-subtle text-secondary'
-                                                    };
-
-                                            @endphp
-
-                                            <span class="badge {{ $statusClass }} text-capitalize">
-                                                {{ $status }}
-                                            </span>
-
-                                        </td>
-
-                                        <td>
-                                            {{ $description }}
-                                        </td>
-
-                                        <td>
-
-                                            <code>
-                                                    {{ $appointment['id'] ?? '—' }}
-                                                </code>
-
-                                        </td>
-
-                                    </tr>
-
-                                @endforeach
-
-                            </tbody>
-
-                        </table>
-
+                    <div class="ml-halaxy-empty-icon">
+                        <i class="bi bi-calendar3"></i>
                     </div>
 
-                @else
+                    <h5>
+                        No appointments found
+                    </h5>
 
-                    <div class="text-center py-5">
+                    <p>
+                        No appointment records are currently available for this patient.
+                    </p>
 
-                        <i class="bi bi-calendar3 fs-1 text-muted"></i>
+                </div>
 
-                        <h6 class="mt-3">
-                            No appointments found
-                        </h6>
-
-                    </div>
-
-                @endif
-
-            </div>
+            @endif
 
         </div>
 
 
-        {{-- Invoices --}}
-        <div class="card border-0 shadow-sm">
 
-            <div class="card-header bg-white py-3">
+        {{-- =========================================================
+        INVOICES
+        ========================================================== --}}
+        <div class="ml-halaxy-card">
 
-                <div class="d-flex justify-content-between align-items-center">
+            <div class="ml-halaxy-card-head">
 
-                    <h5 class="mb-0">
-                        Invoices
-                    </h5>
+                <h4>
+                    <i class="bi bi-receipt"></i>
+                    Invoices
+                </h4>
 
-                    <span class="badge bg-light text-dark border">
-                        {{ count($invoices ?? []) }}
-                    </span>
-
-                </div>
+                <span class="ml-halaxy-count-badge">
+                    {{ count($invoices ?? []) }}
+                </span>
 
             </div>
 
-            <div class="card-body p-0">
 
-                @if(!empty($invoices) && count($invoices))
+            @if(!empty($invoices) && count($invoices))
 
-                    <div class="table-responsive">
+                <div class="ml-halaxy-table-wrap">
 
-                        <table class="table table-hover align-middle mb-0">
+                    <table class="ml-halaxy-table">
 
-                            <thead class="table-light">
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Invoice
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Total
+                                </th>
+
+                                <th>
+                                    Paid
+                                </th>
+
+                                <th>
+                                    Balance
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            @foreach($invoices as $invoice)
+
+                                @php
+
+                                    $invoiceNumber =
+                                        $invoice['identifier'][0]['value']
+                                        ?? $invoice['id']
+                                        ?? '—';
+
+
+                                    $invoiceDate =
+                                        $invoice['date']
+                                        ?? $invoice['created']
+                                        ?? null;
+
+
+                                    $invoiceStatus =
+                                        strtolower(
+                                            $invoice['status']
+                                            ?? 'unknown'
+                                        );
+
+
+                                    $grossValue =
+                                        data_get(
+                                            $invoice,
+                                            'totalGross.value'
+                                        );
+
+                                    $grossCurrency =
+                                        data_get(
+                                            $invoice,
+                                            'totalGross.currency',
+                                            'AUD'
+                                        );
+
+
+                                    $paidValue =
+                                        data_get(
+                                            $invoice,
+                                            'totalPaid.value'
+                                        );
+
+                                    $paidCurrency =
+                                        data_get(
+                                            $invoice,
+                                            'totalPaid.currency',
+                                            $grossCurrency
+                                        );
+
+
+                                    $balanceValue =
+                                        data_get(
+                                            $invoice,
+                                            'totalBalance.value'
+                                        );
+
+                                    $balanceCurrency =
+                                        data_get(
+                                            $invoice,
+                                            'totalBalance.currency',
+                                            $grossCurrency
+                                        );
+
+
+                                    $invoiceStatusClass =
+                                        match ($invoiceStatus) {
+
+                                            'paid',
+                                            'balanced' =>
+                                            'active',
+
+                                            'issued' =>
+                                            'info',
+
+                                            'cancelled',
+                                            'entered-in-error' =>
+                                            'cancelled',
+
+                                            'draft' =>
+                                            'pending',
+
+                                            default =>
+                                            'neutral'
+                                        };
+
+                                @endphp
+
 
                                 <tr>
 
-                                    <th class="ps-4">
-                                        Invoice
-                                    </th>
+                                    {{-- Invoice --}}
+                                    <td>
 
-                                    <th>
-                                        Date
-                                    </th>
+                                        <strong>
+                                            {{ $invoiceNumber }}
+                                        </strong>
 
-                                    <th>
-                                        Status
-                                    </th>
+                                    </td>
 
-                                    <th>
-                                        Total
-                                    </th>
 
-                                    <th>
-                                        Paid
-                                    </th>
+                                    {{-- Date --}}
+                                    <td>
 
-                                    <th>
-                                        Balance
-                                    </th>
+                                        @if($invoiceDate)
+
+                                                            {{ \Carbon\Carbon::parse(
+                                                $invoiceDate
+                                            )->format('d M Y') }}
+
+                                        @else
+
+                                            —
+
+                                        @endif
+
+                                    </td>
+
+
+                                    {{-- Status --}}
+                                    <td>
+
+                                        <span class="ml-halaxy-status {{ $invoiceStatusClass }}">
+                                            {{ ucfirst($invoiceStatus) }}
+                                        </span>
+
+                                    </td>
+
+
+                                    {{-- Total --}}
+                                    <td>
+
+                                        @if($grossValue !== null)
+
+                                                            {{ $grossCurrency }}
+                                                            {{ number_format(
+                                                (float) $grossValue,
+                                                2
+                                            ) }}
+
+                                        @else
+
+                                            —
+
+                                        @endif
+
+                                    </td>
+
+
+                                    {{-- Paid --}}
+                                    <td>
+
+                                        @if($paidValue !== null)
+
+                                                            {{ $paidCurrency }}
+                                                            {{ number_format(
+                                                (float) $paidValue,
+                                                2
+                                            ) }}
+
+                                        @else
+
+                                            —
+
+                                        @endif
+
+                                    </td>
+
+
+                                    {{-- Balance --}}
+                                    <td>
+
+                                        @if($balanceValue !== null)
+
+                                            @if((float) $balanceValue > 0)
+
+                                                            <strong class="text-danger">
+
+                                                                {{ $balanceCurrency }}
+                                                                {{ number_format(
+                                                    (float) $balanceValue,
+                                                    2
+                                                ) }}
+
+                                                            </strong>
+
+                                            @else
+
+                                                            <strong class="text-success">
+
+                                                                {{ $balanceCurrency }}
+                                                                {{ number_format(
+                                                    (float) $balanceValue,
+                                                    2
+                                                ) }}
+
+                                                            </strong>
+
+                                            @endif
+
+                                        @else
+
+                                            —
+
+                                        @endif
+
+                                    </td>
 
                                 </tr>
 
-                            </thead>
+                            @endforeach
 
-                            <tbody>
+                        </tbody>
 
-                                @foreach($invoices as $invoice)
+                    </table>
 
-                                    @php
+                </div>
 
-                                        $invoiceNumber =
-                                            $invoice['identifier'][0]['value']
-                                            ?? $invoice['id']
-                                            ?? '—';
 
-                                        $invoiceDate =
-                                            $invoice['date']
-                                            ?? $invoice['created']
-                                            ?? null;
+            @else
 
-                                        $invoiceStatus =
-                                            $invoice['status']
-                                            ?? '—';
+                <div class="ml-halaxy-empty">
 
-                                        $grossValue =
-                                            data_get(
-                                                $invoice,
-                                                'totalGross.value'
-                                            );
-
-                                        $grossCurrency =
-                                            data_get(
-                                                $invoice,
-                                                'totalGross.currency',
-                                                'AUD'
-                                            );
-
-                                        $paidValue =
-                                            data_get(
-                                                $invoice,
-                                                'totalPaid.value'
-                                            );
-
-                                        $paidCurrency =
-                                            data_get(
-                                                $invoice,
-                                                'totalPaid.currency',
-                                                $grossCurrency
-                                            );
-
-                                        $balanceValue =
-                                            data_get(
-                                                $invoice,
-                                                'totalBalance.value'
-                                            );
-
-                                        $balanceCurrency =
-                                            data_get(
-                                                $invoice,
-                                                'totalBalance.currency',
-                                                $grossCurrency
-                                            );
-
-                                    @endphp
-
-                                    <tr>
-
-                                        <td class="ps-4 fw-semibold">
-
-                                            {{ $invoiceNumber }}
-
-                                        </td>
-
-                                        <td>
-
-                                            @if($invoiceDate)
-
-                                                {{ \Carbon\Carbon::parse($invoiceDate)->format('d M Y') }}
-
-                                            @else
-
-                                                —
-
-                                            @endif
-
-                                        </td>
-
-                                        <td>
-
-                                            <span class="badge bg-primary-subtle text-primary text-capitalize">
-                                                {{ $invoiceStatus }}
-                                            </span>
-
-                                        </td>
-
-                                        <td>
-
-                                            @if($grossValue !== null)
-
-                                                {{ $grossCurrency }}
-                                                {{ number_format((float) $grossValue, 2) }}
-
-                                            @else
-
-                                                —
-
-                                            @endif
-
-                                        </td>
-
-                                        <td>
-
-                                            @if($paidValue !== null)
-
-                                                {{ $paidCurrency }}
-                                                {{ number_format((float) $paidValue, 2) }}
-
-                                            @else
-
-                                                —
-
-                                            @endif
-
-                                        </td>
-
-                                        <td>
-
-                                            @if($balanceValue !== null)
-
-                                                <span
-                                                    class="{{ (float) $balanceValue > 0 ? 'text-danger fw-semibold' : 'text-success fw-semibold' }}">
-
-                                                    {{ $balanceCurrency }}
-                                                    {{ number_format((float) $balanceValue, 2) }}
-
-                                                </span>
-
-                                            @else
-
-                                                —
-
-                                            @endif
-
-                                        </td>
-
-                                    </tr>
-
-                                @endforeach
-
-                            </tbody>
-
-                        </table>
-
+                    <div class="ml-halaxy-empty-icon">
+                        <i class="bi bi-receipt"></i>
                     </div>
 
-                @else
+                    <h5>
+                        No invoices found
+                    </h5>
 
-                    <div class="text-center py-5">
+                    <p>
+                        No invoice records are currently available for this patient.
+                    </p>
 
-                        <i class="bi bi-receipt fs-1 text-muted"></i>
+                </div>
 
-                        <h6 class="mt-3">
-                            No invoices found
-                        </h6>
-
-                    </div>
-
-                @endif
-
-            </div>
+            @endif
 
         </div>
 

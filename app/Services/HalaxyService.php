@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
+use Throwable;
 
 class HalaxyService
 {
@@ -13,28 +15,45 @@ class HalaxyService
     protected string $clientSecret;
     protected string $userAgent;
 
+    protected array $practitionerCache = [];
+    protected array $practitionerRoleCache = [];
+
     public function __construct()
     {
         $this->baseUrl = rtrim(
-            config('services.halaxy.base_url', 'https://au-api.halaxy.com/main'),
+            config(
+                'services.halaxy.base_url',
+                'https://au-api.halaxy.com/main'
+            ),
             '/'
         );
 
-        $this->clientId = (string) config('services.halaxy.client_id');
-        $this->clientSecret = (string) config('services.halaxy.client_secret');
+        $this->clientId = (string) config(
+            'services.halaxy.client_id'
+        );
+
+        $this->clientSecret = (string) config(
+            'services.halaxy.client_secret'
+        );
 
         $this->userAgent = (string) config(
             'services.halaxy.user_agent',
-            config('app.name', 'MediLeaf') . ' (' . config('mail.from.address', 'admin@medileaf.co.au') . ')'
+            config('app.name', 'MediLeaf')
+            . ' ('
+            . config(
+                'mail.from.address',
+                'admin@medileaf.co.au'
+            )
+            . ')'
         );
     }
 
-    /**
-     * Get a valid Halaxy OAuth access token.
-     *
-     * Halaxy tokens are valid for 15 minutes.
-     * We cache the token for 14 minutes.
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication
+    |--------------------------------------------------------------------------
+    */
+
     public function getAccessToken(): string
     {
         if (!$this->clientId || !$this->clientSecret) {
@@ -51,11 +70,14 @@ class HalaxyService
                     'Accept' => 'application/fhir+json',
                     'Content-Type' => 'application/json',
                     'User-Agent' => $this->userAgent,
-                ])->post($this->baseUrl . '/oauth/token', [
+                ])->post(
+                        $this->baseUrl . '/oauth/token',
+                        [
                             'grant_type' => 'client_credentials',
                             'client_id' => $this->clientId,
                             'client_secret' => $this->clientSecret,
-                        ]);
+                        ]
+                    );
 
                 if ($response->failed()) {
                     throw new RuntimeException(
@@ -74,17 +96,24 @@ class HalaxyService
                     );
                 }
 
-                return $token;
+                return (string) $token;
             }
         );
     }
 
-    /**
-     * Make an authenticated GET request to Halaxy.
-     */
-    protected function get(string $endpoint, array $query = []): array
-    {
-        $response = Http::withToken($this->getAccessToken())
+    /*
+    |--------------------------------------------------------------------------
+    | Generic GET
+    |--------------------------------------------------------------------------
+    */
+
+    protected function get(
+        string $endpoint,
+        array $query = []
+    ): array {
+        $response = Http::withToken(
+            $this->getAccessToken()
+        )
             ->withHeaders([
                 'Accept' => 'application/fhir+json',
                 'Content-Type' => 'application/json',
@@ -104,132 +133,429 @@ class HalaxyService
             );
         }
 
-        return $response->json();
+        $data = $response->json();
+
+        if (!is_array($data)) {
+            return [];
+        }
+
+        return $data;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Helpers
+    |--------------------------------------------------------------------------
+    */
+
+    public function isOperationOutcome(
+        ?array $resource
+    ): bool {
+        if (!$resource) {
+            return false;
+        }
+
+        return (
+            $resource['resourceType'] ?? null
+        ) === 'OperationOutcome';
     }
 
     /**
-     * Get existing Halaxy patients.
+     * Extract resource ID from either:
      *
-     * Supported filters include:
-     * page, _count, _id, name, family, given,
-     * email, phone, status, birthdate,
-     * _lastUpdated, created and _sort.
+     * PractitionerRole/123
+     *
+     * or:
+     *
+     * https://au-api.halaxy.com/main/PractitionerRole/123
+     *
+     * No regex is used here.
      */
-    public function getPatients(array $params = []): array
-    {
+    protected function referenceId(
+        ?string $reference,
+        string $resourceType
+    ): ?string {
+        if (!$reference) {
+            return null;
+        }
+
+        $reference = trim($reference);
+
+        if ($reference === '') {
+            return null;
+        }
+
+        /*
+         * Remove query string and fragment first.
+         */
+        $reference = explode('#', $reference, 2)[0];
+        $reference = explode('?', $reference, 2)[0];
+
+        /*
+         * Absolute URL.
+         */
+        if (
+            str_starts_with($reference, 'http://')
+            || str_starts_with($reference, 'https://')
+        ) {
+            $path = parse_url(
+                $reference,
+                PHP_URL_PATH
+            );
+
+            if (!is_string($path)) {
+                return null;
+            }
+
+            $reference = $path;
+        }
+
+        $segments = array_values(
+            array_filter(
+                explode(
+                    '/',
+                    trim($reference, '/')
+                ),
+                fn($segment) => $segment !== ''
+            )
+        );
+
+        foreach ($segments as $index => $segment) {
+            if (
+                strcasecmp(
+                    $segment,
+                    $resourceType
+                ) !== 0
+            ) {
+                continue;
+            }
+
+            $id = $segments[$index + 1] ?? null;
+
+            if (!$id) {
+                return null;
+            }
+
+            return rawurldecode(
+                $id
+            );
+        }
+
+        return null;
+    }
+
+    /**
+     * Convert FHIR HumanName into readable name.
+     */
+    protected function humanName(
+        array $resource
+    ): ?string {
+        $names = $resource['name'] ?? [];
+
+        if (!is_array($names)) {
+            return null;
+        }
+
+        /*
+         * Some FHIR resources may return a single
+         * name object instead of an indexed array.
+         */
+        if (
+            isset($names['given'])
+            || isset($names['family'])
+            || isset($names['text'])
+        ) {
+            $names = [$names];
+        }
+
+        foreach ($names as $name) {
+            if (!is_array($name)) {
+                continue;
+            }
+
+            if (!empty($name['text'])) {
+                $text = trim(
+                    (string) $name['text']
+                );
+
+                if ($text !== '') {
+                    return $text;
+                }
+            }
+
+            $parts = [];
+
+            foreach (
+                (array) ($name['prefix'] ?? [])
+                as $prefix
+            ) {
+                $prefix = trim(
+                    (string) $prefix
+                );
+
+                if ($prefix !== '') {
+                    $parts[] = $prefix;
+                }
+            }
+
+            foreach (
+                (array) ($name['given'] ?? [])
+                as $given
+            ) {
+                $given = trim(
+                    (string) $given
+                );
+
+                if ($given !== '') {
+                    $parts[] = $given;
+                }
+            }
+
+            if (!empty($name['family'])) {
+                $parts[] = trim(
+                    (string) $name['family']
+                );
+            }
+
+            $fullName = trim(
+                implode(' ', $parts)
+            );
+
+            if ($fullName !== '') {
+                return $fullName;
+            }
+        }
+
+        return null;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Patients
+    |--------------------------------------------------------------------------
+    */
+
+    public function getPatients(
+        array $params = []
+    ): array {
         $params = array_merge([
             'page' => 1,
             '_count' => 30,
         ], $params);
 
-        return $this->get('/Patient', $params);
-    }
-
-    /**
-     * Get one Halaxy patient by patient ID.
-     */
-    public function getPatient(string $halaxyPatientId): array
-    {
         return $this->get(
-            '/Patient/' . urlencode($halaxyPatientId)
+            '/Patient',
+            $params
         );
     }
 
-    /**
-     * Find a Halaxy patient by email.
-     *
-     * Used when linking a MediLeaf user
-     * with an already existing Halaxy patient.
-     */
-    public function findPatientByEmail(string $email): ?array
-    {
-        $data = $this->get('/Patient', [
-            'email' => trim($email),
-            '_count' => 10,
-        ]);
+    public function getPatient(
+        string $halaxyPatientId
+    ): array {
+        $data = $this->get(
+            '/Patient/'
+            . urlencode($halaxyPatientId)
+        );
 
-        return $data['entry'][0]['resource'] ?? null;
+        if ($this->isOperationOutcome($data)) {
+            return [];
+        }
+
+        return $data;
     }
 
-    /**
-     * Find a Halaxy patient by phone.
-     */
-    public function findPatientByPhone(string $phone): ?array
-    {
-        $data = $this->get('/Patient', [
-            'phone' => trim($phone),
-            '_count' => 10,
-        ]);
+    public function findPatientByEmail(
+        string $email
+    ): ?array {
+        $data = $this->get(
+            '/Patient',
+            [
+                'email' => trim($email),
+                '_count' => 10,
+            ]
+        );
 
-        return $data['entry'][0]['resource'] ?? null;
+        if ($this->isOperationOutcome($data)) {
+            return null;
+        }
+
+        foreach (
+            $this->resources($data)
+            as $resource
+        ) {
+            if (
+                ($resource['resourceType'] ?? null)
+                === 'Patient'
+            ) {
+                return $resource;
+            }
+        }
+
+        return null;
     }
 
-    /**
-     * Get all appointments for a Halaxy patient.
-     *
-     * Can include past, current and future appointments.
-     */
+    public function findPatientByPhone(
+        string $phone
+    ): ?array {
+        $data = $this->get(
+            '/Patient',
+            [
+                'phone' => trim($phone),
+                '_count' => 10,
+            ]
+        );
+
+        if ($this->isOperationOutcome($data)) {
+            return null;
+        }
+
+        foreach (
+            $this->resources($data)
+            as $resource
+        ) {
+            if (
+                ($resource['resourceType'] ?? null)
+                === 'Patient'
+            ) {
+                return $resource;
+            }
+        }
+
+        return null;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Patient References
+    |--------------------------------------------------------------------------
+    */
+
+    public function patientReference(
+        string $halaxyPatientId
+    ): string {
+        return $this->baseUrl
+            . '/Patient/'
+            . rawurlencode($halaxyPatientId);
+    }
+
+    public function invoicePatientReference(
+        string $halaxyPatientId
+    ): string {
+        return 'Patient/'
+            . rawurlencode($halaxyPatientId);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Appointments
+    |--------------------------------------------------------------------------
+    */
+
+    public function getAllAppointments(
+        array $params = []
+    ): array {
+        $params = array_merge([
+            'page' => 1,
+            '_count' => 10,
+            '_sort' => '-date',
+        ], $params);
+
+        return $this->get(
+            '/Appointment',
+            $params
+        );
+    }
+
     public function getAppointments(
         string $halaxyPatientId,
         array $params = []
     ): array {
         $params = array_merge([
-            'patient' => $halaxyPatientId,
+            'patient' => $this->patientReference(
+                $halaxyPatientId
+            ),
             'page' => 1,
             '_count' => 30,
             '_sort' => '-date',
         ], $params);
 
-        return $this->get('/Appointment', $params);
-    }
-
-    /**
-     * Get one specific Halaxy appointment.
-     */
-    public function getAppointment(string $appointmentId): array
-    {
         return $this->get(
-            '/Appointment/' . urlencode($appointmentId)
+            '/Appointment',
+            $params
         );
     }
 
-    /**
-     * Get the next upcoming appointment.
-     *
-     * We retrieve appointments sorted by date ascending
-     * and then select the first appointment in the future.
-     */
+    public function appointmentResources(
+        string $halaxyPatientId,
+        array $params = []
+    ): array {
+        $bundle = $this->getAppointments(
+            $halaxyPatientId,
+            $params
+        );
+
+        return collect(
+            $this->resources($bundle)
+        )
+            ->filter(function ($resource) {
+                return (
+                    $resource['resourceType']
+                    ?? null
+                ) === 'Appointment';
+            })
+            ->values()
+            ->all();
+    }
+
+    public function getAppointment(
+        string $appointmentId
+    ): array {
+        $data = $this->get(
+            '/Appointment/'
+            . urlencode($appointmentId)
+        );
+
+        if ($this->isOperationOutcome($data)) {
+            return [];
+        }
+
+        return $data;
+    }
+
     public function getNextAppointment(
         string $halaxyPatientId
     ): ?array {
-        $data = $this->getAppointments(
-            $halaxyPatientId,
-            [
-                '_sort' => 'date',
-                '_count' => 30,
-            ]
-        );
+        $appointments =
+            $this->appointmentResources(
+                $halaxyPatientId,
+                [
+                    '_sort' => 'date',
+                    '_count' => 30,
+                ]
+            );
 
         $now = now();
 
-        foreach ($data['entry'] ?? [] as $entry) {
-            $appointment = $entry['resource'] ?? null;
-
-            if (!$appointment) {
-                continue;
-            }
-
-            $start = $appointment['start'] ?? null;
+        foreach (
+            $appointments
+            as $appointment
+        ) {
+            $start =
+                $appointment['start']
+                ?? null;
 
             if (!$start) {
                 continue;
             }
 
             try {
-                if (\Carbon\Carbon::parse($start)->greaterThanOrEqualTo($now)) {
+                if (
+                    Carbon::parse($start)
+                        ->greaterThanOrEqualTo($now)
+                ) {
                     return $appointment;
                 }
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 continue;
             }
         }
@@ -237,95 +563,423 @@ class HalaxyService
         return null;
     }
 
-    /**
-     * Get invoices.
-     *
-     * Can be used for practice-wide invoice lists
-     * or filtered by patient recipient.
-     */
-    public function getInvoices(array $params = []): array
-    {
+    /*
+    |--------------------------------------------------------------------------
+    | Practitioner Role
+    |--------------------------------------------------------------------------
+    */
+
+    public function getPractitionerRole(
+        string $practitionerRoleId
+    ): array {
+        if (
+            array_key_exists(
+                $practitionerRoleId,
+                $this->practitionerRoleCache
+            )
+        ) {
+            return $this->practitionerRoleCache[
+                $practitionerRoleId
+            ];
+        }
+
+        $data = $this->get(
+            '/PractitionerRole/'
+            . rawurlencode($practitionerRoleId)
+        );
+
+        if ($this->isOperationOutcome($data)) {
+            $data = [];
+        }
+
+        $this->practitionerRoleCache[
+            $practitionerRoleId
+        ] = $data;
+
+        return $data;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Practitioner
+    |--------------------------------------------------------------------------
+    */
+
+    public function getPractitioner(
+        string $practitionerId
+    ): array {
+        if (
+            array_key_exists(
+                $practitionerId,
+                $this->practitionerCache
+            )
+        ) {
+            return $this->practitionerCache[
+                $practitionerId
+            ];
+        }
+
+        $data = $this->get(
+            '/Practitioner/'
+            . rawurlencode($practitionerId)
+        );
+
+        if ($this->isOperationOutcome($data)) {
+            $data = [];
+        }
+
+        $this->practitionerCache[
+            $practitionerId
+        ] = $data;
+
+        return $data;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Appointment Practitioner Resolver
+    |--------------------------------------------------------------------------
+    */
+
+    public function appointmentPractitioner(
+        array $appointment
+    ): ?array {
+        foreach (
+            $appointment['participant'] ?? []
+            as $participant
+        ) {
+            $actor =
+                $participant['actor']
+                ?? [];
+
+            if (!is_array($actor)) {
+                continue;
+            }
+
+            $reference =
+                $actor['reference']
+                ?? null;
+
+            $display =
+                isset($actor['display'])
+                ? trim((string) $actor['display'])
+                : null;
+
+            /*
+             * Direct Practitioner reference.
+             */
+            $practitionerId =
+                $this->referenceId(
+                    $reference,
+                    'Practitioner'
+                );
+
+            if ($practitionerId) {
+                try {
+                    $practitioner =
+                        $this->getPractitioner(
+                            $practitionerId
+                        );
+
+                    $name =
+                        $this->humanName(
+                            $practitioner
+                        );
+
+                    return [
+                        'name' =>
+                            $name
+                            ?: $display
+                            ?: 'Practitioner',
+
+                        'practitioner_id' =>
+                            $practitionerId,
+
+                        'practitioner_role_id' =>
+                            null,
+                    ];
+
+                } catch (Throwable $e) {
+                    return [
+                        'name' =>
+                            $display
+                            ?: 'Practitioner',
+
+                        'practitioner_id' =>
+                            $practitionerId,
+
+                        'practitioner_role_id' =>
+                            null,
+                    ];
+                }
+            }
+
+            /*
+             * PractitionerRole reference.
+             */
+            $practitionerRoleId =
+                $this->referenceId(
+                    $reference,
+                    'PractitionerRole'
+                );
+
+            if (!$practitionerRoleId) {
+                continue;
+            }
+
+            try {
+                $role =
+                    $this->getPractitionerRole(
+                        $practitionerRoleId
+                    );
+            } catch (Throwable $e) {
+                return [
+                    'name' =>
+                        $display
+                        ?: 'Practitioner',
+
+                    'practitioner_id' =>
+                        null,
+
+                    'practitioner_role_id' =>
+                        $practitionerRoleId,
+                ];
+            }
+
+            $practitionerReference =
+                data_get(
+                    $role,
+                    'practitioner.reference'
+                );
+
+            $roleDisplay =
+                data_get(
+                    $role,
+                    'practitioner.display'
+                );
+
+            if (!$roleDisplay) {
+                $roleDisplay = $display;
+            }
+
+            $practitionerId =
+                $this->referenceId(
+                    $practitionerReference,
+                    'Practitioner'
+                );
+
+            if (!$practitionerId) {
+                return [
+                    'name' =>
+                        $roleDisplay
+                        ?: 'Practitioner',
+
+                    'practitioner_id' =>
+                        null,
+
+                    'practitioner_role_id' =>
+                        $practitionerRoleId,
+                ];
+            }
+
+            try {
+                $practitioner =
+                    $this->getPractitioner(
+                        $practitionerId
+                    );
+
+                $name =
+                    $this->humanName(
+                        $practitioner
+                    );
+
+                return [
+                    'name' =>
+                        $name
+                        ?: $roleDisplay
+                        ?: 'Practitioner',
+
+                    'practitioner_id' =>
+                        $practitionerId,
+
+                    'practitioner_role_id' =>
+                        $practitionerRoleId,
+                ];
+
+            } catch (Throwable $e) {
+                return [
+                    'name' =>
+                        $roleDisplay
+                        ?: 'Practitioner',
+
+                    'practitioner_id' =>
+                        $practitionerId,
+
+                    'practitioner_role_id' =>
+                        $practitionerRoleId,
+                ];
+            }
+        }
+
+        return null;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Invoices
+    |--------------------------------------------------------------------------
+    */
+
+    public function getInvoices(
+        array $params = []
+    ): array {
         $params = array_merge([
             'page' => 1,
             '_count' => 30,
         ], $params);
 
-        return $this->get('/Invoice', $params);
+        return $this->get(
+            '/Invoice',
+            $params
+        );
     }
 
-    /**
-     * Get invoices for one Halaxy patient.
-     *
-     * Halaxy Invoice API uses "recipient"
-     * to filter invoices by patient or organisation.
-     */
     public function getPatientInvoices(
         string $halaxyPatientId,
         array $params = []
     ): array {
         $params = array_merge([
-            'recipient' => $halaxyPatientId,
+            'recipient' =>
+                $this->invoicePatientReference(
+                    $halaxyPatientId
+                ),
             'page' => 1,
             '_count' => 30,
         ], $params);
 
-        return $this->get('/Invoice', $params);
-    }
-
-    /**
-     * Get one specific invoice.
-     */
-    public function getInvoice(string $invoiceId): array
-    {
         return $this->get(
-            '/Invoice/' . urlencode($invoiceId)
+            '/Invoice',
+            $params
         );
     }
 
-    /**
-     * Existing medication method.
-     *
-     * Keep this method for compatibility with
-     * existing MediLeaf code.
-     *
-     * We will only use it after confirming that
-     * MedicationRequest is available for your
-     * Halaxy API account and permissions.
-     */
-
-    public function getMedications(
-        string $halaxyPatientId
+    public function patientInvoiceResources(
+        string $halaxyPatientId,
+        array $params = []
     ): array {
-        $data = $this->get('/MedicationRequest', [
-            'patient' => $halaxyPatientId,
-            'status' => 'active',
-        ]);
+        $bundle =
+            $this->getPatientInvoices(
+                $halaxyPatientId,
+                $params
+            );
 
-        return $data['entry'] ?? [];
-    }
-
-    /**
-     * Extract only resources from a FHIR Bundle.
-     *
-     * Useful for controllers/views.
-     */
-    public function resources(array $bundle): array
-    {
-        return collect($bundle['entry'] ?? [])
-            ->pluck('resource')
-            ->filter()
+        return collect(
+            $this->resources($bundle)
+        )
+            ->filter(function ($resource) {
+                return (
+                    $resource['resourceType']
+                    ?? null
+                ) === 'Invoice';
+            })
             ->values()
             ->all();
     }
 
-    /**
-     * Clear the cached Halaxy OAuth token.
-     *
-     * Useful if credentials change or token
-     * authentication needs to be retried.
-     */
+    public function getInvoice(
+        string $invoiceId
+    ): array {
+        $data = $this->get(
+            '/Invoice/'
+            . urlencode($invoiceId)
+        );
+
+        if ($this->isOperationOutcome($data)) {
+            return [];
+        }
+
+        return $data;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Medications
+    |--------------------------------------------------------------------------
+    */
+
+    public function getMedications(
+        string $halaxyPatientId
+    ): array {
+        $data = $this->get(
+            '/MedicationRequest',
+            [
+                'patient' => $halaxyPatientId,
+                'status' => 'active',
+            ]
+        );
+
+        if ($this->isOperationOutcome($data)) {
+            return [];
+        }
+
+        return collect(
+            $this->resources($data)
+        )
+            ->filter(function ($resource) {
+                return (
+                    $resource['resourceType']
+                    ?? null
+                ) === 'MedicationRequest';
+            })
+            ->values()
+            ->all();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Bundle Resources
+    |--------------------------------------------------------------------------
+    */
+
+    public function resources(
+        array $bundle
+    ): array {
+        if ($this->isOperationOutcome($bundle)) {
+            return [];
+        }
+
+        return collect(
+            $bundle['entry'] ?? []
+        )
+            ->pluck('resource')
+            ->filter(function ($resource) {
+                if (!is_array($resource)) {
+                    return false;
+                }
+
+                if (
+                    ($resource['resourceType'] ?? null)
+                    === 'OperationOutcome'
+                ) {
+                    return false;
+                }
+
+                return true;
+            })
+            ->values()
+            ->all();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Token Cache
+    |--------------------------------------------------------------------------
+    */
+
     public function clearAccessToken(): void
     {
-        Cache::forget('halaxy_access_token');
+        Cache::forget(
+            'halaxy_access_token'
+        );
     }
 }
