@@ -12,9 +12,11 @@
         <div class="ml-halaxy-page-head">
 
             <div>
-                <h1>Halaxy Patients</h1>
+                <h1>Medileaf Patients</h1>
+
                 <p>
-                    View and manage existing patients connected through the Halaxy API.
+                    View and manage patient profiles, appointments, practitioner details and billing information in one
+                    place.
                 </p>
             </div>
 
@@ -183,200 +185,378 @@
 
                             @foreach($patients as $patient)
 
-                                            @php
+                                @php
+
+                                    /*
+                                    |--------------------------------------------------------------------------
+                                    | Patient Name
+                                    |--------------------------------------------------------------------------
+                                    |
+                                    | Halaxy can return multiple FHIR HumanName
+                                    | records.
+                                    |
+                                    | Example:
+                                    |
+                                    | name[0] = usual
+                                    | name[1] = official
+                                    |
+                                    | Always prefer the official name.
+                                    |
+                                    */
+
+                                    $patientNames =
+                                        $patient['name']
+                                        ?? [];
+
+                                    $patientName = null;
+
+
+                                    /*
+                                     * Find official name first.
+                                     */
+                                    foreach ($patientNames as $name) {
+
+                                        if (
+                                            is_array($name)
+                                            && strtolower(
+                                                (string) (
+                                                    $name['use']
+                                                    ?? ''
+                                                )
+                                            ) === 'official'
+                                        ) {
+                                            $patientName = $name;
+                                            break;
+                                        }
+
+                                    }
+
+
+                                    /*
+                                     * If no official name exists,
+                                     * use the first available name.
+                                     */
+                                    if (!$patientName) {
+
+                                        foreach ($patientNames as $name) {
+
+                                            if (is_array($name)) {
+                                                $patientName = $name;
+                                                break;
+                                            }
+
+                                        }
+
+                                    }
+
+
+                                    if (!is_array($patientName)) {
+                                        $patientName = [];
+                                    }
 
-                                                $firstName =
-                                                    $patient['name'][0]['given'][0]
-                                                    ?? '';
+
+                                    /*
+                                     * First name for avatar.
+                                     */
+                                    $firstName = trim(
+                                        (string) (
+                                            $patientName['given'][0]
+                                            ?? ''
+                                        )
+                                    );
+
+
+                                    /*
+                                     * Prefer Halaxy/FHIR formatted
+                                     * full name.
+                                     *
+                                     * Example:
+                                     *
+                                     * John G Sinclair
+                                     */
+                                    $fullName = trim(
+                                        (string) (
+                                            $patientName['text']
+                                            ?? ''
+                                        )
+                                    );
+
+
+                                    /*
+                                     * If text is unavailable,
+                                     * construct full name using ALL
+                                     * given names and family name.
+                                     */
+                                    if ($fullName === '') {
 
-                                                $lastName =
-                                                    $patient['name'][0]['family']
-                                                    ?? '';
+                                        $givenNames = [];
 
-                                                $fullName =
-                                                    trim($firstName . ' ' . $lastName);
+                                        foreach (
+                                            (array) (
+                                                $patientName['given']
+                                                ?? []
+                                            )
+                                            as $givenName
+                                        ) {
 
-                                                if (!$fullName) {
-                                                    $fullName = 'Unnamed Patient';
-                                                }
+                                            $givenName = trim(
+                                                (string) $givenName
+                                            );
 
+                                            if ($givenName !== '') {
+                                                $givenNames[] = $givenName;
+                                            }
 
-                                                $email = null;
-                                                $phone = null;
+                                        }
 
-                                                foreach ($patient['telecom'] ?? [] as $telecom) {
 
-                                                    if (
-                                                        ($telecom['system'] ?? null) === 'email'
-                                                        && !$email
-                                                    ) {
-                                                        $email = $telecom['value'] ?? null;
-                                                    }
+                                        $familyName = trim(
+                                            (string) (
+                                                $patientName['family']
+                                                ?? ''
+                                            )
+                                        );
 
-                                                    if (
-                                                        ($telecom['system'] ?? null) === 'phone'
-                                                        && !$phone
-                                                    ) {
-                                                        $phone = $telecom['value'] ?? null;
-                                                    }
 
-                                                }
+                                        $nameParts = $givenNames;
 
 
-                                                $patientId =
-                                                    $patient['id']
-                                                    ?? null;
+                                        if ($familyName !== '') {
+                                            $nameParts[] = $familyName;
+                                        }
 
-                                            @endphp
 
+                                        $fullName = trim(
+                                            implode(
+                                                ' ',
+                                                $nameParts
+                                            )
+                                        );
 
-                                            <tr>
+                                    }
 
-                                                {{-- Patient --}}
-                                                <td style="padding-left: 26px;">
 
-                                                    <div class="ml-halaxy-patient-cell">
+                                    if ($fullName === '') {
+                                        $fullName = 'Unnamed Patient';
+                                    }
 
-                                                        <div class="ml-halaxy-avatar">
 
-                                                            {{ strtoupper(
-                                    substr(
-                                        $firstName ?: $fullName,
-                                        0,
-                                        1
-                                    )
-                                ) }}
+                                    /*
+                                    |--------------------------------------------------------------------------
+                                    | Contact Information
+                                    |--------------------------------------------------------------------------
+                                    */
 
-                                                        </div>
+                                    $email = null;
+                                    $phone = null;
 
 
-                                                        <div class="ml-halaxy-patient-info">
+                                    foreach (
+                                        $patient['telecom'] ?? []
+                                        as $telecom
+                                    ) {
 
-                                                            <div class="ml-halaxy-patient-name">
-                                                                {{ $fullName }}
-                                                            </div>
+                                        if (
+                                            ($telecom['system'] ?? null)
+                                            === 'email'
+                                            && !$email
+                                        ) {
+                                            $email =
+                                                $telecom['value']
+                                                ?? null;
+                                        }
 
 
-                                                            @if(!empty($patient['gender']))
+                                        if (
+                                            ($telecom['system'] ?? null)
+                                            === 'phone'
+                                            && !$phone
+                                        ) {
+                                            $phone =
+                                                $telecom['value']
+                                                ?? null;
+                                        }
 
-                                                                <span class="ml-halaxy-patient-meta">
-                                                                    {{ $patient['gender'] }}
-                                                                </span>
+                                    }
 
-                                                            @endif
 
-                                                        </div>
+                                    /*
+                                    |--------------------------------------------------------------------------
+                                    | Patient ID
+                                    |--------------------------------------------------------------------------
+                                    */
 
-                                                    </div>
+                                    $patientId =
+                                        $patient['id']
+                                        ?? null;
 
-                                                </td>
 
+                                    /*
+                                    |--------------------------------------------------------------------------
+                                    | Avatar Initial
+                                    |--------------------------------------------------------------------------
+                                    */
 
-                                                {{-- Email --}}
-                                                <td>
+                                    $initial = strtoupper(
+                                        substr(
+                                            $firstName ?: $fullName,
+                                            0,
+                                            1
+                                        )
+                                    );
 
-                                                    @if($email)
+                                @endphp
 
-                                                        <a href="mailto:{{ $email }}" class="ml-halaxy-link">
 
-                                                            {{ $email }}
+                                <tr>
 
-                                                        </a>
+                                    {{-- Patient --}}
+                                    <td style="padding-left: 26px;">
 
-                                                    @else
+                                        <div class="ml-halaxy-patient-cell">
 
-                                                        <span class="text-muted">
-                                                            —
-                                                        </span>
+                                            <div class="ml-halaxy-avatar">
 
-                                                    @endif
+                                                {{ $initial }}
 
-                                                </td>
+                                            </div>
 
 
-                                                {{-- Phone --}}
-                                                <td>
+                                            <div class="ml-halaxy-patient-info">
 
-                                                    @if($phone)
+                                                <div class="ml-halaxy-patient-name">
 
-                                                        <a href="tel:{{ $phone }}" class="ml-halaxy-link">
+                                                    {{ $fullName }}
 
-                                                            {{ $phone }}
+                                                </div>
 
-                                                        </a>
 
-                                                    @else
+                                                @if(!empty($patient['gender']))
 
-                                                        <span class="text-muted">
-                                                            —
-                                                        </span>
+                                                                            <span class="ml-halaxy-patient-meta">
 
-                                                    @endif
+                                                                                {{ ucfirst(
+                                                        $patient['gender']
+                                                    ) }}
 
-                                                </td>
+                                                                            </span>
 
+                                                @endif
 
-                                                {{-- DOB --}}
-                                                <td>
+                                            </div>
 
-                                                    @if(!empty($patient['birthDate']))
+                                        </div>
 
-                                                                        {{ \Carbon\Carbon::parse(
-                                                            $patient['birthDate']
-                                                        )->format('d M Y') }}
+                                    </td>
 
-                                                    @else
 
-                                                        <span class="text-muted">
-                                                            —
-                                                        </span>
+                                    {{-- Email --}}
+                                    <td>
 
-                                                    @endif
+                                        @if($email)
 
-                                                </td>
+                                            <a href="mailto:{{ $email }}" class="ml-halaxy-link">
 
+                                                {{ $email }}
 
-                                                {{-- Halaxy ID --}}
-                                                <td>
+                                            </a>
 
-                                                    @if($patientId)
+                                        @else
 
-                                                        <span class="ml-halaxy-id">
-                                                            {{ $patientId }}
-                                                        </span>
+                                            <span class="text-muted">
+                                                —
+                                            </span>
 
-                                                    @else
+                                        @endif
 
-                                                        <span class="text-muted">
-                                                            —
-                                                        </span>
+                                    </td>
 
-                                                    @endif
 
-                                                </td>
+                                    {{-- Phone --}}
+                                    <td>
 
+                                        @if($phone)
 
-                                                {{-- Action --}}
-                                                <td style="text-align: right; padding-right: 26px;">
+                                            <a href="tel:{{ $phone }}" class="ml-halaxy-link">
 
-                                                    @if($patientId)
+                                                {{ $phone }}
 
-                                                                        <a href="{{ route(
-                                                            'admin.halaxy-patients.show',
-                                                            ['patientId' => $patientId]
-                                                        ) }}" class="ml-halaxy-view-btn">
+                                            </a>
 
-                                                                            View
+                                        @else
 
-                                                                            <i class="bi bi-arrow-right"></i>
+                                            <span class="text-muted">
+                                                —
+                                            </span>
 
-                                                                        </a>
+                                        @endif
 
-                                                    @endif
+                                    </td>
 
-                                                </td>
 
-                                            </tr>
+                                    {{-- DOB --}}
+                                    <td>
+
+                                        @if(!empty($patient['birthDate']))
+
+                                                            {{ \Carbon\Carbon::parse(
+                                                $patient['birthDate']
+                                            )->format('d M Y') }}
+
+                                        @else
+
+                                            <span class="text-muted">
+                                                —
+                                            </span>
+
+                                        @endif
+
+                                    </td>
+
+
+                                    {{-- Halaxy ID --}}
+                                    <td>
+
+                                        @if($patientId)
+
+                                            <span class="ml-halaxy-id">
+
+                                                {{ $patientId }}
+
+                                            </span>
+
+                                        @else
+
+                                            <span class="text-muted">
+                                                —
+                                            </span>
+
+                                        @endif
+
+                                    </td>
+
+
+                                    {{-- Action --}}
+                                    <td style="text-align: right; padding-right: 26px;">
+
+                                        @if($patientId)
+
+                                                            <a href="{{ route(
+                                                'admin.halaxy-patients.show',
+                                                ['patientId' => $patientId]
+                                            ) }}" class="ml-halaxy-view-btn">
+
+                                                                View
+
+                                                                <i class="bi bi-arrow-right"></i>
+
+                                                            </a>
+
+                                        @endif
+
+                                    </td>
+
+                                </tr>
 
                             @endforeach
 
@@ -390,7 +570,10 @@
                 {{-- =================================================
                 PAGINATION
                 ================================================== --}}
-                @if(($currentPage ?? 1) > 1 || count($patients ?? []) >= 30)
+                @if(
+                        ($currentPage ?? 1) > 1
+                        || count($patients ?? []) >= 30
+                    )
 
                     <div class="ml-halaxy-card-footer">
 
@@ -452,7 +635,9 @@
                 <div class="ml-halaxy-empty">
 
                     <div class="ml-halaxy-empty-icon">
+
                         <i class="bi bi-people"></i>
+
                     </div>
 
                     <h5>

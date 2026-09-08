@@ -23,8 +23,10 @@ body {
     top: 0;
     background: linear-gradient(180deg, #073d22, #0b4f2d);
     padding: 26px 20px;
+    height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     z-index: 999;
 }
 
@@ -79,7 +81,6 @@ body {
 
 .ml-admin-sidebar-bottom {
     margin-top: auto;
-    padding-top: 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
@@ -1133,15 +1134,18 @@ body {
     gap: 14px;
     padding: 0 16px;
     border-radius: 16px;
+    background: rgba(255, 255, 255, 0.10);
     color: rgba(255, 255, 255, 0.78);
     font-size: 15px;
     font-weight: 700;
     transition: 0.3s ease;
+    margin-top: 30px;
 }
 
 .ml-admin-logout-btn i {
     font-size: 19px;
 }
+
 
 .ml-admin-logout-btn:hover {
     background: rgba(255, 255, 255, 0.10);
@@ -2025,4 +2029,19 @@ body {
     height: 1px;
     opacity: 0;
     pointer-events: none;
+}
+
+
+.ml-admin-nav {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+}
+
+.ml-admin-nav::-webkit-scrollbar {
+    display: none;
 }

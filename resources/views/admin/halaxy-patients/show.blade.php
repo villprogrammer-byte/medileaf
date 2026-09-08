@@ -12,12 +12,121 @@
         |--------------------------------------------------------------------------
         */
 
-        $firstName = $patient['name'][0]['given'][0] ?? '';
-        $lastName = $patient['name'][0]['family'] ?? '';
+        $patientNames = $patient['name'] ?? [];
 
-        $fullName = trim($firstName . ' ' . $lastName);
+        /*
+         * Prefer the official Halaxy/FHIR name.
+         *
+         * Example:
+         *
+         * name[0] => use: usual
+         * name[1] => use: official
+         *
+         * We should display the official name whenever available.
+         */
+        $patientName = null;
 
-        if (!$fullName) {
+        foreach ($patientNames as $name) {
+
+            if (
+                is_array($name)
+                && ($name['use'] ?? null) === 'official'
+            ) {
+                $patientName = $name;
+                break;
+            }
+        }
+
+        /*
+         * Fallback to the first available name
+         * if Halaxy does not provide an official name.
+         */
+        if (!$patientName) {
+
+            foreach ($patientNames as $name) {
+
+                if (is_array($name)) {
+                    $patientName = $name;
+                    break;
+                }
+            }
+        }
+
+        if (!is_array($patientName)) {
+            $patientName = [];
+        }
+
+
+        /*
+         * First name is used for avatar initial.
+         */
+        $firstName = trim(
+            (string) (
+                $patientName['given'][0]
+                ?? ''
+            )
+        );
+
+
+        /*
+         * Prefer formatted FHIR name.text.
+         *
+         * Example:
+         *
+         * John G Sinclair
+         */
+        $fullName = trim(
+            (string) (
+                $patientName['text']
+                ?? ''
+            )
+        );
+
+
+        /*
+         * If text is missing, build complete name
+         * from all given names + family name.
+         */
+        if ($fullName === '') {
+
+            $givenNames = [];
+
+            foreach (
+                (array) (
+                    $patientName['given']
+                    ?? []
+                )
+                as $givenName
+            ) {
+                $givenName = trim(
+                    (string) $givenName
+                );
+
+                if ($givenName !== '') {
+                    $givenNames[] = $givenName;
+                }
+            }
+
+            $familyName = trim(
+                (string) (
+                    $patientName['family']
+                    ?? ''
+                )
+            );
+
+            $nameParts = $givenNames;
+
+            if ($familyName !== '') {
+                $nameParts[] = $familyName;
+            }
+
+            $fullName = trim(
+                implode(' ', $nameParts)
+            );
+        }
+
+
+        if ($fullName === '') {
             $fullName = 'Unnamed Patient';
         }
 
@@ -128,7 +237,7 @@
                 </h1>
 
                 <p>
-                    Halaxy Patient ID:
+                    Medileaf Patient ID:
 
                     @if($patientId)
 
@@ -154,8 +263,10 @@
                         'admin.halaxy-patients.show',
                         ['patientId' => $patientId]
                     ) }}" class="ml-halaxy-secondary-btn">
+
                                 <i class="bi bi-arrow-clockwise"></i>
                                 Refresh
+
                             </a>
 
                 @endif

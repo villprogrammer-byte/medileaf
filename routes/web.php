@@ -17,9 +17,11 @@ use App\Http\Controllers\Admin\Auth\AdminLoginController;
 use App\Http\Controllers\Admin\Auth\AdminOtpController;
 use App\Http\Controllers\Admin\Auth\AdminForgotPasswordController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductGalleryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HalaxyPatientController;
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\BlogGalleryController;
 use App\Http\Controllers\Admin\BlogCategoryController;
 use App\Http\Controllers\Admin\BlogTagController;
 use App\Http\Controllers\Admin\BlogAuthorController;
@@ -178,6 +180,31 @@ Route::prefix('admin')
 
         /*
         |--------------------------------------------------------------------------
+        | Product Gallery
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/product-gallery', [ProductGalleryController::class, 'index'])
+            ->name('product-gallery.index');
+        Route::put('/product-gallery/{productImage}', [ProductGalleryController::class, 'update'])
+            ->name('product-gallery.update');
+        Route::post('/product-gallery/{productImage}/replace', [ProductGalleryController::class, 'replace'])
+            ->name('product-gallery.replace');
+
+        Route::delete('/product-gallery/{productImage}', [ProductGalleryController::class, 'destroy'])
+            ->name('product-gallery.destroy');
+
+        Route::put('/product-gallery/featured/{product}', [ProductGalleryController::class, 'updateFeatured'])
+            ->name('product-gallery.featured.update');
+
+        Route::post('/product-gallery/featured/{product}/replace', [ProductGalleryController::class, 'replaceFeatured'])
+            ->name('product-gallery.featured.replace');
+
+        Route::delete('/product-gallery/featured/{product}', [ProductGalleryController::class, 'destroyFeatured'])
+            ->name('product-gallery.featured.destroy');
+
+        /*
+        |--------------------------------------------------------------------------
         | Halaxy Patients
         |--------------------------------------------------------------------------
         */
@@ -263,6 +290,28 @@ Route::prefix('admin')
 
             Route::delete('/redirects/{blogRedirect}', [BlogRedirectController::class, 'destroy'])
                 ->name('redirects.destroy');
+
+            /*
+        /*
+            |--------------------------------------------------------------------------
+            | Blog Gallery
+            |--------------------------------------------------------------------------
+            */
+
+            Route::get('/gallery', [BlogGalleryController::class, 'index'])
+                ->name('gallery.index');
+
+            Route::post('/gallery', [BlogGalleryController::class, 'store'])
+                ->name('gallery.store');
+
+            Route::put('/gallery/featured/{blog}', [BlogGalleryController::class, 'updateFeatured'])
+                ->name('gallery.featured.update');
+
+            Route::post('/gallery/featured/{blog}/replace', [BlogGalleryController::class, 'replaceFeatured'])
+                ->name('gallery.featured.replace');
+
+            Route::delete('/gallery/featured/{blog}', [BlogGalleryController::class, 'destroyFeatured'])
+                ->name('gallery.featured.destroy');
 
             /*
             |--------------------------------------------------------------------------

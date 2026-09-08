@@ -901,20 +901,64 @@
                     </div>
 
 
-                    <label class="ml-upload-box" id="featuredUpload">
+                    @if ($product->featured_image)
 
-                        <input type="file" name="featured_image" id="featuredImageInput" accept=".jpg,.jpeg,.png,.webp"
-                            hidden>
+                        {{-- Existing Featured Image --}}
+                        <a href="{{ route('admin.product-gallery.index') }}" class="ml-featured-gallery-link"
+                            title="Open in Product Gallery">
 
+                            <div class="ml-featured-gallery-preview">
 
-                        <div id="featuredPreview">
-
-                            @if ($product->featured_image)
-
-                                <img src="{{ asset('storage/' . $product->featured_image) }}"
+                                <img src="{{ asset('storage/' . ltrim($product->featured_image, '/')) }}"
                                     alt="{{ $product->featured_image_alt }}" class="ml-featured-preview">
 
-                            @else
+                                <div class="ml-featured-gallery-overlay">
+
+                                    <span class="ml-featured-gallery-icon">
+                                        <i class="bi bi-images"></i>
+                                    </span>
+
+                                    <strong>
+                                        Open in Product Gallery
+                                    </strong>
+
+                                    <small>
+                                        View and manage this image
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </a>
+
+
+                        {{-- Change Featured Image --}}
+                        <div class="mt-3">
+
+                            <label for="featuredImageInput" class="ml-featured-change-btn">
+
+                                <i class="bi bi-arrow-repeat"></i>
+                                Change Featured Image
+
+                            </label>
+
+                            <input type="file" name="featured_image" id="featuredImageInput" accept=".webp,image/webp" hidden>
+
+                            <small class="text-muted d-block mt-2">
+                                WEBP only, up to 5MB.
+                            </small>
+
+                        </div>
+
+                    @else
+
+                        {{-- No Featured Image --}}
+                        <label class="ml-upload-box" id="featuredUpload">
+
+                            <input type="file" name="featured_image" id="featuredImageInput" accept=".webp,image/webp" hidden>
+
+                            <div id="featuredPreview">
 
                                 <i class="bi bi-cloud-arrow-up"></i>
 
@@ -923,14 +967,14 @@
                                 </strong>
 
                                 <span>
-                                    PNG, JPG, WEBP up to 5MB
+                                    WEBP up to 5MB
                                 </span>
 
-                            @endif
+                            </div>
 
-                        </div>
+                        </label>
 
-                    </label>
+                    @endif
 
 
                     <div class="mt-3">
@@ -942,10 +986,13 @@
                         <input type="text" name="image_alt" value="{{ old('image_alt', $product->image_alt) }}"
                             class="ml-admin-input" placeholder="Describe the featured product image">
 
+                        <small class="text-muted d-block mt-2">
+                            Describe the featured product image accurately for accessibility and SEO.
+                        </small>
+
                     </div>
 
                 </div>
-
 
                 {{-- =====================================================
                 PRODUCT GALLERY
@@ -959,19 +1006,17 @@
                             Product Gallery
                         </h4>
 
-
                         <button type="button" class="ml-gallery-add-btn" id="addGalleryImageBtn">
+
                             <i class="bi bi-plus-circle"></i>
                             Add Image
                         </button>
 
                     </div>
 
-
                     <p class="text-muted mb-3">
-                        Rename, update ALT text, replace or remove images individually.
+                        Click an existing image to open and manage it in Product Gallery.
                     </p>
-
 
                     @php
                         $galleryRecords = $product->images;
@@ -996,126 +1041,75 @@
                         }
                     @endphp
 
+                    {{-- Existing Gallery Images --}}
+                    @if($galleryRecords->count())
 
-                    <div id="galleryItemList" class="ml-gallery-manager">
+                        <div class="ml-edit-gallery-grid">
 
-                        @foreach ($galleryItems as $galleryIndex => $galleryItem)
+                            @foreach($galleryRecords as $image)
 
-                            <div class="ml-gallery-manager-item" data-gallery-row>
+                                <a href="{{ route('admin.product-gallery.index') }}" class="ml-edit-gallery-link"
+                                    title="Open in Product Gallery">
 
-                                @if (!empty($galleryItem['id']))
-                                    <input type="hidden" name="gallery_items[{{ $galleryIndex }}][id]"
-                                        value="{{ $galleryItem['id'] }}" data-gallery-field="id">
-                                @endif
+                                    <div class="ml-edit-gallery-image">
 
+                                        <img src="{{ asset('storage/' . ltrim($image->image, '/')) }}"
+                                            alt="{{ $image->alt_text_value }}">
 
-                                <div class="ml-gallery-manager-head">
+                                        <div class="ml-edit-gallery-overlay">
 
-                                    <strong data-gallery-number>
-                                        Image {{ $loop->iteration }}
-                                    </strong>
+                                            <span>
+                                                <i class="bi bi-images"></i>
+                                            </span>
 
+                                            <strong>
+                                                Open in Gallery
+                                            </strong>
 
-                                    <button type="button" class="ml-gallery-remove-btn" data-remove-gallery
-                                        aria-label="Remove gallery image">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
+                                        </div>
 
-                                </div>
+                                    </div>
 
+                                    <div class="ml-edit-gallery-meta">
 
-                                <div class="ml-gallery-upload-preview" data-gallery-preview>
+                                        <strong title="{{ $image->display_name }}">
+                                            {{ $image->display_name }}
+                                        </strong>
 
-                                    @if (!empty($galleryItem['image']))
+                                        <small>
+                                            Manage image
+                                        </small>
 
-                                        <img src="{{ asset('storage/' . $galleryItem['image']) }}"
-                                            alt="{{ $galleryItem['alt_text'] ?: ($galleryItem['image_name'] ?? $product->name) }}">
+                                    </div>
 
-                                    @else
+                                </a>
 
-                                        <i class="bi bi-image"></i>
+                            @endforeach
 
-                                    @endif
+                        </div>
 
-                                </div>
+                    @else
 
+                        <div class="ml-gallery-empty-state">
+                            <i class="bi bi-images"></i>
 
-                                <div class="mb-3">
+                            <strong>
+                                No gallery images added
+                            </strong>
 
-                                    <label class="ml-admin-label">
-                                        Replace Image
-                                    </label>
+                            <span>
+                                Click “Add Image” to add your first product gallery image.
+                            </span>
+                        </div>
 
-                                    <input type="file" name="gallery_items[{{ $galleryIndex }}][image]" class="form-control"
-                                        accept=".jpg,.jpeg,.png,.webp" data-gallery-image>
-
-                                    <small class="text-muted d-block mt-2">
-                                        Leave empty to keep the current image.
-                                    </small>
-
-                                </div>
-
-
-                                <div class="mb-3">
-
-                                    <label class="ml-admin-label">
-                                        Image Name
-                                    </label>
-
-                                    <input type="text" name="gallery_items[{{ $galleryIndex }}][image_name]"
-                                        value="{{ $galleryItem['image_name'] ?? '' }}" class="ml-admin-input"
-                                        placeholder="Front View" data-gallery-field="image_name">
-
-                                </div>
+                    @endif
 
 
-                                <div class="mb-3">
-
-                                    <label class="ml-admin-label">
-                                        ALT Text
-                                    </label>
-
-                                    <input type="text" name="gallery_items[{{ $galleryIndex }}][alt_text]"
-                                        value="{{ $galleryItem['alt_text'] ?? '' }}" class="ml-admin-input"
-                                        placeholder="Product front view" data-gallery-field="alt_text">
-
-                                </div>
-
-
-                                <input type="hidden" name="gallery_items[{{ $galleryIndex }}][sort_order]"
-                                    value="{{ $galleryItem['sort_order'] ?? $galleryIndex }}" data-gallery-field="sort_order">
-
-
-                                @if (!empty($galleryItem['id']))
-
-                                    <input type="hidden" name="gallery_items[{{ $galleryIndex }}][remove]" value="0"
-                                        data-gallery-remove>
-
-                                @endif
-
-                            </div>
-
-                        @endforeach
-
-                    </div>
-
-
-                    <div class="ml-gallery-empty-state {{ count($galleryItems) ? 'd-none' : '' }}" id="galleryEmptyState">
-
-                        <i class="bi bi-images"></i>
-
-                        <strong>
-                            No gallery images added
-                        </strong>
-
-                        <span>
-                            Click “Add Image” to add a product gallery image.
-                        </span>
-
+                    {{-- New Images Being Added --}}
+                    <div id="galleryItemList" class="ml-gallery-manager mt-3">
                     </div>
 
                 </div>
-
 
                 {{-- =====================================================
                 SHIPPING

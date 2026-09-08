@@ -8,6 +8,9 @@ use App\Models\BlogCategory;
 use App\Models\BlogPost;
 use App\Models\BlogTag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class BlogController extends Controller
 {
@@ -63,6 +66,7 @@ class BlogController extends Controller
         ));
     }
 
+
     /**
      * Create Blog Post
      */
@@ -88,61 +92,245 @@ class BlogController extends Controller
         ));
     }
 
+
     /**
      * Store Blog Post
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'slug' => ['nullable', 'string', 'max:255', 'unique:blog_posts,slug'],
-            'category_id' => ['nullable', 'exists:blog_categories,id'],
-            'author_id' => ['nullable', 'exists:blog_authors,id'],
-            'reviewer_id' => ['nullable', 'exists:blog_authors,id'],
-            'excerpt' => ['nullable', 'string'],
-            'content' => ['required', 'string'],
-            'featured_image' => ['nullable', 'string', 'max:255'],
-            'featured_image_alt' => ['nullable', 'string', 'max:255'],
-            'status' => ['required', 'in:draft,published'],
-            'is_featured' => ['nullable', 'boolean'],
-            'published_at' => ['nullable', 'date'],
-            'reading_time' => ['nullable', 'integer', 'min:1'],
-            'last_reviewed_at' => ['nullable', 'date'],
-            'meta_title' => ['nullable', 'string', 'max:255'],
-            'meta_description' => ['nullable', 'string'],
-            'canonical_url' => ['nullable', 'url', 'max:255'],
-            'robots' => ['nullable', 'string', 'max:255'],
-            'og_title' => ['nullable', 'string', 'max:255'],
-            'og_description' => ['nullable', 'string'],
-            'og_image' => ['nullable', 'string', 'max:255'],
-            'schema_type' => ['nullable', 'string', 'max:255'],
-            'tags' => ['nullable', 'array'],
-            'tags.*' => ['exists:blog_tags,id'],
-        ]);
+        $validated = $request->validate(
+            [
+                'title' => [
+                    'required',
+                    'string',
+                    'max:255',
+                ],
+
+                'slug' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                    'unique:blog_posts,slug',
+                ],
+
+                'category_id' => [
+                    'nullable',
+                    'exists:blog_categories,id',
+                ],
+
+                'author_id' => [
+                    'nullable',
+                    'exists:blog_authors,id',
+                ],
+
+                'reviewer_id' => [
+                    'nullable',
+                    'exists:blog_authors,id',
+                ],
+
+                'excerpt' => [
+                    'nullable',
+                    'string',
+                ],
+
+                'content' => [
+                    'required',
+                    'string',
+                ],
+
+                'featured_image' => [
+                    'nullable',
+                    'file',
+                    'mimes:webp',
+                    'mimetypes:image/webp',
+                    'max:500',
+                ],
+
+                'featured_image_name' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                ],
+
+                'featured_image_alt' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                ],
+
+                'status' => [
+                    'required',
+                    'in:draft,published',
+                ],
+
+                'is_featured' => [
+                    'nullable',
+                    'boolean',
+                ],
+
+                'published_at' => [
+                    'nullable',
+                    'date',
+                ],
+
+                'reading_time' => [
+                    'nullable',
+                    'integer',
+                    'min:1',
+                ],
+
+                'last_reviewed_at' => [
+                    'nullable',
+                    'date',
+                ],
+
+                'meta_title' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                ],
+
+                'meta_description' => [
+                    'nullable',
+                    'string',
+                ],
+
+                'canonical_url' => [
+                    'nullable',
+                    'url',
+                    'max:255',
+                ],
+
+                'robots' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                ],
+
+                'og_title' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                ],
+
+                'og_description' => [
+                    'nullable',
+                    'string',
+                ],
+
+                'og_image' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                ],
+
+                'schema_type' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                ],
+
+                'tags' => [
+                    'nullable',
+                    'array',
+                ],
+
+                'tags.*' => [
+                    'exists:blog_tags,id',
+                ],
+            ],
+            [
+                'featured_image.mimes' =>
+                    'Featured image must be in WebP format.',
+
+                'featured_image.mimetypes' =>
+                    'Featured image must be in WebP format.',
+
+                'featured_image.max' =>
+                    'Featured image size must not exceed 500 KB.',
+            ]
+        );
+
 
         if (empty($validated['slug'])) {
-            $validated['slug'] = \Illuminate\Support\Str::slug(
+            $validated['slug'] = Str::slug(
                 $validated['title']
             );
         }
 
-        $validated['is_featured'] = $request->boolean('is_featured');
 
-        if ($validated['status'] === 'published' && empty($validated['published_at'])) {
+        $validated['is_featured'] = $request->boolean(
+            'is_featured'
+        );
+
+
+        if (
+            $validated['status'] === 'published' &&
+            empty($validated['published_at'])
+        ) {
             $validated['published_at'] = now();
         }
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | Featured Image Upload
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->hasFile('featured_image')) {
+
+            $file = $request->file('featured_image');
+
+
+            $path = $file->store(
+                'blogs/featured',
+                'public'
+            );
+
+
+            $validated['featured_image'] = $path;
+
+
+            if (empty($validated['featured_image_name'])) {
+
+                $validated['featured_image_name'] = pathinfo(
+                    $file->getClientOriginalName(),
+                    PATHINFO_FILENAME
+                );
+            }
+
+        } else {
+
+            unset($validated['featured_image']);
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Tags
+        |--------------------------------------------------------------------------
+        */
+
         $tags = $validated['tags'] ?? [];
+
         unset($validated['tags']);
+
 
         $post = BlogPost::create($validated);
 
+
         $post->tags()->sync($tags);
+
 
         return redirect()
             ->route('admin.blog.index')
-            ->with('success', 'Blog post created successfully.');
+            ->with(
+                'success',
+                'Blog post created successfully.'
+            );
     }
+
 
     /**
      * Public Blog Listing
@@ -159,36 +347,61 @@ class BlogController extends Controller
             ->orderBy('name')
             ->get();
 
+
         $featuredPost = BlogPost::published()
-            ->with(['category', 'author'])
+            ->with([
+                'category',
+                'author',
+            ])
             ->where('is_featured', true)
             ->latest('published_at')
             ->first();
 
+
         if (!$featuredPost) {
+
             $featuredPost = BlogPost::published()
-                ->with(['category', 'author'])
+                ->with([
+                    'category',
+                    'author',
+                ])
                 ->latest('published_at')
                 ->first();
         }
 
+
         $postsQuery = BlogPost::published()
-            ->with(['category', 'author'])
+            ->with([
+                'category',
+                'author',
+            ])
             ->latest('published_at');
 
+
         if ($featuredPost) {
-            $postsQuery->where('id', '!=', $featuredPost->id);
+
+            $postsQuery->where(
+                'id',
+                '!=',
+                $featuredPost->id
+            );
         }
+
 
         $posts = $postsQuery
             ->paginate(9)
             ->withQueryString();
 
+
         $popularPosts = BlogPost::published()
-            ->with(['category', 'author'])
+            ->with([
+                'category',
+                'author',
+            ])
             ->latest('published_at')
             ->take(4)
             ->get();
+
 
         return view('pages.blog', compact(
             'categories',
@@ -197,6 +410,7 @@ class BlogController extends Controller
             'popularPosts'
         ));
     }
+
 
     /**
      * Admin Blog Preview
@@ -210,17 +424,16 @@ class BlogController extends Controller
             'tags',
         ]);
 
+
         return view(
             'admin.blog.show',
             compact('blogPost')
         );
     }
 
+
     /**
      * Public Blog Article
-     *
-     * This method is intentionally separate from the admin show()
-     * method because the public route uses a blog slug.
      */
     public function publicShow(string $slug)
     {
@@ -234,15 +447,21 @@ class BlogController extends Controller
             ->where('slug', $slug)
             ->firstOrFail();
 
+
         $relatedPosts = BlogPost::published()
             ->with([
                 'category',
                 'author',
             ])
-            ->where('id', '!=', $blogPost->id)
+            ->where(
+                'id',
+                '!=',
+                $blogPost->id
+            )
             ->when(
                 $blogPost->category_id,
                 function ($query) use ($blogPost) {
+
                     $query->where(
                         'category_id',
                         $blogPost->category_id
@@ -253,22 +472,24 @@ class BlogController extends Controller
             ->take(3)
             ->get();
 
+
         $popularPosts = BlogPost::published()
             ->with([
                 'category',
                 'author',
             ])
-            ->where('id', '!=', $blogPost->id)
+            ->where(
+                'id',
+                '!=',
+                $blogPost->id
+            )
             ->latest('published_at')
             ->take(4)
             ->get();
 
-        /*
-        | The existing public Blade uses $post.
-        | Keep both names available so the template remains compatible.
-        */
 
         $post = $blogPost;
+
 
         return view(
             'pages.blog-view',
@@ -281,6 +502,7 @@ class BlogController extends Controller
         );
     }
 
+
     /**
      * Edit Blog Post
      */
@@ -291,13 +513,16 @@ class BlogController extends Controller
             ->orderBy('name')
             ->get();
 
+
         $authors = BlogAuthor::where('is_active', true)
             ->orderBy('name')
             ->get();
 
+
         $tags = BlogTag::where('is_active', true)
             ->orderBy('name')
             ->get();
+
 
         return view('admin.blog.edit', compact(
             'blogPost',
@@ -307,69 +532,313 @@ class BlogController extends Controller
         ));
     }
 
+
     /**
      * Update Blog Post
      */
-    public function update(Request $request, BlogPost $blogPost)
-    {
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'slug' => [
-                'nullable',
-                'string',
-                'max:255',
-                \Illuminate\Validation\Rule::unique(
-                    'blog_posts',
-                    'slug'
-                )->ignore($blogPost->id),
+    public function update(
+        Request $request,
+        BlogPost $blogPost
+    ) {
+
+        $validated = $request->validate(
+            [
+                'title' => [
+                    'required',
+                    'string',
+                    'max:255',
+                ],
+
+                'slug' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+
+                    Rule::unique(
+                        'blog_posts',
+                        'slug'
+                    )->ignore($blogPost->id),
+                ],
+
+                'category_id' => [
+                    'nullable',
+                    'exists:blog_categories,id',
+                ],
+
+                'author_id' => [
+                    'nullable',
+                    'exists:blog_authors,id',
+                ],
+
+                'reviewer_id' => [
+                    'nullable',
+                    'exists:blog_authors,id',
+                ],
+
+                'excerpt' => [
+                    'nullable',
+                    'string',
+                ],
+
+                'content' => [
+                    'required',
+                    'string',
+                ],
+
+                'featured_image' => [
+                    'nullable',
+                    'file',
+                    'mimes:webp',
+                    'mimetypes:image/webp',
+                    'max:500',
+                ],
+
+                'featured_image_name' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                ],
+
+                'featured_image_alt' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                ],
+
+                'status' => [
+                    'required',
+                    'in:draft,published',
+                ],
+
+                'is_featured' => [
+                    'nullable',
+                    'boolean',
+                ],
+
+                'published_at' => [
+                    'nullable',
+                    'date',
+                ],
+
+                'reading_time' => [
+                    'nullable',
+                    'integer',
+                    'min:1',
+                ],
+
+                'last_reviewed_at' => [
+                    'nullable',
+                    'date',
+                ],
+
+                'meta_title' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                ],
+
+                'meta_description' => [
+                    'nullable',
+                    'string',
+                ],
+
+                'canonical_url' => [
+                    'nullable',
+                    'url',
+                    'max:255',
+                ],
+
+                'robots' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                ],
+
+                'og_title' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                ],
+
+                'og_description' => [
+                    'nullable',
+                    'string',
+                ],
+
+                'og_image' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                ],
+
+                'schema_type' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                ],
+
+                'tags' => [
+                    'nullable',
+                    'array',
+                ],
+
+                'tags.*' => [
+                    'exists:blog_tags,id',
+                ],
             ],
-            'category_id' => ['nullable', 'exists:blog_categories,id'],
-            'author_id' => ['nullable', 'exists:blog_authors,id'],
-            'reviewer_id' => ['nullable', 'exists:blog_authors,id'],
-            'excerpt' => ['nullable', 'string'],
-            'content' => ['required', 'string'],
-            'featured_image' => ['nullable', 'string', 'max:255'],
-            'featured_image_alt' => ['nullable', 'string', 'max:255'],
-            'status' => ['required', 'in:draft,published'],
-            'is_featured' => ['nullable', 'boolean'],
-            'published_at' => ['nullable', 'date'],
-            'reading_time' => ['nullable', 'integer', 'min:1'],
-            'last_reviewed_at' => ['nullable', 'date'],
-            'meta_title' => ['nullable', 'string', 'max:255'],
-            'meta_description' => ['nullable', 'string'],
-            'canonical_url' => ['nullable', 'url', 'max:255'],
-            'robots' => ['nullable', 'string', 'max:255'],
-            'og_title' => ['nullable', 'string', 'max:255'],
-            'og_description' => ['nullable', 'string'],
-            'og_image' => ['nullable', 'string', 'max:255'],
-            'schema_type' => ['nullable', 'string', 'max:255'],
-            'tags' => ['nullable', 'array'],
-            'tags.*' => ['exists:blog_tags,id'],
-        ]);
+            [
+                'featured_image.mimes' =>
+                    'Featured image must be in WebP format.',
+
+                'featured_image.mimetypes' =>
+                    'Featured image must be in WebP format.',
+
+                'featured_image.max' =>
+                    'Featured image size must not exceed 500 KB.',
+            ]
+        );
+
 
         if (empty($validated['slug'])) {
-            $validated['slug'] = \Illuminate\Support\Str::slug(
+
+            $validated['slug'] = Str::slug(
                 $validated['title']
             );
         }
 
-        $validated['is_featured'] = $request->boolean('is_featured');
 
-        if ($validated['status'] === 'published' && empty($validated['published_at'])) {
+        $validated['is_featured'] = $request->boolean(
+            'is_featured'
+        );
+
+
+        if (
+            $validated['status'] === 'published' &&
+            empty($validated['published_at'])
+        ) {
+
             $validated['published_at'] = now();
         }
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | Replace Featured Image
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->hasFile('featured_image')) {
+
+            $file = $request->file(
+                'featured_image'
+            );
+
+
+            /*
+            |--------------------------------------------------------------
+            | Store new image first
+            |--------------------------------------------------------------
+            */
+
+            $newPath = $file->store(
+                'blogs/featured',
+                'public'
+            );
+
+
+            $oldPath = $blogPost->featured_image;
+
+
+            $validated['featured_image'] = $newPath;
+
+
+            if (empty($validated['featured_image_name'])) {
+
+                $validated['featured_image_name'] = pathinfo(
+                    $file->getClientOriginalName(),
+                    PATHINFO_FILENAME
+                );
+            }
+
+
+            /*
+            |--------------------------------------------------------------
+            | Update Blog Post
+            |--------------------------------------------------------------
+            */
+
+            $tags = $validated['tags'] ?? [];
+
+            unset($validated['tags']);
+
+
+            $blogPost->update($validated);
+
+
+            $blogPost->tags()->sync($tags);
+
+
+            /*
+            |--------------------------------------------------------------
+            | Delete old image only after successful update
+            |--------------------------------------------------------------
+            */
+
+            if (
+                filled($oldPath) &&
+                $oldPath !== $newPath &&
+                Storage::disk('public')->exists($oldPath)
+            ) {
+
+                Storage::disk('public')->delete(
+                    $oldPath
+                );
+            }
+
+
+            return redirect()
+                ->route('admin.blog.index')
+                ->with(
+                    'success',
+                    'Blog post updated successfully.'
+                );
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | No New Featured Image
+        |--------------------------------------------------------------------------
+        */
+
+        unset($validated['featured_image']);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Tags
+        |--------------------------------------------------------------------------
+        */
+
         $tags = $validated['tags'] ?? [];
+
         unset($validated['tags']);
+
 
         $blogPost->update($validated);
 
+
         $blogPost->tags()->sync($tags);
+
 
         return redirect()
             ->route('admin.blog.index')
-            ->with('success', 'Blog post updated successfully.');
+            ->with(
+                'success',
+                'Blog post updated successfully.'
+            );
     }
+
 
     /**
      * Delete Blog Post
@@ -378,10 +847,28 @@ class BlogController extends Controller
     {
         $blogPost->tags()->detach();
 
+
+        if (
+            filled($blogPost->featured_image) &&
+            Storage::disk('public')->exists(
+                $blogPost->featured_image
+            )
+        ) {
+
+            Storage::disk('public')->delete(
+                $blogPost->featured_image
+            );
+        }
+
+
         $blogPost->delete();
+
 
         return redirect()
             ->route('admin.blog.index')
-            ->with('success', 'Blog post deleted successfully.');
+            ->with(
+                'success',
+                'Blog post deleted successfully.'
+            );
     }
 }

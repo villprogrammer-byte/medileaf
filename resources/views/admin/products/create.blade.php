@@ -818,7 +818,7 @@
                             </strong>
 
                             <span>
-                                PNG, JPG, WEBP up to 5MB
+                                WEBP up to 5MB
                             </span>
 
                         </div>

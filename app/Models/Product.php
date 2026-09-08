@@ -37,11 +37,13 @@ class Product extends Model
         |--------------------------------------------------------------------------
         |
         | featured_image stays in products table.
+        | featured_image_name stores the editable admin image name.
         | gallery_images is temporarily retained for backward compatibility.
         | New gallery management will use ProductImage records.
         |
         */
         'featured_image',
+        'featured_image_name',
         'gallery_images',
 
         /*
@@ -64,7 +66,8 @@ class Product extends Model
 
         /*
         | Legacy field retained so existing products do not break.
-        | New image ALT text will be stored per image.
+        | Used as featured image ALT text.
+        | Gallery image ALT text is stored per ProductImage record.
         */
         'image_alt',
 
@@ -90,7 +93,6 @@ class Product extends Model
         'status',
     ];
 
-
     protected $casts = [
         'colors' => 'array',
         'gallery_images' => 'array',
@@ -113,7 +115,6 @@ class Product extends Model
         'low_stock_alert' => 'integer',
     ];
 
-
     /*
     |--------------------------------------------------------------------------
     | Colour Variants
@@ -127,7 +128,6 @@ class Product extends Model
             ->orderBy('id');
     }
 
-
     public function activeVariants(): HasMany
     {
         return $this->hasMany(ProductVariant::class)
@@ -135,7 +135,6 @@ class Product extends Model
             ->orderBy('sort_order')
             ->orderBy('id');
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -157,7 +156,6 @@ class Product extends Model
             ->orderBy('id');
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Category Slug
@@ -174,7 +172,6 @@ class Product extends Model
             $this->category ?: 'uncategorised'
         );
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -195,7 +192,6 @@ class Product extends Model
             $this->slug;
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Public Product URL
@@ -206,7 +202,6 @@ class Product extends Model
     {
         return url($this->public_path);
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -225,7 +220,6 @@ class Product extends Model
             : $this->public_url;
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | SEO Title
@@ -242,7 +236,6 @@ class Product extends Model
             ? $this->seo_title
             : $this->name;
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -267,7 +260,6 @@ class Product extends Model
         return '';
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Robots
@@ -280,7 +272,6 @@ class Product extends Model
             ? 'index,follow'
             : 'noindex,follow';
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -295,7 +286,6 @@ class Product extends Model
             : $this->seo_title_value;
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Open Graph Description
@@ -308,7 +298,6 @@ class Product extends Model
             ? $this->og_description
             : $this->meta_description_value;
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -337,14 +326,36 @@ class Product extends Model
         return null;
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Featured Image Name
+    |--------------------------------------------------------------------------
+    |
+    | Admin-defined image name first.
+    | Otherwise use the actual stored filename.
+    |
+    */
+
+    public function getFeaturedImageDisplayNameAttribute(): string
+    {
+        if (filled($this->featured_image_name)) {
+            return $this->featured_image_name;
+        }
+
+        if (filled($this->featured_image)) {
+            return basename($this->featured_image);
+        }
+
+        return 'Featured Image';
+    }
 
     /*
     |--------------------------------------------------------------------------
     | Featured Image ALT
     |--------------------------------------------------------------------------
     |
-    | `image_alt` is retained as fallback for existing products.
-    | New implementation will allow proper image-level ALT management.
+    | image_alt is retained for existing products.
+    | Used as the featured image ALT text.
     |
     */
 
@@ -354,7 +365,6 @@ class Product extends Model
             ? $this->image_alt
             : $this->name;
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -374,7 +384,6 @@ class Product extends Model
         return (float) $this->regular_price;
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Variant Stock
@@ -389,7 +398,6 @@ class Product extends Model
 
         return (int) $this->variants()->sum('quantity');
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -406,7 +414,6 @@ class Product extends Model
         return $this->variants()->exists();
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Available Stock
@@ -419,7 +426,6 @@ class Product extends Model
             ? $this->variant_stock
             : (int) $this->stock_quantity;
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -441,9 +447,7 @@ class Product extends Model
 
         $stockStatus = match (true) {
             $totalStock <= 0 => 'out_of_stock',
-
             $totalStock <= $lowStockAlert => 'low_stock',
-
             default => 'in_stock',
         };
 

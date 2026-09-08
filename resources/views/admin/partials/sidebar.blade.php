@@ -44,6 +44,16 @@
         </a>
 
 
+        {{-- Product Gallery --}}
+        <a href="{{ url('/admin/product-gallery') }}"
+            class="{{ request()->is('admin.product-gallery*') ? 'active' : '' }}">
+
+            <i class="bi bi-images"></i>
+            <span>Product Gallery</span>
+
+        </a>
+
+
         {{-- Pending Orders --}}
         <a href="{{ route('admin.orders.pending') }}"
             class="{{ request()->routeIs('admin.orders.pending') ? 'active' : '' }}">
@@ -69,7 +79,7 @@
             class="{{ request()->routeIs('admin.halaxy-patients.*') ? 'active' : '' }}">
 
             <i class="bi bi-person-vcard-fill"></i>
-            <span>Halaxy Patients</span>
+            <span>Medileaf Patients</span>
 
         </a>
 
@@ -90,6 +100,7 @@
 
             <div id="adminBlogMenu" class="collapse {{ request()->is('admin/blog*') ? 'show' : '' }} ml-admin-submenu">
 
+                {{-- All Posts --}}
                 <a href="{{ url('/admin/blog') }}" class="{{ request()->is('admin/blog') ? 'active' : '' }}">
 
                     <i class="bi bi-file-earmark-text"></i>
@@ -97,6 +108,8 @@
 
                 </a>
 
+
+                {{-- Add New Post --}}
                 <a href="{{ url('/admin/blog/create') }}"
                     class="{{ request()->is('admin/blog/create') ? 'active' : '' }}">
 
@@ -105,6 +118,18 @@
 
                 </a>
 
+
+                {{-- Blog Gallery --}}
+                <a href="{{ url('/admin/blog/gallery') }}"
+                    class="{{ request()->is('admin/blog/gallery*') ? 'active' : '' }}">
+
+                    <i class="bi bi-images"></i>
+                    <span>Blog Gallery</span>
+
+                </a>
+
+
+                {{-- Categories --}}
                 <a href="{{ url('/admin/blog/categories') }}"
                     class="{{ request()->is('admin/blog/categories*') ? 'active' : '' }}">
 
@@ -113,6 +138,8 @@
 
                 </a>
 
+
+                {{-- Tags --}}
                 <a href="{{ url('/admin/blog/tags') }}" class="{{ request()->is('admin/blog/tags*') ? 'active' : '' }}">
 
                     <i class="bi bi-tags"></i>
@@ -120,6 +147,8 @@
 
                 </a>
 
+
+                {{-- Authors / Reviewers --}}
                 <a href="{{ url('/admin/blog/authors') }}"
                     class="{{ request()->is('admin/blog/authors*') ? 'active' : '' }}">
 
@@ -134,7 +163,8 @@
 
 
         {{-- Settings --}}
-        <a href="{{ route('admin.settings') }}" class="{{ request()->routeIs('admin.settings') ? 'active' : '' }}">
+        <a href="{{ route('admin.settings') }}"
+            class=" mb-3 {{ request()->routeIs('admin.settings') ? 'active' : '' }}">
 
             <i class="bi bi-gear-fill"></i>
             <span>Settings</span>

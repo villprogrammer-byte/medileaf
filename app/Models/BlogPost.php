@@ -20,6 +20,7 @@ class BlogPost extends Model
         'excerpt',
         'content',
         'featured_image',
+        'featured_image_name',
         'featured_image_alt',
         'status',
         'is_featured',
@@ -79,5 +80,18 @@ class BlogPost extends Model
     public function scopeFeatured($query)
     {
         return $query->where('is_featured', true);
+    }
+
+    public function getFeaturedImageDisplayNameAttribute(): string
+    {
+        if (filled($this->featured_image_name)) {
+            return $this->featured_image_name;
+        }
+
+        if (filled($this->featured_image)) {
+            return pathinfo($this->featured_image, PATHINFO_FILENAME);
+        }
+
+        return 'Featured Image';
     }
 }
