@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\PatientPrescription;
 use App\Services\HalaxyService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -15,68 +16,46 @@ class HalaxyPatientController extends Controller
     ) {
     }
 
-    /**
-     * Display Halaxy patient list.
-     */
     public function index(Request $request)
     {
         try {
             $params = [
-                'page' => max(
-                    (int) $request->get('page', 1),
-                    1
-                ),
+                'page' => max((int) $request->get('page', 1), 1),
                 '_count' => 30,
             ];
 
             if ($request->filled('search')) {
-                $search = trim(
-                    (string) $request->get('search')
-                );
+                $search = trim((string) $request->get('search'));
 
                 $params['name'] = $search;
             }
 
-            $bundle = $this->halaxy->getPatients(
-                $params
-            );
+            $bundle = $this->halaxy->getPatients($params);
 
-            $patients = $this->halaxy->resources(
-                $bundle
-            );
+            $patients = $this->halaxy->resources($bundle);
 
-            return view(
-                'admin.halaxy-patients.index',
-                [
-                    'patients' => $patients,
-                    'bundle' => $bundle,
-                    'search' => $request->get('search'),
-                    'currentPage' => (int) (
-                        $params['page'] ?? 1
-                    ),
-                ]
-            );
+            return view('admin.halaxy-patients.index', [
+                'patients' => $patients,
+                'bundle' => $bundle,
+                'search' => $request->get('search'),
+                'currentPage' => (int) ($params['page'] ?? 1),
+            ]);
 
         } catch (Throwable $e) {
+
             report($e);
 
-            return view(
-                'admin.halaxy-patients.index',
-                [
-                    'patients' => [],
-                    'bundle' => [],
-                    'search' => $request->get('search'),
-                    'currentPage' => 1,
-                    'error' =>
-                        'Unable to load Halaxy patients at the moment.',
-                ]
-            );
+            return view('admin.halaxy-patients.index', [
+                'patients' => [],
+                'bundle' => [],
+                'search' => $request->get('search'),
+                'currentPage' => 1,
+                'error' => 'Unable to load patients at the moment.',
+            ]);
         }
     }
 
-    /**
-     * Display one Halaxy patient.
-     */
+
     public function show(string $patientId)
     {
         /*
@@ -86,26 +65,24 @@ class HalaxyPatientController extends Controller
         */
 
         try {
-            $patient = $this->halaxy->getPatient(
-                $patientId
-            );
+
+            $patient = $this->halaxy->getPatient($patientId);
 
             if (empty($patient)) {
                 throw new \RuntimeException(
-                    'Halaxy patient was not found.'
+                    'Patient was not found.'
                 );
             }
 
         } catch (Throwable $e) {
+
             report($e);
 
             return redirect()
-                ->route(
-                    'admin.halaxy-patients.index'
-                )
+                ->route('admin.halaxy-patients.index')
                 ->with(
                     'error',
-                    'Unable to load this Halaxy patient.'
+                    'Unable to load this patient.'
                 );
         }
 
@@ -119,6 +96,7 @@ class HalaxyPatientController extends Controller
         $appointments = [];
 
         try {
+
             $appointments =
                 $this->halaxy->appointmentResources(
                     $patientId,
@@ -129,8 +107,9 @@ class HalaxyPatientController extends Controller
                 );
 
         } catch (Throwable $e) {
+
             Log::warning(
-                'Unable to load Halaxy appointments for admin patient view.',
+                'Unable to load appointments for admin patient view.',
                 [
                     'exception' => get_class($e),
                     'message' => $e->getMessage(),
@@ -141,25 +120,17 @@ class HalaxyPatientController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Practitioner details
-        |--------------------------------------------------------------------------
-        |
-        | Resolve:
-        |
-        | Appointment
-        |     -> PractitionerRole
-        |     -> Practitioner
-        |     -> readable practitioner name
-        |
-        | Failure here must never remove the appointment.
+        | Resolve Practitioner Names
         |--------------------------------------------------------------------------
         */
 
         foreach ($appointments as $key => $appointment) {
+
             $appointments[$key]['practitioner_name'] =
                 'Practitioner';
 
             try {
+
                 $practitioner =
                     $this->halaxy->appointmentPractitioner(
                         $appointment
@@ -174,8 +145,9 @@ class HalaxyPatientController extends Controller
                 }
 
             } catch (Throwable $e) {
+
                 Log::warning(
-                    'Unable to resolve Halaxy practitioner for appointment.',
+                    'Unable to resolve practitioner for appointment.',
                     [
                         'exception' => get_class($e),
                         'message' => $e->getMessage(),
@@ -194,20 +166,19 @@ class HalaxyPatientController extends Controller
         $nextAppointment = null;
 
         try {
+
             $nextAppointment =
                 $this->halaxy->getNextAppointment(
                     $patientId
                 );
 
-            /*
-             * Resolve practitioner for the next
-             * appointment as well.
-             */
             if ($nextAppointment) {
+
                 $nextAppointment['practitioner_name'] =
                     'Practitioner';
 
                 try {
+
                     $practitioner =
                         $this->halaxy->appointmentPractitioner(
                             $nextAppointment
@@ -222,8 +193,9 @@ class HalaxyPatientController extends Controller
                     }
 
                 } catch (Throwable $e) {
+
                     Log::warning(
-                        'Unable to resolve practitioner for next Halaxy appointment.',
+                        'Unable to resolve practitioner for next appointment.',
                         [
                             'exception' => get_class($e),
                             'message' => $e->getMessage(),
@@ -233,8 +205,9 @@ class HalaxyPatientController extends Controller
             }
 
         } catch (Throwable $e) {
+
             Log::warning(
-                'Unable to load next Halaxy appointment for admin patient view.',
+                'Unable to load next appointment for admin patient view.',
                 [
                     'exception' => get_class($e),
                     'message' => $e->getMessage(),
@@ -252,6 +225,7 @@ class HalaxyPatientController extends Controller
         $invoices = [];
 
         try {
+
             $invoices =
                 $this->halaxy->patientInvoiceResources(
                     $patientId,
@@ -261,8 +235,9 @@ class HalaxyPatientController extends Controller
                 );
 
         } catch (Throwable $e) {
+
             Log::warning(
-                'Unable to load Halaxy invoices for admin patient view.',
+                'Unable to load invoices for admin patient view.',
                 [
                     'exception' => get_class($e),
                     'message' => $e->getMessage(),
@@ -273,7 +248,74 @@ class HalaxyPatientController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | View
+        | MediLeaf Prescriptions
+        |--------------------------------------------------------------------------
+        |
+        | Latest prescription:
+        | Displays only in Current Prescription.
+        |
+        | Prescription history:
+        | Contains all older prescriptions except the latest one.
+        |
+        | Data remains only inside the MediLeaf database.
+        |
+        */
+
+        $prescriptions = collect();
+        $latestPrescription = null;
+        $prescriptionHistory = collect();
+
+        try {
+
+            $prescriptions =
+                PatientPrescription::query()
+                    ->where(
+                        'halaxy_patient_id',
+                        $patientId
+                    )
+                    ->orderByDesc('created_at')
+                    ->orderByDesc('id')
+                    ->get();
+
+            /*
+            |--------------------------------------------------------------------------
+            | Current Prescription
+            |--------------------------------------------------------------------------
+            */
+
+            $latestPrescription =
+                $prescriptions->first();
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Prescription History
+            |--------------------------------------------------------------------------
+            |
+            | Remove the latest prescription so it is not shown twice.
+            |
+            */
+
+            $prescriptionHistory =
+                $prescriptions
+                    ->skip(1)
+                    ->values();
+
+        } catch (Throwable $e) {
+
+            Log::warning(
+                'Unable to load MediLeaf prescriptions for admin patient view.',
+                [
+                    'exception' => get_class($e),
+                    'message' => $e->getMessage(),
+                ]
+            );
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Patient View
         |--------------------------------------------------------------------------
         */
 
@@ -281,9 +323,24 @@ class HalaxyPatientController extends Controller
             'admin.halaxy-patients.show',
             [
                 'patient' => $patient,
-                'appointments' => $appointments,
-                'invoices' => $invoices,
-                'nextAppointment' => $nextAppointment,
+
+                'appointments' =>
+                    $appointments,
+
+                'invoices' =>
+                    $invoices,
+
+                'nextAppointment' =>
+                    $nextAppointment,
+
+                'prescriptions' =>
+                    $prescriptions,
+
+                'latestPrescription' =>
+                    $latestPrescription,
+
+                'prescriptionHistory' =>
+                    $prescriptionHistory,
             ]
         );
     }

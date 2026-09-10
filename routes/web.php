@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductGalleryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HalaxyPatientController;
+use App\Http\Controllers\Admin\PatientPrescriptionController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\BlogGalleryController;
 use App\Http\Controllers\Admin\BlogCategoryController;
@@ -186,8 +187,10 @@ Route::prefix('admin')
 
         Route::get('/product-gallery', [ProductGalleryController::class, 'index'])
             ->name('product-gallery.index');
+
         Route::put('/product-gallery/{productImage}', [ProductGalleryController::class, 'update'])
             ->name('product-gallery.update');
+
         Route::post('/product-gallery/{productImage}/replace', [ProductGalleryController::class, 'replace'])
             ->name('product-gallery.replace');
 
@@ -205,7 +208,7 @@ Route::prefix('admin')
 
         /*
         |--------------------------------------------------------------------------
-        | Halaxy Patients
+        | MediLeaf Patients
         |--------------------------------------------------------------------------
         */
 
@@ -215,6 +218,37 @@ Route::prefix('admin')
 
                 Route::get('/', [HalaxyPatientController::class, 'index'])
                     ->name('index');
+
+                /*
+                |--------------------------------------------------------------------------
+                | Patient Prescriptions
+                |--------------------------------------------------------------------------
+                |
+                | Prescription data is stored only in the MediLeaf database.
+                | It is linked to the patient using the patient ID.
+                |
+                */
+
+                Route::post(
+                    '/{patientId}/prescriptions',
+                    [PatientPrescriptionController::class, 'store']
+                )->name('prescriptions.store');
+
+                Route::put(
+                    '/{patientId}/prescriptions/{prescription}',
+                    [PatientPrescriptionController::class, 'update']
+                )->name('prescriptions.update');
+
+                Route::delete(
+                    '/{patientId}/prescriptions/{prescription}',
+                    [PatientPrescriptionController::class, 'destroy']
+                )->name('prescriptions.destroy');
+
+                /*
+                |--------------------------------------------------------------------------
+                | Patient View
+                |--------------------------------------------------------------------------
+                */
 
                 Route::get('/{patientId}', [HalaxyPatientController::class, 'show'])
                     ->name('show');
@@ -292,7 +326,6 @@ Route::prefix('admin')
                 ->name('redirects.destroy');
 
             /*
-        /*
             |--------------------------------------------------------------------------
             | Blog Gallery
             |--------------------------------------------------------------------------

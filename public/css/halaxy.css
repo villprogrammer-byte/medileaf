@@ -1,6 +1,6 @@
 /* =========================================================
-   MEDILEAF ADMIN — HALAXY MODULE
-   Shared custom styles for all Halaxy admin pages
+   MEDILEAF ADMIN — PATIENT MODULE
+   Shared custom styles for all patient admin pages
    ========================================================= */
 
 .ml-halaxy-page {
@@ -26,6 +26,7 @@
     font-size: 34px;
     font-weight: 900;
     line-height: 1.2;
+    letter-spacing: -0.02em;
 }
 
 .ml-halaxy-page-head p {
@@ -59,6 +60,7 @@
     font-size: 14px;
     font-weight: 800;
     text-decoration: none;
+    cursor: pointer;
     transition:
         transform 0.25s ease,
         box-shadow 0.25s ease,
@@ -101,6 +103,14 @@
     transform: translateY(-2px);
 }
 
+.ml-halaxy-primary-btn:focus,
+.ml-halaxy-secondary-btn:focus,
+.ml-halaxy-back-btn:focus {
+    outline: none;
+    box-shadow:
+        0 0 0 4px rgba(49, 160, 80, 0.10);
+}
+
 
 /* =========================================================
    COMMON CARD
@@ -127,6 +137,10 @@
     align-items: center;
     justify-content: space-between;
     gap: 16px;
+    background:
+        linear-gradient(180deg,
+            rgba(248, 252, 249, 0.80),
+            rgba(255, 255, 255, 0.96));
 }
 
 .ml-halaxy-card-head h4,
@@ -363,11 +377,11 @@
 
 
 /* =========================================================
-   HALAXY ID
+   PATIENT ID
    ========================================================= */
 
 .ml-halaxy-id {
-    max-width: 180px;
+    max-width: 220px;
     padding: 7px 10px;
     border-radius: 10px;
     display: inline-block;
@@ -623,6 +637,337 @@
 
 
 /* =========================================================
+   PRESCRIPTION SECTION
+   ========================================================= */
+
+.ml-halaxy-prescription-current {
+    position: relative;
+    padding: 24px;
+    border: 1px solid rgba(49, 160, 80, 0.13);
+    border-radius: 22px;
+    background:
+        linear-gradient(135deg,
+            rgba(49, 160, 80, 0.06),
+            rgba(138, 198, 65, 0.03));
+    overflow: hidden;
+}
+
+.ml-halaxy-prescription-current::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(180deg,
+            #31a050,
+            #8ac641);
+}
+
+.ml-halaxy-prescription-current h3 {
+    margin: 0;
+    color: #073d22;
+    font-size: 23px;
+    font-weight: 900;
+    line-height: 1.35;
+}
+
+.ml-halaxy-prescription-current .text-muted {
+    color: #718078 !important;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   PRESCRIPTION FORM AREA
+   ========================================================= */
+
+.ml-halaxy-card .border-top {
+    border-color: #edf2ee !important;
+}
+
+.ml-halaxy-card .border-top h5 {
+    margin: 0 0 18px;
+    color: #173d24;
+    font-size: 18px;
+    font-weight: 850;
+}
+
+.ml-halaxy-card .border-top h5 i {
+    color: #31a050;
+}
+
+
+/* =========================================================
+   FORM LABELS
+   ========================================================= */
+
+.ml-halaxy-card .form-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #344c3b;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.ml-halaxy-card .form-label .text-danger {
+    color: #dc3545 !important;
+}
+
+
+/* =========================================================
+   FORM CONTROLS
+   ========================================================= */
+
+.ml-halaxy-card .form-control,
+.ml-halaxy-card .form-select {
+    width: 100%;
+    min-height: 50px;
+    padding: 11px 14px;
+    border: 1px solid #dbe8dd;
+    border-radius: 14px;
+    background: #f9fcf9;
+    color: #173d24;
+    font-size: 14px;
+    font-weight: 600;
+    outline: none;
+    box-shadow: none;
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.ml-halaxy-card textarea.form-control {
+    min-height: 115px;
+    padding-top: 13px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.ml-halaxy-card .form-control::placeholder {
+    color: #9aa69f;
+    font-weight: 500;
+}
+
+.ml-halaxy-card .form-control:hover,
+.ml-halaxy-card .form-select:hover {
+    border-color: #c9dccd;
+    background: #ffffff;
+}
+
+.ml-halaxy-card .form-control:focus,
+.ml-halaxy-card .form-select:focus {
+    border-color: #31a050;
+    background: #ffffff;
+    box-shadow:
+        0 0 0 4px rgba(49, 160, 80, 0.08);
+}
+
+.ml-halaxy-card .form-control:disabled,
+.ml-halaxy-card .form-select:disabled {
+    background: #f2f5f3;
+    color: #8a948d;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   PRESCRIPTION HISTORY
+   ========================================================= */
+
+.ml-halaxy-card-body>.border.rounded-3 {
+    position: relative;
+    margin-bottom: 22px !important;
+    padding: 24px !important;
+    border: 1px solid rgba(49, 160, 80, 0.11) !important;
+    border-radius: 20px !important;
+    background: #fbfdfb;
+    box-shadow:
+        0 8px 24px rgba(22, 68, 39, 0.035);
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease;
+}
+
+.ml-halaxy-card-body>.border.rounded-3:hover {
+    transform: translateY(-2px);
+    border-color: rgba(49, 160, 80, 0.20) !important;
+    background: #ffffff;
+    box-shadow:
+        0 14px 32px rgba(22, 68, 39, 0.07);
+}
+
+.ml-halaxy-card-body>.border.rounded-3:last-child {
+    margin-bottom: 0 !important;
+}
+
+.ml-halaxy-card-body>.border.rounded-3 h5 {
+    margin: 0 0 5px;
+    color: #073d22;
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.ml-halaxy-card-body>.border.rounded-3 .text-muted {
+    color: #7a887f !important;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   PRESCRIPTION UPDATE BUTTON
+   ========================================================= */
+
+.ml-halaxy-card-body>.border.rounded-3 .ml-halaxy-secondary-btn {
+    min-height: 44px;
+    padding: 0 18px;
+    background: #eef7ef;
+    color: #278343;
+    border-color: rgba(49, 160, 80, 0.14);
+    box-shadow: none;
+}
+
+.ml-halaxy-card-body>.border.rounded-3 .ml-halaxy-secondary-btn:hover {
+    background: linear-gradient(135deg,
+            #31a050,
+            #8ac641);
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow:
+        0 10px 24px rgba(49, 160, 80, 0.18);
+}
+
+
+/* =========================================================
+   ADD PRESCRIPTION TOGGLE / COLLAPSIBLE FORM
+   ========================================================= */
+
+.ml-prescription-add-section {
+    border-color: #edf2ee !important;
+}
+
+.ml-prescription-add-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.ml-prescription-add-head h5 {
+    margin: 0;
+    color: #173d24;
+    font-size: 18px;
+    font-weight: 850;
+}
+
+.ml-prescription-add-head h5 i {
+    color: #31a050;
+}
+
+.ml-prescription-add-head p {
+    color: #7a887f;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.ml-prescription-form-panel {
+    display: none;
+    margin-top: 22px;
+    padding: 24px;
+    border: 1px solid rgba(49, 160, 80, 0.12);
+    border-radius: 20px;
+    background:
+        linear-gradient(135deg,
+            rgba(49, 160, 80, 0.035),
+            rgba(138, 198, 65, 0.018));
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.90);
+}
+
+.ml-prescription-form-panel.is-open {
+    display: block;
+    animation: mlPrescriptionPanelIn 0.25s ease both;
+}
+
+@keyframes mlPrescriptionPanelIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.ml-prescription-form-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+
+/* =========================================================
+   PRESCRIPTION DELETE
+   ========================================================= */
+
+.ml-prescription-delete-wrap {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid #edf2ee;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.ml-prescription-delete-form {
+    margin: 0;
+}
+
+.ml-halaxy-danger-btn {
+    min-height: 44px;
+    padding: 0 18px;
+    border: 1px solid rgba(220, 53, 69, 0.18);
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #fff5f5;
+    color: #d20015;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: none;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease,
+        color 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.ml-halaxy-danger-btn:hover {
+    border-color: #d20015;
+    background: #d20015;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow:
+        0 10px 24px rgba(220, 53, 69, 0.18);
+}
+
+.ml-halaxy-danger-btn:focus {
+    outline: none;
+    box-shadow:
+        0 0 0 4px rgba(220, 53, 69, 0.10);
+}
+
+
+/* =========================================================
    EMPTY STATE
    ========================================================= */
 
@@ -666,6 +1011,21 @@
 
 
 /* =========================================================
+   PRESCRIPTION EMPTY STATE
+   ========================================================= */
+
+.ml-halaxy-card-body>.ml-halaxy-empty {
+    min-height: 220px;
+    border: 1px dashed rgba(49, 160, 80, 0.20);
+    border-radius: 20px;
+    background:
+        linear-gradient(135deg,
+            #fbfefb,
+            #f6faf6);
+}
+
+
+/* =========================================================
    ERROR / NOTICE
    ========================================================= */
 
@@ -699,6 +1059,14 @@
     border: 1px solid rgba(178, 106, 0, 0.14);
     background: #fffaf0;
     color: #94600b;
+}
+
+.ml-halaxy-alert ul {
+    padding-left: 18px;
+}
+
+.ml-halaxy-alert li+li {
+    margin-top: 4px;
 }
 
 
@@ -741,7 +1109,28 @@
 
 
 /* =========================================================
-   RESPONSIVE
+   UTILITIES INSIDE MODULE
+   ========================================================= */
+
+.ml-halaxy-page .text-muted {
+    color: #748078 !important;
+}
+
+.ml-halaxy-page .text-success {
+    color: #198754 !important;
+}
+
+.ml-halaxy-page .text-danger {
+    color: #dc3545 !important;
+}
+
+.ml-halaxy-page strong {
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
    ========================================================= */
 
 @media (max-width: 991.98px) {
@@ -761,8 +1150,16 @@
     .ml-halaxy-table {
         min-width: 980px;
     }
+
+    .ml-halaxy-prescription-current {
+        padding: 20px;
+    }
 }
 
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+   ========================================================= */
 
 @media (max-width: 767.98px) {
 
@@ -811,8 +1208,21 @@
     .ml-halaxy-pagination {
         flex-wrap: wrap;
     }
+
+    .ml-halaxy-card .form-control,
+    .ml-halaxy-card .form-select {
+        min-height: 48px;
+    }
+
+    .ml-halaxy-card-body>.border.rounded-3 {
+        padding: 20px !important;
+    }
 }
 
+
+/* =========================================================
+   RESPONSIVE — SMALL MOBILE
+   ========================================================= */
 
 @media (max-width: 575.98px) {
 
@@ -865,5 +1275,66 @@
     .ml-halaxy-empty {
         min-height: 250px;
         padding: 34px 18px;
+    }
+
+    .ml-halaxy-card-body>.ml-halaxy-empty {
+        min-height: 200px;
+    }
+
+    .ml-halaxy-card-body>.border.rounded-3 {
+        padding: 17px !important;
+        border-radius: 17px !important;
+    }
+
+    .ml-halaxy-prescription-current {
+        padding: 18px;
+        border-radius: 18px;
+    }
+
+    .ml-halaxy-prescription-current h3 {
+        font-size: 20px;
+    }
+}
+
+/* =========================================================
+   PRESCRIPTION RESPONSIVE EXTRAS
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .ml-prescription-add-head {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .ml-prescription-add-head .ml-halaxy-primary-btn {
+        width: 100%;
+    }
+
+    .ml-prescription-form-panel {
+        padding: 18px;
+        border-radius: 18px;
+    }
+
+    .ml-prescription-form-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .ml-prescription-form-actions .ml-halaxy-primary-btn,
+    .ml-prescription-form-actions .ml-halaxy-secondary-btn {
+        width: 100%;
+    }
+
+    .ml-prescription-delete-wrap {
+        justify-content: stretch;
+    }
+
+    .ml-prescription-delete-form {
+        width: 100%;
+    }
+
+    .ml-halaxy-danger-btn {
+        width: 100%;
     }
 }

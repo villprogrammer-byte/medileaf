@@ -6,7 +6,7 @@
         <div class="dropdown ml-account-desktop">
 
             <button class="ml-account-btn" type="button" id="mlAccountDropdown" aria-expanded="false">
-                <i class="bi bi-shield-check"></i>
+                <i class="bi bi-person-workspace"></i>
                 <span>Admin</span>
                 <i class="bi bi-chevron-down ml-account-arrow"></i>
             </button>

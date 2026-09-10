@@ -28,7 +28,7 @@
     height: 44px;
     padding: 0 18px;
     border: 0;
-    border-radius: 10px;
+    border-radius: 45px;
     background: linear-gradient(135deg, #31a050, #7ed13f);
     color: #ffffff;
     display: inline-flex;
@@ -121,7 +121,7 @@
 
 .ml-account-option {
     min-height: 64px;
-    padding: 11px 12px;
+    padding: 11px 0;
     border-radius: 10px;
     display: flex;
     align-items: center;
