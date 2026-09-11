@@ -97,6 +97,33 @@
             <i class="bi bi-arrow-up"></i>
         </button>
 
+        <!-- Disclaimer -->
+        <div class="ml-footer-disclaimer">
+
+            <div class="ml-disclaimer-icon">
+                <i class="bi bi-shield-check"></i>
+            </div>
+
+            <div class="ml-disclaimer-content">
+                <h3>Medical Disclaimer</h3>
+
+                <p>
+                    At MediLeaf Health, all patients are individually assessed by qualified healthcare professionals to
+                    determine whether our services and treatment options are suitable for their personal health needs
+                    and circumstances. Not everyone will be eligible, and individual outcomes may differ. The content on
+                    this website is intended for general educational and informational purposes only and is not a
+                    substitute for professional medical advice, diagnosis or treatment. Where medicinal cannabis is
+                    discussed, it is a prescription-only treatment option in Australia and is subject to clinical
+                    assessment and applicable Australian regulations. MediLeaf Health does not advertise or encourage
+                    the inappropriate use of prescription medicines or medicinal cannabis. A consultation does not
+                    guarantee a prescription or any particular treatment. If you would like to understand whether a
+                    treatment may be appropriate for your circumstances, please speak with a qualified healthcare
+                    professional.
+                </p>
+            </div>
+
+        </div>
+
         <div class="ml-footer-bottom">
             <p>&copy; {{ date('Y') }} MediLeaf. All Rights Reserved.</p>
         </div>
